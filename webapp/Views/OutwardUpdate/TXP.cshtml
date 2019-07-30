@@ -1,0 +1,867 @@
+﻿
+
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (ViewBag.TXP != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.TXP)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+</style>
+<div id="content">
+    <section id="widget-grid" class="">
+
+        <div class="row">
+            <form action="@Url.Action("TXP","OutwardUpdate")" method="post" id="OutwardB2BEdit" novalidate="novalidate" autocomplete="off">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Update Outward TXP Details</h2>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Taxpayer GSTIN</label>
+                                                    <label class="input">
+                                                        <input type="text" name="cgstin" id="cgstin" value="@ViewBag.Gstin" placeholder="Invoice No." style="background-color:#d9d9d9;" readonly>
+                                                    </label>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Period</label>
+                                                    <label class="input">
+                                                        <input type="text" name="period" id="period" value="@ViewBag.Period" placeholder="Invoice No." style="background-color:#d9d9d9;" readonly>
+                                                    </label>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                </div>
+                            </div>
+                            <!-- end widget content -->
+                        </div>
+                        <!-- end widget div -->
+                    </div>
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Add invoice item</h2>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form1" class="smart-form">
+                                    <div class="smart-form">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+
+
+                                                        <th style="width:100px">Rate(%)<span style="color:red">*</span></th>
+                                                        <th style="width:100px">Place of Supply<span style="color:red">*</span></th>
+                                                        <th style="width:100px">Advance Amount<span style="color:red">*</span></th>
+                                                        <th style="width:100px">IGST Amount</th>
+                                                        <th style="width:100px">CGST Amount</th>
+                                                        <th style="width:100px">SGST/UTGST Amount</th>
+                                                        <th style="width:100px">CESS Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+
+
+                                                        <td>
+                                                            <label class="input">
+                                                                @Html.DropDownList("rt", new SelectList(ViewBag.Rates, "ratevalue", "ratevalue"), "--Select--", new { @Class = "form-control input-sm", @id = "rate", @onchange = "taxCalculation();", @style = "" })
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="pos" id="pos" placeholder="Place of Supply" maxlength="2" onchange="taxCalculation();">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="ad_amt" id="ad_amt" placeholder="Advance Amount" class="floatinput" onchange="taxCalculation();" maxlength="14">
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="iamount" value="0" id="iamount" style="background-color:#d9d9d9;" readonly class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="camount" value="0" id="camount" style="background-color:#d9d9d9;" readonly class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="samount" value="0" id="samount" style="background-color:#d9d9d9;" readonly class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="csamount" value="0" style="" id="csamount" class="floatinput" maxlength="14">
+                                                            </label>
+                                                        </td>
+
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="13" align="center">
+                                                            <button type="Submit" id="btnSubmit" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- end widget content -->
+                        </div>
+                        <!-- end widget div -->
+                    </div>
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Update Outward TXP Item Details</h2>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form1" class="smart-form">
+
+                                    <div class="smart-form">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr class="row">
+                                                        <th>Rate(%)<span style="color:red">*</span></th>
+                                                        <th>Place of Supply<span style="color:red">*</span></th>
+                                                        <th>Advance Amount<span style="color:red">*</span></th>
+                                                        <th>IGST Amount</th>
+                                                        <th>CGST Amount</th>
+                                                        <th>SGST/UTGST Amount</th>
+                                                        <th>CESS Amount</th>
+                                                        <th>Update</th>
+                                                        <th>Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var items in result)
+                                                    {
+
+
+                                                        <tr class="row">
+
+
+
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="rate_@rowVal" value="@items.rt" onchange="taxableCalculation(@rowVal);" style="background-color:#d9d9d9;" readonly class="floatinput" />
+
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="pos_@rowVal" value="@items.pos"  class="floatinput" onchange="taxableCalculation(@rowVal);"  />
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="adamt_@rowVal" value="@items.ad_amt"  class="floatinput" onchange="taxableCalculation(@rowVal);" />
+                                                                </label>
+                                                            </td>
+
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="iamt_@rowVal" value="@items.iamt" style="background-color:#d9d9d9; " readonly class="floatinput" />
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="camt_@rowVal" value="@items.camt" style="background-color:#d9d9d9;" readonly class="floatinput" />
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="samt_@rowVal" value="@items.samt" style="background-color:#d9d9d9;" readonly class="floatinput" />
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" id="csamt_@rowVal" value="@items.csamt" class="floatinput" />
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <input type="button" class="text-center" id="editBtn_@rowVal" onclick="Edit(@items.txpid,@rowVal)" value="Update" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                                                            </td>
+                                                            <td>
+                                                                <input type="button" class="text-center" id="delBtn_@rowVal" onclick="Delete(@items.txpid,@rowVal)" value="Delete" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                                                            </td>
+                                                        </tr>
+                                                        rowVal = rowVal + 1;
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <footer></footer>
+
+                                </div>
+                            </div>
+                            <!-- end widget content -->
+                        </div>
+                        <!-- end widget div -->
+                    </div>
+                </article>
+                <br />
+
+            </form>
+        </div>
+    </section>
+</div>
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+            alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+    TempData["Message"] = null;
+}
+<script type="text/javascript">
+        $('.floatinput').on('keypress', function (e) {
+            return validateFloatKeyPress(this, e);
+
+        });
+
+        function taxCalculation() {
+
+            var rate = document.getElementById("rate").value;
+
+            var igsta = document.getElementById("iamount");
+            var cgsta = document.getElementById("camount");
+            var sgsta = document.getElementById("samount");
+            var taxablevalue = document.getElementById("ad_amt").value;
+
+            if ((taxablevalue != "") && (rate != "")) {
+                var cgstin = document.getElementById("cgstin").value;
+                var gstin = document.getElementById("pos").value;
+                var cgstin_state = cgstin.substring(0, 2);
+                var gstin_state = gstin.substring(0, 2);
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (gstin_state != cgstin_state) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (gstin_state == cgstin_state) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+        }
+
+        function taxableCalculation(index) {
+            
+            var rate = document.getElementById("rate_" + index).value;
+            var taxablevalue = document.getElementById("adamt_" + index).value;
+            var igsta = document.getElementById("iamt_" + index);
+            var cgsta = document.getElementById("camt_" + index);
+            var sgsta = document.getElementById("samt_" + index);
+
+
+            if ((taxablevalue != "") && (rate != "")) {
+                var cgstin = document.getElementById("cgstin").value;
+                var gstin = document.getElementById("pos_" + index).value;
+                var cgstin_state = cgstin.substring(0, 2);
+                var gstin_state = gstin.substring(0, 2);
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (gstin_state != cgstin_state) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (gstin_state == cgstin_state) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+        }
+
+
+        function Edit(id, index) {
+
+            var row = $("#editBtn_" + index).parent().parent();
+            // var index = $(this).closest("tr").index();
+            var rate = row.find("#rate_" + index).val();
+
+            var pos = row.find("#pos_" + index).val();
+            var adamt = row.find("#adamt_" + index).val();
+            var igsta = row.find("#iamt_" + index).val();
+            var cgsta = row.find("#camt_" + index).val();
+            var sgsta = row.find("#samt_" + index).val();
+            var cessa = row.find("#csamt_" + index).val();
+            if (rate == '') {
+                alert("Select Rate");
+                return false;
+            }
+            else if (pos == '') {
+                alert("Enter Place of Supply");
+                return false;
+            }
+            else if (adamt == '') {
+                alert('Enter Advance Amount');
+                return false;
+            }
+
+            var obj = {
+                id: id,
+                rt: rate,
+                pos: pos,
+                adamt: adamt,
+                igsta: igsta,
+                cgsta: cgsta,
+                sgsta: sgsta,
+                cessa: cessa
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/OutwardUpdate/TXPUpdate',
+                data: JSON.stringify(obj),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    location.reload();
+
+                }
+
+            });
+        }
+
+        function Delete(id, index) {
+
+            $.ajax({
+                type: "POST",
+                url: '/OutwardUpdate/TXPDelete',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    location.reload();
+
+                }
+
+            });
+
+        }
+
+        function updatedetails(index) {
+            var row = $(this).parent().parent();
+            var qty = document.getElementById("qty_" + index).value;
+            var unitprice = document.getElementById("unitprice_" + index).value;
+            var discount = document.getElementById("discount_" + index).value;
+            var rate = document.getElementById("rate_" + index).value;
+
+            var igsta = document.getElementById("iamt_" + index);
+            var cgsta = document.getElementById("camt_" + index);
+            var sgsta = document.getElementById("samt_" + index);
+            var cessa = document.getElementById("csamt_" + index);
+
+            if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+                var discountValue;
+                discountValue = (((qty * unitprice) / 100) * discount);
+                document.getElementById("txval_" + index).value = ((unitprice * qty) - discountValue).toFixed(2);
+            }
+            var taxablevalue = document.getElementById("txval_" + index).value;
+
+            if ((taxablevalue != "") && (rate != "")) {
+                var cgstin = document.getElementById("cgstin").value;
+                var gstin = document.getElementById("pos").value;
+                var cgstin_state = cgstin.substring(0, 2);
+                var gstin_state = gstin.substring(0, 2);
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (gstin_state != cgstin_state) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (gstin_state == cgstin_state) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+
+
+
+        }
+
+        function updateRate(index) {
+
+            var row = $("#hsncode_" + index).parent().parent();
+
+            var hsnid = $("#hsncode_" + index).val();
+            $.ajax({
+                type: "GET",
+                url: '/OutwardB2B/AutoPopulate1',
+                data: { id: hsnid },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    document.getElementById("rate_" + index).value = data.rate;
+
+
+                }
+
+            });
+
+        }
+
+        $(document).ready(function () {
+
+            $("#hsn").on('change', function () {
+
+                var txt = $('#hsn').val().split("|");
+                $('#hsn').val(txt[0]);
+                $("#rate").val(txt[1]);
+
+
+            });
+
+            $(document).ready(function () {
+
+                $("#hsn").autocomplete({
+
+                    minlength: 3,
+                    scroll: true,
+                    source: function (request, response) {
+
+                        $.ajax({
+
+                            url: "/OutwardB2B/AutoPopulate",
+                            type: "POST",
+                            dataType: "json",
+                            data: { Prefix: request.term },
+                            success: function (data) {
+
+                                response($.map(data, function (item) {
+
+
+
+                                    return {
+
+                                        label: item.hsncode + "-" + item.hsndesc,
+
+                                        value: item.hsncode + "|" + item.rate
+
+
+
+                                    };
+
+                                }));
+
+                            },
+                            messages: {
+
+                                noResults: "", results: "",
+
+                            }
+
+                        });
+
+                    }
+
+                });
+
+
+            })
+
+            $("#name").on('change', function () {
+                var name = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: '/OutwardB2B/load',
+                    data: { name: name },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#pos").val(data.StateCode);
+                        //$("#address").val(data.Address);
+                        $("#gstin").val(data.GSTINno);
+                    }
+
+                });
+            });
+
+            $("#btnsubmit").on('click', function () {
+                var $checkoutForm = $('#OutwardB2BEdit').validate({
+                    // Rules for form validation
+                    rules: {
+
+                        cgstin: {
+                            required: true
+                        },
+                        period: {
+                            required: true
+                        },
+                        actiontype: {
+                            required: true
+                        },
+                        ad_amt: {
+                            required: true,
+                            number: true
+
+                        },
+                        pos: {
+                            required: true
+                        },
+                        rt: {
+                            required: true,
+                            number: true
+
+                        },
+                        iamount: {
+                            required: true,
+                            number: true
+
+                        },
+                        camount: {
+                            required: true,
+                            number: true
+
+                        },
+                        samount: {
+                            required: true,
+                            number: true
+
+                        },
+                        csamount: {
+                            //required: true,
+                            number: true
+
+                        }
+
+
+                    },
+
+                    // Messages for form validation
+                    messages: {
+
+                        cgstin: {
+                            required: 'Please select Taxpayer GSTIN'
+                        },
+                        period: {
+                            required: 'Please select Period'
+                        },
+                        actiontype: {
+                            required: 'Please select Advance Tax Type'
+                        },
+                        ad_amt: {
+                            required: 'Please enter Advance Amount'
+
+
+                        },
+                        pos: {
+                            required: 'Please enter Place of Supply'
+                        },
+                        rate: {
+                            required: 'Please select Rate'
+
+                        },
+                        iamount: {
+                            required: 'Please enter IGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        camount: {
+                            required: 'Please enter CGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        samount: {
+                            required: 'Please enter SGST/UTGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        csamount: {
+                            //required: 'Please enter CESS Amount',
+                            number: 'Characters are not allowed'
+
+                        }
+
+
+                    },
+
+                    // Do not change code below
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                })
+            });
+
+            $("#btnAdd").on('click', function () {
+                var $checkoutForm = $('#OutwardB2BEdit').validate({
+                    // Rules for form validation
+                    rules: {
+                        uqc: {
+                            required: true
+                        },
+                        cgstin: {
+                            required: true
+                        },
+                        name: {
+                            required: true
+                        },
+
+                        invtype: {
+                            required: true
+                        },
+                        invoicedate: {
+                            required: true
+                        },
+
+                        reversecharge: {
+                            required: true
+                        },
+
+                        HSN: {
+                            required: true
+
+                        },
+                        itemdesc: {
+                            required: true
+
+                        },
+                        taxablevalue: {
+                            required: true,
+                            number: true
+
+                        },
+
+                        iamount: {
+                            required: true,
+                            number: true
+
+                        },
+                        camount: {
+                            required: true,
+                            number: true
+
+                        },
+                        samount: {
+                            required: true,
+                            number: true
+
+                        },
+                        csamount: {
+                            //required: true,
+                            number: true
+
+                        },
+                        unitprice:
+                            {
+                                required: true,
+                                number: true,
+                                min: 0.01
+                            },
+                        discount:
+                            {
+                                required: true,
+                                number: true,
+                                min: 0,
+                                max: 99
+                            }
+                        ,
+                        qty:
+                            {
+                                required: true,
+                                number: true,
+                                min: 0.01
+                            }
+
+                    },
+
+
+                    messages: {
+                        uqc: {
+                            required: 'Please select UQC'
+                        },
+                        cgstin: {
+                            required: 'Please select Taxpayer GSTIN'
+                        },
+                        name: {
+                            required: 'Please select Customer Name'
+                        },
+
+                        invoicedate: {
+                            required: 'Please select Invoice Date'
+
+                        },
+
+                        reversecharge: {
+                            required: 'Please select Reverse Charge'
+
+                        },
+                        HSN: {
+                            required: 'Please select HSN'
+
+                        },
+                        itemdesc: {
+                            required: 'Please enter Item Description'
+
+                        },
+
+                        taxablevalue: {
+                            required: 'Please enter Taxable Value',
+                            number: 'Characters are not allowed'
+
+                        },
+                        iamount: {
+                            required: 'Please enter IGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        camount: {
+                            required: 'Please enter CGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        samount: {
+                            required: 'Please enter SGST/UTGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        csamount: {
+                            //required: 'Please enter CESS Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        unitprice: {
+                            required: 'Please enter Unit Price',
+                            number: 'Characters are not allowed'
+
+                        },
+                        discount: {
+                            required: 'Please enter Discount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        qty: {
+                            required: 'Please enter Qty',
+                            number: 'Characters are not allowed'
+
+                        },
+                        invtype: {
+                            required: 'Please select Invoice Type'
+
+                        }
+
+
+                    },
+
+                    // Do not change code below
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                })
+            });
+        })
+</script>
+
+

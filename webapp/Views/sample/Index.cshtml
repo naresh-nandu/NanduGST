@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Index", "sample", FormMethod.Post, new { @id = "sampleform", @name = "sampleform" }))
+{
+<h2>Index</h2>
+
+@Html.DropDownList("SupplyType", new SelectList(ViewBag.SupplyType, "TypeName", "TypeName", @Session["transactiontype"].ToString()), "--Select--", new { @Class = "form-control input-sm", @id = "transactiontype", @onblur = "changeEvent();" })
+
+
+@Html.DropDownList("ddlSupplyType", ViewBag.SupplyTypeOld as SelectList, "Select ALL", new { @class = "form-control", id = "ddlSupplyType" })
+
+<button type="submit" name="btnClick" value="CLICK" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+    Sample
+</button>
+}

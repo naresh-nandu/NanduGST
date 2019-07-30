@@ -1,0 +1,12 @@
+﻿
+@model SmartAdminMvc.Models.TBL_Cust_GSTIN
+<div class="form-group">
+    <p style="font-weight:600;font-size:15px;">Select GSTIN Number</p>
+    <div class="col-md-10">
+
+        @Html.DropDownList("CategoryId", (MultiSelectList)ViewBag.Categories, new { multiple = "multiple",@Class="form-control" ,selected=true})
+      
+    </div>
+    <br /><br />
+</div>
+

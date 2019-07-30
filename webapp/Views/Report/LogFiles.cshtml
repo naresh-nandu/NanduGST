@@ -1,0 +1,407 @@
+﻿
+<div id="content">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-desktop fa-fw "></i>
+                Reports
+                <span>
+                    >&nbsp;
+                    Log Files
+                </span>
+            </h1>
+        </div>
+    </div>
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+@using (Html.BeginForm("LogFiles", "Report", FormMethod.Post, new { @id = "LogFilesForm", @name = "LogFilesForm" }))
+{
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+            <header>
+                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                <h2>LOGS</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div id="comment-form" class="smart-form">
+
+                        <fieldset>
+
+                            @*@Html.AntiForgeryToken()*@
+                            <div class="row">                                
+                                <section class="col col-3">
+                                    <label class="label">Period</label>
+                                    <div class="col-xs-9 col-lg-9 selectContainer">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" name="period" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.Period" onchange="submit();">
+                                        </label>
+                                    </div>
+                                </section>                                
+                            </div>
+
+                        </fieldset>
+
+                        <footer>                            
+                        </footer>
+
+                        <div class="message">
+                            <i class="fa fa-check fa-lg"></i>
+                            <p>
+                                Your comment was successfully added!
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+}
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12 col-md-12 col-lg-4">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-sitemap"></i> </span>
+                        <h2>Log Files - [@ViewBag.Period1]</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+                            
+                            <div class="tree smart-form">
+                                <ul>
+                                    <li>
+                                        <span><i class="fa fa-lg fa-folder-open" style="color:darkorange"></i> @ViewBag.Period1</span>
+                                        <ul>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Outward", @value = @ViewBag.Period1})"> Outward Data.xlsx</a></span>
+                                            </li>
+                                            @*<li>
+            <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "OutwardAmend", @value = @ViewBag.Period1})"> Outward Amendments Data.xlsx</a></span>
+        </li>*@
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Inward", @value = @ViewBag.Period1})"> Inward Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1Upload", @value = @ViewBag.Period1})"> GSTR-1 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1AmendUpload", @value = @ViewBag.Period1})"> GSTR-1 Amendments Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1Summary", @value = @ViewBag.Period1})"> GSTR-1 Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2A", @value = @ViewBag.Period1})"> GSTR-2A Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "ReconciliationSummary", @value = @ViewBag.Period1})"> Reconciliation Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "AfterReconciliation", @value = @ViewBag.Period1})"> Modified Reconciliation Summary.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2Upload", @value = @ViewBag.Period1})"> Final GSTR-2 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2Summary", @value = @ViewBag.Period1})"> GSTR-2 Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR3", @value = @ViewBag.Period1})"> GSTR-3 Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6Import", @value = @ViewBag.Period1})"> GSTR-6 Import Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6Upload", @value = @ViewBag.Period1})"> GSTR-6 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6ReconciliationSummary", @value = @ViewBag.Period1})"> GSTR6 Reconciliation Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "AfterReconciliationGSTR6", @value = @ViewBag.Period1})">GSTR6 Modified Reconciliation Summary.xlsx</a></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12 col-md-12 col-lg-4">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-sitemap"></i> </span>
+                        <h2>Log Files - [@ViewBag.Period2]</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+
+                            <div class="tree smart-form">
+                                <ul>
+                                    <li>
+                                        <span><i class="fa fa-lg fa-folder-open" style="color:darkorange"></i> @ViewBag.Period2</span>
+
+                                        <ul>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Outward", @value = @ViewBag.Period2})"> Outward Data.xlsx</a></span>
+                                            </li>
+                                            @*<li>
+            <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "OutwardAmend", @value = @ViewBag.Period2})"> Outward Amendments Data.xlsx</a></span>
+        </li>*@
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Inward", @value = @ViewBag.Period2})"> Inward Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1Data", @value = @ViewBag.Period2})"> GSTR-1 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1AmendData", @value = @ViewBag.Period2})"> GSTR-1 Amendments Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1Summary", @value = @ViewBag.Period2})"> GSTR-1 Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2A", @value = @ViewBag.Period2})"> GSTR-2A Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Reconciliation", @value = @ViewBag.Period2})"> Reconciliation Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "ModifiedReconciliation", @value = @ViewBag.Period2})"> Modified Reconciliation Summary.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2Upload", @value = @ViewBag.Period2})"> Final GSTR-2 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2Summary", @value = @ViewBag.Period2})"> GSTR-2 Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR3", @value = @ViewBag.Period2})"> GSTR-3 Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6Import", @value = @ViewBag.Period2})"> GSTR-6 Import Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6Upload", @value = @ViewBag.Period2})"> GSTR-6 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6ReconciliationSummary", @value = @ViewBag.Period2})"> GSTR6 Reconciliation Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "AfterReconciliationGSTR6", @value = @ViewBag.Period2})">GSTR6 Modified Reconciliation Summary.xlsx</a></span>
+                                            </li>
+                                        </ul>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12 col-md-12 col-lg-4">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-sitemap"></i> </span>
+                        <h2>Log Files - [@ViewBag.Period3]</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+
+                            <div class="tree smart-form">
+                                <ul>
+                                    <li>
+                                        <span><i class="fa fa-lg fa-folder-open" style="color:darkorange"></i> @ViewBag.Period3</span>
+                                        <ul>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Outward", @value = @ViewBag.Period3})"> Outward Data.xlsx</a></span>
+                                                @*</li>
+            <li>
+                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "OutwardAmend", @value = @ViewBag.Period3})"> Outward Amendments Data.xlsx</a></span>
+            </li>*@
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Inward", @value = @ViewBag.Period3})"> Inward Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1Upload", @value = @ViewBag.Period3})"> GSTR-1 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1AmendUpload", @value = @ViewBag.Period3})"> GSTR-1 Amendments Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR1Summary", @value = @ViewBag.Period3})"> GSTR-1 Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2A", @value = @ViewBag.Period3})"> GSTR-2A Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "Reconciliation", @value = @ViewBag.Period3})"> Reconciliation Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "ModifiedReconciliation", @value = @ViewBag.Period3})"> Modified Reconciliation Summary.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2Upload", @value = @ViewBag.Period3})"> Final GSTR-2 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR2Summary", @value = @ViewBag.Period3})"> GSTR-2 Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR3", @value = @ViewBag.Period3})"> GSTR-3 Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6Import", @value = @ViewBag.Period3})"> GSTR-6 Import Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6Upload", @value = @ViewBag.Period3})"> GSTR-6 Upload Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "GSTR6ReconciliationSummary", @value = @ViewBag.Period3})"> GSTR6 Reconciliation Summary Data.xlsx</a></span>
+                                            </li>
+                                            <li>
+                                                <span><i class="fa fa-lg fa-file-excel-o" style="color:green"></i> <a href="@Url.Action("LogFiles","Report",  new { @name = "AfterReconciliationGSTR6", @value = @ViewBag.Period3})">GSTR6 Modified Reconciliation Summary.xlsx</a></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+
+
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL Common.Functions!
+
+        $(document).ready(function () {
+
+            // PAGE RELATED SCRIPTS
+
+            $('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
+            $('.tree').find('li:has(ul)').addClass('parent_li').attr('role', 'treeitem').find(' > span').attr('title', 'Collapse this branch').on('click', function (e) {
+                var children = $(this).parent('li.parent_li').find(' > ul > li');
+                if (children.is(':visible')) {
+                    children.hide('fast');
+                    $(this).attr('title', 'Expand this branch').find(' > i').removeClass().addClass('fa fa-lg fa-folder-open');
+                } else {
+                    children.show('fast');
+                    $(this).attr('title', 'Collapse this branch').find(' > i').removeClass().addClass('fa fa-lg fa-folder-open');
+                }
+                e.stopPropagation();
+            });
+
+        })
+
+    </script>
+
+}

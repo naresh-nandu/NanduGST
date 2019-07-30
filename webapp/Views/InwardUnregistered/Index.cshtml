@@ -1,0 +1,872 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+	WebGrid grid = null;
+	int rowVal = 0;
+	var result = new List<dynamic>();
+	if (@Model != null)
+	{
+		foreach (var emprow in Model)
+		{
+			var row = (IDictionary<string, object>)new ExpandoObject();
+			Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+			foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+			{
+				row.Add(keyValuePair);
+			}
+			result.Add(row);
+		}
+		grid = new WebGrid(result);
+	}
+}
+
+
+<style type="text/css">
+	table.gridtable th {
+		text-align: center;
+		font-weight: bold;
+		font-size: 14px;
+		color: #3276b1;
+	}
+
+	table.gridtable td {
+		text-align: center;
+	}
+</style>
+<script src="jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+<script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+<link href="jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet" />
+<link href="jquery-ui-1.11.4.custom/jquery-ui.theme.css" rel="stylesheet" />
+<link href="jquery-ui-1.11.4.custom/jquery-ui.structure.css" rel="stylesheet" />
+
+
+<div id="content">
+
+	<div class="row">
+
+		<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+			<h1 class="page-title txt-color-blueDark">
+
+				<i class="fa-fw fa fa-home"></i>
+				Reversecharge Invoice
+				<span>
+					>&nbsp;
+					Unregistered
+				</span>
+			</h1>
+		</div>
+
+
+	</div>
+
+	<form action="@Url.Action("Index", "InwardUnregistered")" method="post" id="InwardB2BUR" novalidate="novalidate">
+
+		<section id="widget-grid" class="">
+
+			<!-- row -->
+			<div class="row">
+
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+						<header>
+							<span class="widget-icon"><i class="fa fa-edit"></i></span>
+							<h2 style="font-weight:bold;">Unregistered </h2>
+						</header>
+
+						<!-- widget div-->
+						<div>
+
+							<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+
+							</div>
+							<!-- end widget edit box -->
+							<!-- widget content -->
+							<div class="widget-body no-padding">
+
+								<div id="comment-form" class="smart-form">
+									<fieldset class="smart-form">
+										<div class="row">
+											@*<section class="col col-3">
+													<div class="form-group">
+														<label>Supplier Name</label>
+														<div>
+															@Html.DropDownList("name", new SelectList(ViewBag.supname, "supplierid", "suppliername", @Session["nameb2bur"]), "--Select--", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+														</div>
+													</div>
+												</section>*@
+											@*<section class="col col-4">
+													<label>Supplier GSTIN/UID</label>@*<span style="color:red">*</span>
+													<label class="input">
+														<input type="text" name="gstin" value="@Session["gstinb2b"]" placeholder="Supplier GSTIN/UID">
+													</label>
+												</section>*@
+											@*<section class="col col-3">
+													<label>Supplier GSTIN</label>
+													<label class="input">
+														<i class="icon-prepend fa fa-user"></i>
+														<input type="text" name="gstin" id="gstin" value="@Session["gstinb2bur"]" placeholder="Supplier GSTIN" readonly>
+													</label>
+												</section>*@
+											<section class="col col-3">
+												<label>Supplier Name</label><span style="color:red">*</span>
+												<label class="input">
+													<i class="icon-prepend fa fa-user"></i>
+													<input type="text" name="name" id="name" value="@Session["nameb2bur"]" placeholder="Supplier Name">
+												</label>
+											</section>
+											<section class="col col-3">
+												<label>Place of Supply<span style="color:red">*</span></label>
+												<label class="input">
+													<input type="text" name="pos" id="pos" value="@Session["posb2bur"]" placeholder="State Code" onblur="posvalidation();">
+												</label>
+											</section>
+											<section class="col col-3">
+												<label>Supplier Address<span style="color:red">*</span></label>
+												<label class="input">
+													<input type="text" name="address" id="address" value="@Session["addressb2bur"]" placeholder="Address">
+												</label>
+											</section>
+											<section class="col col-3">
+												<div class="form-group">
+													<label>Taxpayer GSTIN<span style="color:red">*</span></label>
+													<div>
+														@Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "GSTINNo", "GSTINNo", @Session["cgstinb2bur"]), "--Select--", new { @Class = "form-control input-sm", @id = "cgstin", @onchange = "taxableCalculation();" })
+													</div>
+												</div>
+											</section>
+
+										</div>
+										<div class="row">
+
+											<section class="col col-3">
+												<div class="form-group">
+													<label>Auto Invoice Number Generation<span style="color:red">*</span></label>
+													<div>
+														@if (Session["AutoGenInwardInvNoSetting"].ToString() == "False")
+														{
+															if (Session["isautob2bur"] == null)
+															{
+																<input type="radio" name="isauto" value="Yes" class="name" /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+																<input type="radio" name="isauto" value="No" class="name" checked><label>No&nbsp;&nbsp;&nbsp;</label>
+															}
+															else if (Session["isautob2bur"].ToString() == "No")
+															{
+																<input type="radio" name="isauto" value="Yes" class="name" /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+																<input type="radio" name="isauto" value="No" class="name" checked><label>No&nbsp;&nbsp;&nbsp;</label>
+															}
+															else if (Session["isautob2bur"].ToString() == "Yes")
+															{
+																<input type="radio" name="isauto" value="Yes" class="name" checked /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+																<input type="radio" name="isauto" value="No" class="name"><label>No&nbsp;&nbsp;&nbsp;</label>
+															}
+														}
+														@if (Session["AutoGenInwardInvNoSetting"].ToString() == "True")
+														{
+															<input type="radio" name="isauto" value="Yes" class="name" checked readonly /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+														}
+													</div>
+												</div>
+											</section>
+											<section class="col col-3">
+												<label> Invoice Number</label><span style="color:red">*</span>
+												<label class="input">
+													@if (Session["isautob2bur"] == null || Session["isautob2bur"].ToString() == "Yes")
+													{
+														<input type="text" name="invoice" id="invoice" maxlength="16" class="invoice" value="@Session["invoiceb2bur"]" placeholder="Invoice No.">
+													}
+													else
+													{
+														<input type="text" name="invoice" id="invoice" maxlength="16" class="invoice" value="@Session["invoiceb2bur"]" placeholder="Invoice No.">
+													}
+												</label>
+											</section>
+											<section class="col col-3">
+												<label>Invoice Date</label><span style="color:red">*</span>
+												<label class="input">
+													<i class="icon-append fa fa-calendar"></i>
+													<input type="text" name="invoicedate" id="invoicedate" value="@Session["invoicedateb2bur"]" placeholder="Invoice Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+												</label>
+											</section>
+											<section class="col col-3">
+												<label>Invoice Value</label>
+												<label class="input">
+													<input type="text" name="invalue" value="@Session["invalueb2bur"]" placeholder="Invoice Value" readonly class="floatinput" style="background-color:#d9d9d9;">
+												</label>
+											</section>
+											<section class="col col-3">
+
+												<div class="form-group">
+													<label>Is Discount Applicable</label>
+													@if (Session["MasterdtlsB2BUR"] != null)
+													{
+														if (((System.Data.DataTable)Session["MasterdtlsB2BUR"]).Rows.Count >= 1)
+														{
+															<div>
+																@Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+																																new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text", @Session["discountreqb2bur"]), new { @Class = "form-control input-sm", @id = "isDiscountreq", @disabled = "true" })
+															</div>
+														}
+													}
+													else
+													{
+														<div>
+															@Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+																																new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text", @Session["discountreqb2bur"]), new { @Class = "form-control input-sm", @id = "isDiscountreq" })
+														</div>
+													}
+												</div>
+											</section>
+											@*<section class="col col-3">
+													<div class="form-group">
+														<label>Reverse Charge</label>
+														<div>
+															@Html.DropDownList("reversecharge", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "Y" }, new SelectListItem { Text = "No", Value = "N" } }, "Value", "Text", @Session["reversechargeb2bur"]), "--Select--", new { @Class = "form-control input-sm" })
+														</div>
+													</div>
+												</section>*@
+										</div>
+										<div class="row">
+
+
+											@*<section class="col col-3">
+													<div class="form-group">
+														<label>Invoice type</label>
+														<div>
+															@Html.DropDownList("invtype", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Regular B2B Invoices", Value = "R" },
+																																	new SelectListItem { Text = "Deemed Exports", Value = "DE" },
+																																	new SelectListItem { Text = "SEZ Exports with payment", Value = "SEWP" },
+																																	new SelectListItem { Text = " SEZ exports without payment", Value = "SEWOP" } }, "Value", "Text", @Session["invtypeb2bur"]), "--Select--", new { @Class = "form-control input-sm" })
+														</div>
+													</div>
+												</section>*@
+
+										</div>
+
+									</fieldset>
+									<div class="message">
+										<i class="fa fa-check fa-lg"></i>
+										<p>
+											Your comment was successfully added!
+										</p>
+									</div>
+								</div>
+
+							</div>
+							<!-- end widget content -->
+
+						</div>
+						<!-- end widget div -->
+
+					</div>
+
+				</article>
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+					<div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+						<header>
+							<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+							<h2 style="font-weight:bold;">Item Details</h2>
+						</header>
+
+						<!-- widget div-->
+						<div>
+
+							<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+
+							</div>
+							<!-- end widget edit box -->
+							<!-- widget content -->
+							<div class="widget-body no-padding">
+
+								<div id="comment-form1" class="smart-form">
+
+									@{Html.RenderPartial("_Transaction"); }
+
+								</div>
+
+							</div>
+							<!-- end widget content -->
+
+						</div>
+						<!-- end widget div -->
+
+					</div>
+
+				</article>
+				<!-- end widget -->
+				<!-- Widget ID (each widget will need unique ID)-->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+					@if (Session["MasterdtlsB2BUR"] != null)
+					{
+						if (((System.Data.DataTable)Session["MasterdtlsB2BUR"]).Rows.Count >= 1)
+						{
+							<div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+								<header>
+									<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+									<h2 style="font-weight:bold;">Inward B2B Item List</h2>
+								</header>
+
+								<!-- widget div-->
+								<div>
+
+									<!-- widget edit box -->
+									<div class="jarviswidget-editbox">
+										<!-- This area used as dropdown edit box -->
+
+									</div>
+									<!-- end widget edit box -->
+									<!-- widget content -->
+									<div class="widget-body no-padding">
+
+										<div id="comment-form1" class="smart-form">
+
+											<br />
+											<div class="table-responsive">
+												@grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+																		  grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+																		  grid.Column("HSN", "HSN"),
+
+																		  grid.Column("ItemDesc", "Item Description"),
+																		  grid.Column("Quantity", "Qty"),
+																		  grid.Column("UQC", "UQC"),
+																		  grid.Column("Unit Price", "Unit Price"),
+																		  grid.Column("Discount", "Discount"),
+																		  grid.Column("Taxablevalue", "Taxable Value"),
+																		  grid.Column("Rate", "Rate"),
+																		  grid.Column("IGST Amount", "IGST Amount"),
+																		  grid.Column("CGST Amount", "CGST Amount"),
+																		  grid.Column("SGST Amount", "SGST Amount"),
+																		  grid.Column("CESS Amount", "CESS Amount"),
+																		  grid.Column("Eligibility", "Eligibility"),
+																		  grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { Id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+)
+)
+
+											</div>
+
+
+
+											<footer>
+												<div class="row">
+													@if (Session["Setting"].ToString() == "False")
+													{
+														<div class="col-md-6 text-center">
+															<button type="submit" name="command" value="save1" style="font-weight:bold;Border-radius:10px;width:80px;text-align:center;" class="btn btn-primary">Save</button>
+														</div>
+													}
+													else if (Session["Setting"].ToString() == "True")
+													{
+														<div class="col-md-6 text-center">
+															<button type="submit" name="command" value="save2" style="font-weight:bold;Border-radius:10px;width:180px;text-align:center;" class="btn btn-primary">Genarate Invoice</button>
+														</div>
+													}
+
+
+
+												</div>
+											</footer>
+
+
+										</div>
+
+									</div>
+									<!-- end widget content -->
+
+								</div>
+								<!-- end widget div -->
+
+							</div>
+						}
+					}
+				</article>
+
+
+
+
+
+				<!-- end widget -->
+			</div>
+
+			<!-- end row -->
+			<!-- row -->
+			<!-- end row -->
+
+		</section>
+
+	</form>
+</div>
+
+@if (Session["AutoGenInwardInvNoSetting"].ToString() == "True")
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var today = new Date();
+			var date = parseInt(today.getDate());
+			if (date <= 6) {
+				$("#invoicedate").datepicker({
+					minDate: '01-' + today.getMonth() + '-' + today.getFullYear(),
+					maxDate: today.getDate() + '-' + (parseInt(today.getMonth()) + 1) + '-' + today.getFullYear(),
+					dateFormat: 'dd-mm-yy',
+					prevText: '<i class="fa fa-chevron-left"></i>',
+					nextText: '<i class="fa fa-chevron-right"></i>'
+				});
+			}
+			else {
+				$("#invoicedate").datepicker({
+					minDate: '01-' + (parseInt(today.getMonth()) + 1) + '-' + today.getFullYear(),
+					maxDate: today.getDate() + '-' + (parseInt(today.getMonth()) + 1) + '-' + today.getFullYear(),
+					dateFormat: 'dd-mm-yy',
+					prevText: '<i class="fa fa-chevron-left"></i>',
+					nextText: '<i class="fa fa-chevron-right"></i>'
+				});
+			}
+
+		});
+	</script>
+}
+
+
+@if (TempData["Message"] != null)
+{
+	<script type="text/javascript">
+            alert(@Html.Raw(Json.Encode(TempData["Message"])));
+
+	</script>
+	TempData["Message"] = null;
+}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.invoice').on("keyup", function (e) {
+
+			return validateFloatKeyPress(this, e);
+		});
+	});
+
+	function validateFloatKeyPress(el, evt) {
+
+		var regex = /^[0-9A-Z/-]*$/i;
+		// var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+		if ($('#invoice').val() != "") {
+			if (!$('#invoice').val().match(regex)) {
+				alert("No special characters allowed except '-' and '/'.");
+				$('#invoice').val('');
+				//  return false;
+			}
+		}
+	}
+
+</script>
+
+@if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+{
+	<script type="text/javascript">
+		$("#hsn").on('blur', function () {
+			var txt = $('#hsn').val().split("|");
+			$('#hsn').val(txt[0]);
+			$("#rate").val(txt[1]);
+			var result = txt[2];
+			$("#itemdesc").val(result.slice(0, 30));
+		});
+
+		$(document).ready(function () {
+			$("#hsn").autocomplete({
+				minlength: 3,
+				scroll: true,
+				source: function (request, response) {
+					$.ajax({
+						url: "/InwardB2B/AutoPopulate",
+						type: "POST",
+						dataType: "json",
+						data: { Prefix: request.term },
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.hsncode + "-" + item.rate,
+									value: item.hsncode + "|" + item.rate + "|" + item.hsndesc
+								};
+							}));
+						},
+						messages: {
+							noResults: "", results: "",
+						}
+					});
+				}
+			});
+		})
+	</script>
+	/**/
+
+}
+else
+{
+	<script type="text/javascript">
+		$("#hsn").on('blur', function () {
+			var txt = $('#hsn').val().split("|");
+			$('#hsn').val(txt[0]);
+			$("#rate").val(txt[1]);
+		});
+
+		$(document).ready(function () {
+			$("#hsn").autocomplete({
+				minlength: 3,
+				scroll: true,
+				source: function (request, response) {
+					$.ajax({
+						url: "/InwardB2B/AutoPopulate",
+						type: "POST",
+						dataType: "json",
+						data: { Prefix: request.term },
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.hsncode + "-" + item.hsndesc,
+									value: item.hsncode + "|" + item.rate
+								};
+							}));
+						},
+						messages: {
+							noResults: "", results: "",
+						}
+					});
+				}
+			});
+		})
+	</script>
+}
+
+@section pagespecific{
+	<script type="text/javascript">
+
+		function posvalidation() {
+			var pos = document.getElementById("pos").value;
+
+			if (pos == 00 || (pos > 37 && pos != 98)) {
+				alert("State code should be within the range of 01 to 37");
+				document.getElementById("pos").value = "";
+				return false;
+			}
+		}
+
+		function taxableCalculation() {
+			var qty = document.getElementById("qty").value;
+			var unitprice = document.getElementById("unitprice").value;
+			var discount = document.getElementById("discount").value;
+			var rate = document.getElementById("rate").value;
+
+			var igsta = document.getElementById("iamount");
+			var cgsta = document.getElementById("camount");
+			var sgsta = document.getElementById("samount");
+
+			if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+				var discountValue;
+				discountValue = (((qty * unitprice) / 100) * discount);
+				document.getElementById("taxablevalue").value = ((unitprice * qty) - discountValue).toFixed(2);
+			}
+			var taxablevalue = document.getElementById("taxablevalue").value;
+
+			if ((taxablevalue != "") && (rate != "")) {
+				var cgstin = document.getElementById("cgstin").value;
+				var gstin = document.getElementById("pos").value;
+				var cgstin_state = cgstin.substring(0, 2);
+				var gstin_state = gstin.substring(0, 2);
+				if ((gstin_state != "") && (cgstin_state != "")) {
+					if (gstin_state != cgstin_state) {
+						igsta.value = (taxablevalue * rate) / 100;
+						cgsta.value = "0";
+						sgsta.value = "0";
+					}
+					else if (gstin_state == cgstin_state) {
+						igsta.value = "0";
+						cgsta.value = (taxablevalue * (rate / 2)) / 100;
+						sgsta.value = (taxablevalue * (rate / 2)) / 100;
+					}
+				}
+			}
+		}
+	</script>
+
+	<script type="text/javascript">
+
+		// DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+		$(document).ready(function () {
+
+			var ischeck = $("input[type=radio][name='isauto']:checked").val();
+			if (ischeck == "No" || ischeck == "") {
+				$('#invoice').removeAttr("readonly").css("background-color", "white");
+			}
+			else {
+				$('#invoice').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+			}
+
+			$(":radio").on('click', function () {
+				var ischeck = $(this).val();
+				if (ischeck == "No") {
+					$('#invoice').removeAttr("readonly").css("background-color", "white");
+				}
+				else {
+					$('#invoice').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+				}
+			});
+
+
+			var discresq = $('#isDiscountreq').val();
+			if (discresq != "No") {
+				$('#discount').removeAttr("readonly").css("background-color", "white");
+			}
+			else {
+				$('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+			}
+			$("#isDiscountreq").on('change', function () {
+				var discresq = $('#isDiscountreq').val();
+				if (discresq != "No") {
+					$('#discount').removeAttr("readonly").css("background-color", "white");
+				}
+				else {
+					$('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+				}
+			});
+
+
+			$('#btnSubmit').click(function () {
+
+				var $checkoutForm = $('#InwardB2BUR').validate({
+					// Rules for form validation
+					rules: {
+						uqc: {
+							required: true
+						},
+						address: {
+							required: true
+						},
+						cgstin: {
+							required: true
+						},
+						name: {
+							required: true
+						},
+						isauto: {
+							required: true
+						},
+						invtype: {
+							required: true
+						},
+						invoice: {
+							required: true
+						},
+						HSNdesc: {
+							required: true
+						},
+						invoicedate: {
+							required: true
+						},
+						pos: {
+							required: true,
+							minlength: 2,
+							maxlength: 2,
+							digits: true
+						},
+						reversecharge: {
+							required: true
+						},
+
+						HSN: {
+							required: true
+
+						},
+						itemdesc: {
+							required: true
+
+						},
+						taxablevalue: {
+							required: true,
+							maxlength: 14,
+							number: true
+
+						},
+						rate: {
+							required: true,
+							number: true
+
+						},
+						iamount: {
+							required: true,
+							number: true
+
+						},
+						camount: {
+							required: true,
+							number: true
+
+						},
+						samount: {
+							required: true,
+							number: true
+
+						},
+						csamount: {
+							// required: true,
+							number: true
+
+						},
+						eligibility: {
+							required: true
+						},
+						unitprice:
+						{
+							required: true,
+							number: true,
+							min: 0.01
+						},
+						discount:
+						{
+							required: true,
+							number: true,
+							min: 0,
+							max: 99
+						}
+						,
+						qty:
+						{
+							required: true,
+							number: true,
+							min: 0.01
+						}
+
+					},
+
+					// Messages for form validation
+					messages: {
+						uqc: {
+							required: 'Please select UQC'
+						},
+						invoice: {
+							required: 'Please enter Invoice Number'
+						},
+						HSNdesc: {
+							required: 'Please enter HSN Description'
+						},
+						address: {
+							required: 'Please enter Supplier Address'
+						},
+						cgstin: {
+							required: 'Please select Taxpayer GSTIN'
+						},
+						name: {
+							required: 'Please enter Supplier Name'
+						},
+						pos:
+						{
+							required: 'Please enter Place of Supply',
+							digits: 'Please enter digits only'
+						},
+
+						invoicedate: {
+							required: 'Please select Invoice Date'
+
+						},
+
+						reversecharge: {
+							required: 'Please select Reverse Charge'
+
+						},
+						HSN: {
+							required: 'Please enter HSN'
+
+						},
+						itemdesc: {
+							required: 'Please enter Item Description'
+
+						},
+						rate: {
+							required: 'Please select HSN code from list',
+							number: 'Characters are not allowed'
+
+						},
+						taxablevalue: {
+							required: 'Please enter Taxable Value',
+							number: 'Characters are not allowed'
+
+						},
+						iamount: {
+							required: 'Please enter IGST Amount',
+							number: 'Characters are not allowed'
+
+						},
+						camount: {
+							required: 'Please enter CGST Amount',
+							number: 'Characters are not allowed'
+
+						},
+						samount: {
+							required: 'Please enter SGST/UTGST Amount',
+							number: 'Characters are not allowed'
+
+						},
+						csamount: {
+
+							number: 'Characters are not allowed'
+
+						},
+						eligibility: {
+							required: 'Please select Eligibility'
+
+						},
+						unitprice: {
+							required: 'Please enter Unit Price',
+							number: 'Characters are not allowed'
+
+						},
+						discount: {
+							required: 'Please enter Discount',
+							number: 'Characters are not allowed'
+
+						},
+						qty: {
+							required: 'Please enter Qty',
+							number: 'Characters are not allowed'
+
+						},
+						invtype: {
+							required: 'Please select Invoice Type'
+
+						}
+
+
+					},
+
+					// Do not change code below
+					errorPlacement: function (error, element) {
+						error.insertAfter(element.parent());
+					}
+
+
+
+				})
+			});
+		})
+
+		jQuery.extend(jQuery.validator.messages, {
+
+			maxlength: jQuery.validator.format("Value can not be more than 99990000000.00 Crores."),
+
+		});
+
+	</script>
+
+}

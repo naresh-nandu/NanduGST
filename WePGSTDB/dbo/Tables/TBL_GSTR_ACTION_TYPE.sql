@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR_ACTION_TYPE] (
+    [ActionId]   INT          IDENTITY (1, 1) NOT NULL,
+    [ActionName] VARCHAR (10) NULL,
+    [GSTRType]   VARCHAR (10) NULL,
+    CONSTRAINT [PK_TBL_GSTR_ACTION_TYPE] PRIMARY KEY CLUSTERED ([ActionId] ASC)
+);
+

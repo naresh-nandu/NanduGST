@@ -1,0 +1,27 @@
+﻿
+
+@{
+	ViewBag.Title = "WeP GST PANEL";
+
+	int row = 0;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>table</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<br>
+	<div class="container-fluid" style="background-color:white">
+		<form action="@Url.Action("Upload", "DownloadPDF")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate">
+			<a href="@Url.Action("G2B2BExportPdf","DownloadPDF")">Download PDF</a>
+			@{Html.RenderPartial("_g2b2b");}
+		</form>
+	</div>
+
+</body>
+</html>

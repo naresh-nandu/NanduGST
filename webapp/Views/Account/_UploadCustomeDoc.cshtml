@@ -1,0 +1,45 @@
+﻿@model SmartAdminMvc.Models.TBL_Cust_Docs
+
+<fieldset>
+
+
+    <div class="form-group">
+        <label class="label"><b>GSTIN Upload</b></label>
+        <div class="col-md-10 form-control ">
+            <i class="icon-append fa fa-file-pdf-o" style="color:cornflowerblue;">@*<i style="color:red;">*</i>*@</i>
+            <input type="file"  class="btn btn-dark " id="File1" name="files" style="padding:5px;" />
+        </div>
+        <br /><br />
+    </div>
+
+    <br />
+    <div class="form-group">
+        <label class="label"><b>PAN Upload</b></label>
+        <div class="col-md-10 form-control ">
+            <i class="icon-append fa fa-file-pdf-o" style="color:cornflowerblue;">@*<i style="color:red;">*</i>*@</i>
+            <input type="file" class="btn btn-dark " id="File1" name="files1"  style="padding:5px;" />
+        </div>
+        <br /><br />
+    </div>
+    <br />
+    <div class="form-group">
+        <label class="label"><b>POA Upload</b></label>
+        <div class="col-md-10 form-control ">
+            <i class="icon-append fa fa-file-pdf-o" style="color:cornflowerblue;"></i>
+            <input type="file" class="btn btn-dark " id="File1" name="files2" style="padding:5px;" />
+        </div>
+        <br /><br />
+    </div>
+    <br />
+    <section style="font-size:smaller;">
+        <label class="label"><b>List of Mandatory Documents</b></label>
+        <label class="label">1. Company's PAN CARD</label>
+        <label class="label">2. Power of Attorney Letter (In Name of person registering) and ID proof for registering person.</label>
+        <label class="label">3. GSTIN Provisional Certificate.</label>
+        @*<h5 style="text-align:center;font-weight:600">OR</h5>
+        <label class="label">1. Authorization Letter for person registering.</label>
+        <label class="label">2. ID proof for registering person..</label>
+        <label class="label">3. Power of Attorney to be Submitted for Authorizing Person along with valid ID.</label>
+        <label class="label"><b>NOTE:</b> Email and Mobile No should be a POA.</label>*@
+    </section>
+</fieldset>

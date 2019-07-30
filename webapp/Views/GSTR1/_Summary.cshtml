@@ -1,0 +1,83 @@
+﻿
+<script type="text/javascript">
+
+    
+
+    $(document).ready(function () {
+        var frmdata = new FormData();
+        frmdata.append("ddlRecordType", $("#ddlRecordType").val());
+        frmdata.append("period", $("#period").val());
+        frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+        frmdata.append("ddlGSTR", $("#ddlGSTR").val());
+        frmdata.append("ddlActionType", $("#ddlActionType").val());
+        frmdata.append("OTP", $("#OTP").val());
+        frmdata.append("AUTH_GSTINNo", $("#AUTH_GSTINNo").val());
+        frmdata.append("OTPSubmit", $("#OTPSubmit").val());
+
+        oTableStaticFlow_B2B = $("#G1_B2B").DataTable({
+
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "pageLength": 20,
+
+            "ajax": {
+                "url": "/Gstr1/save",
+                "type": "POST",
+                "contentType": false,
+                "data": frmdata,
+                "processData": false,
+            },
+            language: {
+                processing: "<h3 class='text-center btn btn-primary' style='font-weight:bold;border-radius:5px;margin-top:-12px'>Loading....</h3>"
+            },
+            "columnDefs":
+                [{
+                    "targets": 0,
+                    "searchable": false,
+                    "orderable": false,
+                    "width": '2%',
+                    'order': [1, 'asc']
+                }],
+
+            "columns": [
+                { "data": "ActionType", "name": "ActionType", "autoWidth": true },
+                { "data": "RecordCount", "name": "RecordCount", "autoWidth": true },
+                { "data": "NoOfInvoices", "name": "NoOfInvoices", "autoWidth": true },
+                { "data": "txval", "name": "txval", "autoWidth": true },
+                { "data": "iamt", "name": "IGST", "autoWidth": true },
+                { "data": "camt", "name": "CGST", "autoWidth": true },
+                { "data": "samt", "name": "SGST", "autoWidth": true },
+                { "data": "csamt", "name": "CESS", "autoWidth": true },
+            ]
+
+        });
+    });
+</script>
+
+<div class="table table-responsive">
+
+    <div class="container-fuild" style="background-color:white;">
+        <table id="G1_B2B" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Action Type</th>
+                    <th>Record Count</th>
+                    <th>No Of Invoices</th>
+                    <th>Taxable Value</th>
+                    <th>IGST Amount</th>
+                    <th>CGST Amount</th>
+                    <th>SGST Amount</th>
+                    <th>CESS Amount</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+
+    <br />
+    
+    <br />
+
+</div>

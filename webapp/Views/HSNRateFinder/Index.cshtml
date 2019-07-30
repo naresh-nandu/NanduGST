@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    //var result = new List<dynamic>();
+    //if (@Model != null)
+    //{
+    //    foreach (var emprow in Model)
+    //    {
+    //        var row = (IDictionary<string, object>)new ExpandoObject();
+    //        Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+    //        foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+    //        {
+    //            row.Add(keyValuePair);
+    //        }
+    //        result.Add(row);
+    //    }
+    //    grid = new WebGrid(source: result, canPage: true, canSort: true);
+    //}
+}*@
+
+
+<div>
+    <div id="content">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <i class="fa-fw fa fa-home"></i>
+                    HSN Rate
+                    <span>
+                        >&nbsp;
+                        Find
+                    </span>
+                </h1>
+            </div>
+
+
+        </div>
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">HSN Rate Finder</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <form  id="hsn-form" novalidate="novalidate" autocomplete="off">
+
+                                        @*@Html.AntiForgeryToken()*@
+                                        @Html.ValidationSummary(true)
+
+
+
+                                        <fieldset class="smart-form">
+                                             
+                                            <div class="row">
+                                                <section class="col col-2">
+                                                    <label><b>Enter text to search</b></label>
+                                                    <label class="input">
+                                                        <input type="text" name="searchtext" id="searchtext" placeholder="Search Text">
+                                                      
+                                                    </label>
+                                                </section>
+
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset>
+                                            <div class="row">
+                                                <section class="col col-12">
+                                                    <label class="label"></label>
+                                                    <div class="table-responsive">
+
+                                                         
+                                                        <table id="hsnfinder" class="table table-bordered" style="border:1px solid black">
+                                                            <thead></thead>
+                                                            <tbody></tbody>
+                                                            <tfoot></tfoot>
+                                                        </table>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+
+
+                                    </form>
+                                    
+                                </div>
+                                <div style="padding-left:10px">
+                                    <p style="font-family:Times New Roman;font-size: 15px;color:red">Disclaimer:</p>
+                                    <p style="font-family:Times New Roman;font-size: 15px;">
+                                        “The pre-loaded HSN classification is provided only as quick reference to locate HSN code. It is the sole responsibility of customer to correctly classify the goods and/or services and WeP Digital shall not be responsible for any wrong classification. The Customer is advised to follow <a href="http://www.cbec.gov">www.cbec.gov</a>. on matters of proper classification under HSN and strictly comply with all the conditions for claiming nil rate/exemption from GST wherever it is applicable.”
+
+                                    </p>
+                                </div><br />
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+
+
+                </article>
+
+
+                
+
+               </div>
+</section>
+</div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+       
+
+        $('#searchtext').on('keyup', function () {
+
+            var text = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                url: '/HSNRateFinder/AutoPopulate',
+                data: { Text: text },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if ($.fn.dataTable.isDataTable('#hsnfinder')) {
+                        $('#hsnfinder').DataTable().destroy();
+                    }
+                   
+                    $("#hsnfinder thead").html("");
+                    $("#hsnfinder tbody").html("");
+                    $("#hsnfinder tfoot").html("");
+                    var headers = "<tr class='success'><th>HSN Code</th><th>HSN Description</th><th>Rate</th></tr>";
+                    $("#hsnfinder thead").append(headers);
+                    var json = JSON.parse(msg);
+                    $.each(json, function (i, obj) {
+                        var row= "<tr><td>" + obj.hsncode + "</td><td>" + obj.hsndesc + "</td><td>" + obj.rate + "</td></tr>";
+                        $("#hsnfinder tbody").append(row);
+                    });
+
+                 
+                    //if ($.fn.dataTable.isDataTable('#hsnfinder')) {
+                    //    table = $('#hsnfinder').DataTable();
+                    //}
+                    //else {
+                      table=$('#hsnfinder').DataTable({
+                            initComplete: function () {
+                                this.api().columns().every(function () {
+                                    var column = this;
+                                    var select = $('<select><option value=""></option></select>')
+                                        .appendTo($(column.footer()).empty())
+                                        .on('change', function () {
+                                            var val = $.fn.dataTable.util.escapeRegex(
+                                                $(this).val()
+                                            );
+                                            //to select and search from grid
+                                            column
+                                                .search(val ? '^' + val + '$' : '', true, false)
+                                                .draw();
+                                        });
+
+                                    column.data().unique().sort().each(function (d, j) {
+                                        select.append('<option value="' + d + '">' + d + '</option>')
+                                    });
+                                });
+                            }
+                        });
+                    //}
+
+                
+                    
+                    
+                },
+                error: function () {
+                    alert("Something went wrong..")
+                },
+
+            });
+        });
+
+     
+    });
+    </script>
+}

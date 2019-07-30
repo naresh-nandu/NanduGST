@@ -1,0 +1,71 @@
+﻿
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_GetTransGet = $('#G1_GetTransGet').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+    });
+
+</script>
+
+
+
+<div class="table table-responsive">
+
+    @if (ViewBag.GetTransGst != null)
+    {
+
+        int i = 1;
+        <div class="container-fuild" style="background-color:white;">
+            <table id="G1_GetTransGet" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                <thead>
+                    <tr>
+
+                        <th>S.No</th>
+                        <th>EWAY BillNo & Date</th>
+                        <th>Document Number & Date</th>
+                        <th>Generated GSTIN</th>
+                        <th>Delivery Address</th>
+                        <th>Status</th>
+                        <th>Reject Status</th>
+                        <th>Valid Upto</th>
+                        <th>Extended Times</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TransMgmt)
+                    {
+                        <tr>
+
+                            <td>@Convert.ToInt32(i++)</td>
+                            <td>@item.ewbNo & @item.ewbDate</td>
+                            <td>@item.docNo & @item.docDate</td>
+                            <td>@item.genGstin</td>
+                            <td>@item.delPlace,@item.delStateCode,@item.delPinCode</td>
+                            <td>@item.status</td>
+                            <td>@item.rejectStatus</td>
+                            <td>@item.validUpto</td>
+                            <td>@item.extendedTimes</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+    }
+</div>
+
+
+

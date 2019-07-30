@@ -1,0 +1,500 @@
+﻿@using SmartAdminMvc.Models;
+
+<!-- MAIN CONTENT -->
+
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                GSTR 6
+                <span>
+                    >&nbsp;
+                    RECONCILIATION
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <div class="alert alert-block alert-success">
+
+        <form action="@Url.Action("Reconcilation", "GSTR6")" method="POST" id="SummaryForm" class="smart-form" autocomplete="off">
+            <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Dashboard Summary</h4>
+            <br />
+            <p>
+                <div class="widget-body">
+
+                    <div id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-3">
+                                    <label class="input">GSTIN</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "ALL", new { @class = "form-control", onchange = "submit();" })
+                                    </div>
+                                </section>
+                                <section class="col col-3">
+                                    <label class="input">From</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="period" value="@ViewBag.Period" placeholder="Period" class="datepicker" data-dateformat='mmyy' onchange="submit();">
+                                    </label>
+                                </section>
+                                <section class="col col-3">
+                                    <label class="input">To</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="toperiod" value="@ViewBag.ToPeriod" placeholder="To" class="datepicker" data-dateformat='mmyy' onchange="submit();">
+                                    </label>
+                                </section>
+                                <section class="col col-3">
+                                    <label class="input">Supplier Name</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlSupplierName", ViewBag.SupplierName as SelectList, "ALL", new { @class = "form-control", onchange = "submit();" })
+                                    </div>
+                                </section>
+                                @*@if (ViewBag.CTINNoList != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.CTINNoList) > 0)
+                                        {*@
+                                <section class="col col-3">
+                                    <label class="input">Supplier GSTIN</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlSupGSTIN", ViewBag.CTINNoList as SelectList, "ALL", new { @class = "form-control", onchange = "submit();" })
+                                    </div>
+                                </section>
+                                @*}
+                                    }*@
+                            </div>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <button type="submit" name="strCommand" value="Reset" style="font-weight:bold;font-size:14px;border-radius:6px;padding:8px;text-align:center;margin-right:5px;" class="btn btn-primary" onclick="return confirm('Are you sure you want to reset all accepted,Modified,Rejected and Pending Invoices to Zero?');">Reset</button>
+
+                                    <button type="submit" name="strCommand" value="RawData" style="font-weight:bold;font-size:14px;border-radius:6px;padding:8px;text-align:center;margin-right:5px;" class="btn btn-primary">Export</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </p>
+        </form>
+    </div>
+    <!-- end row -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12 col-md-12 col-lg-4">
+
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-red" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Matched Invoices</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-3"></section>
+                                        <section class="col col-3">
+                                            <label class="label"><b>Invoices</b></label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="label">@ViewBag.MatchedInvoices</label>
+                                        </section>
+                                        <section class="col col-3"></section>
+                                    </div>
+                                </fieldset>
+
+                                <footer>
+                                    @Html.ActionLink("View Details", // <-- Link text
+                 "MatchedInvoices",
+                                   "Reconcilation_GSTR6", // <-- Action Method Name
+                 null, // <-- Route value
+                 new { @class = "btn btn-primary", @style = "border-radius:13px;font-weight:600;" } // <-- htmlArguments
+                )
+                                    <br /><br />
+                                </footer>
+
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Mismatch Invoices</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+                                    @using (Ajax.BeginForm("Save", "GSTR1", new AjaxOptions { HttpMethod = "POST" }))
+                                    {
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-3"></section>
+                                            <section class="col col-3">
+                                                <label class="label"><b>Invoices</b></label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">@ViewBag.MismatchInvoices</label>
+                                            </section>
+                                            <section class="col col-3"></section>
+                                        </div>
+                                    }
+                                </fieldset>
+
+                                <footer>
+                                    @Html.ActionLink("View Details", // <-- Link text
+                 "MismatchInvoices", // <-- Action Method Name
+                 "Reconcilation_GSTR6",
+                 null, // <-- Route value
+                 new { @class = "btn btn-primary", @style = "border-radius:13px;font-weight:600" } // <-- htmlArguments
+                )
+                                </footer>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-4">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-orange" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2>Missing Invoices in GSTR-6A</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-3"></section>
+                                        <section class="col col-3">
+                                            <label class="label"><b>Invoices</b></label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="label">@ViewBag.MissinginGSTR6A</label>
+                                        </section>
+                                        <section class="col col-3"></section>
+                                    </div>
+                                </fieldset>
+
+                                <footer>
+                                    @Html.ActionLink("View Details", // <-- Link text
+                 "MissinginGSTR6A", // <-- Action Method Name
+                 "Reconcilation_GSTR6", // <-- Controller Name
+                 null, // <-- Route value
+                 new { @class = "btn btn-primary", @style = "border-radius:13px;font-weight:600" } // <-- htmlArguments
+                )
+                                </footer>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Missing Invoices in GSTR-6</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+                                    @using (Ajax.BeginForm("Save", "GSTR1", new AjaxOptions { HttpMethod = "POST" }))
+                                    {
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-3"></section>
+                                            <section class="col col-3">
+                                                <label class="label"><b>Invoices</b></label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">@ViewBag.MissinginGSTR6</label>
+                                            </section>
+                                            <section class="col col-3"></section>
+                                        </div>
+                                    }
+                                </fieldset>
+
+                                <footer>
+                                    @Html.ActionLink("View Details", // <-- Link text
+                 "MissinginGSTR6", // <-- Action Method Name
+                 "Reconcilation_GSTR6", // <-- Controller Name
+                 null, // <-- Route value
+                 new { @class = "btn btn-primary", @style = "border-radius:13px;font-weight:600" } // <-- htmlArguments
+                )
+                                </footer>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-4">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Reconciliation Status</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+                                    @using (Ajax.BeginForm("Save", "GSTR1", new AjaxOptions { HttpMethod = "POST" }))
+                                    {
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-lg-4">
+                                                <label class="label"><b>Accepted Invoices</b></label>
+                                                <label class="label">@ViewBag.AcceptedInvoices</label>
+                                            </section>
+                                            <section class="col col-lg-4"></section>
+                                            <section class="col col-lg-4">
+                                                <label class="label"><b>Modified Invoices</b></label>
+                                                <label class="label">@ViewBag.ModifiedInvoices</label>
+                                            </section>
+                                        </div>
+                                    }
+                                </fieldset>
+
+                                <footer>
+                                    @Html.ActionLink("View Details", // <-- Link text
+                 "MismatchInvoices", // <-- Action Method Name
+                 "Reconcilation_GSTR6",
+                 null, // <-- Route value
+                 new { @class = "btn btn-primary", @style = "border-radius:13px;font-weight:600; display: none;" } // <-- htmlArguments
+                )
+                                </footer>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-pink" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Reconciliation Status</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+                                    @using (Ajax.BeginForm("Save", "GSTR1", new AjaxOptions { HttpMethod = "POST" }))
+                                    {
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-lg-4">
+                                                <label class="label"><b>Rejected Invoices</b></label>
+                                                <label class="label">@ViewBag.RejectedInvoices</label>
+                                            </section>
+                                            <section class="col col-lg-4"></section>
+                                            <section class="col col-lg-4">
+                                                <label class="label"><b>Pending Invoices</b></label>
+                                                <label class="label">@ViewBag.PendingInvoices</label>
+                                            </section>
+                                        </div>
+                                    }
+                                </fieldset>
+
+                                <footer>
+                                    @Html.ActionLink("View Details", // <-- Link text
+                 "MismatchInvoices", // <-- Action Method Name
+                 "Reconcilation_GSTR6",
+                 null, // <-- Route value
+                 new { @class = "btn btn-primary", @style = "border-radius:13px;font-weight:600; display: none;" } // <-- htmlArguments
+                )
+                                </footer>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </article>
+        </div>
+        <footer>
+
+
+            <button type="button" id="btnInvoiceDataCorrection" name="btnInvoiceDataCorrection" value="View Details" class="btn btn-primary" style="border-radius:13px; font-weight:600">
+                Invoice Data Correction
+            </button>
+
+        </footer>
+
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+<!-- END MAIN CONTENT -->
+
+<script type="text/javascript" language="javascript">
+    $("#btnInvoiceDataCorrection").click(function () {
+        document.location.href = '/InvoiceDataCorrection_gstr6/InvoiceDataGSTR6?Page=ViewDetails';
+    });
+    </script>

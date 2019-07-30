@@ -1,0 +1,7 @@
+S.No,User GSTIN,e-Way bill no.,Vehicle No.,From Place,From State Code,Reason,Remarks,Trans Mode,Transporter Document No.,Transporter Document Date (DD-MM-YYYY)
+1,05AAACC4214B1ZK,3.91001E+11,KA02FG1234,Bangalore,29-KARNATAKA,Due To Break Down,Accident,Road,DC1,11-06-2018
+2,05AAACC4214B1ZK,3.61001E+11,KA02FG1235,Bangalore,29-KARNATAKA,Due To Break Down,Accident,Road,DC2,11-06-2018
+3,05AAACC4214B1ZK,3.31001E+11,PVC1234,Bangalore,29-KARNATAKA,Due To Break Down,Accident,Road,DC3,11-06-2018
+4,05AAACC4214B1ZK,3.91001E+11,KA01D1234,Bangalore,29-KARNATAKA,Due To Break Down,Accident,Road,DC4,11-06-2018
+5,05AAACC4214B1ZK,3.61001E+11,KA02D1233,Bangalore,29-KARNATAKA,Due To Break Down,Accident,Road,DC5,11-06-2018
+6,,,,,,,,,,

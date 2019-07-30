@@ -1,0 +1,268 @@
+﻿
+@if (TempData["ViewResponse"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ViewResponse"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ViewResponse"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+@using (Html.BeginForm("Reject", "EWayBill", FormMethod.Post, new { @id = "CancelEWBForm", @name = "CancelEWBForm" }))
+{
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-pencil-square-o fa-fw "></i>
+                    EWayBill
+                    <span>
+                        >
+                        Reject
+                    </span>
+                </h1>
+            </div>
+        </div>
+
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+                                <div id="comment-form" class="smart-form">
+
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN<span style="color:red">*</span></label>
+                                                <div>
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="date1">
+                                                <label class="label">Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="date" id="date" placeholder="Date" class="datepicker" data-dateformat='dd/mm/yy' readonly value="@ViewBag.Period">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" id="ewbNo" name="ewbNo" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="btnGet" value="Reject" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                            Submit
+                                        </button>
+                                        @*<button type="submit" name="btnReject" value="Reject" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                               Submit
+                                            </button>*@
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill List</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+                                @if (ViewBag.GetReject != null)
+                                {
+                                    if (Enumerable.Count(ViewBag.GetReject) > 0)
+                                    {
+                                        { Html.RenderPartial("_GetReject"); }
+                                    }
+                                }
+
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+
+
+            </div>
+
+            <!-- end row -->
+
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+}
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        $('#BillNo').bind('keypress', numericInput);
+        // DO NOT REMOVE : GLOBAL Common.Functions!
+
+        $(document).ready(function () {
+
+            // PAGE RELATED SCRIPTS
+
+            // class switcher for radio and checkbox
+            $('input[name="demo-switcher-1"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-1 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-1 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-1 input[type="radio"]').removeClass();
+                $('.demo-switcher-1 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+        })
+
+    </script>
+}

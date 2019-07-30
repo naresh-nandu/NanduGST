@@ -1,0 +1,420 @@
+﻿@model WeP_DAL.GSTRReport.Gstr3B2ASupplierReportDal.Gstr3BGstr2AReportViewModel
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+
+<!-- MAIN CONTENT -->
+<div id="content" style="overflow:hidden">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Report
+                <span>
+                    >&nbsp;
+                    Supplier Reconciliation Report(GSTR3B & GSTR2A)
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+            @using (Html.BeginForm("GSTR3B2ASupReport", "GSTRReport", FormMethod.Post, new { enctype = "multipart/form-data", @id = "GSTR3B2A_Supplier", @name = "GSTR3B2A_Supplier" }))
+            {
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Upload Supplier Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="label">GSTR</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTR", ViewBag.ReportType as SelectList, "Select GSTR", new { @class = "form-control" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label class="label">Upload File</label>
+                                                <div class="form-group">
+                                                    <input type="file" id="FileUpload" name="FileUpload" multiple="multiple" />
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <div>
+                                            @if (TempData["TotalRecordsCount"] != null)
+                                            {
+                                                <section class="col col-4" style="font-weight:bold">Total Records count: @TempData["TotalRecordsCount"].ToString()</section>
+                                                <section class="col col-4" style="font-weight:bold">Total Processed Records count: @TempData["ProcessedRecordsCount"].ToString()</section>
+                                                <section class="col col-4" style="font-weight:bold">@Html.ActionLink("Total Error Records count: " + @TempData["ErrorRecordsCount"].ToString(), "Download")</section>
+
+                                            }
+                                        </div>
+                                        <button type="submit" name="Command" id="btnImport" value="Import" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                            Import Data
+                                        </button>
+
+
+                                    </footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <!-- end widget -->
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Select Period and GSTIN</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">From Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="fromPeriod" placeholder="" id="fromPeriod" class="datepicker" data-dateformat='mmyy' value="@ViewBag.fromPeriod">
+                                                    </label>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label">To Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="toPeriod" placeholder="" id="toPeriod" class="datepicker" data-dateformat='mmyy' value="@ViewBag.toPeriod">
+                                                    </label>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select ALL", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true" })
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+
+                                        <button type="submit" name="Command" id="btnViewReort" value="viewReport" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                            View Report
+                                        </button>
+
+
+                                    </footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <!-- end widget -->
+
+                </article>
+
+
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>Comparision Summary Report(GSTR3B & GSTR2A)</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+
+                                @if (ViewBag.SupGSTR3B2AReport != null)
+                                {
+
+                                    { Html.RenderPartial("_SupplierGSTR3B2A"); }
+                                    <button type="submit" name="Command" id="btngetReport" value="exportReport" class="btn btn-primary pull-right" style="border-radius:5px;font-weight:600">
+                                        Export to Excel
+                                    </button>
+                                    <br /><br />
+
+                                }
+
+
+
+
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+                <!-- end row -->
+                <!-- row -->
+            }
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+        </div>
+    </section>
+    <!-- end widget grid -->
+
+
+
+</div>
+<!-- END MAIN CONTENT -->
+
+
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        $("#FileUpload").change(function (e) {
+            if (this.files[0].size > 5120 * 1024) {
+                alert("File size should be less than 5 MB.");
+                $('#FileUpload').val('');
+
+            }
+
+        });
+
+        $('#btnViewReort').click(function () {
+
+
+            var $checkoutForm = $('#GSTR3B2A_Supplier').validate({
+                // Rules for form validation
+                rules: {
+
+
+                    fromPeriod: {
+                        required: true
+                    },
+                    toPeriod: {
+                        required: true
+                    },
+                    ddlGSTINNo: {
+                        required: true
+                    }
+                },
+                messages: {
+
+
+                    fromPeriod: {
+                        required: 'Please select From Period'
+                    },
+                    toPeriod: {
+                        required: 'Please select To Period'
+                    },
+                    ddlGSTINNo: {
+                        required: 'Please select GSTIN'
+                    }
+
+                }
+            });
+        })
+
+        $('#btnImport').click(function () {
+
+
+            var $checkoutForm = $('#GSTR3B2A_Supplier').validate({
+                // Rules for form validation
+                rules: {
+                    ddlGSTR: {
+                        required: true
+                    }
+                    ,
+                    FileUpload: {
+                        required: true
+                    }
+                },
+                messages: {
+
+
+                    ddlGSTR: {
+                        required: 'Please select GSTR'
+                    }
+                    ,
+                    FileUpload: {
+                        required: 'Please upload CSV File'
+                    }
+
+                }
+            });
+        })
+
+          
+    </script>
+}
+

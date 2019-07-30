@@ -1,0 +1,95 @@
+﻿
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+
+            oTableStaticFlow_Cancel = $('#G1_Cancel').DataTable({
+                "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+                "aoColumnDefs": [{
+                    'bSortable': false,
+                    'aTargets': [0]
+                }],
+            });
+            $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+        });
+
+</script>
+
+ 
+
+
+
+<div class="container-fuild" style="background-color:white;">
+    @if (ViewBag.GetAuto != null)
+    {
+        int i = 1;
+
+        <table id="G1_Cancel" class="table table-striped table-responsive table-bordered table-hover gridtable">
+            <thead>
+                <tr>
+
+                    <th>S.No</th>
+
+                    <th>Nature of Supplies</th>
+                    <th>Total Taxable Value</th>
+                    <th>Integrated Tax</th>
+                    <th>Central Tax</th>
+                    <th>State / UT Tax</th>
+                    <th>CESS</th>
+                    <th>Tax Payable</th>
+                    <th>Tax Paid Through Cash</th>
+
+
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ReportMgmt)
+                {
+                    <tr>
+                        <td>@Convert.ToInt32(i++)</td>
+                        <td>@item.natureofsupplies</td>
+                        <td>@item.txval</td>
+                        <td>@item.iamt</td>
+                        <td>@item.camt</td>
+                        <td>@item.samt</td>
+                        <td>@item.csamt</td>
+                        <td>@item.taxpayable</td>
+                        <td>@item.taxpaidthroughcash</td>
+
+                    </tr>
+                }
+            </tbody>
+
+
+
+        </table>
+        <br />
+        <footer>
+            <div align="center">
+                <button type="submit" name="command" id="Export" value="Export" class="btn btn-primary" style="border-radius:5px;font-weight:600">
+                    Export
+                </button>
+                <button type="submit" name="command" id="ExportTemplate" value="ExportTemplate" class="btn btn-primary" style="border-radius:5px;font-weight:600">
+                    Export Template
+                </button>
+            </div>
+        </footer>
+    }
+    else
+    {
+        <h3 align="center">No Data Found</h3>
+    }
+
+</div>
+        <br />
+
+        
+
+
+    

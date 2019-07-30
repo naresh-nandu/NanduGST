@@ -1,0 +1,913 @@
+﻿
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Outward Register
+                <span>
+                    >&nbsp;
+                    EXP
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <form action="@Url.Action("EXP", "OutwardRegister")" method="post" id="OutwardExp" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Outward EXP</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+
+                                            <section class="col col-3">
+                                                <label>Name of Recipient<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="name" id="name" value="@Session["nameexp"]" placeholder="Name of Recipient" onblur="autocalname();">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Address<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="address" id="address" value="@Session["addressexp"]" placeholder="Address" onblur="autocaladdress();">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Name of Shipping Recipient<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="sname" id="sname" value="@Session["snameexp"]" placeholder="Name of Shipping Recipient">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Shipping Address<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="saddress" id="saddress" value="@Session["saddressexp"]" placeholder="Shipping Address">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Taxpayer GSTIN<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("cgstin", new SelectList(ViewBag.Taxpayer_GSTIN, "GSTINNo", "GSTINNo", @Session["cgstinexp"]), "--Select--", new { @Class = "form-control input-sm", @id = "cgstin", @onchange = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <div class="form-group" style="margin-top:10px">
+                                                    <label>Auto Invoice Number Generation<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @if (Session["isautoexp"] == null)
+                                                        {
+                                                            <input type="radio" name="isauto" value="Yes" class="name" /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No" class="name" checked><label>No&nbsp;&nbsp;&nbsp;</label>
+                                                        }
+                                                        else if (Session["isautoexp"].ToString() == "No")
+                                                        {
+                                                            <input type="radio" name="isauto" value="Yes" class="name" /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No" class="name" checked><label>No&nbsp;&nbsp;&nbsp;</label>
+                                                        }
+                                                        else if (Session["isautoexp"].ToString() == "Yes")
+                                                        {
+                                                            <input type="radio" name="isauto" value="Yes" class="name" checked /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No" class="name"><label>No&nbsp;&nbsp;&nbsp;</label>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label> Invoice Number</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    @if (Session["isautoexp"] == null || Session["isautoexp"].ToString() == "Yes")
+                                                    {
+                                                        <input type="text" name="invoiceno" id="invoiceno" maxlength="16" class="invoiceno" value="@Session["invoicenoexp"]" placeholder="Invoice No.">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" name="invoiceno" id="invoiceno" maxlength="16" class="invoiceno" value="@Session["invoicenoexp"]" placeholder="Invoice No.">
+                                                    }
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Invoice Date</label><span style="color:red">*</span>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="invoicedate" value="@Session["invoicedateexp"]" placeholder="Invoice Date" class="datepicker" id="invdate" data-dateformat='dd-mm-yy' readonly>
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Invoice Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="invoicevalue" value="@Session["invoicevalueexp"]" placeholder="Invoice Value" readonly style="background-color:#d9d9d9;" class="floatinput">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Shipping Bill Port Code</label>
+                                                <label class="input">
+                                                    <input type="text" name="portcode" maxlength="6" value="@Session["portcodeexp"]" placeholder="Shipping Bill Port Code">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Shipping Bill No</label>
+                                                <label class="input">
+                                                    <input type="text" name="billno" maxlength="7" value="@Session["billnoexp"]" placeholder="Shipping Bill No" class="floatinput">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Shipping Bill Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="billdate" value="@Session["billdateexp"]" placeholder="Shipping Bill Date" class="datepicker" id="shipdate" data-dateformat='dd-mm-yy' readonly>
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Export Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("ex_typ", new SelectList(ViewBag.ExportType, "Text", "Value", @Session["extypexp"]), "--Select--", new { @Class = "form-control input-sm", @id = "ex_typ", @onblur = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+
+                                                <div class="form-group">
+                                                    <label>Is Discount Applicable</label>
+                                                    @if (Session["MasterDtExp"] != null)
+                                                    {
+                                                        if (((System.Data.DataTable)Session["MasterDtExp"]).Rows.Count >= 1)
+                                                        {
+                                                            <div>
+                                                                @Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+                                                                                                                                new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text", @Session["discountreqob2b"]), new { @Class = "form-control input-sm", @id = "isDiscountreq", @disabled = "true" })
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div>
+                                                            @Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+                                                                                                                                new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text", @Session["discountreqob2b"]), new { @Class = "form-control input-sm", @id = "isDiscountreq" })
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </section>
+
+                                            @*<section class="col col-3">
+                                                    <label>Shipping Address</label>
+                                                    <label class="input">
+                                                        <textarea name="address" cols="32" rows="4" value="@Session["ShippingAddressExp"]">@Session["ShippingAddressExp"]</textarea>
+                                                    </label>
+                                                </section>*@
+
+                                            <section class="col col-3">
+                                                <label>Additional Information</label>
+                                                <label class="input">
+                                                    <textarea name="addinfo" cols="32" rows="4" value="@Session["AddInfoExp"]">@Session["AddInfoExp"]</textarea>
+                                                </label>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Item Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+
+                                    @{Html.RenderPartial("_EXPItems"); }
+
+
+
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["MasterDtExp"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["MasterDtExp"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Outward EXP Item List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                                                                          grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                                          grid.Column("HSN", "HSN"),
+                                                                          grid.Column("Item Description", "Item Description"),
+                                                                          grid.Column("Quantity", "Qty"),
+                                                                          grid.Column("UQC", "UQC"),
+                                                                          grid.Column("Unit Price", "Unit Price"),
+                                                                          grid.Column("Discount", "Discount"),
+                                                                          grid.Column("Taxablevalue", "Taxable Value"),
+                                                                          grid.Column("Rate", "Rate"),
+                                                                          grid.Column("IGST Amount", "IGST Amount"),
+                                                                          grid.Column(format:@<text>@Html.ActionLink("Delete", "ExpDelete", new { Id = item.SnoExp }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+ )
+)
+
+                                            </div>
+
+
+
+                                            <footer>
+                                                <div class="row">
+                                                    @if (Session["Setting"].ToString() == "False")
+                                                    {
+                                                        <div class="col-md-6 text-center">
+                                                            <button type="submit" name="command" value="save1" style="font-weight:bold;Border-radius:10px;width:80px;text-align:center;" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    }
+                                                    else if (Session["Setting"].ToString() == "True")
+                                                    {
+                                                        <div class="col-md-6 text-center">
+                                                            <button type="submit" name="command" value="save2" style="font-weight:bold;Border-radius:10px;width:180px;text-align:center;" class="btn btn-primary">Genarate Invoice</button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+
+
+
+
+                <!-- end widget -->
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+            <!-- end row -->
+
+        </section>
+        <div id="popup_pdf">
+
+        </div>
+    </form>
+</div>
+
+
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+    TempData["Message"] = null;
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.invoiceno').on("keyup", function (e) {
+
+            return validateFloatKeyPress(this, e);
+        });
+    });
+
+    function validateFloatKeyPress(el, evt) {
+
+        var regex = /^[0-9A-Z/-]*$/i;
+        // var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if ($('#invoiceno').val() != "") {
+            if (!$('#invoiceno').val().match(regex)) {
+                alert("No special characters allowed except '-' and '/'.");
+                $('#invoiceno').val('');
+                //  return false;
+            }
+        }
+    }
+
+</script>
+
+@if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+{
+    <script type="text/javascript">
+        $("#hsn").on('blur', function () {
+            var txt = $('#hsn').val().split("|");
+            $('#hsn').val(txt[0]);
+            $("#rate").val(txt[1]);
+            var result = txt[2];
+            $("#itemdesc").val(result.slice(0, 30));
+        });
+
+        $(document).ready(function () {
+            $("#hsn").autocomplete({
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/OutwardB2B/AutoPopulate",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.hsncode + "-" + item.rate,
+                                    value: item.hsncode + "|" + item.rate + "|" + item.hsndesc
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#hsn").on('blur', function () {
+            var txt = $('#hsn').val().split("|");
+            $('#hsn').val(txt[0]);
+            $("#rate").val(txt[1]);
+        });
+
+        $(document).ready(function () {
+            $("#hsn").autocomplete({
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/OutwardB2B/AutoPopulate",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.hsncode + "-" + item.hsndesc,
+                                    value: item.hsncode + "|" + item.rate
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+}
+
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        function limitTextarea(textarea, maxLines, maxChar) {
+            var lines = textarea.value.replace(/\r/g, '').split('\n'), lines_removed, char_removed, i;
+            if (maxLines && lines.length > maxLines) {
+                lines = lines.slice(0, maxLines);
+                lines_removed = 1
+            }
+            if (maxChar) {
+                i = lines.length;
+                while (i-- > 0) if (lines[i].length > maxChar) {
+                    lines[i] = lines[i].slice(0, maxChar);
+                    char_removed = 1
+                }
+                if (char_removed || lines_removed) {
+                    textarea.value = lines.join('\n')
+                }
+            }
+        }
+
+        function taxableCalculation() {
+
+            var exporttype = document.getElementById("ex_typ").value;
+            var qty = document.getElementById("qty").value;
+            var unitprice = document.getElementById("unitprice").value;
+            var discount = document.getElementById("discount").value;
+            var rate = document.getElementById("rate").value;
+
+            var igsta = document.getElementById("iamt");
+
+
+            if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+                var discountValue;
+                discountValue = (((qty * unitprice) / 100) * discount);
+                document.getElementById("taxablevalue").value = ((unitprice * qty) - discountValue).toFixed(2);
+            }
+            var taxablevalue = document.getElementById("taxablevalue").value;
+
+            if ((taxablevalue != "") && (rate != "")) {
+
+                if (exporttype == "WPAY") {
+                    igsta.value = (taxablevalue * rate) / 100;
+
+                }
+                else if (exporttype == "WOPAY") {
+                    igsta.value = "0";
+
+                }
+            }
+        }
+
+        function autocalname() {
+            var name = document.getElementById("name").value;
+            var sname = document.getElementById("sname");
+            sname.value = name;
+        }
+
+        function autocaladdress() {
+            var address = document.getElementById("address").value;
+            var saddress = document.getElementById("saddress");
+            saddress.value = address;
+        }
+
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+
+
+        $(document).ready(function () {
+            var ischeck = $("input[type=radio][name='isauto']:checked").val();
+
+
+            if (ischeck == "No" || ischeck == "") {
+                $('#invoiceno').removeAttr("readonly").css("background-color", "white");
+
+            }
+            else {
+                $('#invoiceno').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+
+            $(":radio").on('click', function () {
+                var ischeck = $(this).val();
+                if (ischeck == "No") {
+                    $('#invoiceno').removeAttr("readonly").css("background-color", "white");
+
+                }
+                else {
+                    $('#invoiceno').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+                }
+            });
+            var discresq = $('#isDiscountreq').val();
+            if (discresq != "No") {
+                $('#discount').removeAttr("readonly").css("background-color", "white");
+            }
+            else {
+                $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+            $("#isDiscountreq").on('change', function () {
+                var discresq = $('#isDiscountreq').val();
+                if (discresq != "No") {
+                    $('#discount').removeAttr("readonly").css("background-color", "white");
+                }
+                else {
+                    $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+                }
+            });
+
+            
+
+            $('#btnSubmit').click(function () {
+
+                var $checkoutForm = $('#OutwardExp').validate({
+                    // Rules for form validation
+                    rules: {
+                        name: {
+                            required: true
+                        },
+                        address: {
+                            required: true
+                        },
+                        sname: {
+                            required: true
+                        },
+                        saddress: {
+                            required: true
+                        },
+                        uqc: {
+                            required: true
+                        },
+                        cgstin: {
+                            required: true
+                        },
+                        ex_typ: {
+                            required: true
+                        },
+                        isauto: {
+                            required: true
+                        },
+
+                        invoicedate: {
+                            required: true
+                        },
+
+                        hsn: {
+                            required: true
+
+                        },
+                        itemdesc: {
+                            required: true
+
+                        },
+                        taxablevalue: {
+                            required: true,
+                            maxlength: 14,
+                            number: true
+
+                        },
+                        rate: {
+                            required: true,
+                            number: true
+
+                        },
+                        iamt: {
+                            required: true,
+                            number: true
+
+                        },
+
+                        unitprice:
+                        {
+                            required: true,
+                            number: true,
+                            min: 0.01
+                        },
+                        discount:
+                        {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 99
+                        }
+                        ,
+                        qty:
+                        {
+                            required: true,
+                            number: true,
+                            min: 0.01
+                        },
+                        //portcode: {
+                        //    required: true
+                        //},
+                        //billno: {
+                        //    required: true
+                        //},
+                        //billdate: {
+                        //    required: true
+                        //},
+                        invoiceno: {
+                            required: true
+                        }
+
+                    },
+
+                    // Messages for form validation
+                    messages: {
+                        name: {
+                            required: 'Please enter Name of Recipient'
+                        },
+                        address: {
+                            required: 'Please enter Address'
+                        },
+                        sname: {
+                            required: 'Please enter Name of Shipping Recipient'
+                        },
+                        saddress: {
+                            required: 'Please enter Shipping Address'
+                        },
+                        uqc: {
+                            required: 'Please select UQC'
+                        },
+                        cgstin: {
+                            required: 'Please select Taxpayer GSTIN'
+                        },
+                        ex_typ: {
+                            required: 'Please select Export Type'
+                        },
+                        isauto: {
+                            required: 'Please select Invoice Auto Generation'
+                        },
+                        invoicedate: {
+                            required: 'Please select Invoice Date'
+
+                        },
+
+                        reversecharge: {
+                            required: 'Please select Reverse Charge'
+
+                        },
+                        hsn: {
+                            required: 'Please select HSN'
+
+                        },
+                        itemdesc: {
+                            required: 'Please enter Item Description'
+
+                        },
+                        rate: {
+                            required: 'Please select HSN Code from list',
+                            number: 'Characters are not allowed'
+
+                        },
+                        taxablevalue: {
+                            required: 'Please enter Taxable Value',
+                            number: 'Characters are not allowed'
+
+                        },
+                        iamt: {
+                            required: 'Please enter IGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+
+                        unitprice: {
+                            required: 'Please enter Unit Price',
+                            number: 'Characters are not allowed'
+
+                        },
+
+                        discount: {
+                            required: 'Please enter Discount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        qty: {
+                            required: 'Please enter Qty',
+                            number: 'Characters are not allowed'
+
+                        },
+
+                        //portcode: {
+                        //    required: 'Please enter Shipping Bill Port Code'
+                        //},
+                        //billno: {
+                        //    required: 'Please enter Shipping Bill No'
+                        //},
+                        //billdate: {
+                        //    required: 'Please enter Shipping Bill Date'
+                        //},
+                        invoiceno: {
+                            required: 'Please enter invoice Number'
+                        }
+
+                    },
+
+                    // Do not change code below
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                })
+
+
+
+            });
+        })
+
+        jQuery.extend(jQuery.validator.messages, {
+
+            maxlength: jQuery.validator.format("Value can not be more than 99990000000.00 Crores."),
+
+        });
+
+
+        $("#shipdate").change(function () {
+            var ShippingDate = $("#shipdate").val().split("-");
+            var date2 = new Date(ShippingDate[2], ShippingDate[1] - 1, ShippingDate[0]);
+            //console.log(date2);
+
+            var InvoiceDate = $("#invdate").val().split("-");
+            var date1 = new Date(InvoiceDate[2], InvoiceDate[1] - 1, InvoiceDate[0]);
+            // console.log(date1);
+
+            //});
+            if (date1 > date2) {
+                alert("Shipping Bill Date should be greater than or equal to Invoice Date");
+                // $('#invdate').val('');
+                $('#shipdate').val('');
+            }
+
+        });
+
+        $("#invdate").change(function () {
+            var ShippingDate = $("#shipdate").val().split("-");
+            var date2 = new Date(ShippingDate[2], ShippingDate[1] - 1, ShippingDate[0]);
+            // console.log(date2);
+
+            var InvoiceDate = $("#invdate").val().split("-");
+            var date1 = new Date(InvoiceDate[2], InvoiceDate[1] - 1, InvoiceDate[0]);
+            //console.log(date1);
+
+            //});
+            if (date1 > date2) {
+                alert("Shipping Bill Date should be greater than or equal to Invoice Date");
+                $('#invdate').val('');
+                //$('#shipdate').val('');
+            }
+
+        });
+
+
+                    //console.log(date1 > date2);
+                    //$('#invdate').val('');
+                    //$('#shipdate').val('');
+
+
+
+
+            //$("#shipdate").change(function () {
+            //    var invDate = $("#invdate").val();
+            //    var shipDate = $("#shipdate").val();
+
+            //    if ((new Date(shipdate) <= new Date(invdate))) {
+            //        alert("Shipping date should be greater than or equal to Invoice date");
+
+            //    }
+            //});
+
+
+
+    </script>
+
+}
+
+

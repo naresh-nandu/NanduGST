@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR2_D_B2BUR] (
+    [b2burid]  INT IDENTITY (1, 1) NOT NULL,
+    [gstr2did] INT NOT NULL,
+    [gstinid]  INT NULL,
+    CONSTRAINT [PK_TBL_GSTR2_D_B2BUR] PRIMARY KEY CLUSTERED ([b2burid] ASC),
+    CONSTRAINT [FK_TBL_GSTR2_D_B2BUR_TBL_GSTR2_D] FOREIGN KEY ([gstr2did]) REFERENCES [dbo].[TBL_GSTR2_D] ([gstr2did])
+);
+

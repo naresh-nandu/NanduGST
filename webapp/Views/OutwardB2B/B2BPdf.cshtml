@@ -1,0 +1,23 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>table</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <br>
+    <div class="container-fluid" style="background-color:white">
+        <form action="@Url.Action("B2BPdf", "OutwardB2B")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate">
+
+            @{Html.RenderPartial("_pdfb2b");}
+
+            <a href="@Url.Action("ExportPdf","OutwardB2B")">Export PDF</a>
+        </form>
+    </div>
+
+</body>
+</html>

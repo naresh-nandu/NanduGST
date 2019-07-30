@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR2_CDNUR_ITMS] (
+    [itmsid]  INT IDENTITY (1, 1) NOT NULL,
+    [cdnurid] INT NOT NULL,
+    [num]     INT NULL,
+    [gstinid] INT NULL,
+    [gstr2id] INT NULL,
+    CONSTRAINT [PK_TBL_GSTR2_CDNUR_ITMS] PRIMARY KEY CLUSTERED ([itmsid] ASC),
+    CONSTRAINT [FK_TBL_GSTR2_CDNUR_ITMS_TBL_GSTR2_CDNUR] FOREIGN KEY ([cdnurid]) REFERENCES [dbo].[TBL_GSTR2_CDNUR] ([cdnurid])
+);
+

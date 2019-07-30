@@ -1,0 +1,123 @@
+﻿&nbsp;
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <!-- Widget ID (each widget will need unique ID)-->
+    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+        <header>
+            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+            <h2 style="font-weight:bold;">Need Help </h2>
+        </header>
+
+        <!-- widget div-->
+        <div>
+
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+                <!-- This area used as dropdown edit box -->
+                @{ 
+                    string path = HttpContext.Current.Request.Url.AbsolutePath;
+                    string[] PageName = path.Split('/');
+                    ViewBag.ControllerName = PageName[1];
+                    ViewBag.ActionName = PageName[2];
+                }
+
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body no-padding">
+
+                <div id="comment-form" class="smart-form">
+                    <form action="@Url.Action("Index", "NeedHelp_ReportIssues")" method="POST" id="HelpReportForm" class="smart-form" autocomplete="off">
+                        
+                        <fieldset>
+                            <section>
+                                <label style="display:none;">
+                                    <input type="hidden" name="controllername" id="controllername" value="@ViewBag.ControllerName" />
+                                    <input type="hidden" name="actionname" id="actionname" value="@ViewBag.ActionName" />
+                                </label>
+                                <label class="input">
+                                    <textarea type="text" name="message" id="message" style="width:250px; height:100px; resize:none; overflow:scroll"></textarea>
+                                </label>
+                            </section>
+                        </fieldset>
+
+                        <footer>
+                            <section>
+                                <button type="submit" class="btn btn-primary" id="btnNeedHelp" name="btnNeedHelp" value="NeedHelp" style="border-radius:13px;">
+                                    Submit
+                                </button>
+                            </section>
+
+                        </footer>
+                    </form>
+                </div>
+
+            </div>
+            <!-- end widget content -->
+
+        </div>
+        <!-- end widget div -->
+
+    </div>
+
+</article>
+
+
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <!-- Widget ID (each widget will need unique ID)-->
+    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+        <header>
+            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+            <h2 style="font-weight:bold;">Report Issues </h2>
+        </header>
+
+        <!-- widget div-->
+        <div>
+
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+                <!-- This area used as dropdown edit box -->
+
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body no-padding">
+
+                <div id="comment-form" class="smart-form">
+                    <form action="@Url.Action("Index", "NeedHelp_ReportIssues")" method="POST" id="HelpReportForm" class="smart-form" autocomplete="off">
+                        
+                        <fieldset>
+                            <section>
+                                <label style="display:none;">
+                                    <input type="hidden" name="controllername" id="controllername" value="@ViewBag.ControllerName" />
+                                    <input type="hidden" name="actionname" id="actionname" value="@ViewBag.ActionName" />
+                                </label>
+                                <label class="input">
+                                    <textarea type="text" name="message" id="message" style="width:250px; height:100px; resize:none;overflow:scroll"></textarea>
+                                </label>
+                            </section>
+                        </fieldset>
+
+                        <footer>
+                            <section>
+                                <button type="submit" class="btn btn-primary" name="btnReportIssue" id="btnReportIssue" value="ReportIssue" style="border-radius:13px;">
+                                    Submit
+                                </button>
+                            </section>
+
+                        </footer>
+                    </form>
+                </div>
+
+            </div>
+            <!-- end widget content -->
+
+        </div>
+        <!-- end widget div -->
+
+    </div>
+
+</article>

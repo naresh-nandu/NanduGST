@@ -1,0 +1,198 @@
+﻿
+<style>
+    .dataTables_length {
+        margin-left: 420px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var gstin = $("#ddlGSTINNo").val();
+    var period = $("#period").val();
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_DOC = $("#G1_DOC").DataTable({
+
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "pageLength": 50,
+
+            "ajax": {
+                "url": "/DataHelper/GetGSTR1Data/?strGSTINNo=" + gstin + "&strFp=" + period + "&strFlag=&strAction=DOC",
+                "type": "POST",
+                "datatype": "json"
+            },
+            language:{
+                processing:"<h3 class='text-center btn btn-primary' style='font-weight:bold;border-radius:5px;margin-top:-12px'>Loading....</h3>"
+            },
+            "columnDefs":
+            [{
+                "targets": 0,
+                "searchable": false,
+                "orderable": false,
+                "width": '2%',
+                "className": 'chkSelectAll_DOC',
+                "data": 'docissueid',
+                "render": function (data, type, full, meta) {
+                    return '<input type="checkbox" name="ids" id="ids" class="chkSelectAll_DOC" value="' + data + '" />';
+                },
+                'order':[1,'asc']
+            }],
+
+            "columns": [
+                  { "data": "docissueid", "autoWidth": true },
+                  { "data": "doc_num", "name": "Doc No", "autoWidth": true },
+                  { "data": "froms", "name": "From Serial No", "autoWidth": true },
+                  { "data": "tos", "name": "To Serial No", "autoWidth": true },
+                  { "data": "totnum", "name": "Total Number", "autoWidth": true },
+                  { "data": "cancel", "name": "Cancelled", "autoWidth": true },
+                  { "data": "net_issue", "name": "Net-Issues", "autoWidth": true },
+            ]
+
+        });
+
+
+        $("#chkSelectAll_DOC").click(function () {
+            var cols = oTableStaticFlow_DOC.column(0).nodes(),
+                state = this.checked;
+            for (var i = 0; i < cols.length; i += 1) {
+                cols[i].querySelector("input[type='checkbox']").checked = state;
+            }
+        });
+
+        $('.chkSelectAll_DOC').click(function () {
+            var status = this.checked;
+            if (status == false) {
+                $("#chkSelectAll_DOC").prop("checked", false);
+            }
+        });
+
+        $("#G1_DOC").on("click", ".chkSelectAll_DOC", function () {
+            var status = this.checked;
+            if (status == false) {
+                $("#chkSelectAll_DOC").prop("checked", false);
+            }
+        });
+
+        $("#btnGSTR1DOC").click(function () {
+            var allVals = [];
+            var selectIds = ',';
+            var cols = oTableStaticFlow_DOC.column(0).nodes();
+            for (var i = 0; i < cols.length; i += 1) {
+                if (cols[i].querySelector("input[type='checkbox']").checked == true) {
+                    var chkVal = cols[i].querySelector("input[type='checkbox']").value;
+                    //allVals.push(chkVal);
+                    selectIds = selectIds + chkVal + ','
+                }
+                else {
+                    //selectIds = selectIds+'0'+ ','
+                    //allVals.push(0);
+                }
+            }
+            console.log(selectIds);
+            $("#InvIds").val();
+            $("#InvIds").val(selectIds);
+        });
+
+    });
+</script>
+
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0 !important;
+        content: none !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        margin-left: 0em !important;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #chkSelectAll {
+        margin-left: 4px !important;
+    }
+
+    .headerstyle {
+        background-color: #cbd2d5 !important;
+        color: #000 !important;
+        font-weight: bold;
+    }
+</style>
+
+<div class="table table-responsive">
+
+    <div class="container-fuild" style="background-color:white;">
+        <table id="G1_DOC" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <td align="center"><input type="checkbox" id="chkSelectAll_DOC" name="ids" /></td>
+                    <th>Doc No</th>
+                    <th>From Serial No</th>
+                    <th>To Serial No</th>
+                    <th>Total Number</th>
+                    <th>Cancelled</th>
+                    <th>Net-Issues</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+
+    <br />
+    <div class="text-center">
+        <button type="submit" name="command" id="btnGSTR1DOC" value="GSTR1DOC" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage();">Delete</button>
+        <button type="submit" name="command" id="btnGSTR1DOC_ALL" value="GSTR1DOC_ALL" class="btn btn-primary btn-lg btnstyle">Delete ALL</button>
+    </div>
+    <br />
+
+</div>
+
+<script>
+    function validateCheckBoxes() {
+        var isValid = false;
+        //alert("Check if any checkbox is not checked...");
+        var allRows = document.getElementsByTagName("input");
+        for (var i = 0; i < allRows.length; i++) {
+            if (allRows[i].type == 'checkbox' && allRows[i].name == 'ids') {
+                if (allRows[i].checked == true) {
+                    return true;
+                }
+
+            }
+        }
+        return isValid;
+    }
+
+    function ShowMessage() {
+        if (!validateCheckBoxes()) {
+            alert("Please select atleast one invoice to delete.");
+            return false;
+        }
+        else {
+            return confirm('Are you sure to Delete?');
+        }
+
+    }
+    $('#btnGSTR1DOC_ALL').click(function () {
+
+        return confirm('Are you sure to Delete All?');
+
+    });
+
+</script>
+
+
+

@@ -1,0 +1,298 @@
+﻿
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #wid-id-0 {
+        display: none;
+    }
+</style>
+<div id="content">
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                EWayBill
+                <span>
+                    >&nbsp;
+                    Bulk Upload
+                </span>
+                                
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            @using (Ajax.BeginForm("Index", "EWBUpload", new AjaxOptions { HttpMethod = "POST" }, new { enctype = "multipart/form-data", @id = "EWBUploadForm", @name = "EWBUploadForm" }))
+            {
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>E-Way Bill File Upload</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            @*<section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select ALL", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>*@
+                                            <section class="col col-3">
+                                                <label class="label">EWB</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlEWB", ViewBag.EWBList as SelectList, "Select", new { @class = "form-control" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Upload File</label>
+                                                <div class="form-group">
+                                                    <input type="file" id="FileUpload" name="FileUpload" multiple="multiple" />
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" id="EwbIds" name="EwbIds" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <div>
+                                            @if (TempData["TotalRecordsCount"] != null)
+                                            {
+                                                <section class="col col-4" style="font-weight:bold">Total Records count: @TempData["TotalRecordsCount"].ToString()</section>
+                                                <section class="col col-4" style="font-weight:bold">Total Processed Records count: @TempData["ProcessedRecordsCount"].ToString()</section>
+                                                <section class="col col-4" style="font-weight:bold">@Html.ActionLink("Total Error Records count: " + @TempData["ErrorRecordsCount"].ToString(), "Download")</section>
+                                            }
+                                        </div>
+                                        <button align="centre" type="submit" name="Import" value="Import" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600;margin-right:570px" ;>
+                                            Import Data
+                                        </button>
+                                    </footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                    <!-- end widget -->
+
+                    @*@if (ViewBag.EWBType == "1")
+                    {
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" style="overflow:hidden">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2>EWayBill Data</h2>
+                            </header>
+
+                            @{Html.RenderPartial("_ewbdata");}
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+
+                                    <div id="comment-form1" class="smart-form">
+                                                                                
+                                        <div class="message">
+                                            <i class="fa fa-check fa-lg"></i>
+                                            <p>
+                                                Your comment was successfully added!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                            <!-- end widget -->
+                        </div>
+                    <!-- end widget -->
+                    }
+
+                    @if (ViewBag.EWBType == "2")
+                    {
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" style="overflow:hidden">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2>Consolidated EWayBill Data</h2>
+                            </header>
+
+                            @{Html.RenderPartial("_consewbdata");}
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+
+                                    <div id="comment-form1" class="smart-form">
+
+                                        <fieldset></fieldset>
+
+                                        <footer>
+                                            <button type="submit" name="btnEWBGEN" value="Generate" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                                Generate EWayBill
+                                            </button>
+                                            <button type="submit" name="btnCONSEWBGEN" value="Generate" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                                Generate Consolidate EWayBill
+                                            </button>
+                                        </footer>
+
+                                        <div class="message">
+                                            <i class="fa fa-check fa-lg"></i>
+                                            <p>
+                                                Your comment was successfully added!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                            <!-- end widget -->
+                        </div>
+                    <!-- end widget -->
+                    }*@
+                </article>
+            }
+
+        </div>
+    </section>
+</div>

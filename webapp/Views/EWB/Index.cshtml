@@ -1,0 +1,2541 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                E-Way Bill
+                <span>
+                    >&nbsp;
+                    Home
+                </span>
+            </h1>
+        </div>
+
+        </div>
+    </div>
+
+    <form action="@Url.Action("index", "EWB")" method="post" id="EWAYGENERATION" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        @*<header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2 style="font-weight:bold;">E-Way Bill Master Details</h2>
+                            </header>*@
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form demo-switcher-1">
+
+                                        <div class="row">
+                                            @*<h2 style="text-align:center"><marquee><b>E-Way Bill Entry Form</b></marquee></h2>*@
+
+                                            <h4 style="text-align:left;color:white;font-weight:bold;background-color:#508180">Transaction Details</h4>
+                                            <hr style="border:1px solid #d9dbe4" />
+                                            @*</a>*@
+                                            <br />
+                                            @*<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">*@
+                                            @*<section class="col col-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>User Type</h6></label>
+
+                                                    <label class="radio radio-inline">
+
+                                                        <input type="radio" class="radiobox" name="usermode" id="usermode" value="TXP" checked="checked">
+                                                        <span>TXP</span>
+
+                                                    </label>
+
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Gen Mode</h6></label>
+
+                                                    <label class="radio radio-inline">
+
+                                                        <input type="radio" class="radiobox" name="genmode" id="genmode" value="WEB" checked="checked">
+                                                        <span>WEB</span>
+
+                                                    </label>
+                                                </div>
+                                            </section>*@
+                                            <section class="col-md-8">
+                                                <fieldset class="demo-switcher-1">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Supply Type</h6></label>
+
+                                                        @if (Session["SupplyType"] != null)
+                                                        {
+                                                            if (Session["SupplyType"].ToString() == "I")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SupplyType" id="inward" value="I" checked>
+                                                                    <span>Inward</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SupplyType" id="outward" value="O">
+                                                                    <span>Outward</span>
+                                                                </label>
+                                                            }
+
+                                                            if (Session["SupplyType"].ToString() == "O")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SupplyType" id="inward" value="I">
+                                                                    <span>Inward</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SupplyType" id="outward" value="O" checked>
+                                                                    <span>Outward</span>
+                                                                </label>
+                                                            }
+                                                        }
+                                                        @if (Session["SupplyType"] == null)
+                                                        {
+                                                            <label class="radio-inline">
+                                                                <input type="radio" class="radiobox" name="SupplyType" id="inward" value="I">
+                                                                <span>Inward</span>
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" class="radiobox" name="SupplyType" id="outward" value="O">
+                                                                <span>Outward</span>
+                                                            </label>
+                                                        }
+                                                    </div>
+                                                    </fieldset>
+                                                   </section>
+                                            <section class="col-md-12">
+                                                <fieldset class="demo-switcher-2">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>SUB Supply Type</h6></label>
+
+                                                        @if (Session["SubSupplyType"] != null)
+                                                        {
+                                                            if (Session["SubSupplyType"].ToString() == "1")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" checked>
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3" >
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5" >
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7" >
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+
+                                                            if (Session["SubSupplyType"].ToString() == "2")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2" checked>
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "3")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3" checked>
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "4")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1">
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4" checked>
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "5")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5" checked>
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "6")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6" checked>
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "7")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7" checked>
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "8")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8" checked>
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "9")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9" checked>
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "10")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10" checked>
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "11")
+                                                            {  <label class="radio-inline">
+                                                            <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" checked>
+                                                            <span>Supply</span>
+                                                        </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11" checked>
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["SubSupplyType"].ToString() == "12")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1" >
+                                                                    <span>Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12" checked>
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                            }
+                                                        }
+                                                        @if (Session["SubSupplyType"] == null)
+                                                        {
+                                                            <label class="radio-inline">
+                                                                <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="1">
+                                                                <span>Supply</span>
+                                                            </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="2">
+                                                                    <span>Import</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="3">
+                                                                    <span>Export</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="4">
+                                                                    <span>Job Work</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="5">
+                                                                    <span>For Own Use</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="6">
+                                                                    <span>Job Work Returns</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="7">
+                                                                    <span>Sales Return</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="8">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="9">
+                                                                    <span>SKD/CKD</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="10">
+                                                                    <span>Line Sales</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="11">
+                                                                    <span>Recipient not Known </span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="SubSupplyType" id="SubSupplyType" value="12">
+                                                                    <span>Exhibition of Fairs</span>
+                                                                </label>
+                                                        }
+                                                    </div>
+                                                </fieldset>
+                                            </section>
+                                            <section class="col-lg-8">
+                                                <fieldset class="demo-switcher-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Document Type</h6></label>
+
+                                                        @if (Session["DocumentType"] != null)
+                                                        {
+                                                            if (Session["DocumentType"].ToString() == "INV")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV" checked>
+                                                                    <span>Tax Invoice</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL">
+                                                                    <span>Bill Of Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE" >
+                                                                    <span>Bill Of Entry</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL">
+                                                                    <span>Challan</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT" >
+                                                                    <span>Credit Note</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                            }
+
+                                                            if (Session["DocumentType"].ToString() == "BIL")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV" >
+                                                                    <span>Tax Invoice</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL" checked>
+                                                                    <span>Bill Of Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE">
+                                                                    <span>Bill Of Entry</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL">
+                                                                    <span>Challan</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT">
+                                                                    <span>Credit Note</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["DocumentType"].ToString() == "BOE")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV" >
+                                                                    <span>Tax Invoice</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL">
+                                                                    <span>Bill Of Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE" checked>
+                                                                    <span>Bill Of Entry</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL">
+                                                                    <span>Challan</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT">
+                                                                    <span>Credit Note</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["DocumentType"].ToString() == "CHL")
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV" >
+                                                                    <span>Tax Invoice</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL">
+                                                                    <span>Bill Of Supply</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE">
+                                                                    <span>Bill Of Entry</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL" checked>
+                                                                    <span>Challan</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT">
+                                                                    <span>Credit Note</span>
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH">
+                                                                    <span>Others</span>
+                                                                </label>
+                                                            }
+                                                            if (Session["DocumentType"].ToString() == "CNT")
+                                                            {
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV">
+                                                                        <span>Tax Invoice</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL">
+                                                                        <span>Bill Of Supply</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE">
+                                                                        <span>Bill Of Entry</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL" >
+                                                                        <span>Challan</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT" checked>
+                                                                        <span>Credit Note</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH">
+                                                                        <span>Others</span>
+                                                                    </label>
+                                                                }
+                                                                if (Session["DocumentType"].ToString() == "OTH")
+                                                                {
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV">
+                                                                        <span>Tax Invoice</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL">
+                                                                        <span>Bill Of Supply</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE">
+                                                                        <span>Bill Of Entry</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL">
+                                                                        <span>Challan</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT" >
+                                                                        <span>Credit Note</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH" checked>
+                                                                        <span>Others</span>
+                                                                    </label>
+                                                                }
+
+                                                            }
+                                                        @if (Session["DocumentType"] == null)
+                                                        {
+                                                            <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="INV">
+                                                                        <span>Tax Invoice</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BIL">
+                                                                        <span>Bill Of Supply</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="BOE">
+                                                                        <span>Bill Of Entry</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CHL">
+                                                                        <span>Challan</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="CNT" >
+                                                                        <span>Credit Note</span>
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="DocumentType" id="DocumentType" value="OTH" >
+                                                                        <span>Others</span>
+                                                                    </label>
+                                                        }
+                                                    </div>
+                                                </fieldset>
+                                            </section>
+
+
+
+
+
+                                            @*<section class="col col-3">
+            <div class="form-group">
+                <label>Transaction Type<span style="color:red">*</span></label>
+                <div>
+                  @*<h2>data : @Session["transactiontype"] </h2>*@
+                                            @*@Html.DropDownList("SupplyType", new SelectList(ViewBag.SupplyType, "TypeName", "TypeName", @Session["transactiontype"]), "--Select--", new { @Class = "form-control input-sm", @id = "transactiontype", @onblur = "changeEvent();"  })*@
+                                            @*</div>
+            </div>*@
+                                            @*</section>*@
+
+                                            @*<section class="col col-3">
+                <div class="form-group">
+                    <label>Sub Type<span style="color:red">*</span></label>
+                    <div>
+                        @Html.DropDownList("SubSupplyType", new SelectList(ViewBag.SubSupplyType, "TypeName", "TypeName", @Session["SubSupplyType"]), "--Select--", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+                    </div>
+                </div>
+            </section>*@
+                                            @*<section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Document Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("DocumentType", new SelectList(ViewBag.DocumentType, "TypeName", "TypeName", @Session["DocumentType"]), "--Select--", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>*@
+                                            @*<section class="col col-3">
+                                                <label>User Id<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="userssid" id="userssid" value="@Session["usersIId"]" placeholder="User Id">
+                                                </label>
+                                            </section>*@
+                                            <section class="col col-3">
+                                                <label>Document Number<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="docnumber" id="docnumber" value="@Session["documentnumber"]" placeholder="Document Number" style="text-transform:uppercase">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Document Date</label><span style="color:red">*</span>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="Documentdate" id="Documentdate" value="@Session["documentdate"]" placeholder="Document Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                                </label>
+                                            </section>
+                                        </div>
+                                        @*</div>*@
+                                      
+                                               <div class="row">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
+
+                                                    <h4 style="text-align:left;color:white;font-weight:bold;background-color:#508180">+   From Details</h4>
+                                                    <hr style="border:1px solid #d9dbe4" /></a>
+                                                    <br />
+                                                   <div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <section class="col col-3">
+                                                        <label>Name<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="name" id="name" value="@Session["fname11"]" placeholder="Name">
+                                                        </label>
+                                                    </section>             
+                                                    
+                                                       <section class="col col-3" id="gstind">                                                     
+                                                   <label>GSTIN<span style="color:red">*</span></label>
+                                                 <label class="input">
+                                                 <input type="text" name="gst" value="@Session["fgstin"]" placeholder="GSTIN" id="gst" maxlength="15" onblur="GSTINNo()" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)">
+                                                   </label>                                         
+                                                    </section>                                     
+                                                    <section class="col col-3">
+                                                        <label>Address Line 1<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="adress1" id="adress1" value="@Session["faddress1"]" placeholder="Address Line1">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Address Line 2<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="adress2" id="adress2" value="@Session["faddress2"]" placeholder="Address Line2">
+                                                        </label>
+                                                    </section>
+                                                       <section class="col col-3" id="gstindrop">
+                                                           <label><b>GSTIN<span style="color:red">*</span></b></label>
+                                                           <div>
+                                                               @if (ViewBag.GSTINNoList != null)
+                                                               {
+                                                                   @Html.DropDownList("gstinlist", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", @id = "gstinlis", @autopostback = "true", @onblur = "changeEventtt();" })
+                                                               }
+                                                           </div>
+                                                       </section> 
+                                                    <section class="col col-3">
+                                                        <label>City<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="city" id="city" value="@Session["fcity"]" placeholder="City">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>State Code<span style="color:red">*</span></label>                   
+                                                        <label class="input">
+                                                            <input type="number" name="statecode" placeholder="State Code" value="@Session["fstate"]" id="statecode" readonly style="text-transform:uppercase">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Pincode<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="pincode" id="pincode" value="@Session["fpincode"]" placeholder="Pincode" onblur="valid()" class="floatinput">
+                                                        </label>
+                                                    </section>
+                                                    
+</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" aria-expanded="false" aria-controls="collapsethree">
+
+                                                    <h4 style="text-align:left;color:white;font-weight:bold;background-color:#508180">+   To Details</h4>
+                                                    <hr style="border:1px solid #d9dbe4" /></a>
+                                                    <br />
+                                                <div id="collapsefour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfour">
+                                                    <section class="col col-3">
+                                                        <label>Name<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="name1" id="name1" value="@Session["tname11"]" placeholder="Name">
+                                                        </label>
+                                                    </section>
+                                                 
+                                                    
+                                                 
+                                                    <section class="col col-3">
+                                                        <label>Address Line 1<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="adress11" id="adress11" value="@Session["taddress1"]" placeholder="Address Line1">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Address Line 2<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="adress22" id="adress22" value="@Session["taddress2"]" placeholder="Address Line2">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3" id="gstin2">
+
+
+                                                        <label>GSTIN<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="gstin1" value="@Session["tgstin"]" placeholder="GSTIN" id="gstin1" maxlength="15" onblur="EWAYGSTINTO()" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3" id="gstindropp">
+
+                                                        <label><b>GSTIN<span style="color:red">*</span></b></label>
+                                                        <div>
+                                         @if (ViewBag.GSTINNoList != null)
+                               {
+                                                            @Html.DropDownList("gstinlistno", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", @id = "gstinlistt", @autopostback = "true", @onblur = "changeEventt();" })
+                                              }
+                                                         </div>
+
+                                                    </section> 
+                                                    <section class="col col-3">
+                                                        <label>City<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="city1" id="city1" value="@Session["tcity"]" placeholder="City">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>State Code<span style="color:red">*</span></label>
+
+                                                        <label class="input">
+                                                            <input type="number" name="state1" placeholder="State Code" value="@Session["tstate"]" id="state1" readonly style="text-transform:uppercase">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Pincode<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="pincode1" id="pincode1" maxlength="6" value="@Session["tpincode"]" placeholder="Pincode" onblur="valid12()" class="floatinput">
+                                                        </label>
+                                                    </section>
+                                                </div>
+
+                                                </div>
+                                            <div class="row">
+
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefive" aria-expanded="false" aria-controls="collapsethree">
+
+                                                    <h4 style="text-align:left;color:white;font-weight:bold;background-color:#508180">+   Transporter Details</h4>
+                                                    <hr style="border:1px solid #d9dbe4" /></a>
+                                                    <br />
+                                                <div id="collapsefive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
+
+                                                    <section class="col col-lg-12">
+                                                        <fieldset class="demo-switcher-4">
+                                                            <div class="form-group" align="center">
+                                                                <label class="control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Transport Mode</h6></label>
+
+                                                                @if (Session["TransportMode"] != null)
+                                                                {
+                                                                    if (Session["TransportMode"].ToString() == "1")
+                                                                    {
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Road" value="1" checked>
+                                                                            <span>Road</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Rail" value="2" >
+                                                                            <span>Rail</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Air" value="3">
+                                                                            <span>Air</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Ship" value="4">
+                                                                            <span>Ship</span>
+                                                                        </label>
+                                                                    }
+
+                                                                    if (Session["TransportMode"].ToString() == "2")
+                                                                    {
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Road" value="1">
+                                                                            <span>Road</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Rail" value="2" checked>
+                                                                            <span>Rail</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Air" value="3">
+                                                                            <span>Air</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Ship" value="4" >
+                                                                            <span>Ship</span>
+                                                                        </label>
+                                                                    }
+                                                                    if (Session["TransportMode"].ToString() == "3")
+                                                                    { 
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Road" value="1">
+                                                                            <span>Road</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Rail" value="2" >
+                                                                            <span>Rail</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Air" value="3" checked>
+                                                                            <span>Air</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Ship" value="4">
+                                                                            <span>Ship</span>
+                                                                        </label>
+                                                                    }
+                                                                    if (Session["TransportMode"].ToString() == "4")
+                                                                        { 
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Road" value="1">
+                                                                            <span>Road</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Rail" value="2">
+                                                                            <span>Rail</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Air" value="3" >
+                                                                            <span>Air</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Ship" value="4" checked>
+                                                                            <span>Ship</span>
+                                                                        </label>
+                                                                    }
+                                                                }
+                                                                @if (Session["TransportMode"] == null)
+                                                                {
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" class="radiobox" name="TransportMode" id="Road" value="1">
+                                                                        <span>Road</span>
+                                                                    </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Rail" value="2">
+                                                                            <span>Rail</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Air" value="3">
+                                                                            <span>Air</span>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" class="radiobox" name="TransportMode" id="Ship" value="4" >
+                                                                            <span>Ship</span>
+                                                                        </label>
+                                                                }
+                                                            </div>
+                                                        </fieldset>
+                                                        @*<div class="form-group">
+                                                            <label>Transport Mode<span style="color:red">*</span></label>
+                                                            <div>
+                                                                @Html.DropDownList("TransportMode", new SelectList(ViewBag.TransportMode, "TypeAbbr", "TypeName", @Session["TransportMode"]), "--Select--", new { @Class = "form-control input-sm", @id = "trans", @onblur = "changeEven();" })
+                                                            </div>
+                                                        </div>*@
+                                                    </section>
+
+                                                    <section class="col col-3" id="transnamme">
+                                                        <label>Transporter Name<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="transportername" id="transportername" value="@Session["transportername"]" placeholder="Transporter Name">
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-3" id="transiid">
+                                                        <label>Transporter ID<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="transporterid" id="transporterid" maxlength="15" onblur="TranPortId()" style="text-transform:uppercase" value="@Session["transporterid"]" placeholder="Transporter ID">
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-3">
+                                                        <label>Transporter Document No<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="transporterDocNo" id="transporterDocNo" maxlength="15" value="@Session["transporterDocNo"]" placeholder="Transporter Document No">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Transporter Date<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-calendar"></i>
+                                                            <input type="text" name="transporterdate" id="transporterdate" value="@Session["transporterdate"]" placeholder="Transporter Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Vechicle No<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="Vehicleno" id="Vehicleno" value="@Session["vehiclenumber"]" onblur="val()" placeholder="Vechicle No" style="text-transform:uppercase">
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-3">
+                                                        <label>Approximate Distance(In KM)<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <input type="text" name="AppDis" id="AppDis" value="@Session["approximatedistance"]" placeholder="Approximate Distance" class="floatinput">
+                                                        </label>
+                                                    </section>
+                                                    @*<section class="col col-3">
+                                                       
+                                                            <label><b>Vehichle Type<span style="color:red">*</span></b></label>
+                                                            <div>
+                                                                @Html.DropDownList("option", ViewBag.GSTRList as SelectList, "Select", new { @class = "form-control" })
+                                                            </div>
+                                                      
+                                                    </section>*@  
+                                                   <section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Vehicle Type</h6></label>
+
+                                                        <label class="radio-inline">
+
+                                                            <input type="radio" class="radiobox" name="option" id="option" value="R" checked="checked">
+                                                            <span>R</span>
+
+                                                        </label>
+
+                                                    </div>
+                                                </section>
+                                                    </div>
+
+                                                    </div>
+
+
+    </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+
+                                    <div id="comment-form1" class="smart-form">
+
+                                        <h4 style="text-align:left;color:white;font-weight:bold;background-color:#508180">Item Details</h4>
+                                        <hr style="border:1px solid #d9dbe4" />
+                                        <br />
+                                        @{Html.RenderPartial("_Transaction"); }
+
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                            </div>
+                    </article>
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        @if (Session["MasterdtlsEWAY"] != null)
+                        {
+                            if (((System.Data.DataTable)Session["MasterdtlsEWAY"]).Rows.Count >= 1)
+                            {
+                                <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                    <header>
+                                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                        <h2 style="font-weight:bold;">Eway List</h2>
+                                    </header>
+
+                                    <!-- widget div-->
+                                    <div>
+
+                                        <!-- widget edit box -->
+                                        <div class="jarviswidget-editbox">
+                                            <!-- This area used as dropdown edit box -->
+
+                                        </div>
+                                        <!-- end widget edit box -->
+                                        <!-- widget content -->
+                                        <div class="widget-body no-padding">
+
+                                            <div id="comment-form1" class="smart-form">
+
+                                                <br />
+                                                <div class="table-responsive">
+                                                       @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                                                           grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                            grid.Column("HSN", "HSN"),
+                                                            grid.Column("ItemDesc", "Item Description"),
+                                                            grid.Column("Product Name", "Product Name"),
+                                                            grid.Column("Quantity", "Qty"),
+                                                            grid.Column("UQC", "UQC"),
+                                                            grid.Column("Unit Price", "Unit Price"),
+                                                            grid.Column("Taxablevalue", "Taxable Value"),
+                                                            grid.Column("Rate", "Rate"),
+                                                            grid.Column("IGST Amount", "IGST Amount"),
+                                                            grid.Column("CGST Amount", "CGST Amount"),
+                                                            grid.Column("SGST Amount", "SGST Amount "),
+                                                            grid.Column("CESS Amount", "CESS Amount"),
+                                                            grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+
+
+           ))
+
+                                                </div>
+
+
+
+                                                <footer>
+                                                    <div class="row">
+
+
+                                                            <div class="col-md-6 text-center" style="margin-left:10px";>
+                                                                <button type="submit" name="command" value="save" style="font-weight:bold;Border-radius:10px;width:180px" class="btn btn-primary">Save</button>
+                                                            </div>
+
+
+
+                                                    </div>
+                                                </footer>
+
+
+                                            </div>
+
+                                        </div>
+                                        <!-- end widget content -->
+
+                                    </div>
+                                    <!-- end widget div -->
+
+                                </div>
+                            }
+                        }
+                    </article>
+
+
+                </div>
+
+                </section>
+           </form>
+
+        <script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            function limitTextarea(textarea, maxLines, maxChar) {
+                var lines = textarea.value.replace(/\r/g, '').split('\n'), lines_removed, char_removed, i;
+                if (maxLines && lines.length > maxLines) {
+                    lines = lines.slice(0, maxLines);
+                    lines_removed = 1
+                }
+                if (maxChar) {
+                    i = lines.length;
+                    while (i-- > 0) if (lines[i].length > maxChar) {
+                        lines[i] = lines[i].slice(0, maxChar);
+                        char_removed = 1
+                    }
+                    if (char_removed || lines_removed) {
+                        textarea.value = lines.join('\n')
+                    }
+                }
+            }
+
+
+
+            function autocalname() {
+                var name = document.getElementById("name").value;
+                var sname = document.getElementById("sname");
+                sname.value = name;
+            }
+
+            function autocaladdress() {
+                var address = document.getElementById("address").value;
+                var saddress = document.getElementById("saddress");
+                saddress.value = address;
+            }
+
+        </script>
+        <script>
+    function taxableCalculation() {
+
+        var qty = document.getElementById("qty").value;
+        console.log(qty);
+            var unitprice = document.getElementById("unitprice").value;
+            console.log(unitprice);
+            var rate = document.getElementById("rate").value;
+            console.log(rate);
+
+
+            var igsta = document.getElementById("iamount");
+            var cgsta = document.getElementById("camount");
+            var csgsta = document.getElementById("csamount");
+            var sgsta = document.getElementById("samount");
+
+            if ((qty != "") && (unitprice != "")) {
+
+                var discountValue;
+                discountValue = (((qty * unitprice) / 100));
+                document.getElementById("taxablevalue").value = ((unitprice * qty)).toFixed(2);
+            }
+            var taxablevalue = document.getElementById("taxablevalue").value;
+
+            if ((taxablevalue != "") && (rate != "")) {
+                var fromgstin = document.getElementById("gst").value;
+                var togstin = document.getElementById("gstin1").value;
+                var cgstin_state = fromgstin.substring(0, 2);
+                var gstin_state = togstin.substring(0, 2);
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (gstin_state != cgstin_state) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (gstin_state == cgstin_state) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+        }
+        </script>
+
+
+        <script type="text/javascript">
+
+            // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+
+
+            $(document).ready(function () {
+                var ischeck = $("input[type=radio][name='isauto']:checked").val();
+
+
+                if (ischeck == "No" || ischeck == "") {
+                    $('#invoiceno').removeAttr("readonly").css("background-color", "white");
+
+                }
+                else {
+                    $('#invoiceno').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+                }
+
+                $(":radio").on('click', function () {
+                    var ischeck = $(this).val();
+                    if (ischeck == "No") {
+                        $('#invoiceno').removeAttr("readonly").css("background-color", "white");
+
+                    }
+                    else {
+                        $('#invoiceno').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+                    }
+                });
+                var discresq = $('#isDiscountreq').val();
+                if (discresq != "No") {
+                    $('#discount').removeAttr("readonly").css("background-color", "white");
+                }
+                else {
+                    $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+                }
+                $("#isDiscountreq").on('change', function () {
+                    var discresq = $('#isDiscountreq').val();
+                    if (discresq != "No") {
+                        $('#discount').removeAttr("readonly").css("background-color", "white");
+                    }
+                    else {
+                        $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+                    }
+                });
+
+                $("#hsn").on('blur', function () {
+
+                    var txt = $('#hsn').val().split("|");
+                    $('#hsn').val(txt[0]);
+                    $("#rate").val(txt[1]);
+
+
+
+                });
+
+                $(document).ready(function () {
+
+                    $("#hsn").autocomplete({
+
+                        minlength: 3,
+                        scroll: true,
+                        source: function (request, response) {
+
+                            $.ajax({
+
+                                url: "/OutwardB2B/AutoPopulate",
+                                type: "POST",
+                                dataType: "json",
+                                data: { Prefix: request.term },
+                                success: function (data) {
+
+                                    response($.map(data, function (item) {
+
+
+
+                                        return {
+
+                                            label: item.hsncode + "-" + item.hsndesc,
+
+                                            value: item.hsncode + "|" + item.rate
+
+
+
+                                        };
+
+                                    }));
+
+                                },
+                                messages: {
+
+                                    noResults: "", results: "",
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+
+
+                })
+
+
+
+
+                $('#btnSubmit').click(function () {
+
+
+
+
+                    var $checkoutForm = $('#EWAYGENERATION').validate({
+                        // Rules for form validation
+                        rules: {
+                            docnumber: {
+                                required: true
+                            },
+
+                            Documentdate: {
+                                required: true
+                            },
+                            name: {
+                                required: true
+                            },
+                            gst: {
+                                required: true
+                            },
+
+                            city: {
+                                required: true
+                            },
+                            statecode: {
+                                required: true
+                            },
+                            pincode: {
+                                required: true
+                            },
+                            name1: {
+                                required: true
+                            },
+                            gstin1: {
+                                required: true
+                            },
+
+                            city1: {
+                                required: true
+                            },
+                            state1: {
+                                required: true
+                            },
+                            pincode1: {
+                                required: true
+                            },
+
+                            transportername: {
+                                required: true
+                            },
+                            transporterid: {
+                                required: true
+                            },
+                            transporterDocNo: {
+                                required: true
+                            },
+                            isauto: {
+                                required: true
+                            },
+
+                            Vehicleno: {
+                        required: true
+                    },
+
+                            AppDis: {
+                        required: true
+                    },
+                            invoicedate: {
+                                required: true
+                            },
+                            invalue: {
+                                required: true
+                            },
+
+                            hsn: {
+                                required: true
+
+                            },
+                            itemdesc: {
+                                required: true
+
+                            },
+
+                            iamt: {
+                                required: true,
+                                number: true
+
+                            },
+
+                            unitprice:
+                                {
+                                    required: true,
+                                    number: true,
+                                    min: 0.01
+                                },
+                            discount:
+                                {
+                                    required: true,
+                                    number: true,
+                                    min: 0,
+                                    max: 99
+                                }
+                                ,
+                            qty:
+                                {
+                                    required: true,
+                                    number: true,
+                                    min: 0.01
+                                },
+
+                            invoiceno: {
+                                required: true
+                            },
+                            csamount: {
+                        required: true,
+                        number: true
+
+                    },
+
+
+                        },
+
+                        // Messages for form validation
+                        messages: {
+                            docnumber: {
+                                required: 'Please Enter the Document Number'
+                            },
+                            Documentdate: {
+                                required: 'Please Enter Document Date'
+                            },
+                            name: {
+                                required: 'Please enter Name '
+                            },
+                            gst: {
+                                required: 'Please enter GSTIN '
+                            },
+
+                            city: {
+                                required: 'Please enter City'
+                            },
+                            statecode: {
+                                required: 'Please Enter State'
+                            },
+                            pincode: {
+                                required: 'Please Enter Pincode'
+                            },
+                            name1: {
+                                required: 'Please Enter Name'
+                            },
+                            gstin1: {
+                                required: 'Please Enter GSTIN'
+                            },
+
+                            city1: {
+                                required: 'Please Enter City'
+                            },
+                            state1: {
+                                required: 'Please Enter State'
+
+                            },
+                            pincode1: {
+                                required: 'Please Enter Pincode'
+                            },
+                            transportername: {
+                                required: 'Please Enter Transporter Name'
+                            },
+                            transporterid: {
+                                required: 'Please Enter Transporter Id'
+                            },
+                            transporterDocNo: {
+                                required: 'Please Enter Transporter Doc. No.'
+                            },
+                            isauto: {
+                                required: 'Please Select'
+                            },
+                            Vehicleno: {
+                                required: 'Please Enter Vehicle No.'
+                            },
+
+                            AppDis: {
+                                required: 'Please Enter Approx Distance'
+                            },
+                            invoicedate: {
+                                required: 'Please Enter Invoice Date'
+                            },
+                            invalue: {
+                                required: 'Please Enter Invoice Value'
+                            },
+
+                            hsn: {
+                                required: 'Please select HSN'
+
+                            },
+                            itemdesc: {
+                                required: 'Please enter Item Description'
+
+                            },
+
+                            iamt: {
+                                required: 'Please enter IGST Amount',
+                                number: 'Characters are not allowed'
+
+                            },
+
+                            unitprice: {
+                                required: 'Please enter Unit Price',
+                                number: 'Characters are not allowed'
+
+                            },
+
+                            discount: {
+                                required: 'Please enter Discount',
+                                number: 'Characters are not allowed'
+
+                            },
+                            qty: {
+                                required: 'Please enter Qty',
+                                number: 'Characters are not allowed'
+
+                            },
+                            csamount: {
+                                required: 'Please enter Cess Amount',
+                                number: 'Characters are not allowed'
+
+                            },
+
+
+                            invoiceno: {
+                                required: 'Please enter invoice Number'
+                            }
+
+                        },
+
+                        // Do not change code below
+                        errorPlacement: function (error, element) {
+                            error.insertAfter(element.parent());
+                        }
+                    })
+
+
+
+                });
+            })
+
+
+            jQuery.extend(jQuery.validator.messages, {
+
+                maxlength: jQuery.validator.format("Value can not be more than 99990000000.00 Crores."),
+
+            });
+
+
+
+
+        </script>
+
+        <script>
+            $('#name').bind('keypress', textInput);
+            $('#name1').bind('keypress', textInput);
+            $('#city').bind('keypress', textInput);
+            $('#city1').bind('keypress', textInput);
+            $('#transportername').bind('keypress', textInput);
+
+        function checkSpcialChar(event) {
+            if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+                event.returnValue = false;
+                return;
+            }
+            event.returnValue = true;
+        }
+
+
+        function EWAYGSTINTO() {
+            GST = document.getElementById("gstin1").value;
+
+            SCODE = document.getElementById("state1");
+            if (GST != "") {
+                var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+                var res = pat.test(GST);
+                if (res) {
+                    var statecode = GST.substr(0, 2);
+                    if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                        alert("State code should be within the range of 01 to 37");
+                        SCODE.value = "";
+
+
+                    }
+                    else {
+                        SCODE.value = statecode;//.toString();
+
+                    }
+                }
+                else {
+                    SCODE.value = "";
+
+                    alert("GSTIN is not in correct format.");
+
+                }
+            }
+        }
+
+        function GSTINNo() {
+            GST = document.getElementById("gst").value;
+
+            SCODE = document.getElementById("statecode");
+            if (GST != "") {
+                var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+                var res = pat.test(GST);
+                if (res) {
+                    var statecode = GST.substr(0, 2);
+                    if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                        alert("State code should be within the range of 01 to 37");
+                        SCODE.value = "";
+
+
+                    }
+                    else {
+                        SCODE.value = statecode;//.toString();
+
+                    }
+                }
+                else {
+                    SCODE.value = "";
+
+                    alert("GSTIN is not in correct format.");
+
+                }
+            }
+        }
+        function changeEventtt() {
+            GST = document.getElementById("gstinlis").value;
+
+            SCODE = document.getElementById("statecode");
+            if (GST != "") {
+                var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+                var res = pat.test(GST);
+                if (res) {
+                    var statecode = GST.substr(0, 2);
+                    if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                        alert("State code should be within the range of 01 to 37");
+                        SCODE.value = "";
+
+
+                    }
+                    else {
+                        SCODE.value = statecode;//.toString();
+
+                    }
+                }
+                else {
+                    SCODE.value = "";
+
+                    alert("GSTIN is not in correct format.");
+
+                }
+            }
+        }
+        function changeEventt() {
+            GST = document.getElementById("gstinlistt").value;
+
+            SCODE = document.getElementById("state1");
+            if (GST != "") {
+                var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+                var res = pat.test(GST);
+                if (res) {
+                    var statecode = GST.substr(0, 2);
+                    if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                        alert("State code should be within the range of 01 to 37");
+                        SCODE.value = "";
+
+
+                    }
+                    else {
+                        SCODE.value = statecode;//.toString();
+
+                    }
+                }
+                else {
+                    SCODE.value = "";
+
+                    alert("GSTIN is not in correct format.");
+
+                }
+            }
+        }
+        function TransPortId() {
+            GST = document.getElementById("transporterid").value;
+
+
+        if (GST != "") {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+        }
+        }
+        </script>
+
+
+
+
+            <script type="text/javascript">
+    function valid()
+    {
+        var pin_code = document.getElementById("pincode");
+
+    var pat1=/^\d{6}$/;
+
+    if(!pat1.test(pin_code.value))
+    {
+    alert("Pin code should be 6 digits ");
+
+
+    }
+    }
+
+
+    function valid12(){
+        var pin = document.getElementById("pincode1");
+
+        var pat1 = /^\d{6}$/;
+
+        if (!pat1.test(pin.value)) {
+            alert("Pin code should be 6 digits ");
+
+        }
+    }
+        </script><script>
+
+        function ValidIt() {
+            var pin = document.getElementById("ewaybillno");
+
+            var pat1 = /^\d{15}$/;
+
+            if (!pat1.test(pin.value)) {
+                alert("EwayBill No should be 15 digits ");
+
+            }
+        }
+
+    </script>
+            @if (TempData["Message"] != null)
+            {
+                <script type="text/javascript">
+                    window.onload = function () {
+                        swal({
+                            title: "",
+                            text: "@TempData["Message"]",
+                            type: "success",
+                        confirm: {
+                            text: "OK",
+                            value: true,
+                            visible: true,
+                            className: "",
+                            closeModal: true,
+                            },
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+
+                        }
+         );
+            };
+
+        </script>
+            }
+        @if (TempData["ItemDeletedMessage"] != null)
+        {
+            <script type="text/javascript">
+                    window.onload = function () {
+                        swal({
+                            title: "",
+                            text: "@TempData["ItemDeletedMessage"]",
+                            type: "success",
+                        confirm: {
+                            text: "OK",
+                            value: true,
+                            visible: true,
+                            className: "",
+                            closeModal: true,
+                            },
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+
+                        }
+         );
+            };
+
+            </script>
+        }
+ 
+    <script type="text/javascript">
+                 $(document).ready(function () {
+                    $('#inward').click(function () {
+                        $("#gstind").show();
+                        $("#gstindrop").hide();
+                        $("#gstindropp").show();
+                        $("#gstin2").hide();
+
+                });
+                $('#outward').click(function () {
+                    $("#gstindrop").show();
+                    $("#gstind").hide();
+                    $("#gstindropp").hide();
+                    $("#gstin2").show();
+                 });
+               });
+    </script>
+                                            @*<script>
+                                                $(document).ready(function () {
+
+           
+                                                    var ischeck = $("input[type=radio][name='SupplyType']:checked").val();
+                                                    if (ischeck == "I" || ischeck == "") {
+                                                        $("#gstind").show();
+                                                        $("#gstindrop").hide();
+                                                        $("#gstindropp").show();
+                                                        $("#gstin2").hide();
+
+                                                    }
+                                                    else if (ischeck == "O" || ischeck == "")
+                                                    {
+                                                        $("#gstindrop").show();
+                                                        $("#gstind").hide();
+                                                        $("#gstindropp").hide();
+                                                        $("#gstin2").show();                                                    
+                                                    }
+                                                })
+                                            </script>*@
+
+
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#Road').click(function () {
+                    $("#transnamme").show();
+                    $("#transiid").show();
+
+                });
+         
+                $('#Rail').click(function () {
+                
+                        $("#transnamme").hide();
+                        $("#transiid").hide();
+
+                  
+                });
+                $('#Air').click(function () {
+
+                    $("#transnamme").hide();
+                    $("#transiid").hide();
+
+
+                });
+                $('#Ship').click(function () {
+
+                    $("#transnamme").hide();
+                    $("#transiid").hide();
+
+
+                });
+            });
+
+            function val() {
+                num = document.getElementById("Vehicleno").value;
+                expr = "(([A-Za-z]){2,3}(?:[0-9]){1,2}(?:[A-Za-z]){2}([0-9]){1,4})|(([A-Za-z]){2,3}(|)([0-9]){1,4})";
+                r = new RegExp(expr);
+                b = r.test(num);
+                if (b)
+                    alert("valid");
+                else
+                    alert("In-valid");
+            }
+
+        </script>
+
+        <script type="text/javascript">
+
+            // DO NOT REMOVE : GLOBAL Common.Functions!
+
+            $(document).ready(function () {
+
+                /*
+           * ACCORDION
+           */
+                //jquery accordion
+
+                var accordionIcons = {
+                    header: "fa fa-plus",    // custom icon class
+                    activeHeader: "fa fa-minus" // custom icon class
+                };
+
+                $("#accordion").accordion({
+                    autoHeight: false,
+                    heightStyle: "content",
+                    collapsible: true,
+                    animate: 300,
+                    icons: accordionIcons,
+                    header: "h4",
+                    collapsible: true,
+                    active: true,
+                })
+
+                $("#accordion1").accordion({
+                    autoHeight: false,
+                    heightStyle: "content",
+                    collapsible: true,
+                    animate: 300,
+                    icons: accordionIcons,
+                    header: "h4",
+                    collapsible: true,
+                    active: true,
+                })
+
+                $("#accordion2").accordion({
+                    autoHeight: false,
+                    heightStyle: "content",
+                    collapsible: true,
+                    animate: 300,
+                    icons: accordionIcons,
+                    header: "h4",
+                    collapsible: true,
+                    active: true,
+                })
+
+                //guard code here to check you have a valid activeIndex...
+
+
+                // PAGE RELATED SCRIPTS
+
+                // class switcher for radio and checkbox
+                $('input[name="demo-switcher-1"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-1 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-1 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-1 input[type="radio"]').removeClass();
+                    $('.demo-switcher-1 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-2"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-2 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-2 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-2 input[type="radio"]').removeClass();
+                    $('.demo-switcher-2 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-3"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-3 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-3 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-3 input[type="radio"]').removeClass();
+                    $('.demo-switcher-3 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-4"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-4 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-4 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-4 input[type="radio"]').removeClass();
+                    $('.demo-switcher-4 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-5"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-5 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-5 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-5 input[type="radio"]').removeClass();
+                    $('.demo-switcher-5 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-6"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-6 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-6 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-6 input[type="radio"]').removeClass();
+                    $('.demo-switcher-6 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-7"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-7 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-7 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-7 input[type="radio"]').removeClass();
+                    $('.demo-switcher-7 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-8"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-8 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-8 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-8 input[type="radio"]').removeClass();
+                    $('.demo-switcher-8 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-9"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-9 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-9 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-9 input[type="radio"]').removeClass();
+                    $('.demo-switcher-9 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-10"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-10 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-10 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-10 input[type="radio"]').removeClass();
+                    $('.demo-switcher-10 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+
+                $('input[name="demo-switcher-11"]').change(function () {
+                    //alert($(this).val())
+                    $this = $(this);
+
+                    myNewClass = $this.attr('id');
+
+                    $('.demo-switcher-11 input[type="checkbox"]').removeClass();
+                    $('.demo-switcher-11 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                    $('.demo-switcher-11 input[type="radio"]').removeClass();
+                    $('.demo-switcher-11 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+                })
+            })
+
+        </script>
+
+
+

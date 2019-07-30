@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "CONSEWB Print";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model WeP_DAL.EwayViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+
+
+    <div style="background-color:white !important">
+
+        @{Html.RenderPartial("_CPrint");}
+        <div class="text-center" style="margin:10px;">
+            <a href="@Url.Action("CExportPdf","EWBPrint")" class="btn btn-primary">Download PDF</a>
+            <a href="@Url.Action("Home","EwayBill")" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+
+
+</body>
+</html>
+

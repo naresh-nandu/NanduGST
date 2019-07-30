@@ -1,0 +1,234 @@
+﻿@model SmartAdminMvc.Models.TBL_Cust_PAN
+
+
+<style>
+     .label{
+        font-size:5px;
+    }
+</style>
+
+<div id="content">
+
+
+
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+        <!-- START ROW -->
+
+        <div class="row">
+
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false">
+                    <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold">PAN Updation</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <form action="@Url.Action("Edit", "PanMgmt")" method="POST" id="smart-form-register" class="smart-form" autocomplete="off" encType = "multipart/form-data">
+                                @*@Html.AntiForgeryToken()*@
+                                @Html.HiddenFor(model => model.PANId)
+                                <fieldset>
+
+                                    <section class="col col-4">
+                                        <label style="font-weight:bold;font-size:15px;">PAN </label>
+                                        <label class="input">
+                                            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                            @Html.EditorFor(model => model.PANNo, new { htmlAttributes = new { @maxlength = "10", @class = "form-control", style = "text-transform:uppercase",@id = "pan" } })
+
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label style="font-weight:bold;font-size:15px;">Comapny Name </label>
+                                        <label class="input">
+                                            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new {  @class = "form-control",  @id = "companyname" } })
+
+                                        </label>
+                                    </section>
+                                    
+
+                                    <section class="col col-4">
+                                        <label class="label"><b>PAN Upload</b></label>
+                                        <div class="col-md-10 form-control ">
+                                            <i class="icon-append fa fa-file-pdf-o" style="color:cornflowerblue;"></i>
+                                            <input type="file" class="btn btn-dark " id="File1" name="files1" style="padding:5px;" />
+                                        </div>
+                                        <br /><br />
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label class="label"><b>GSTIN Provisional Certificate Upload</b></label>
+                                        <div class="col-md-10 form-control ">
+                                            <i class="icon-append fa fa-file-pdf-o" style="color:cornflowerblue;"></i>
+                                            <input type="file" class="btn btn-dark " id="File1" name="files2" style="padding:5px;" />
+                                        </div>
+                                        <br /><br />
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label class="label"><b>POA Upload</b></label>
+                                        <div class="col-md-10 form-control ">
+                                            <i class="icon-append fa fa-file-pdf-o" style="color:cornflowerblue;"></i>
+                                            <input type="file" class="btn btn-dark " id="File1" name="files3" style="padding:5px;" />
+                                        </div>
+                                        <br /><br />
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label class="label"><b>List of Mandatory Documents</b></label>
+                                        <label class="label">1. Company's PAN CARD.</label>
+                                        <label class="label">2. Power of Attorney Letter (In Name of person registering) and ID proof for registering person.</label>
+                                        <label class="label">3. GSTIN Provisional Certificate.</label>
+                                    </section>
+                                    
+                                    
+                                </fieldset>
+
+                                <footer>
+                                    <button type="submit" class="btn btn-primary text-center " style="background-color:#508180!important;border-radius:10px;font-weight:bold">
+                                        Update
+                                    </button>
+                                    @Html.ActionLink("Cancel", "Registration", "PanMgmt", new { @Class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:15px;background-color:#508180!important" })
+
+                                </footer>
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+        <!-- END ROW -->
+
+    </section>
+
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        $('#pan').change(function (event) {
+            var regExp = /[a-zA-z]{5}\d{4}[a-zA-Z]{1}/;
+            var txtpan = $(this).val();
+            if (txtpan.length == 10 ) {
+                if( txtpan.match(regExp) ){
+
+                }
+                else {
+                    alert('Please enter Valid PAN');
+                    event.preventDefault();
+                }
+            }
+            else {
+                alert('Please enter 10 digits for a valid PAN');
+                event.preventDefault();
+            }
+
+        });
+
+
+        // Model i agree button
+        $("#i-agree").click(function () {
+            var $this = $("#terms");
+            if ($this.checked) {
+                $('#myModal').modal('toggle');
+            } else {
+                $this.prop('checked', true);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+
+        //files validations      
+        $(document).ready(function () {
+            $('input[type=file]').change(function () {
+                var val = $(this).val().toLowerCase();
+                var regex = new RegExp("(.*?)\.(pdf)$");
+                if (!(regex.test(val))) {
+                    $(this).val('');
+                    alert('Please select PDF file format only');
+                }
+            });
+        });
+
+        // Validation
+        $(function () {
+
+
+            // Validation
+            $("#smart-form-register").validate({
+                // Rules for form validation
+                rules: {
+
+                    PANNo: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+                    CompanyName: {
+                        required: true,
+                    }
+
+                },
+
+                // Messages for form validation
+                messages: {
+
+
+                    PANNo: {
+                        required: 'Please enter PAN',
+                    },
+                    CompanyName: {
+                        required:'Please enter Company Name',
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+}

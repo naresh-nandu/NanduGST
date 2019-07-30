@@ -1,0 +1,650 @@
+﻿@model SmartAdminMvc.Models.GSTR3.InterSup
+@{
+    ViewBag.Title = "inter_sup";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<style>
+    table td, th {
+        padding: 3px;
+        border: 1px solid #c6c6c6;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .panel-group .panel {
+        border-radius: 0;
+        box-shadow: none;
+        border-color: #EEEEEE;
+    }
+
+    .panel-default > .panel-heading {
+        padding: 0;
+        border-radius: 0;
+        color: #212121;
+        background-color: #FAFAFA;
+        border-color: #EEEEEE;
+    }
+
+    .panel-title {
+        font-size: 14px;
+    }
+
+        .panel-title > a {
+            display: block;
+            padding: 15px;
+            color: blue;
+        }
+
+    .more-less {
+        float: right;
+        color: #212121;
+    }
+
+    .panel-default > .panel-heading + .panel-collapse > .panel-body {
+        border-top-color: #EEEEEE;
+    }
+
+    body {
+        background-color: #D3D3D3;
+    }
+    /* ----- v CAN BE DELETED v ----- */
+</style>
+<script>
+    //function toggleIcon(e) {
+    //    $(e.target)
+    //        .prev('.panel-heading')
+    //        .find(".more-less")
+    //        .toggleClass('glyphicon-plus glyphicon-minus');
+    //}
+    //$('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    //$('.panel-group').on('shown.bs.collapse', toggleIcon);
+</script>
+
+
+<div class="container">
+
+    <div class="row">
+        <br />
+    </div>
+    <div class="row">
+        <br />
+        <div class="panel panel-default" style="padding:8px">
+            <input type="hidden" name="gstinid" id="gstinid" value='@Session["gstinid"]' />
+            <input type="hidden" name="fb" id="fp" value='@Session["fp"]' />
+            <div class="panel-body h4" style="background:#0a9490;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">3.2 of the supplies shown in 3.1 (a),Details of inter-state supplies made to unregistered persons,composition taxable person and UIN holders</div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="more-less glyphicon glyphicon-minus"></i>
+                                Supplies made to Unregistered Persons
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="row">
+                                <br />
+
+                                <table class="table table-bordered" id="tblUnregPerson">
+                                    <thead class="blue-grey lighten-4">
+                                        <tr class="active">
+                                            <th class="text-center">
+                                                @*<input type="checkbox" />*@
+                                        </th>
+                                        <th class="text-center"><b>Place of Supply (State / UT) (<i class="fa">&#xf156;</i>) </b> </th>
+                                        <th class="text-center"><b> Total Taxable value  (<i class="fa">&#xf156;</i>)</b></th>
+                                        <th class="text-center"><b>Amount of Integrated Tax (<i class="fa">&#xf156;</i>)</b></th>
+
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="UnregPerson" value="0" /></td>
+                                    <td>
+                                        <input type="text" class='form-control' maxlength="2" placeholder="0.00" id="txtSpUnreg0" />
+                                        <input type="hidden" class='form-control' maxlength="2" placeholder="0.00" id="txtSpUnregid0" />
+                                    </td>
+                                    <td><input type="text" class='form-control' placeholder="0.00" id="txtTtvUnreg0" /></td>
+                                    <td><input type="text" class='form-control' placeholder="0.00" id="txtItUnreg0" /></td>
+
+
+
+                                </tr>
+
+                                <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="float:right">
+                                    <span style="padding-right:5px;"><input type="button" id="btnAddUnregPerson" class="btn btn-primary" value="ADD" /></span>
+
+                                    <span><input type="button" class="btn btn-danger" id="btnRemoveUnregPerson" value="REMOVE" /></span>
+
+                                </td>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default active">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="more-less glyphicon glyphicon-plus"></i>
+                            Supplies made to Composition Taxiable Persons
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <div class="row">
+                            <br />
+
+                            <table class="table table-bordered" id="tblCompTaxPersons">
+                                <thead class="blue-grey lighten-4">
+                                    <tr class="active">
+                                        <th class="text-center">
+                                            @*<input type="checkbox" />*@
+                                        </th>
+                                        <th class="text-center"><b>Place of Supply (State / UT) (<i class="fa">&#xf156;</i>) </b> </th>
+                                        <th class="text-center"><b> Total Taxable value  (<i class="fa">&#xf156;</i>)</b></th>
+                                        <th class="text-center"><b>Amount of Integrated Tax (<i class="fa">&#xf156;</i>)</b></th>
+
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="CompTaxPersons" value="0" /></td>
+                                    <td>
+                                        <input type="text" class='form-control' maxlength="2" placeholder="0.00" id="txtPosCTP0" />
+                                        <input type="hidden" class='form-control' maxlength="2" placeholder="0.00" id="txtPosCTPid0" />
+                                    </td>
+                                    <td><input type="text" class='form-control' placeholder="0.00" id="txtTaxvalCTP0" /></td>
+                                    <td><input type="text" class='form-control' placeholder="0.00" id="txtIamtCTP0" /></td>
+
+                                </tr>
+                                <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="float:right">
+                                    <span style="padding-right:5px;"><input type="button" id="btnAddCompTax" class="btn btn-primary" value="ADD" /></span>
+
+                                    <span><input type="button" class="btn btn-danger" id="btnRemoveCompTax" value="REMOVE" /></span>
+
+                                </td>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default active">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="more-less glyphicon glyphicon-plus"></i>
+                            Supplies made to UIN holders
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                        <div class="row">
+                            <br />
+
+                            <table class="table table-bordered" id="tblUinHolders">
+                                <thead class="blue-grey lighten-4">
+                                    <tr class="active">
+                                        <th class="text-center">
+                                            @*<input type="checkbox" />*@
+
+                                        </th>
+                                        <th class="text-center"><b>Place of Supply (State / UT) (<i class="fa">&#xf156;</i>) </b> </th>
+                                        <th class="text-center"><b> Total Taxable value  (<i class="fa">&#xf156;</i>)</b></th>
+                                        <th class="text-center"><b>Amount of Integrated Tax (<i class="fa">&#xf156;</i>)</b></th>
+
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="UinHolder" value="0" /></td>
+                                    <td><input type="text" class='form-control' maxlength="2" placeholder="0.00" id="txtPosUin0" /><input type="hidden" class='form-control' maxlength="2" placeholder="0.00" id="txtPosUinid0" /></td>
+                                    <td><input type="text" class='form-control' placeholder="0.00" id="txtTxvalUin0" /></td>
+                                    <td><input type="text" class='form-control' placeholder="0.00" id="txtIamtUin0" /></td>
+
+
+                                </tr>
+                                <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="float:right">
+                                    <span style="padding-right:5px;"><input type="button" id="btnAddUinHolder" class="btn btn-primary" value="ADD" /></span>
+
+                                    <span><input type="button" class="btn btn-danger" id="btnRemoveUinHolder" value="REMOVE" onclick="abc(1, 2, 3);" /></span>
+
+                                </td>
+
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- panel-group -->
+
+
+
+            <div class="panel panel-default active">
+                <table class="table table-bordered" style="border-color:white;">
+                    <tr>
+                        <td colspan="4">
+                            <input type="button" id="btnCancel" class="btn btn-primary" style="float:right;margin-left:10px;" value="CANCEL" onclick="window.history.go(-1);" />
+                            @if (Session["GSTR3BSetting"].ToString() != "True")
+                            {
+                                <input type="button" onclick="Delete()" value="Delete" style="border:2px solid #0a9490;background-color:#0a9490;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                            }
+
+                            <input type="button" id="btnSumbit" class="btn btn-primary" style="float:right;margin-left:20px;" value="CONFIRM" />
+                            
+
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $('.form-control').on('keypress', function (e) {
+        return validateFloatKeyPress(this, e);
+    });
+
+    $(document).ready(function () {
+
+
+        $('#btnCancel').on('click', function () {
+            window.location.pathname = '/GSTR3BUpload/Index';
+        });
+
+
+        $("#btnAddUinHolder").on('click', function () {
+            var btnIndexUin = $('#tblUinHolders tr').length - 2;
+            var data = "<tr><td class='text-center'><input type='checkbox' name='UinHolder' value ='" + btnIndexUin + "'/></td>";
+            data += "<td><input type='text' id='txtPosUin" + btnIndexUin + "' class='form-control' placeholder='0.00'/><input type='hidden' id='txtPosUinid" + btnIndexUin + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtTxvalUin" + btnIndexUin + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtIamtUin" + btnIndexUin + "' class='form-control' placeholder='0.00'/></td></tr>";
+            $('#tblUinHolders').append(data);
+            btnIndexUin++;
+        });
+
+        $('#btnRemoveUinHolder').on('click', function () {
+            /*$('td input:checked').find('input[name="UinHolder"]').closest('tr').remove();*/
+
+            $("td").find('input[name="UinHolder"]').each(function () {
+                if ($(this).is(":checked")) {
+                    var indexValue = $(this)[0].value;
+                    var gstinId = "@ViewBag.gstinid";
+                    var fp = "@ViewBag.fp";
+                    var pos = $("#txtPosUin" + indexValue).val();
+                    var detId = $("#txtPosUinid" + indexValue).val();
+                    var txtVal = $("#txtTxvalUin" + indexValue).val();
+                    var iAmt = $("#txtIamtUin" + indexValue).val();
+                    var supplynumber = 8;
+                    var currentObject = $(this);
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '/GSTR3BUpload/DeleteInterSup',
+                        data: { pos: pos, detId: detId, txtVal: txtVal, iAmt: iAmt, supplynumber: supplynumber,  gstinId: gstinId, fp: fp},
+                        success: function (data) {
+                            if (data) {
+                                currentObject.parents("tr").remove();
+                                alert('Deleted Succesfully');
+                            } else {
+                                alert('Failed !');
+                            }
+                        },
+                    });
+
+
+                }
+            });
+
+        });
+
+        function abc(x, y, z)
+        {
+            var a = 1;
+        }
+        //var btnIndexUnreg = $('#tblUnregPerson tr').length - 2;
+        $('#btnAddUnregPerson').on('click', function () {
+            var btnIndexUnreg = $('#tblUnregPerson tr').length - 2;
+            var data = "<tr><td class='text-center'><input type='checkbox' name='UnregPerson' value ='" + btnIndexUnreg + "'/></td>";
+            data += "<td><input type='text'  class='form-control' placeholder='0.00' id='txtSpUnreg" + btnIndexUnreg + "'/><input type='hidden'  class='form-control' placeholder='0.00' id='txtSpUnregid" + btnIndexUnreg + "'/></td><td><input type='text'  class='form-control' placeholder='0.00' id='txtTtvUnreg" + btnIndexUnreg + "'/></td><td><input type='text'  class='form-control' placeholder='0.00' id='txtItUnreg" + btnIndexUnreg + "'/></td></tr>";
+            $('#tblUnregPerson').append(data);
+            btnIndexUnreg++;
+        });
+
+        $('#btnRemoveUnregPerson').on('click', function () {
+
+            $("td").find('input[name="UnregPerson"]').each(function () {
+                if ($(this).is(":checked")) {
+                    var indexValue = $(this)[0].value;
+                    var gstinId = "@ViewBag.gstinid";
+                    var fp = "@ViewBag.fp";
+                    var pos = $("#txtSpUnreg" + indexValue).val();
+                    var detId = $("#txtSpUnregid" + indexValue).val();
+                    var txtVal = $("#txtTtvUnreg" + indexValue).val();
+                    var iAmt = $("#txtItUnreg" + indexValue).val();
+                    var supplynumber = 6;
+                    var currentObject = $(this);
+                    //$(this).parents("tr").remove();
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '/GSTR3BUpload/DeleteInterSup',
+                        data: { pos: pos, detId: detId, txtVal: txtVal, iAmt: iAmt, supplynumber: supplynumber ,gstinId: gstinId, fp: fp},
+                        success: function (data) {
+                            if (data) {
+                                currentObject.parents("tr").remove();
+                                alert('Deleted Succesfully');
+                            } else {
+                                alert('Failed !');
+                            }
+                        },
+                    });
+
+                }
+            });
+        });
+
+        var btnIndexCompTax = $('#tblCompTaxPersons tr').length - 2;
+        $('#btnAddCompTax').on('click', function () {
+            var data = "<tr><td class='text-center'><input type='checkbox' name='CompTaxPersons' value ='" + btnIndexCompTax + "'/></td>";
+            data += "<td><input type='text'  class='form-control' placeholder='0.00' id='txtPosCTP" + btnIndexCompTax + "'/><input type='hidden'  class='form-control' placeholder='0.00' id='txtPosCTPid" + btnIndexCompTax + "'/></td><td><input type='text'  class='form-control' placeholder='0.00' id='txtTaxvalCTP" + btnIndexCompTax + "'/></td><td><input type='text'  class='form-control' placeholder='0.00' id='txtIamtCTP" + btnIndexCompTax + "'/></td></tr>";
+            $('#tblCompTaxPersons').append(data);
+            btnIndexCompTax++;
+        });
+
+        $('#btnRemoveCompTax').on('click', function () {
+            //alert("Success  CompTaxPersons")
+            $("td").find('input[name="CompTaxPersons"]').each(function () {
+                if ($(this).is(":checked")) {
+                    var indexValue = $(this)[0].value;
+                    var gstinId = "@ViewBag.gstinid";
+                    var fp = "@ViewBag.fp";
+                    var pos = $("#txtPosCTP" + indexValue).val();
+                    var detId = $("#txtPosCTPid" + indexValue).val();
+                    var txtVal = $("#txtTaxvalCTP" + indexValue).val();
+                    var iAmt = $("#txtIamtCTP" + indexValue).val();
+                    var supplynumber = 7;
+                    var currentObject = $(this);
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: '/GSTR3BUpload/DeleteInterSup',
+                        data: { pos: pos, detId: detId, txtVal: txtVal, iAmt: iAmt, supplynumber: supplynumber, gstinId: gstinId, fp: fp },
+                        success: function (data) {
+                            if (data) {
+                                currentObject.parents("tr").remove();
+                                alert('Deleted Succesfully');
+                            } else {
+                                alert('Failed !');
+                            }
+                        },
+                    });
+
+                }
+            });
+        });
+        debugger;
+        $('#btnSumbit').on('click', function () {
+
+            //-----Unregistered Person
+            var rowCountUrP = $('#tblUnregPerson tr').length - 2;
+
+            var TBL_GSTR3B_inter_sup_unreg_det = [];
+
+            for (i = 0; i < rowCountUrP; i++)
+            {
+                var sendData = {};
+                var pos = $("#txtSpUnreg" + i).val() == "" ? 0 : $("#txtSpUnreg" + i).val();
+                var Id = $("#txtSpUnregid" + i).val() == "" ? 0 : $("#txtSpUnregid" + i).val();
+                var txvalue = $("#txtTtvUnreg" + i).val() == "" ? 0 : $("#txtTtvUnreg" + i).val();
+                var iamt = $("#txtItUnreg" + i).val() == "" ? 0 : $("#txtItUnreg" + i).val();
+                if (pos == "0" && txvalue== "0" && iamt== "0")
+                {
+
+                }
+                else{
+                sendData['pos'] = pos;
+                sendData['txval'] = txvalue;
+                sendData['iamt'] = iamt;
+                sendData['Id'] = Id;
+                TBL_GSTR3B_inter_sup_unreg_det.push(sendData);
+                }
+            }
+
+            //----------- CompTaxPersons
+
+            var rowCountCtP = $('#tblCompTaxPersons tr').length - 2;
+
+
+
+            var TBL_GSTR3B_inter_sup_comp_det = [];
+
+            for (j = 0; j < rowCountCtP; j++) {
+                var sendData1 = {};
+                var pos1 = $("#txtPosCTP" + j).val() == "" ? 0 : $("#txtPosCTP" + j).val();
+                var id = $("#txtPosCTPid" + j).val() == "" ? 0 : $("#txtPosCTPid" + j).val();
+                var txvalue1 = $("#txtTaxvalCTP" + j).val() == "" ? 0 : $("#txtTaxvalCTP" + j).val();
+                var iamt1 = $("#txtIamtCTP" + j).val() == "" ? 0 : $("#txtIamtCTP" + j).val();
+                if (pos1 == "0" && txvalue1 == "0" && iamt1 == "0") {
+
+                }
+                else {
+                    sendData1['pos'] = pos1;
+                    sendData1['txval'] = txvalue1;
+                    sendData1['iamt'] = iamt1;
+                    sendData1['Id'] = id;
+                    TBL_GSTR3B_inter_sup_comp_det.push(sendData1);
+                }
+            }
+
+            //-------------- Uin Holders
+
+
+            var rowCountUin = $('#tblUinHolders tr').length - 2;
+
+            var TBL_GSTR3B_inter_sup_uin_det = [];
+
+            for (k = 0; k < rowCountUin; k++) {
+                var sendData2 = {};
+                var pos2 = $("#txtPosUin" + k).val() == "" ? 0 : $("#txtPosUin" + k).val();
+                var Id = $("#txtPosUinid" + k).val() == "" ? 0 : $("#txtPosUinid" + k).val();
+                var txvalue2 = $("#txtTxvalUin" + k).val() == "" ? 0 : $("#txtTxvalUin" + k).val();
+                var iamt2 = $("#txtIamtUin" + k).val() == "" ? 0 : $("#txtIamtUin" + k).val();
+
+                if (pos2 == "0" && txvalue2 == "0" && iamt2 == "0") {
+
+                }
+                else
+                {
+                    sendData2['pos'] = pos2;
+                    sendData2['txval'] = txvalue2;
+                    sendData2['iamt'] = iamt2;
+                    sendData2['Id'] = Id;
+                    TBL_GSTR3B_inter_sup_uin_det.push(sendData2);
+                }
+            }
+
+            //--------
+            var gstinid = 1;
+            var gstr3bid = "1";
+            var data = {
+                "Common": {
+                    "Gstinid": "@ViewBag.gstinid",
+                    "Fp": "@ViewBag.fp"
+                },
+                "TBL_GSTR3B_inter_sup_uin_det": TBL_GSTR3B_inter_sup_uin_det,
+                "TBL_GSTR3B_inter_sup_comp_det": TBL_GSTR3B_inter_sup_comp_det,
+                "TBL_GSTR3B_inter_sup_unreg_det": TBL_GSTR3B_inter_sup_unreg_det
+            };
+
+
+            console.log(data);
+            var stringJson=JSON.stringify(data);
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/GSTR3BUpload/SaveInterSup',
+                data: { jsonn: stringJson },
+                success: function (jsonn) {
+                    if (jsonn) {
+                        alert('Updated Succesfully');
+                    } else {
+                        alert('Failed !');
+                    }
+                },
+            });
+
+            //console.log(data);
+
+        });
+
+
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: '/GSTR3BUpload/GetInterStateSupplyById',
+            data: {gstinid:"@ViewBag.gstinid",
+                fp: "@ViewBag.fp"},
+            success: function (json) {
+                if (json) {
+                    console.log(json)
+                    $.each(json.TBL_GSTR3B_inter_sup_comp_det, function (index, item) {
+
+                        $("#txtPosCTP" + index).val(item.pos);
+                        $("#txtPosCTPid" + index).val(item.Id);
+                        $("#txtTaxvalCTP" + index).val(item.txval);
+                        $("#txtIamtCTP" + index).val(item.iamt);
+
+                        if (index > 0) {
+                            var data = "<tr><td class='text-center'><input type='checkbox' name='CompTaxPersons' value ='" + index + "'/></td>";
+                            data += "<td><input type='text' id='txtPosCTP" + index + "' value='" + item.pos + "' class='form-control' placeholder='0.00'/><input type='hidden' id='txtPosCTPid" + index + "' value='" + item.Id + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtTaxvalCTP" + index + "' value='" + item.txval + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtIamtCTP" + index + "' value='" + item.iamt + "' class='form-control' placeholder='0.00'/></td></tr>";
+                            $('#tblCompTaxPersons').append(data);
+                        }
+
+                    });
+
+                    $.each(json.TBL_GSTR3B_inter_sup_uin_det, function (index1, item1) {
+
+                        $("#txtPosUin" + index1).val(item1.pos);//pos
+                        $("#txtPosUinid" + index1).val(item1.Id);
+                        $("#txtTxvalUin" + index1).val(item1.txval);
+                        $("#txtIamtUin" + index1).val(item1.iamt);//iamt
+
+                        if (index1 > 0) {
+                            var data1 = "<tr><td class='text-center'><input type='checkbox' name='UinHolder'  value ='" + index1 + "'/></td>";
+                            data1 += "<td><input type='text' id='txtPosUin" + index1 + "' value='" + item1.pos + "' class='form-control' placeholder='0.00'/><input type='hidden' id='txtPosUinid" + index1 + "' value='" + item1.Id + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtTxvalUin" + index1 + "' value='" + item1.txval + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtIamtUin" + index1 + "' value='" + item1.iamt + "' class='form-control' placeholder='0.00'/></td></tr>";
+                            $('#tblUinHolders').append(data1);
+                        }
+
+                    });
+
+                    $.each(json.TBL_GSTR3B_inter_sup_unreg_det, function (index2, item2) {
+
+                        $("#txtSpUnreg" + index2).val(item2.pos);//iamt
+                        $("#txtSpUnregid" + index2).val(item2.Id);
+                        $("#txtTtvUnreg" + index2).val(item2.txval);//pos
+                        $("#txtItUnreg" + index2).val(item2.iamt);//txval
+
+                        if (index2 > 0) {
+                            var data2 = "<tr><td class='text-center'><input type='checkbox' name='UnregPerson' value ='" + index2 + "'/></td>";
+                            data2 += "<td><input type='text' id='txtSpUnreg" + index2 + "' value='" + item2.pos + "' class='form-control' placeholder='0.00'/><input type='hidden' id='txtSpUnregid" + index2 + "' value='" + item2.Id + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtTtvUnreg" + index2 + "' value='" + item2.txval + "' class='form-control' placeholder='0.00'/></td><td><input type='text' id='txtItUnreg" + index2 + "' value='" + item2.iamt + "' class='form-control' placeholder='0.00'/></td></tr>";
+                            $('#tblUnregPerson').append(data2);
+                        }
+
+                    });
+
+                } else {
+                    alert('failed');
+                }
+            },
+        });
+
+        $('.collapsed').on('click', function () {
+            $(this).find('i').toggleClass('glyphicon-plus collapsed glyphicon-minus')
+        });
+
+    });
+
+    function validateFloatKeyPress(el, evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        var number = el.value.split('.');
+        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        //just one dot (thanks ddlab)
+        if (number.length > 1 && charCode == 46) {
+            return false;
+        }
+        //get the carat position
+        var caratPos = getSelectionStart(el);
+        var dotPos = el.value.indexOf(".");
+        if (caratPos > dotPos && dotPos > -1 && (number[1].length > 1)) {
+            return false;
+        }
+        return true;
+    }
+
+    function getSelectionStart(o) {
+        if (o.createTextRange) {
+            var r = document.selection.createRange().duplicate()
+            r.moveEnd('character', o.value.length)
+            if (r.text == '') return o.value.length
+            return o.value.lastIndexOf(r.text)
+        } else return o.selectionStart
+    }
+
+</script>
+
+@*txtSpUnreg
+    txtTtvUnreg
+    txtItUnreg*@
+<script>
+    function Delete() {
+        var gstinid = $('#gstinid').val();
+        var fp = $('#fp').val();
+        $.ajax({
+            type: "GET",
+            url: '/GSTR3BUpload/Deleteintersup',
+            data: { gstinid: gstinid, fp: fp },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    }
+</script>
+<script>
+   
+
+</script>

@@ -1,0 +1,285 @@
+﻿
+
+
+
+@using (Html.BeginForm("InvoiceDetail", "GSTR1", FormMethod.Post, new { @id = "InvoiceDetailForm", @name = "InvoiceDetailForm" }))
+{
+
+   
+    <div id="content">
+
+       
+        <div class="row">
+
+           
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                   
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR 1
+                    <span>
+                        >&nbsp;
+                        Invoice Detail
+                    </span>
+                </h1>
+            </div>
+           
+
+        </div>
+       
+        <section id="widget-grid" class="">
+
+           
+            <div class="row">
+
+  <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>B2CS Invoice Data </h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="period" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.Period" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Action</label>
+                                                <div class="col-xs-9 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlActionType", ViewBag.ActionList as SelectList, "Select Action", new { @class = "form-control", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="InvIds" id="InvIds" />
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="InvIdsOther" id="InvIdsOther" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                      
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    
+                    <!-- end widget -->
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>B2CS Invoice Data List</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                
+
+                                    <div id="tabs" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                        <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                           
+                                            @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                            {
+                                                <li>
+                                                    <a href="#tabs-1">B2CS-Manual</a>
+                                                </li>
+                                            }
+                                           
+                                            @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                            {
+                                                <li>
+                                                    <a href="#tabs-2">B2CS-Other</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                       
+                                        @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                        {
+                                            <div id="tabs-1">
+                                                <br /><br />
+                                               
+                             @{Html.RenderPartial("_Gstr1B2CSInv");}
+                                            </div>
+                                                    }
+                                       
+                                        @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                        {
+                                            <div id="tabs-2">
+                                                <br /><br />
+                                                @{Html.RenderPartial("_Gstr1B2CSInvOther");}
+                                            </div>
+                                                    }
+                                    </div>
+
+                                   
+
+                                    
+                                
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <!-- end widget -->
+
+                </article>
+
+            </div>
+
+            
+        </section>
+      
+
+    </div>
+   
+                                        
+                                        }
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        //TempData["Message"] = null;
+    </script>
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#InvoiceDetailForm').validate({
+                // Rules for form validation
+                rules: {
+                    //ddlGSTINNo: {
+                    //    required: true
+                    //},
+                    //ddlActionType: {
+                    //    required: true
+                    //},
+                    period: {
+                        required: true
+                    },
+                },
+
+                // Messages for form validation
+                messages: {
+                    //ddlGSTINNo: {
+                    //    required: 'Please select GSTIN No'
+                    //},
+                    //ddlActionType: {
+                    //    required: 'Please select Action'
+                    //},
+                    period: {
+                        required: 'Please Select Period'
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+
+        $(document).ready(function () {
+
+
+            $('#tabs').tabs();
+            $('#tab').tabs();
+            /*
+             *  Simple tabs adding and removing
+             */
+
+
+
+        })
+    </script>
+
+
+}
+

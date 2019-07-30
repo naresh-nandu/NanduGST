@@ -1,0 +1,312 @@
+﻿@using SmartAdminMvc.Models;
+@*@model TBL_GSTR_ACTION_TYPE*@
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+
+
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+    window.onload = function () {
+
+        $(document).ready(function () {
+            $('#myOTPModal').modal();
+
+        });
+
+    }
+    </script>
+}
+
+
+<!-- MAIN CONTENT -->
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Report
+                <span>
+                    >&nbsp;
+                    Reconcilation Log
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Reconcilation Log</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                @using (Html.BeginForm("ReconcilationLog", "Report", FormMethod.Post, new { @id = "ReconcilationLogForm", @name = "ReconcilationLogForm" }))
+                                {
+                                    <fieldset>
+
+                                        @*@*@Html.AntiForgeryToken()*@*@
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="label">GSTR</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTR", ViewBag.GSTRList as SelectList, "Select GSTR", new { @class = "form-control" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Action</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlActionType", ViewBag.ActionList as SelectList, "Select", new { @class = "form-control" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                @*<label class="label">Website</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-globe"></i>
+                                                        <input type="url" name="url">
+                                                    </label>*@
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="Export" value="Export" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                            Export Reconcilation Log
+                                        </button>
+                                        @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+                                    </footer>
+                                }
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2>@ViewBag.TitleHeaders</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-12">
+                                            <label class="label"></label>
+                                            <div class="table-responsive">
+                                                @if (@Model != null)
+                                                {
+                                                    @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover",
+                                                     mode: WebGridPagerModes.All, firstText: "<< First", previousText: "< Prev",
+                                                     nextText: "Next >", lastText: "Last >>");
+                                                }
+                                            </div>
+                                        </section>
+                                    </div>
+                                </fieldset>
+
+                                <footer></footer>
+
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+<!-- END MAIN CONTENT -->
+@using (Html.BeginForm("Save", "GSTR1", FormMethod.Post))
+{
+    <div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">GST Authentication</h4>
+                </div>
+                <div class="modal-body custom-scroll terms-body">
+                    <div id="left">
+                        <input type="text" id="OTP" name="OTP" class="form-group" placeholder="Enter OTP" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" name="OTPSubmit" value="GSTR 1 Save" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                            Submit
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+}
+
+@if (TempData["AuthMsg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["AuthMsg"])));
+    </script>
+}
+
+@if (TempData["SaveResponse"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["SaveResponse"])));
+    </script>
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        var $checkoutForm = $('#ReconcilationLogForm').validate({
+            // Rules for form validation
+            rules: {
+                ddlGSTR: {
+                    required: true
+                },
+                ddlActionType: {
+                    required: true
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+                ddlGSTR: {
+                    required: 'Please select GSTIN No'
+                },
+                ddlActionType: {
+                    required: 'Please select Action'
+                }
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+
+    })
+
+    </script>
+}

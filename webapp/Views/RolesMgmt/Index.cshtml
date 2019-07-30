@@ -1,0 +1,232 @@
+﻿
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+
+<style type="text/css">
+    ul {
+        list-style: none;
+    }
+
+        ul li ul {
+            display: none;
+        }
+
+    input[type=checkbox]:Checked ~ ul {
+        display: block;
+    }
+</style>
+
+
+<div id="content">
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Roles
+                <span>
+                    >&nbsp;
+                    Management
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                @{Html.RenderPartial("_Roles");}
+            </article>
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                @{Html.RenderPartial("_Resources");}
+            </article>
+        </div>
+    </section>
+</div>
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+
+    </script>
+
+    TempData["Message"] = null;
+}
+
+
+
+
+@section pagespecific{
+    <script type="text/javascript">
+        function checkSpcialChar(event) {
+            if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+                event.returnValue = false;
+                return;
+            }
+            event.returnValue = true;
+        }
+    </script>
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+
+
+            $("#selectall").click(function () {
+                //alert("just for check");
+                if (this.checked) {
+                    $('.checkBoxClass').each(function () {
+                        this.checked = true;
+                    })
+                } else {
+                    $('.checkBoxClass').each(function () {
+                        this.checked = false;
+                    })
+                }
+            });
+
+            //$(".checkBoxClass").click(function () {
+            //    //alert("just for check");
+            //    if (this.checked) {
+            //        $(this).find('.checkBoxClass').each(function () {
+            //            this.checked = true;
+            //        })
+            //    }
+            //    //else {
+            //    //    $('.checkBoxClass').each(function () {
+            //    //        this.checked = false;
+            //    //    })
+            //    //}
+            //});
+            $(".checkBoxClass").click(function () {
+                $('li :checkbox').on('click', function () {
+                    var $chk = $(this),
+                        $li = $chk.closest('li'),
+                        $ul, $parent;
+                    if ($li.has('ul')) {
+                        $li.find(':checkbox').not(this).prop('checked', this.checked)
+                    }
+                    do {
+                        $ul = $li.parent();
+                        $parent = $ul.siblings(':checkbox');
+                        if ($chk.is(':checked')) {
+                            $parent.prop('checked', $ul.has(':checkbox:not(:checked)').length == 0)
+                        } else {
+                            $parent.prop('checked', true)
+                        }
+                        $chk = $parent;
+                        $li = $chk.closest('li');
+                    } while ($ul.is(':not(.checkBoxClass)'));
+                });
+            });
+
+            var $checkoutForm = $('#role-form').validate({
+                // Rules for form validation
+                rules: {
+                    name: {
+                        required: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    name: {
+                        required: 'Please enter Role name'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+            // DO NOT REMOVE : GLOBAL FUNCTIONS!
+            var $checkoutForm = $('#resource-form').validate({
+                // Rules for form validation
+                rules: {
+                    ids: {
+                        required: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    ids: {
+                        required: 'Please select one or more resources'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertBefore(element.parent());
+                }
+            });
+        })
+
+    </script>
+
+}
+
+
+
+

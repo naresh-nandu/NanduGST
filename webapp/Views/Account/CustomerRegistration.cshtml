@@ -1,0 +1,459 @@
+﻿@{
+    ViewBag.Title = "WeP GST Panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model SmartAdminMvc.Models.TBL_Customer
+@{
+    ViewBag.PageId = "extr-page";
+}
+
+@section topright{
+    <span id="extr-page-header-space"> <span class="hidden-mobile">Already registered?</span> <a href="@Url.Action("login", "account")" class="btn btn-danger" style="border-radius:13px;">Sign In</a> </span>
+}
+
+<script src="~/Content/ownjs/own_validations.js"></script>
+
+<div id="content" class="container">
+    <div class="row">
+        @{ Html.RenderPartial("_LoginText"); }
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+            @using (Html.BeginForm("CustomerRegistration", "Account", FormMethod.Post, new { encType = "multipart/form-data", @class = "smart-form client-form", id = "smart-form-register", @name = "smart-form-register" }))
+            {
+                <div class="well no-padding">
+                    <header>
+                        Registration
+                    </header>
+                    @*@Html.AntiForgeryToken()*@
+                    @Html.ValidationBootstrap()
+                    <fieldset>
+                        <section>
+                            <label class="input">
+                                <i class="icon-append fa fa-user" style="color:cornflowerblue;"><i style="color:red;">*</i></i>
+                                <input type="text" name="name" placeholder="Full Name" id="name" autocomplete="off" value="@ViewBag.name">
+                                <b class="tooltip tooltip-bottom-right">Enter Name Of The Person</b>
+                            </label>
+                        </section>
+                        <section>
+                            <label class="input">
+                                <i class="icon-append fa fa-suitcase" style="color:cornflowerblue;"><i style="color:red;">*</i></i>
+                                <input type="text" name="designation" placeholder="Designation" id="designation" autocomplete="off" value="@ViewBag.designation">
+                                <b class="tooltip tooltip-bottom-right">Enter Designation Of The Person</b>
+                            </label>
+                        </section>
+                        <section>
+                            <label class="input">
+                                <i class="icon-append fa fa-briefcase" style="color:cornflowerblue;"><i style="color:red;">*</i></i>
+                                <input type="text" name="company" placeholder="Company Name" id="company" autocomplete="off" value="@ViewBag.company">
+                                <b class="tooltip tooltip-bottom-right">Enter Company Name Of The Person</b>
+                            </label>
+                        </section>
+                        <section>
+                            <label class="input">
+                                <i class="icon-append fa fa-envelope" style="color:cornflowerblue;"><i style="color:red;">*</i></i>
+                                <input type="email" name="email" placeholder="Authorized Person Email" id="email" autocomplete="off" value="@ViewBag.email">
+                                <b class="tooltip tooltip-bottom-right">Enter Authorized Person Email Address</b>
+                            </label>
+                        </section>
+
+                        <section>
+                            <label class="input">
+                                <i class="icon-append fa fa-phone" style="color:cornflowerblue;"><i style="color:red;">*</i></i>
+                                <input type="text" name="mobile" placeholder="Authorized Person Mobile No" id="mobile" maxlength="10" autocomplete="off" value="@ViewBag.mobile">
+                                <b class="tooltip tooltip-bottom-right">Authorized Person Mobile Number</b>
+                            </label>
+                        </section>
+                        <section>
+                            <label class="input">
+                                <i class="icon-append fa fa-bank" style="color:cornflowerblue;"><i style="color:red;">*</i></i>
+                                @*@Html.TextBox("Address", "", "", new { @TextBoxMode = "MultiLine", @value = ViewBag.Address, @placeholder = "Company Address", @class = "form-control", @name = "Address", @autocomplete = "off" })*@
+                                <input type="text" name="Address" id="Address" style="height:40px;" value="@ViewBag.Address" placeholder="Company Address" class="form-control" autocomplete="off" />
+                            </label>
+                        </section>
+                    </fieldset>
+                    <fieldset>
+                        <section>
+                            <label class="input">
+                                <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                <input type="text" name="gstusername" placeholder="GSTIN Username" id="gstusername">
+                            </label>
+                        </section>
+                        <div class="row">
+                            <section class="col col-6">
+                                <label class="input">
+                                    <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                    <input type="text" name="gst" placeholder="GSTIN" maxlength="15" id="gst" value="@ViewBag.gst" style="text-transform:uppercase" onchange="GSTINNo()" onkeypress="return checkSpcialChar(event)">
+                                </label>
+                            </section>
+                            <section class="col col-6">
+                                <label class="input">
+                                    <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                    <input type="password" name="cgst" placeholder="Confirm GSTIN" maxlength="15" id="cgst" onchange="GSTINNo()" style="text-transform:uppercase" value="@ViewBag.cgst" onkeypress="return checkSpcialChar(event)">
+                                </label>
+                            </section>
+                        </div>
+
+                        <div class="row">
+                            <section class="col col-6">
+                                <label class="input">
+                                    <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                    <input type="text" name="pan" placeholder="PAN No" maxlength="10" id="pan" readonly value="@ViewBag.pan">
+                                </label>
+                            </section>
+                            <section class="col col-6">
+                                <label class="input">
+                                    <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+                                    <input type="number" name="statecode" placeholder="State Code" maxlength="2" id="statecode" readonly value="@ViewBag.statecode">
+                                </label>
+                            </section>
+                        </div>
+                    </fieldset>
+
+                    <fieldset style="display:none">
+                        <section>
+                            <label class="input">
+                                Do you have Aadhaar Number ?
+                            </label>
+                        </section>
+                        <section>
+                            <div class="inline-group">
+                                <label class="radio">
+                                    <input type="radio" id="chkYes" name="chkAadhaar" value="yes" checked>
+                                    <i></i>Yes
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" id="chkNo" name="chkAadhaar" value="no">
+                                    <i></i>No
+                                </label>
+                            </div>
+                        </section>
+                        <div class="row" id="dvAadhaar">
+                            <section class="col col-6">
+                                <label class="input">
+                                    <i class="icon-append">
+                                        @if (ViewBag.AadhaarImage == "Correct")
+                                        {
+                                            <img id="CorrectImg" alt="Correct" title="Valid Aadhaar No." src="~/Content/img/Correct_img.png"
+                                                 width="22" height="22" />
+                                        }
+                                        @if (ViewBag.AadhaarImage == "Wrong")
+                                        {
+                                            <img id="WrongImg" alt="Wrong" title="InValid Aadhaar No." src="~/Content/img/wrong_img.png"
+                                                 width="22" height="22" />
+                                        }
+                                    </i>
+                                    <input type="text" name="AadhaarNo" placeholder="Aadhaar No" maxlength="12" id="AadhaarNo" value="@ViewBag.AadhaarNo" autocomplete="off" onchange="submit();" />
+                                </label>
+                            </section>
+                            <section class="col col-6">
+                                <label class="input">
+                                    @Html.TextBox("OTP", "", "", new { @value = ViewBag.OTP, @maxlength = 6, @placeholder = "Enter OTP", @class = "form-control", @name = "OTP", autopostback = "true", onchange = "submit();", @autocomplete = "off" })
+                                </label>
+                            </section>
+                        </div>
+
+
+                        @if (@ViewBag.strOTPMsg != null)
+                        {
+                            <section class="alert alert-success">
+                                <label class="input">
+                                    @ViewBag.strOTPMsg
+                                </label>
+                            </section>
+                        }
+
+                    </fieldset>
+
+
+                    @{Html.RenderPartial("_UploadCustomeDoc");}
+
+                    <fieldset>
+                        <section style="display:none">
+                            <label class="input">
+                                <i class="icon-append fa fa-user-md" style="color:#a90329;">*</i>
+                                @*@Html.TextBox("CustRefNo", "", "", new { @value = ViewBag.CustRefNo, @placeholder = "Customer Reference No", @class = "form-control", @name = "CustRefNo", @autocomplete = "off" })*@
+                                <input type="text" id="CustRefNo" name="CustRefNo" placeholder="Customer Reference No" class="form-control" value="@ViewBag.CustRefNo" autocomplete="off" readonly>
+                            </label>
+                        </section>
+                        <section>
+                            <label class="checkbox">
+                                <input type="checkbox" name="terms" id="terms">
+                                <i></i>I agree with the <a href="#" data-toggle="modal" data-target="#myModal"> Terms and Conditions </a>
+                            </label>
+                        </section>
+                    </fieldset>
+                    <footer>
+                        <button type="submit" name="Register" id="Register" value="Register" class="btn btn-primary" style="border-radius:13px;">
+                            Register
+                        </button>
+                    </footer>
+                    <div class="message">
+                        <i class="fa fa-check"></i>
+                        <p>
+                            Thank you for your registration!
+                        </p>
+                    </div>
+                    @if (ViewBag.Success != null)
+                    {
+                        <div id="aler">@ViewBag.Success</div>
+                    }
+                    else
+                    {
+                        <div id="aler">@ViewBag.Success</div>
+                    }
+
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@{ Html.RenderPartial("_TermsAndConditions"); }
+
+<script type="text/javascript">
+    function copyText() {
+        GST = document.getElementById("gst").value;
+        PAN = document.getElementById("pan");
+        SCODE = document.getElementById("statecode");
+        if (GST != null) {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+            if (res) {
+                statecode = GST.substr(0, 2);
+                pan = GST.substr(2, 10);
+                if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                    alert("State code should be within the range of 00 to 37");
+                    SCODE.value = "";
+                    PAN.value = pan;
+                }
+                else {
+                    SCODE.value = statecode;
+                    PAN.value = pan;
+                }
+            }
+            else {
+                SCODE.value = "";
+                PAN.value = "";
+                alert("GSTIN is not in correct format.");
+            }
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+        $("input[name='chkAadhaar']").click(function () {
+            if ($("#chkYes").is(":checked")) {
+                $("#dvAadhaar").show();
+                $("#dvOTP").show();
+            } else {
+                $("#dvAadhaar").hide();
+                $("#dvOTP").hide();
+            }
+        });
+    });
+
+    // Characters Only
+    //$('#name').bind('keypress', textInput);
+
+    $('#name').on('keypress', function (e) {
+
+        var regex = new RegExp("^[a-zA-Z ]+$");
+        var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+
+        var keystobepassedout = "ArrowLeftArrowRightDeleteBackspaceTab";
+        if (keystobepassedout.indexOf(e.key) != -1) {
+            return true;
+        }
+
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
+
+    });
+
+
+    document.getElementById('mobile').onkeydown = function (e) {
+        var key = e.keyCode ? e.keyCode : e.which;
+        if (isNaN(String.fromCharCode(key)) && key != 8 && key != 46) return false;
+    }
+
+    // Numeric Only
+    //$('#mobile').bind('keypress', numericInput);
+
+    $('#AadhaarNo').bind('keypress', numericInput);
+
+    $('#OTP').bind('keypress', numericInput);
+
+</script>
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["msg"]");
+        };
+    </script>
+}
+
+<script>
+
+
+    $(document).ready(function () {
+        $("#mobile").numeric();
+    });
+
+    function checkSpcialChar(event) {
+        if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+            event.returnValue = false;
+            return;
+        }
+        event.returnValue = true;
+    }
+
+
+</script>
+
+@section pagespecific{
+    <script type="text/javascript">
+        // Model i agree button
+        $("#i-agree").click(function () {
+            var $this = $("#terms");
+            if ($this.checked) {
+                $('#myModal').modal('toggle');
+            } else {
+                $this.prop('checked', true);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+        // Validation
+        $(function () {
+
+
+            // Validation
+            $("#smart-form-register").validate({
+                // Rules for form validation
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    designation: {
+                        required: true
+                    },
+                    company: {
+                        required: true
+                    },
+                    gstusername: {
+                        required: true
+                    },
+                    gst: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+                    },
+                    cgst: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15,
+                        equalTo: '#gst'
+                    },
+                    pan: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+                    statecode: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 2
+                    },
+                    email: {
+                        required: true
+                    },
+                    mobile: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+
+                    gender: {
+                        required: true
+                    },
+                    terms: {
+                        required: true
+                    },
+                    //files: {
+                    //    required: true
+                    //},
+                    //files1: {
+                    //    required: true
+                    //},
+
+                    Address: {
+                        required: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+
+                    name: {
+                        required: 'Please enter Your Name'
+                    },
+                    designation: {
+                        required: 'Please Enter Your Designation'
+                    },
+                    company: {
+                        required: 'Please Enter Your Company Name'
+                    },
+                    gstusername: {
+                        required: 'Please Enter GSTIN UserName'
+                    },
+                    gst: {
+                        required: 'Please enter GSTIN Number',
+                    },
+                    cgst: {
+                        required: 'Please enter your GSTIN Number one more time',
+                        equalTo: 'Please enter the same GSTIN Number as above'
+                    },
+                    pan: {
+                        required: 'Please enter your GSTIN Number'
+                    },
+                    statecode: {
+                        required: 'Please enter first 2 letters as a numeric in GSTIN'
+                    },
+                    email: {
+                        required: 'Please enter Email Address',
+                        email: 'Please Enter Correct Email Address'
+                    },
+                    mobile: {
+                        required: 'Please enter your Mobile Number'
+                    },
+
+                    terms: {
+                        required: 'You must agree with Terms and Conditions'
+                    },
+                    //files: {
+                    //    required: 'Please Upload PAN Document'
+                    //},
+                    //files1: {
+                    //    required: 'Please Upload GSTIN Document'
+                    //},
+                    Address: {
+                        required: 'Please enter Address'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+}

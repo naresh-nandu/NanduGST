@@ -1,0 +1,123 @@
+﻿<br />
+<div class="smart-form">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                   
+                    <th>HSN<span style="color:red">*</span></th>
+                    <th>Item Description</th>
+                    <th>Product Name</th>
+                    <th>Qty<span style="color:red">*</span></th>
+                    <th>UQC<span style="color:red">*</span></th>
+                    <th>Unit Price<span style="color:red">*</span></th>
+                   
+                    <th>Taxable Value<span style="color:red">*</span></th>
+                    <th>Rate(%)</th>
+                    <th>IGST Amount</th>
+                    <th>CGST Amount</th>
+                    <th>SGST  Amount</th>
+                    <th>CESS Amount</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                   
+                    <td>
+                        <label class="input" style="width:60px">
+                            <input type="text" name="HSN" id="hsn" onblur = "taxableCalculation();" autocomplete="off">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:80px">
+                            <input type="text" name="itemdesc" id="itemdesc"  style="width:80px" maxlength="50">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:80px">
+                            <input type="text" name="productname" id="productname" style="width:80px" maxlength="50">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:60px">
+                            <input type="text" name="qty" id="qty" onblur="taxableCalculation();" onkeypress="return decimalInput(event)" class="floatinput">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:60px">
+                            @Html.DropDownList("unit", ViewBag.Units as SelectList, "Select", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:80px">
+                            <input type="text" name="unitprice" id="unitprice" onblur="taxableCalculation();" onkeypress="return decimalInput(event)" class="floatinput" step=".01">
+                        </label>
+                    </td>
+                   
+                    <td>
+                        <label class="input" style="width:100px">
+                            <input type="text" name="taxablevalue" id="taxablevalue" value="0"  readonly style="background-color:#d9d9d9;width:100px" class="floatinput" step=".01">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="rate" id="rate" value="0"    readonly style="background-color:#d9d9d9;width:50px" class="floatinput" step=".01">
+                            @*@Html.DropDownList("rate", new SelectList(ViewBag.Rates, "ratevalue", "ratevalue"), "--Select--", new { @Class = "form-control input-sm", @id = "rate", @onchange = "taxableCalculation();" })*@
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="iamount" value="0"  id="iamount"  readonly style="background-color:#d9d9d9;width:70px"  class="floatinput" step=".01">
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="camount" value="0"  id="camount"  readonly style="background-color:#d9d9d9;width:70px" class="floatinput" step=".01">
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input" >
+                            <input type="text" name="samount" value="0"  id="samount"  readonly style="background-color:#d9d9d9;width:70px" class="floatinput" step=".01">
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input" width="100px">
+                            <input type="text" name="csamount"  id="csamount" value="0"  style="width:100px;"  class="floatinput" step=".01">
+                        </label>
+                    </td>
+
+                  
+             
+                    
+                </tr>
+                <tr>
+                    <td colspan="13" align="center">
+                        <button type="Submit" id="btnSubmitAdd" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+
+<script type="text/javascript">
+
+    $('.floatinput').on('keypress', function (e) {
+        return validateFloatKeyPress(this, e);
+
+    });
+    function decimalInput(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>

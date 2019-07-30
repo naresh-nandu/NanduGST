@@ -1,0 +1,555 @@
+﻿
+@model IEnumerable<SmartAdminMvc.Models.TBL_Cust_GSTIN>
+
+
+@{
+    ViewBag.Title = "WeP GST PANEL";
+    var grid = new WebGrid(source: Model, rowsPerPage: 10);
+
+
+}
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["Message"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        oTableStaticFlow = $('#example').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [5]
+            }],
+        });
+
+    });
+
+
+    $($(".sorting_asc").get(5)).removeClass("sorting_asc");
+    $($(".sorting_asc").get(6)).removeClass("sorting_asc");
+
+    function editOrder(GSTINId) {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to Edit this Record?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Edit",
+            confirmButtonColor: "#ec6c62"
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                var Id = GSTINId;
+
+                window.location.href = "/GSTINConfiguration/Edit/" + Id;
+
+            }
+        });
+    }
+
+    function deleteOrder(GSTINId) {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to delete this Record?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Delete",
+            confirmButtonColor: "#ec6c62"
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                $.ajax({
+                    url: "/GSTINConfiguration/Delete/",
+                    data: { "Id": GSTINId },
+                    type: "GET"
+                })
+                    .done(function (data) {
+
+                        window.location.href = '/GSTINConfiguration/GSTIN';
+
+                        sweetAlert
+                            ({
+                                title: "",
+                                text: "Deleted Successfully",
+                                type: "success"
+                            },
+                                function () {
+                                    //window.location.href = '/BuyerMgmt/Index';
+                                });
+                    })
+                    .error(function (data) {
+                        swal("Oops", "We couldn't connect to the server!", "error");
+                    });
+
+
+            }
+        });
+    }
+
+</script>
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    
+</style>
+
+<style>
+    input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+</style>
+
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                GSTIN Configuration
+                <span>
+                    >&nbsp;
+                    GSTIN
+                </span>
+            </h1>
+        </div>
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">GSTIN Registration </h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                <form action="@Url.Action("GSTIN", "GSTINConfiguration")" method="POST" id="smart-form-register" class="smart-form" autocomplete="off">
+
+
+                                    @*@Html.AntiForgeryToken()*@
+                                    @Html.ValidationSummary(true)
+
+
+                                    <fieldset>
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">GSTIN Username <i class="" style="color:red;">*</i></label>
+                                            <label class="input">
+                                                <input type="text" name="gstusername" placeholder="GSTIN Username" id="gstusername">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">GSTIN <i class="" style="color:red;">*</i></label>
+                                            <label class="input">
+                                                <input type="text" name="gst" placeholder="GSTIN" id="gst" maxlength="15" onblur="GSTINNo()" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">PAN </label>
+                                            <label class="input">
+                                                <input type="text" name="pan" placeholder="PAN" id="pan" readonly style="text-transform:uppercase">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">State Code </label>
+                                            <label class="input">
+                                                <input type="number" name="statecode" placeholder="State Code" id="statecode" readonly style="-moz-appearance: textfield;text-transform:uppercase">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">Address<i class="" style="color:red;">*</i></label>
+                                            <label class="input">
+                                                <input type="text" name="address" placeholder="Address" id="address">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3" style="display:none;">
+                                            <label style="font-weight:bold;font-size:15px;">EWB User ID</label>
+                                            <label class="input">
+                                                <input type="text" name="ewbuserid" placeholder="EWB UserId" id="ewbuserid" value="00AEGPG1699M000">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">EWB Username</label>
+                                            <label class="input">
+                                                <input type="text" name="ewbusername" placeholder="EWB UserName" id="ewbusername">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label style="font-weight:bold;font-size:15px;">EWB Password</label>
+                                            <label class="input">
+                                                <input type="text" name="ewbpassword" placeholder="EWB Password" id="ewbpassword">
+                                            </label>
+                                        </section>
+                                    </fieldset>
+
+                                    <footer>
+@if (Session["Partner_Company"].ToString() != "Hamara Kendra")
+{
+                                        <section>
+                                            <button type="submit" class="btn btn-primary" style="background-color:#496949;border-radius:10px;font-weight:bold;">
+                                                Create
+                                            </button>
+                                        </section>
+}
+                                    </footer>
+                                </form>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">GSTIN List</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                     
+                        @using (Html.BeginForm(new { @Class = "smart-form" }))
+                        {
+                            int i = 1;
+                            <div class="table-responsive">
+
+                                @if (Model != null)
+                                {
+                                    if (Enumerable.Count(Model) > 0)
+                                    {
+
+
+                                        <div class="container-fuild" style="background-color:white;">
+                                            <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>GSTIN Username</th>
+                                                        <th>GSTIN</th>
+                                                        <th>PAN No</th>
+                                                        <th>State Code</th>
+                                                        <th>Address</th>
+                                                        <th>Edit</th>
+                                                        @*<th>Delete</th>*@
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody>
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        <tr>
+                                                            <td>@Convert.ToInt32(i++)</td>
+                                                            <td>@item.GSTINUserName</td>
+                                                            <td>@item.GSTINNo</td>
+                                                            <td>@item.PANNo</td>
+                                                            <td>@item.Statecode</td>
+                                                            <td>@item.Address</td>
+
+
+                                                            <td><input id='Edit' onclick='editOrder("@item.GSTINId")' type='button' value='Edit' class="btn btn-primary" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" /></td>
+                                                            @*<td><input id='Delete' onclick='deleteOrder("@item.GSTINId")' type='button' value='Delete' class="btn btn-danger" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" /></td>*@
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+
+
+                                            </table>
+
+                                        </div>
+                                    }
+
+                                    else
+                                    {
+                                        <div style="text-align:left">
+                                            <br /><br />
+                                            <h3 style="text-align:left !important">No Data Found</h3>
+                                        </div>
+
+                                    }
+                                }
+
+                            </div>
+                                       
+                        }
+
+                    </div>
+
+                </div>
+            </article>
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+
+
+</div>
+
+<script>
+    function checkSpcialChar(event) {
+        if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+            event.returnValue = false;
+            return;
+        }
+        event.returnValue = true;
+    }
+
+
+
+    function copyText() {
+        GST = document.getElementById("gst").value;
+        PAN = document.getElementById("pan");
+        SCODE = document.getElementById("statecode");
+        if (GST != "") {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+            if (res) {
+                var statecode = parseInt(GST.substr(0, 2));
+                if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                    alert("State code should be within the range of 01 to 37");
+                    SCODE.value = "";
+                    PAN.value = GST.substr(2, 10);
+
+                }
+                else {
+                    SCODE.value = statecode;
+                    PAN.value = GST.substr(2, 10);
+                }
+            }
+            else {
+                SCODE.value = "";
+                PAN.value = "";
+                alert("GSTIN is not in correct format.");
+
+            }
+        }
+    }
+
+    //function copyText() {
+    //    GST = document.getElementById("gst");
+    //    PAN = document.getElementById("pan");
+    //    SCODE = document.getElementById("statecode");
+    //    SCODE.value = GST.value.substr(0, 2);
+    //    PAN.value = GST.value.substr(2, 10);
+
+    //}
+</script>
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+
+@section pagespecific{
+    <script type="text/javascript">
+        // Model i agree button
+        $("#i-agree").click(function () {
+            var $this = $("#terms");
+            if ($this.checked) {
+                $('#myModal').modal('toggle');
+            } else {
+                $this.prop('checked', true);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+        // Validation
+        $(function () {
+
+
+            // Validation
+            $("#smart-form-register").validate({
+                // Rules for form validation
+                rules: {
+                    gstusername: {
+                        required: true
+                    },
+                    gst: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+                    },
+                    address: {
+                        required: true
+                    },
+                    statecode: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 2
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    gstusername: {
+                        required: 'Please enter GSTIN Username'
+                    },
+                    gst: {
+                        required: 'Please enter GSTIN',
+                    },
+                    statecode: {
+                        required: 'Please enter the first two characters of GSTIN as Number only',
+                    },
+                    address: {
+                        required: 'Please enter Address',
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+}

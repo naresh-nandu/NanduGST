@@ -1,0 +1,34 @@
+﻿.hideBody { overflow:hidden; }
+
+.PopupLayer { position:absolute;margin:0;padding:0;width:100%;text-align:center;z-index:999999999;display:none; }
+.PopupLayer .PopupLayer_Btn { position:absolute;z-index:101;right:-20px;top:-20px;cursor:pointer; }
+.PopupLayer .PopupLayer_Fore .onScroll { margin:0;padding:0;overflow-x:hidden;overflow-y:auto; }
+.PopupLayer .PopupLayer_Fore .offScroll { margin:0;padding:0;overflow:hidden; }
+.PopupLayer .PopupLayer_Back { position:absolute;margin:0;padding:0;z-index:100;width:100%;top:0px;left:0px;border:none;overflow:hidden;background-color:#000;filter:opacity(alpha=50);opacity:0.5;z-index:99; }
+.PopupLayer .PopupLayer_Fore {
+    position:relative;
+    background-color:#FFFFFF;
+    padding:10px 10px 10px 10px;
+    border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-box-shadow: 2px 3px 48px -4px rgba(82,82,82,1);
+    -moz-box-shadow: 2px 3px 48px -4px rgba(82,82,82,1);
+    box-shadow: 2px 3px 48px -4px rgba(82,82,82,1);
+    z-index:100;
+}
+
+.PopupLayerNoPadding { position:absolute;margin:0;padding:0;width:100%;text-align:center;z-index:999999999;display:none; }
+.PopupLayerNoPadding .PopupLayer_Btn { position:absolute;z-index:101;right:-20px;top:-20px;cursor:pointer; }
+.PopupLayerNoPadding .PopupLayer_Fore .onScroll { margin:0;padding:0;overflow-x:hidden;overflow-y:auto; }
+.PopupLayerNoPadding .PopupLayer_Fore .offScroll { margin:0;padding:0;overflow:hidden; }
+.PopupLayerNoPadding .PopupLayer_Back { position:absolute;margin:0;padding:0;z-index:100;width:100%;top:0px;left:0px;border:none;overflow:hidden;background-color:#000;filter:opacity(alpha=50);opacity:0.5;z-index:99; }
+.PopupLayerNoPadding .PopupLayer_Fore {
+    position:relative;
+    background-color:#FFFFFF;
+    padding:12px 12px 12px 12px;
+    -webkit-box-shadow: 2px 3px 48px -4px rgba(82,82,82,1);
+    -moz-box-shadow: 2px 3px 48px -4px rgba(82,82,82,1);
+    box-shadow: 2px 3px 48px -4px rgba(82,82,82,1);
+    z-index:100;
+}

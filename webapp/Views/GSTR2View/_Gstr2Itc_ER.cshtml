@@ -1,0 +1,48 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.ITC != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.ITC)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+
+<div class="table table-responsive">
+
+    @if (ViewBag.ITC != null)
+    {
+        if (Enumerable.Count(ViewBag.ITC) > 0)
+        {
+
+            @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable")
+
+        }
+
+        else
+        {
+            <h3>No Data Found</h3>
+        }
+    }
+</div>
+
+
+
+
+
+
+

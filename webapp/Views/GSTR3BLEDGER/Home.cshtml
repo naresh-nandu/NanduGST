@@ -1,0 +1,489 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 50);
+    }
+}
+
+@{
+    WebGrid grid1 = null;
+    var result1 = new List<dynamic>();
+    if (ViewBag.G1_RETSTATUS != null)
+    {
+        foreach (var emprow in ViewBag.G1_RETSTATUS)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result1.Add(row);
+        }
+        grid1 = new WebGrid(source: result1, canPage: true, canSort: true);
+    }
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_G1_RETSTATUS = $('#G1_RETSTATUS').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+    });
+
+</script>
+
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0 !important;
+        content: none !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        margin-left: 0em !important;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #chkSelectAll {
+        margin-left: 4px !important;
+    }
+
+    .headerstyle {
+        background-color: #cbd2d5 !important;
+        color: #000 !important;
+        font-weight: bold;
+    }
+</style>
+
+<style type="text/css">
+    table.gridtable {
+        font-family: Verdana,Arial;
+        font-size: 11px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+        table.gridtable th {
+            background-color: #dedede;
+            padding: 8px;
+            border-width: 1px;
+            border-color: #666666;
+            border-style: solid;
+        }
+
+        table.gridtable td {
+            background-color: #ffffff;
+            padding: 8px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #666666;
+        }
+</style>
+
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+@using (Html.BeginForm("Home", "GSTR3BLEDGER", FormMethod.Post, new { @id = "GSTR3BLedger", @name = "GSTR3BLedger", @autocomplete = "off" }))
+{
+    <div id="content">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR
+                    <span>
+                        >&nbsp;
+                        Ledger
+                    </span>
+                </h1>
+            </div>
+
+        </div>
+        <section id="widget-grid" class="">
+
+            <div class="row">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>GSTR Ledger Download</h2>
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                            </div>
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        @Html.DropDownList("strGstin", (ViewBag.GSTINNoList as SelectList), "Select GSTIN", new { @Class = "form-control input-sm", autopostback = "true", onchange = "submit();" })
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="Period">
+                                                <label class="label">Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="strPeriod" placeholder="" id="strPeriod" class="datepicker" data-dateformat='mmyy' value="@ViewBag.strPeriod" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Action</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("strAction", ViewBag.ActionList as SelectList, "Select Action", new { @class = "form-control", id = "strAction", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3" id="fromdate">
+                                                <label class="label">From</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="fromDate" placeholder="" id="fromDate" class="datepicker" data-dateformat='dd/mm/yy' value="@ViewBag.fromDate" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="todate">
+                                                <label class="label">To</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="toDate" id="toDate" placeholder="" class="datepicker" data-dateformat='dd/mm/yy' value="@ViewBag.toDate" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="Command" id="Download" value="Download" class="btn btn-primary pull-left">Download</button>
+                                        <button type="submit" name="Export" id="Export" value="Export" class="btn btn-primary pull-right">Export</button>
+                                    </footer>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>@ViewBag.TitleHeaders</h2>
+                        </header>
+
+                        <div>
+
+                            <div class="jarviswidget-editbox">
+
+                            </div>
+                            <div class="widget-body no-padding" style="overflow:scroll">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <fieldset>
+                                        <div class="row">
+                                            <section class="col col-12">
+                                                <label class="label"></label>
+                                                <div class="table-responsive">
+
+                                                    @if (ViewBag.G1_RETSTATUS != null)
+                                                    {
+                                                        if (Enumerable.Count(ViewBag.G1_RETSTATUS) > 0)
+                                                        {
+                                                            int i = 1;
+                                                            <div class="container-fuild" style="background-color:white;">
+                                                                <table id="G1_RETSTATUS" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>S.No</th>
+                                                                            <th>GSTIN</th>
+                                                                            <th>PERIOD</th>
+                                                                            <th>REFERENCE NO</th>
+                                                                            <th>ACTION</th>
+                                                                            <th>STATUS</th>
+                                                                            <th>ERROR REPORT</th>
+                                                                            <th>CREATED DATE</th>
+                                                                            <th>Download</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var item in result1)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@Convert.ToInt32(i++)</td>
+                                                                                <td>@item.gstin</td>
+                                                                                <td>@item.fp</td>
+                                                                                <td>@item.referenceno</td>
+                                                                                <td>@item.actiontype</td>
+                                                                                <td>@item.status</td>
+                                                                                <td>@item.errorreport</td>
+                                                                                <td>@item.createddate</td>
+                                                                                <td>@Html.ActionLink("Download", "Download", new { Gstin = item.gstin, Period = item.fp, ReferenceId = item.referenceno })</td>
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h3>No Data Found</h3>
+                                                        }
+                                                    }
+
+                                                    else if (@Model != null)
+                                                    {
+                                                        @grid.GetHtml(tableStyle: "gridtable")
+
+                                                    }
+
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+
+                                    <footer></footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+
+
+                </article>
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+
+    <div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">GST Authentication</h4>
+                </div>
+                <div class="modal-body custom-scroll terms-body">
+                    <div id="left">
+                        <b>@ViewBag.AUTH_Response</b>
+                        <br /><br />
+                        <input type="text" id="OTP" name="OTP" class="form-group" placeholder="Enter OTP" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" name="Command" value="OTPSubmit" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                            Submit
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+
+}
+
+@if (TempData["AuthMsg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["AuthMsg"])));
+        TempData["AuthMsg"] = null;
+    </script>
+}
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        TempData["Message"] = null;
+    </script>
+}
+
+@if (ViewBag.DownloadResponse != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(ViewBag.DownloadResponse)));
+    </script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#fromdate").hide();
+        $("#todate").hide();
+
+        if ($("#strAction").val() == "BAL" || $("#strAction").val() == "TAX") {
+            $("#fromdate").hide();
+            $("#todate").hide();
+        } else if ($("#strAction").val() == "CASH" || $("#strAction").val() == "ITC") {
+            $("#fromdate").show();
+            $("#todate").show();
+        } else {
+            $("#fromdate").hide();
+            $("#todate").hide();
+        }
+        $("#strAction").change(function () {
+            if ($("#strAction").val() == "BAL" || $("#strAction").val() == "TAX") {
+                $("#fromdate").hide();
+                $("#todate").hide();
+            } else if ($("#strAction").val() == "CASH" || $("#strAction").val() == "ITC") {
+                $("#fromdate").show();
+                $("#todate").show();
+            } else {
+                $("#fromdate").hide();
+                $("#todate").hide();
+            }
+        });
+    });
+</script>

@@ -1,0 +1,631 @@
+﻿
+
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+ 
+<style type="text/css">
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Outward Register
+                <span>
+                    >&nbsp;
+                    B2CLA
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <form action="@Url.Action("Save", "OutwardB2CLA")" method="post" id="OutwardB2CLA" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Outward B2CLA</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <fieldset class="smart-form">
+                                    <div class="row">
+                                        <section class="col col-4" style="margin-left:10px;">
+                                            <div class="form-group">
+                                                <label>GSTIN</label>
+                                              
+                                                    @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "CategoryName", "CategoryName", @Session["cgstinob2cla"]), "select", new { @Class = "form-control input-sm", @onblur = "copyText()" })
+                                            </div>
+                                        </section>
+                                        <section class="col col-4" >
+                                            <label>State Code</label>
+                                            <label class="input">
+                                                <input type="text" name="statecode" id="statecode" value="@Session["statecodeob2cla"]" placeholder="state code" readonly>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Counter Party Name</label>
+                                            <label class="input">
+                                                <input type="text" name="name" value="@Session["nameob2cla"]" placeholder="Counter Party Name" style="width:320px;">
+                                            </label>
+                                        </section>
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-4" style="margin-left:10px;">
+                                            <label>Invoice No.</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <input type="text" name="invoiceno" value="@Session["invoicenoob2cla"]" placeholder="Invoice No.">
+                                            </label>
+                                        </section>
+                                        <section class="col col-4">
+                                            <label> Invoice Date</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input type="text" name="invoicedate" value="@Session["invoicedateob2cla"]" placeholder="Invoice Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Original Invoice No.</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <input type="text" name="oinvoiceno" value="@Session["oinvoicenoob2cla"]" placeholder="Origional Invoice No." style="width:320px;">
+                                            </label>
+                                        </section>
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-4" style="margin-left:10px;">
+                                            <label>Original Invoice Date</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input type="text" name="oinvoicedate" value="@Session["oinvoicedateob2cla"]" placeholder="Origional Invoice Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                            </label>
+                                        </section>
+                                        <section class="col col-4">
+                                            <label>Invoice Value</label>
+                                            <label class="input">
+                                                <input type="text" name="taxvalue" value="@Session["taxvalueob2cla"]" placeholder="Invoice Value">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Place of supply</label>
+                                            <label class="input">
+                                                <input type="text" name="pos" value="@Session["posob2cla"]" placeholder="2 Digits of state code" style="width:320px;">
+                                            </label>
+                                        </section>
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-4" style="margin-left:10px;">
+
+                                            <label>Provisional Assesment</label>
+                                            <div>
+                                                @Html.DropDownList("prs", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "Y" }, new SelectListItem { Text = "No", Value = "N" } }, "Value", "Text", @Session["prsob2cla"]), "--Select--", new { @Class = "form-control input-sm" })
+                                            </div>
+                                        </section>
+                                        <section class="col col-4">
+                                            <label>Ecommerce Gstin</label>
+                                            <label class="input">
+                                                <input type="text" name="etin" value="@Session["etinob2cla"]" placeholder="Etin">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Orde Number</label>
+                                            <label class="input">
+                                                <input type="text" name="ordernum" value="@Session["ordernumob2cla"]" placeholder="Order Number" style="width:320px;">
+                                            </label>
+                                        </section>
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-4" style="margin-left:10px;">
+                                            <label>Order Date</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input type="text" name="orderdate" value="@Session["orderdateob2cla"]" placeholder="Order Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                            </label>
+                                        </section>
+                                    </div>
+
+
+                                </fieldset>
+                                <div id="comment-form" class="smart-form">
+                                    
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["OutwardB2CLA"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["OutwardB2CLA"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Outward B2CLA Item List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                           grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                             grid.Column("HSN", "HSN"),
+                 grid.Column("Category", "Category"),
+                 grid.Column("Taxablevalue", "Taxablevalue"),
+                  grid.Column("IGST Rate", "IGST Rate"),
+                 grid.Column("IGST Amount", "IGST Amount"),
+                 //grid.Column("CGST Rate", "CGST Rate"),
+                 //grid.Column("CGST Amount", "CGST Amount"),
+                 //grid.Column("SGST Rate", "SGST Rate"),
+                 //grid.Column("SGST Amount", "SGST Amount "),
+                 grid.Column("CESS Rate", "CESS Rate"),
+                 grid.Column("CESS Amount", "CESS Amount"),
+                 grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { Id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+                              )
+                         )
+
+                                            </div>
+
+
+
+                                            <footer>
+                                                <div class="row">
+                                                    <div class="col-md-6 text-center">
+                                                        <button type="submit" name="command" value="save" style="font-weight:bold;Border-radius:10px;width:60px;padding:3px;text-align:center;" class="btn btn-primary">Save</button>
+                                                    </div>
+
+
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Item Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+
+                                    @{Html.RenderPartial("_Transaction"); }
+
+
+                                    <footer></footer>
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- end widget -->
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+            <!-- end row -->
+
+        </section>
+
+    </form>
+</div>
+
+
+
+
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">
+                alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        </script>
+    }
+
+
+
+
+@section pagespecific{
+<script>
+    function copyText() {
+        GST = document.getElementById("cgstin");
+        PAN = document.getElementById("pan");
+        SCODE = document.getElementById("statecode");
+        SCODE.value = GST.value.substr(0, 2);
+        PAN.value = GST.value.substr(2, 10);
+
+    }
+    function totalcalculation1() {
+
+        var txval = document.getElementById("taxablevalue").value;
+        var irate = document.getElementById("irate").value;
+        var csrate = document.getElementById("csrate").value;
+
+        if (irate.length) {
+            var amt = (txval / 100) * irate;
+            document.getElementById("iamount").value = amt;
+        }
+        if (csrate.length) {
+            var amt = (txval / 100) * csrate;
+            document.getElementById("csamount").value = amt;
+        }
+
+    }
+</script>
+<script type="text/javascript" src="~/Scripts/rateCalculation.js">
+
+</script>
+<script type="text/javascript">
+        function igstcalculation()
+        {
+            var txval = document.getElementById("taxablevalue").value;
+            var rate = document.getElementById("irate").value;
+            var amt = (txval / 100) * rate;
+            document.getElementById("iamount").value = amt;
+        }
+
+        function cesscalculation()
+        {
+
+            var txval = document.getElementById("taxablevalue").value;
+            var rate = document.getElementById("csrate").value;
+            var amt = (txval / 100) * rate;
+            document.getElementById("csamount").value = amt;
+        }
+
+
+
+</script>
+    <script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+        $('#btnSubmit').click(function(){
+            var $checkoutForm = $('#OutwardB2CLA').validate({
+                // Rules for form validation
+                rules: {
+
+                    cgstin: {
+                        required: true
+                    },
+                    statecode: {
+                        required: true
+                    },
+                    name: {
+                        required: true
+
+                    },
+                    invoiceno: {
+                        required: true
+                    },
+                    invoicedate: {
+                        required: true
+                    },
+                    oinvoiceno: {
+                        required: true
+                    },
+                    oinvoicedate: {
+                        required: true
+
+                    },
+                    taxvalue: {
+                        required: true,
+                        number: true
+                    },
+                    pos: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 2,
+                        digits:true
+                    },
+                    prs: {
+                        required: true
+                    },
+                    etin: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+
+                    },
+                    ordernum: {
+                        required: true
+                    },
+                    orderdate: {
+                        required: true
+
+                    },
+                    HSN: {
+                        required: true
+
+                    },
+                    category: {
+                        required: true
+
+                    },
+                    taxablevalue: {
+                        required: true,
+                        number: true
+
+                    },
+                    irate: {
+                        required: true
+
+                    },
+                    iamount: {
+                        required: true
+
+                    },
+                    crate: {
+                        required: true
+
+                    },
+                    camount: {
+                        required: true
+
+                    },
+                    srate: {
+                        required: true
+
+                    },
+                    samount: {
+                        required: true
+
+                    },
+                    csrate: {
+                        required: true
+
+                    },
+                    csamount: {
+                        required: true
+
+                    },
+                    eligibility: {
+                        required: true
+
+                    }
+
+                },
+
+                // Messages for form validation
+                messages: {
+
+                    cgstin: {
+                        required: 'Please Select GSTIN'
+                    },
+                    statecode: {
+                        required: 'Please enter statecode'
+                    },
+                    name: {
+                        required: 'Please enter counter party Name'
+
+                    },
+                    taxvalue: {
+                        required: 'Please enter invoice value',
+                        number: 'Characters are not allowed'
+                    },
+                    pos: {
+                        required: 'Please enter POS',
+                        digits:'Digits only'
+                    },
+                    prs: {
+                        required: 'Please select prs'
+                    },
+                    invoiceno: {
+                        required: 'Please enter invoice no.'
+                    },
+                    invoicedate: {
+                        required: 'Please select invoice date'
+                    },
+                    oinvoicedate: {
+                        required: 'Please enter original invoice no.'
+                    },
+                    oinvoicedate: {
+                        required: 'Please select original invoice date'
+
+                    },
+                    etin: {
+                        required: 'Please enter entin'
+
+                    },
+                    ordernum: {
+                        required: 'Please enter  Order Number'
+
+                    },
+                    orderdate: {
+                        required: 'Please select  Order date'
+
+                    },
+                    HSN: {
+                        required: 'Please enter HSN'
+
+                    },
+                    category: {
+                        required: 'Please select category'
+
+                    },
+                    taxablevalue: {
+                        required: 'Please enter tax value',
+                        number: 'Characters are not allowed'
+
+                    },
+                    irate: {
+                        required: 'Please enter IGST rate'
+
+                    },
+                    iamount: {
+                        required: 'Please enter IGST amount'
+
+                    },
+                    crate: {
+                        required: 'Please enter CGST rate'
+
+                    },
+                    camount: {
+                        required: 'Please enter CGST amount'
+
+                    },
+                    srate: {
+                        required: 'Please enter SGST rate'
+
+                    },
+                    samount: {
+                        required: 'Please enter SGST amount'
+
+                    },
+                    csrate: {
+                        required: 'Please enter CESS rate'
+
+                    },
+                    csamount: {
+                        required: 'Please enter CESS amount'
+
+                    },
+                    eligibility: {
+                        required: 'Please select eligibility'
+
+                    }
+
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            })   });
+    })
+
+    </script>
+
+}
+
+
+
+
+
+
+
+

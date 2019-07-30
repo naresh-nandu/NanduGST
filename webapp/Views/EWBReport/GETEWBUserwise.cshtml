@@ -1,0 +1,313 @@
+﻿@model WeP_DAL.EwayBill.ReportViewModel
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0 !important;
+        content: none !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        margin-left: 0em !important;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #chkSelectAll {
+        margin-left: 4px !important;
+    }
+
+    .headerstyle {
+        background-color: #cbd2d5 !important;
+        color: #000 !important;
+        font-weight: bold;
+    }
+</style>
+
+@using (Html.BeginForm("GETEWBUserwise", "EWBReport", FormMethod.Post, new { @id = "GETEWBReport", @name = "GETEWBReport" }))
+{
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-pencil-square-o fa-fw "></i>
+                    EWay Bill
+                    <span>
+                        >
+                        Get EWB Report
+                    </span>
+                </h1>
+            </div>
+        </div>
+
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">E-Way Bill</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+
+                                            @if (Session["LocationSetting"].ToString() == "True")
+                                            {
+                                                if (ViewBag.GstinNo != null)
+                                                {
+                                                    <section class="col col-3">
+                                                        <label class="label">Location</label>
+                                                        <div class="col-xs-12 col-lg-12 selectContainer">
+                                                            @Html.DropDownList("ddlLocation", ViewBag.LocationList as SelectList, "ALL", new { @class = "form-control", id = "ddlLocation", autopostback = "true", onchange = "submit();" })
+                                                        </div>
+                                                    </section>
+                                                }
+                                                else
+                                                {
+                                                    <section class="col col-3">
+                                                        <label class="label">Location</label>
+                                                        <div class="col-xs-12 col-lg-12 selectContainer">
+                                                            <select class="form-control" name="ddlLocation">
+                                                                <option value="0">ALL</option>
+                                                            </select>
+                                                        </div>
+                                                    </section>
+                                                }
+                                            }
+
+                                            <section class="col col-3">
+                                                <label class="label">UserName</label>
+                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("username", ViewBag.Username as SelectList, "Select", new { @class = "form-control", id = "username", autopostback = "true" })
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+                                    <footer>
+                                        <button type="submit" name="Command" id="btngetReportUser" value="btngetReportUser" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                            Get Report
+                                        </button>
+                                    </footer>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <!-- end widget -->
+                <!-- WIDGET END -->
+                <!-- NEW WIDGET START -->
+                <!-- WIDGET END -->
+
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+            usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-togglebutton="false"
+            data-widget-deletebutton="false"
+            data-widget-fullscreenbutton="false"
+            data-widget-custombutton="false"
+            data-widget-collapsed="true"
+            data-widget-sortable="false"
+
+            -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill Report</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+
+                                @if (ViewBag.GetEWB != null)
+                                {
+
+                                    { Html.RenderPartial("_GetEwayUserwise"); }
+                                    @*<button type="submit" name="Command" id="btngetReport" value="getExport" class="btn btn-primary pull-right" style="border-radius:5px;font-weight:600">
+                                        Export to Excel
+                                    </button>*@
+                                    <br /><br />
+
+                                }
+
+                              
+
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+            </div>
+
+            <!-- end row -->
+
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+}
+
+
+@section pagespecific {
+
+    <script type="text/javascript">
+
+        $('#btngetReport').click(function () {
+
+            var $checkoutForm = $('#GETEWBReport').validate({
+                // Rules for form validation
+                rules: {
+
+                    strGSTIN: {
+                        required: true
+                    },
+                    reportType: {
+                        required: true
+                    },
+                    strewbNo: {
+                        required: true
+                    }
+                },
+                messages: {
+
+                    strGSTIN: {
+                        required: 'Please select User GSTIN'
+                    },
+                    reportType: {
+                        required: 'Please select Report Type'
+                    },
+                    strewbNo: {
+                        required: 'Please enter EwbNo/CEwbNo'
+                    }
+
+                }
+            });
+        })
+
+    </script>
+
+}
+
+
+

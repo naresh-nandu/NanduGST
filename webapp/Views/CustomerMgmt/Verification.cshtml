@@ -1,0 +1,267 @@
+﻿@model IEnumerable<SmartAdminMvc.Models.TBL_Customer>
+
+@{
+    ViewBag.Title = "WeP GST PANEL";
+    var grid = new WebGrid(source: Model, rowsPerPage: 10);
+    int rowVal = 0;
+}
+
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                WeP Customers
+                <span>
+                    >&nbsp;
+                    Verification
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <div class="row">
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-radius:20px;">
+                <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">WeP Customers Verification List</h2>
+                    </header>
+
+                    <div>
+
+                        <div class="jarviswidget-editbox">
+
+                        </div>
+
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-12">
+
+
+                                            @using (Html.BeginForm("Verification", "CustomerMgmt", FormMethod.Get))
+                                            {
+
+                                                <div class="row text-center" style="margin-left:300px;">
+                                                    <div class="col-md-12 text-center">
+
+                                                        <b style="color:#3276b1;font-weight:bold;font-size:15px;font-family:verdana,arial,sans-serif;"> Search By :</b>
+
+
+                                                        @Html.DropDownList("option", (ViewBag.Categories as SelectList), "Select Search Option", new { @style = "padding:5.5px;margin-bottom:8px;margin-right:-5px;" })
+
+
+                                                        @Html.TextBox("search", null, new { style = "padding:4px;margin-bottom:8px;", autocomplete = "off", onchange = "submit();" })
+
+                                                        <button type="submit" class="btn btn-primary" style="padding:5px;margin-bottom:8px;margin-top:6px;margin-left:-4px;">
+                                                            <span class="glyphicon glyphicon-search" aria-hidden="true"> </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        </section>
+
+                                        <section class="col col-12">
+
+                                            @using (Html.BeginForm("Approve", "CustomerMgmt", FormMethod.Post))
+                                            {
+                                                @*@Html.AntiForgeryToken()*@
+
+                                                <div class="table table-responsive">
+                                                    <div class="container-fuild" style="background-color:white; overflow:scroll;">
+                                                        @if (Model.Count() > 0)
+                                                        {
+                                                            @grid.GetHtml(
+                                                          tableStyle: "table table-striped table-bordered table-hover gridtable",
+                                                          htmlAttributes: new { id = "checkableGrid" },
+                                                          columns:
+                                                          grid.Columns(
+                                                             grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                             grid.Column(format:@<text><input type="radio" name="id" id="check" value="@item.CustId" /></text>, header: "select"),
+                                                            grid.Column("Name", "Customer Name ↑↓"),
+                                                            //grid.Column("Designation", "Designation ↑↓"),
+                                                            grid.Column("Company", "Company ↑↓"),
+                                                            grid.Column("GSTINNo", "GSTIN ↑↓"),
+                                                            grid.Column("Email", "Email ID ↑↓"),
+                                                            grid.Column("MobileNo", "Mobile Number ↑↓"),
+                                                            grid.Column(format:@<text>
+                                                                @if (item.StatusCode == 1)
+                                                            {
+                                                            <label>Approved</label>
+                                                            }
+                                                            else if (item.StatusCode == 5)
+                                                            {
+                                                            <label>Approved & Verified</label>
+                                                            }
+                                                            else if (item.StatusCode == 6)
+                                                            {
+                                                            <label>Rejected</label>
+                                                            }
+                                                            else if (item.StatusCode == 3)
+                                                            {
+                                                            <label>Blocked</label>
+                                                            }
+                                                            else if (item.StatusCode == 4)
+                                                            {
+                                                            <label>Active</label>
+                                                            }
+                                                            </text>, header: "Status"),
+                                                            grid.Column("ReferenceNo", "Cust RefNo ↑↓"),
+                                                            grid.Column(format:@<text>
+                                                                @if (item.TRPId == null)
+                                                            {
+                                                            <label>No</label>
+                                                            }
+                                                            else if (item.TRPId != null)
+                                                            {
+                                                            <label>Yes</label>
+                                                            }
+                                                            </text>, header: "TRP Customer"),
+                                                            //grid.Column(format:@<text>@Html.ActionLink("Download Document", "FileDownload", new { @id = item.CustId,@class="Files" })</text>, header: "Files")
+                                                            @*grid.Column(format:@<text><a href="@Url.Action("CustDocs","CustomerMgmt",  new { @id = item.CustId})" data-toggle="modal" data-target="#myModal">Download Document</a></text>, header: "Files")*@
+                                                            grid.Column(format:@<text>@Html.Raw("<input type='button' value='Download Document' onclick = 'OpenDocuments(\"?SesCustDocsId=" + item.CustId + "\")' class='btn btn-link' />")</text>, header: "Files")
+                                                            )
+                                                            )
+                                                        }
+                                                        else
+                                                        {
+                                                            <p style="text-align:center;font-family:Verdana, Geneva, Tahoma, sans-serif;font-weight:bold;padding:3px;color:#3276b1" class="text-center">No Record Found</p>
+                                                        }
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <footer>
+                                                    <div class="col-md-12 text-center">
+                                                        <input type="submit" value="Reject Customer" name="command" class="btn btn-success btnstyle" onclick="return confirm('Are u sure to Reject?');" style="font-weight:bold" />
+                                                        <input type="submit" value="Verify Customer" name="command" class="btn btn-success btnstyle" onclick="return confirm('Are u sure to Verify?');" style="font-weight:bold" />
+                                                    </div>
+                                                </footer>
+                                            }
+                                        </section>
+
+
+                                    </div>
+
+
+                                </fieldset>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </article>
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+<script>
+
+
+    var ShowMessage = function () {
+        if (check.checked == false) {
+            alert("Please Select to Radio Button");
+        }
+        else {
+
+            if (confirm("Are u sure to Verify?") == true) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+
+    var ShowMsg = function () {
+        if (check.checked == false) {
+            alert("Please Select to Radio Button");
+        }
+        else {
+
+            if (confirm("Are u sure to Reject?") == true) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function OpenDocuments(CustId) {
+        var ph = $("#DivForCustDocsPartialView");
+        ph.load("CustomerDocuments" + CustId, function () {
+            ph.dialog({
+                modal: true,
+                width: 1000,
+                height: 300,
+                title: "Customer Documents",
+                resizable: true
+            });
+        });
+    }
+</script>
+
+<div id="DivForCustDocsPartialView">
+
+</div>

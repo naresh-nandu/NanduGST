@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd8365840ce94640a93cfe2232e65028" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.MAS_Resources" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.MAS_Roles" Width="1.5" PointX="7.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.MAS_Roles_Resources" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.StatusMaster" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Aggregator" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Audit_Log" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_AUTH_KEYS" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Buyer" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Cust_Docs" Width="1.5" PointX="2.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Cust_GSTIN" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Customer" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_B2B_INV" Width="1.5" PointX="11.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_B2BA_INV" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_B2CL_INV" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_B2CLA_INV" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_B2CS" Width="1.5" PointX="13.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_CDNR" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_CDNUR" Width="1.5" PointX="15.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_HSN" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_B2B_INV" Width="1.5" PointX="17.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_B2BUR_INV" Width="1.5" PointX="13.125" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_CDN" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_CDNUR" Width="1.5" PointX="4.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_HSN" Width="1.5" PointX="6.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_IMPG_INV" Width="1.5" PointX="19.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_IMPS_INV" Width="1.5" PointX="19.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_ITCRVSL" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_NIL" Width="1.5" PointX="21.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_TXI" Width="1.5" PointX="21.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR2_TXPD" Width="1.5" PointX="21.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_GSTR_ACTION_TYPE" Width="1.5" PointX="21.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_GSTR_TYPE" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_STATE_MASTER" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Supplier" Width="1.5" PointX="0.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_UQC_MASTER" Width="1.5" PointX="23.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.UserAccess_GSTIN" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.UserList" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_RATE_MASTER" Width="1.5" PointX="8.75" PointY="23.75" IsExpanded="true" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_TBL_Customer_StatusMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_TBL_Cust_GSTIN_TBL_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_UserAccess_GSTIN_TBL_Cust_GSTIN" ManuallyRouted="false" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_UserAccess_GSTIN_TBL_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_UserList_TBL_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_UserAccess_GSTIN_UserList" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_HSN_MASTER" Width="1.5" PointX="5.25" PointY="27.25" />
+        <AssociationConnector Association="WePGSPDB_TestModel.FK_TBL_HSN_MASTER_TBL_Customer" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Cust_PAN" Width="1.5" PointX="11.375" PointY="23.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_Cust_PAN_Docs" Width="1.5" PointX="24.375" PointY="12.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_B2CS_INV" Width="1.5" PointX="24.375" PointY="16.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_EXP_INV" Width="1.5" PointX="17.375" PointY="24.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_AT" Width="1.5" PointX="24.375" PointY="6.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_NIL" Width="1.5" PointX="19.375" PointY="25.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_TXP" Width="1.5" PointX="21.375" PointY="25.75" />
+        <EntityTypeShape EntityType="WePGSPDB_TestModel.TBL_EXT_GSTR1_DOC" Width="1.5" PointX="23.375" PointY="25.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

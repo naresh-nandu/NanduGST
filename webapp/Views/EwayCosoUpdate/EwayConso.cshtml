@@ -1,0 +1,592 @@
+﻿@model SmartAdminMvc.Models.EWAY.ViewModelConso.ListViewmodel1
+@{
+    int rowVal = 0;
+}
+
+@foreach (var items in Model.master)
+{ }
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #wid-id-0 {
+        display: none;
+    }
+</style>
+<div id="content">
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                <h2>Update Consolidated E-Way Bill>Form></h2>
+                <span>
+
+
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            @using (Ajax.BeginForm("EwayConso", "EwayCosoUpdate", new AjaxOptions { HttpMethod = "POST" }, new { enctype = "multipart/form-data", @id = "BulkUpload", @name = "BulkUpload" }))
+            {
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @foreach (var items in Model.master)
+                    {
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2>Consolidated Update E-Way Bill Entry </h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+
+                                    <div id="comment-form" class="smart-form">
+
+                                        <fieldset>
+
+                                            @Html.AntiForgeryToken()
+                                            <div class="row" align="center">
+
+                                                <div>
+                                                    <section class="col col-3">
+                                                        <div class="form-group">
+                                                            <label>GSTIN<span style="color:red">*</span></label>
+                                                            <div>
+                                                                @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select Gstin", new { @Class = "form-control input-sm", @autopostback = "true", @id = "ddlGSTINNo", @onchange = "submit();" })
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <div class="form-group">
+                                                            <label>Transport Mode<span style="color:red">*</span></label>
+                                                            <div>
+                                                                @Html.DropDownList("optiontransmode", ViewBag.TransportMode as SelectList, "Select", new { @Class = "form-control input-sm",@id="transs" })
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <div class="form-group">
+                                                            <label>Form State<span style="color:red">*</span></label>
+                                                            <div>
+                                                                @Html.DropDownList("optionstatecode", ViewBag.StateCode as SelectList, "Select", new { @Class = "form-control input-sm" })
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                    <input type="hidden" name="consewbid" id="consewbid" value="@items.consewbid" placeholder="Name">
+
+                                                    <section class="col col-3">
+                                                        <label>From Place</label><span style="color:red">*</span>
+                                                        <label class="input">
+                                                            <input type="text" name="frmplce" id="frmplce" value="@items.fromPlace" placeholder="Enter The Place">
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-3">
+                                                        <label>Transporter Document Number</label><span style="color:red">*</span>
+                                                        <label class="input">
+                                                            <input type="text" name="transdocno" id="transdocno" value="@items.transDocNo"  placeholder="Enter The Place">
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Transporter Document Date</label><span style="color:red">*</span>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-calendar"></i>
+                                                            <input type="text" name="transporterdate" id="transporterdate" value="@items.transDocDate"  placeholder="Transporter Date" class="datepicker" data-dateformat='dd/mm/yy'>
+                                                        </label>
+                                                    </section>
+                                                    <section class="col col-3">
+                                                        <label>Vehicle Number</label><span style="color:red">*</span>
+                                                        <label class="input">
+                                                            <input type="text" name="VehicleNumber" id="VehicleNumber" onblur="Validate()" value="@items.vehicleNo" placeholder="Enter Vehicle No." style="text-transform:uppercase">
+
+                                                        </label>
+
+                                                        <p style="color:red ;font-size:12px;">*(Format : AB12AB1234 OR AB12A1234 OR AB121234)</p>
+                                                    </section>
+
+                                                </div>
+
+                                            </div>
+
+                                        </fieldset>
+                                    </div>
+
+                                </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+
+
+                    }
+
+
+                </article>
+
+
+
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2 style="font-weight:bold;">Add EwayBill</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+
+                                    <div id="comment-form1" class="smart-form">
+
+                                        <div class="smart-form">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th>E-Way Bill No<span style="color:red">*</span></th>
+
+
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+
+                                                            <td>
+                                                                <label class="input" style="width:60px">
+                                                                    @*@Html.DropDownList("HSN", new SelectList(ViewBag.HSNDetail, "hsnid", "hsncode"), "Select", new { @Class = "form-control input-sm", @id = "hsn", @onblur = "taxableCalculation();" })*@
+                                                                    <input type="text" name="ewaybillno" id="ewaybillno" maxlength="12" onblur="ValidI();" style="width:400px;">
+                                                                </label>
+                                                            </td>
+
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="13" align="center">
+                                                                <button type="Submit" id="btnSubmit" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </article>
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2 style="font-weight:bold;">Update invoice item</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+
+                                    <div id="comment-form1" class="smart-form">
+
+                                        <div class="smart-form">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th>E-Way Bill No<span style="color:red"></span></th>
+                                                            <th>Update<span style="color:red"></span></th>
+                                                            <th>Delete<span style="color:red"></span></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var items in Model.items)
+                                                        {
+
+                                                            <tr>
+
+                                                                <td>
+                                                                    <label class="input" style="width:60px">
+                                                                        @*@Html.DropDownList("HSN", new SelectList(ViewBag.HSNDetail, "hsnid", "hsncode"), "Select", new { @Class = "form-control input-sm", @id = "hsn", @onblur = "taxableCalculation();" })*@
+                                                                        <input type="text" id="ewaybillno_@rowVal" value="@items.ewbNo" style="width:400px;">
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="button" id="editBtn_@rowVal" onclick="Edit(@items.tripsheetid,@rowVal)" value="Update" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="button" id="delBtn_@rowVal" onclick="Delete(@items.tripsheetid,@rowVal)" value="Delete" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                                                                </td>
+
+
+                                                            </tr>
+
+                                                            rowVal = rowVal + 1;
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <div align="center">
+
+                        <button type="submit" name="command" value="updatedet" style="background-color:#508180;font-weight:bold;Border-radius:10px;width:180px" class="btn btn-primary">Update Details</button>
+
+
+                    </div>}
+            <script type="text/javascript">
+
+    $('.floatinput').on('keypress', function (e) {
+        return validateFloatKeyPress(this, e);
+
+    });
+    function decimalInput(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+            </script>
+
+
+            }
+
+
+        </div>
+    </section>
+</div>
+
+<script>
+ $('#btnSubmit').click(function () {
+
+
+
+
+     var $checkoutForm = $('#BulkUpload').validate({
+         // Rules for form validation
+         rules: {
+             fromplace: {
+                 required: true
+             },
+
+             
+             ewaybillno: {
+                 required: true
+             },
+
+         },
+             messages: {
+                 fromplace: {
+                     required: 'Enter the value'
+                 },
+
+                
+                 ewaybillno: {
+                     required: 'Enter The value'
+                 },
+         },
+     })
+ })
+
+</script>
+<script>
+ function Edit(id, index) {
+
+     var row = $("#editBtn_" + index).parent().parent();
+     // var index = $(this).closest("tr").index();
+     var ewbno = row.find("#ewaybillno_" + index).val();
+
+
+
+
+
+     //var hsncode = $(this).closest('tr').find('td:nth-child(1)').text();
+     var obj = {
+         id: id,
+         ewbno: ewbno
+
+     }
+
+
+     $.ajax({
+         type: "POST",
+         url: '/EwayCosoUpdate/EwayItemsUpdate',
+         data: JSON.stringify(obj),
+         contentType: "application/json;charset=utf-8",
+         dataType: "json",
+         success: function (data) {
+             location.reload();
+
+         }
+
+     });
+ }
+     function Delete(id, index) {
+         //var res = alert('Are you sure to delete?');
+
+
+         //if(res==true)
+         //{
+         $.ajax({
+             type: "GET",
+             url: '/EwayCosoUpdate/EwayItemsDeleteConso',
+             data: { id: id },
+             contentType: "application/json;charset=utf-8",
+             dataType: "json",
+             success: function (data) {
+
+                 location.reload();
+
+             }
+
+         });
+     }
+</script>
+
+@if (TempData["Deleted"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["Deleted"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+@if (TempData["ItemsUpdatedd"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["ItemsUpdatedd"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+@if (TempData["exception"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["exception"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+@if (TempData["DetailsUpdated"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["DetailsUpdated"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+
+
+
+<script>
+
+    function ValidI() {
+        var pin = document.getElementById("ewaybillno");
+
+        var pat1 = /^\d{12}$/;
+
+        if (!pat1.test(pin.value)) {
+            alert("Ewaybill should be 12 digits ");
+            return false;
+
+        }
+    }
+
+</script>
+
+<script>
+
+    function Validate() {
+        Number = document.getElementById("VehicleNumber").value;
+
+        if (Number != "") {
+            var pat = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{2}[0-9]{4}$/;
+            var pat1 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{1}[0-9]{4}$/;
+            var pat2 = /^[A-Z|a-z]{2}[0-9]{6}$/;
+            var res = pat.test(Number);
+            var res1 = pat1.test(Number);
+            var res2 = pat2.test(Number);
+
+            if (res || res1 || res2) {
+
+            }
+            else {
+                Number.value = "";
+                alert("Vehicle Number is not in correct format.");
+                return false;
+
+            }
+        }
+    }
+
+
+    $(document).ready(function () {
+        $('#transs').on('change', function () {
+            if (this.value == '1') {
+
+                $('#VehicleNumber').removeAttr("readonly").css("background-color", "white");
+            }
+            else {
+
+                $('#VehicleNumber').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+        });
+    });
+
+</script>
+

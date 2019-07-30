@@ -1,0 +1,110 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.IMPG != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.IMPG)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+
+<div class="table table-responsive">
+
+    @if (ViewBag.IMPG != null)
+    {
+        if (Enumerable.Count(ViewBag.IMPG) > 0)
+        {
+
+           @grid.GetHtml(
+                          tableStyle: "table table-striped table-bordered table-hover gridtable",
+                           htmlAttributes: new { id = "checkableGrid2impg" },
+                          columns:
+                          grid.Columns(
+                              grid.Column(format:@<text><input type="checkbox" name="ids" value="@item.impgid" /></text>, header: "{checkall}"),
+                                         grid.Column("SNo", "S.No"),
+                                         grid.Column("boe_num", "Bill of Entry No"),
+                                         grid.Column("boe_dt", "Bill of Entry Date"),
+                                         grid.Column("boe_val", "Bill of Entry Value"),
+                                         grid.Column("rt", "Rate"),
+                                         grid.Column("txval", "Taxable Value"),
+                                         grid.Column("iamt", "IGST Amount"),
+                                         grid.Column("csamt", "CESS Amount"),
+                                         grid.Column("elg", "Eligibility for ITC"),
+                                         grid.Column("tx_i", "ITC IGST Amount"),
+                                         grid.Column("tx_cs", "ITC CESS Amount")
+
+
+                                        )
+                                     )
+        <br />
+            <div class="text-center">
+                <button type="submit" name="command" value="GSTR2IMPG" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage();">Delete</button>
+            </div>
+            <br />
+
+
+    }
+
+    else
+    {
+            <h3>No Data Found</h3>
+        }
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    // 1st replace first column header text with checkbox
+
+    $("#checkableGrid2impg th").each(function () {
+        if ($.trim($(this).text().toString().toLowerCase()) === "{checkall}") {
+            $(this).text('');
+            $("<input/>", { type: "checkbox", id: "cbSelectAll", value: "" }).appendTo($(this));
+            $(this).append("<span>Select All</span>");
+        }
+    });
+
+    //2nd click event for header checkbox for select /deselect all
+    $("#cbSelectAll").live("click", function () {
+        var ischecked = this.checked;
+        $('#checkableGrid2impg').find("input:checkbox").each(function () {
+            this.checked = ischecked;
+        });
+    });
+
+
+    //3rd click event for checkbox of each row
+    $("input[name='ids']").click(function () {
+        var totalRows = $("#checkableGrid2impg td :checkbox").length;
+        var checked = $("#checkableGrid2impg td :checkbox:checked").length;
+
+        if (checked == totalRows) {
+            $("#checkableGrid2impg").find("input:checkbox").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $("#cbSelectAll").removeAttr("checked");
+        }
+    });
+
+
+</script>
+
+
+

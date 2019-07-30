@@ -1,0 +1,973 @@
+﻿
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+@if (TempData["ViewResponse"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ViewResponse"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+
+@using (Html.BeginForm("Index", "GSTR1View", FormMethod.Post, new { @autocomplete = "off", @id = "GSTR1ViewForm", @name = "GSTR1ViewForm" }))
+{
+
+    <!-- MAIN CONTENT -->
+    <div id="content">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR 1
+                    <span>
+                        >&nbsp;
+                        VIEW
+                    </span>
+                </h1>
+            </div>
+            <!-- end col -->
+            <!-- right side of the page with the sparkline graphs -->
+            <!-- col -->
+            <!-- end col -->
+
+        </div>
+        <!-- end row -->
+        <!--
+                    The ID "widget-grid" will start to initialize all widgets below
+                    You do not need to use widgets if you dont want to. Simply remove
+                    the <section></section> and you can use wells or panels instead
+                    -->
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    @*<div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>GSTR-1 Save Status</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+                                                                                
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label"><b>GSTIN</b></label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="label">@ViewBag.Gstin</label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label"><b>Reference No</b></label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="label">@ViewBag.RefNo</label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label class="label"><b>Status</b></label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="label">@ViewBag.Status</label>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>*@
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>GSTR-1 View</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="period" id="period" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.Period" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN Number</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", @id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Records Type</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlRecordType", ViewBag.RecordsTypeList as SelectList, "Select", new { @class = "form-control", @id = "ddlRecordType", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">GSTR Type</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTR", ViewBag.GSTRList as SelectList, "Select GSTR", new { @class = "form-control", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            @if (ViewBag.GSTRType != null)
+                                            {
+                                                <section class="col col-3">
+                                                    <label class="label">Action</label>
+                                                    <div class="col-xs-9 col-lg-9 selectContainer">
+                                                        @Html.DropDownList("ddlActionType", ViewBag.ActionList as SelectList, "Select Action", new { @class = "form-control", @id = "ddlActionType", autopostback = "true", onchange = "submit();" })
+                                                    </div>
+                                                </section>
+                                            }
+
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="InvIds" id="InvIds" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>@ViewBag.TitleHeaders</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+
+                            @if (ViewBag.RecordsType == "Uploaded Records")
+                            {
+                                if (ViewBag.GSTRType != null)
+                                {
+                                    if ((int)ViewBag.GSTRType == 1)
+                                    {
+                                        <div id="tabs-Uploaded" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                            <br />
+                                            <div class="text-center">
+                                                <button type="submit" name="GSTR1Delete" value="GSTR 1 Delete" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                                    GSTR 1 Delete
+                                                </button>
+                                                @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+                                            </div>
+                                            <br /><br /><br />
+                                            <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+
+                                                @if (ViewBag.ActionType == "B2B" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-1">B2B</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "B2CL" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-2">B2CL</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "CDNR" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-3">CDNR</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-4">B2CS</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "EXP" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-5">EXP</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "HSNSUM" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-7">HSN</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "NIL" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-8">NIL</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "TXP" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-9">TXP</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "AT" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-10">AT</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "DOCISSUE" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-11">DOC-Issue</a>
+                                        </li>
+                                                }
+                                                @if (ViewBag.ActionType == "CDNUR" || ViewBag.ActionType == "ALL")
+                                                {
+                                        <li>
+                                            <a href="#tabs-12">CDNUR</a>
+                                        </li>
+                                                }
+                                            </ul>
+                                            @if (ViewBag.ActionType == "B2B" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-1">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2B");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "B2CL" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-2">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CL");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "CDNR" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-3">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1cdnr");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-4">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CS");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "EXP" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-5">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Exp");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "HSNSUM" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-7">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Hsn");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "NIL" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-8">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Nil");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "TXP" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-9">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Txpd");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "AT" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-10">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1At");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "DOCISSUE" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-11">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Doc");}
+                                    </div>
+                                            }
+                                            @if (ViewBag.ActionType == "CDNUR" || ViewBag.ActionType == "ALL")
+                                            {
+                                    <div id="tabs-12">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Cdnur");}
+                                    </div>
+                                            }
+                                        </div>
+                                            }
+
+                                            else if ((int)ViewBag.GSTRType == 3)
+                                            {
+                                                <div id="tabs11" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                                    <br />
+                                                    <div class="text-center">
+                                                        <button type="submit" name="GSTR1Delete" value="GSTR 1 Delete" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                                            GSTR 1 Delete
+                                                        </button>
+                                                        @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+                                                    </div>
+                                                    <br /><br /><br />
+                                                    <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                                        @if (ViewBag.ActionType == "B2BA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-1">B2BA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "B2CLA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-2">B2CLA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "CDNRA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-3">CDNRA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "B2CSA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-4">B2CSA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "EXPA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-5">EXPA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "TXPA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-9">TXPA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "ATA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-10">ATA</a>
+                                                            </li>
+                                                        }
+                                                        @if (ViewBag.ActionType == "CDNURA" || ViewBag.ActionType == "ALL")
+                                                        {
+                                                            <li>
+                                                                <a href="#tabs-12">CDNURA</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+
+                                                    @if (ViewBag.ActionType == "B2BA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-1">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1B2BA");}
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "B2CLA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-2">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1B2CLA");}
+
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "CDNRA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-3">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1CDNRA");}
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "B2CSA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-4">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1B2CSA");}
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "EXPA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-5">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1EXPA");}
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "TXPA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-9">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1TXPDA");}
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "ATA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-10">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1ATA");}
+                                                        </div>
+                                                                }
+                                                    @if (ViewBag.ActionType == "CDNURA" || ViewBag.ActionType == "ALL")
+                                                    {
+                                                        <div id="tabs-12">
+                                                            <br /><br />
+                                                            @{Html.RenderPartial("_Gstr1CDNURA");}
+                                                        </div>
+                                                                }
+                                                </div>
+                                                                        }
+
+
+                                                                    }
+
+
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (ViewBag.GSTRType != null)
+                                                                    {
+                                                                        if ((int)ViewBag.GSTRType == 1)
+                                                                        {
+                                                                    <div id="tabs-ErrorRecords" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                                                        <br />
+                                                                        <div class="text-center">
+                                                                            <button type="submit" name="GSTR1ReUpload" value="GSTR 1 ReUpload" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                                                                GSTR 1 RE-Upload
+                                                                            </button>
+                                                                            @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+                                                                        </div>
+                                                                        <br /><br /><br />
+                                                                        <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                                                            @if (ViewBag.ActionType == "B2B" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-1">B2B</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "B2CL" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-2">B2CL</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "CDNR" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-3">CDNR</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-4">B2CS</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "EXP" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-5">EXP</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "HSNSUM" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-7">HSN</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "NIL" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-8">NIL</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "TXPD" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-9">TXPD</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "AT" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-10">AT</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "DOCISSUE" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-11">DOC-Issue</a>
+                                                                                </li>
+                                                                            }
+                                                                            @if (ViewBag.ActionType == "CDNUR" || ViewBag.ActionType == "ALL")
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="#tabs-12">CDNUR</a>
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                        @if (ViewBag.ActionType == "B2B" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-1">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1B2B_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "B2CL" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-2">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1B2CL_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "CDNR" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-3">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1cdnr_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-4">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1B2CS_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "EXP" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-5">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1Exp_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "HSNSUM" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-7">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1Hsn_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "NIL" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-8">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1Nil_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "TXPD" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-9">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1Txpd_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "AT" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-10">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1At_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "DOCISSUE" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-11">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1Doc_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                        @if (ViewBag.ActionType == "CDNUR" || ViewBag.ActionType == "ALL")
+                                                                        {
+                                                                            <div id="tabs-12">
+                                                                                <br /><br />
+                                                                                @{Html.RenderPartial("_Gstr1Cdnur_ER");}
+                                                                            </div>
+                                                                                    }
+                                                                    </div>
+                                                                                    }
+
+                                                                                    else if ((int)ViewBag.GSTRType == 3)
+                                                                                    {
+                                                                                        <div id="tabs12" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                                                                            <br />
+                                                                                            <div class="text-center">
+                                                                                                <button type="submit" name="GSTR1ReUpload" value="GSTR 1 ReUpload" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                                                                                    GSTR 1 RE-Upload
+                                                                                                </button>
+                                                                                                @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+                                                                                            </div>
+                                                                                            <br /><br /><br />
+                                                                                            <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                                                                                @if (ViewBag.ActionType == "B2BA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-1">B2BA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "B2CLA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-2">B2CLA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "CDNRA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-3">CDNRA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "B2CSA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-4">B2CSA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "EXPA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-5">EXPA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "TXPA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-9">TXPA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "ATA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-10">ATA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                                @if (ViewBag.ActionType == "CDNURA" || ViewBag.ActionType == "ALL")
+                                                                                                {
+                                                                                                    <li>
+                                                                                                        <a href="#tabs-12">CDNURA</a>
+                                                                                                    </li>
+                                                                                                }
+                                                                                            </ul>
+
+                                                                                            @if (ViewBag.ActionType == "B2BA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-1">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1B2BA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "B2CLA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-2">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1B2CLA_ER");}
+
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "CDNRA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-3">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1CDNRA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "B2CSA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-4">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1B2CSA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "EXPA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-5">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1EXPA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "TXPA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-9">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1TXPDA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "ATA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-10">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1ATA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                            @if (ViewBag.ActionType == "CDNURA" || ViewBag.ActionType == "ALL")
+                                                                                            {
+                                                                                                <div id="tabs-12">
+                                                                                                    <br /><br />
+                                                                                                    @{Html.RenderPartial("_Gstr1CDNURA_ER");}
+                                                                                                </div>
+                                                                                                        }
+                                                                                        </div>
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+    <!-- END MAIN CONTENT -->
+
+                                                                                    <div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-header">
+                                                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                                        &times;
+                                                                                                    </button>
+                                                                                                    <h4 class="modal-title" id="myModalLabel">GST Authentication</h4>
+                                                                                                </div>
+                                                                                                <div class="modal-body custom-scroll terms-body">
+                                                                                                    <div id="left">
+                                                                                                        <b>@ViewBag.AUTH_Response</b>
+                                                                                                        <br /><br />
+                                                                                                        <input type="text" id="OTP" name="OTP" class="form-group" placeholder="Enter OTP" maxlength="6" />
+                                                                                                    </div>
+                                                                                                    <div class="modal-footer">
+                                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                                                            Cancel
+                                                                                                        </button>
+                                                                                                        <button type="submit" name="OTPSubmit" value="GSTR 1 Save" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                                                                                            Submit
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                </div><!-- /.modal-content -->
+                                                                                            </div><!-- /.modal-dialog -->
+                                                                                        </div><!-- /.modal -->
+                                                                                    </div>
+                                                                                    }
+
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#GSTR1ViewForm').validate({
+                // Rules for form validation
+                rules: {
+                    //ddlGSTINNo: {
+                    //    required: true
+                    //},
+                    //ddlActionType: {
+                    //    required: true
+                    //},
+                    period: {
+                        required: true
+                    },
+                },
+
+                // Messages for form validation
+                messages: {
+                    //ddlGSTINNo: {
+                    //    required: 'Please select GSTIN No'
+                    //},
+                    //ddlActionType: {
+                    //    required: 'Please select Action'
+                    //},
+                    period: {
+                        required: 'Please Select Period'
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+
+        $(document).ready(function () {
+            $('#tabs-Uploaded').tabs();
+            $('#tabs11').tabs();
+            $('#tabs12').tabs();
+            $('#tabs-ErrorRecords').tabs();
+        })
+
+    </script>
+
+
+}
+

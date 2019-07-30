@@ -1,0 +1,1644 @@
+﻿@model SmartAdminMvc.Models.EWAY.ViewModel.ListViewmodel
+@{
+    int rowVal = 0;
+}
+
+@foreach (var itemss in Model.items)
+{
+
+}
+@foreach (var items in Model.master)
+{ }
+
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #wid-id-0 {
+        display: none;
+    }
+</style>
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                E-Way Bill
+                <span>
+                    >&nbsp;
+                    Update
+                </span>
+            </h1>
+        </div>
+    </div>
+
+
+
+
+    <form action="@Url.Action("EwayUpdate", "EwayUpdateBill")" method="post" id="EWAYGENERATION" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+                @foreach (var items in Model.master)
+                {
+            <!-- NEW WIDGET START -->
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2 style="font-weight:bold;">Eway Bill Generation(Part-A)</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <div id="comment-form" class="smart-form">
+                                        <fieldset class="smart-form">
+
+                                            <div class="row">
+                                                <section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label>GSTIN<span style="color:red">*</span></label>
+                                                        <div>
+                                                            @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select Gstin", new { @Class = "form-control input-sm", @autopostback = "true", @id = "ddlGSTINNo", @onchange = "submit();" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label>Transaction Type<span style="color:red">*</span></label>
+                                                        <div>
+                                                            @Html.DropDownList("options", ViewBag.SupplyType as SelectList, "Select", new { @Class = "form-control input-sm", @autopostback = "true", @id = "transactiontype", @value = "@ViewBag.varsupplytype", @onblur = "changeEvent();" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label>Sub Type<span style="color:red">*</span></label>
+                                                        <div>
+                                                            @Html.DropDownList("optionssub", ViewBag.SubSupplyType as SelectList, "Select", new { @Class = "form-control input-sm", @id = "name", @value = "@ViewBag.varsubsupplytype", @onblur = "taxableCalculation();" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label>Document Type<span style="color:red">*</span></label>
+                                                        <div>
+                                                            @Html.DropDownList("optiondoc", ViewBag.DocumentType as SelectList, "Select", new { @Class = "form-control input-sm", @id = "name", @value = "@ViewBag.vardocumenttype", @onblur = "taxableCalculation();" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label>Shipment Document Number<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="docnumber" id="docnumber" value="@items.docNo" placeholder="Document Number" style="text-transform:uppercase">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label>Document Date</label><span style="color:red">*</span>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="Documentdate" id="Documentdate" value="@items.docDate" placeholder="Document Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label>Total Value</label>
+                                                    <label class="input">
+                                                        <input type="text" name="invalue" id="invalue" value="@Session["totalvaluue"]" placeholder="Total Value" readonly style="background-color:#d9d9d9;" class="floatinput">
+                                                    </label>
+                                                </section>
+                                            </div>
+
+                                        </fieldset>
+                                    </div>
+
+                                </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+
+                    </article>
+                    <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2 style="font-weight:bold;">From Details(Part-A)</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <div id="comment-form" class="smart-form">
+                                        <fieldset class="smart-form">
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label>Name<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="name" id="name" value="@items.fromTrdName" placeholder="Name">
+                                                    </label>
+                                                </section>
+                                                <input type="hidden" name="ewbid" id="ewbid" value="@items.ewbid" placeholder="Name">
+
+                                                <section class="col col-6" id="gstind">
+                                                    <label>GSTIN<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="gst" value="@items.fromGstin" placeholder="GSTIN" id="gst" maxlength="15" onblur="GSTINNo()" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Address Line 1<span style="color:red"></span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="adress1" id="adress1" value="@items.fromAddr1" placeholder="Address Line1">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Address Line 2<span style="color:red"></span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="adress2" id="adress2" value="@items.fromAddr2" placeholder="Address Line2">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>City<span style="color:red"></span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="city" id="city" value="@items.fromPlace" placeholder="City">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>State Code</label>
+                                                    <label class="input">
+                                                        <input type="number" name="statecode" placeholder="State Code" value="@items.fromStateCode" id="statecode" readonly style="background-color:#d9d9d9;">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Pincode<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="pincode" id="pincode" value="@items.fromPinCode" placeholder="Pincode" onblur="valid()" class="floatinput">
+                                                    </label>
+                                                </section>
+                                            </div>
+
+                                        </fieldset>
+                                    </div>
+
+                                </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+
+                    </article>
+
+                    <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <!-- Widget ID (each widget will need unique ID)-->
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2 style="font-weight:bold;">Ship To Details(Part-A)</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <div id="comment-form" class="smart-form">
+                                        <fieldset class="smart-form">
+                                            <div class="row">
+
+                                                <section class="col col-6">
+                                                    <label>Name</label>
+                                                    <label class="input">
+                                                        <input type="text" name="name1" id="name1" value="@items.toTrdName" placeholder="Name">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6" id="gstin2">
+
+
+                                                    <label>GSTIN<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="gstin1" value="@items.toGstin" placeholder="GSTIN" id="gstin1" maxlength="15" onblur="changeEventt()" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)">
+                                                    </label>
+                                                </section>
+
+
+                                                <section class="col col-6">
+                                                    <label>Address Line 1</label>
+                                                    <label class="input">
+                                                        <input type="text" name="adress11" id="adress11" value="@items.toAddr1" placeholder="Address Line1">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Address Line 2</label>
+                                                    <label class="input">
+                                                        <input type="text" name="adress22" id="adress22" value="@items.toAddr2" placeholder="Address Line2">
+                                                    </label>
+                                                </section>
+
+
+                                                <section class="col col-6">
+                                                    <label>City</label>
+                                                    <label class="input">
+                                                        <input type="text" name="city1" id="city1" value="@items.toPlace" placeholder="City">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>State Code</label>
+
+                                                    <label class="input">
+                                                        <input type="number" name="state1" placeholder="State Code" value="@items.toStateCode" id="state1" readonly style="background-color:#d9d9d9;">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Pincode<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="pincode1" id="pincode1" maxlength="6" value="@items.toPincode" placeholder="Pincode" onblur="CheckIndianZipCode()" class="floatinput">
+                                                    </label>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+
+
+
+                                </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+                        </div>
+
+
+                    </article>
+
+                    <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <!-- Widget ID (each widget will need unique ID)-->
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2 style="font-weight:bold;">Transporter Details(Part-A)</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <div id="comment-form" class="smart-form">
+                                        <fieldset class="smart-form">
+                                            <div class="row">
+                                                
+
+                                                <section section class="col col-6">
+                                                    <div class="form-group">
+                                                        <label>Transport Mode<span style="color:red">*</span></label>
+                                                        <div>
+                                                            @Html.DropDownList("optiontrans", ViewBag.TransportMode as SelectList, "Select", new { @Class = "form-control input-sm", @id = "trans", @onblur = "changeEven();" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+
+                                                <section class="col col-6" id="transnamme">
+                                                    <label>Transporter Name</label>
+                                                    <label class="input">
+                                                        <input type="text" name="transportername" id="transportername" value="@items.transporterName" placeholder="Transporter Name">
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-6" id="transiid">
+                                                    <label>Transporter ID<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="transporterid" id="transporterid" maxlength="15" onblur="TranPortId()" style="text-transform:uppercase" value="@items.transporterId" placeholder="Transporter ID">
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-6">
+                                                    <label>Transporter Document No<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="transporterDocNo" id="transporterDocNo" maxlength="15" value="@items.transDocNo" placeholder="Transporter Document No">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Approximate Distance(In KM)<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="AppDis" id="AppDis" value="@items.transDistance" placeholder="Approximate Distance" class="floatinput">
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label>Transporter Date<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="transporterdate" id="transporterdate" value="@items.transDocDate" placeholder="Transporter Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                                    </label>
+                                                </section>
+                                               
+
+                                              
+                                                <section class="col col-6">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Vehicle Type</h6></label>
+
+                                                        <label class="radio-inline">
+
+                                                            <input type="radio" class="radiobox" name="option" id="option" value="R" checked="checked">
+                                                            <span>R</span>
+
+                                                        </label>
+
+                                                    </div>
+                                                </section>
+                                            </div>
+
+                                        </fieldset>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+
+                    </article>
+                    <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                <h2 style="font-weight:bold;">Update Vehichle(Part-B)</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <div id="comment-form" class="smart-form">
+                                        <fieldset class="smart-form">
+                                            <div class="row">
+
+
+                                                <section class="col col-6">
+                                                    <label>Vechicle No<span style="color:red">*</span></label>
+                                                    <label class="input">
+                                                        <input type="text" name="Vehicleno" id="Vehicleno" value="@items.vehicleNo" onblur="Validate()" placeholder="Vechicle No" style="text-transform:uppercase">
+                                                    </label>
+                                                </section>
+
+
+                                                @*<section class="col col-3">
+
+                                                            <label><b>Vehichle Type<span style="color:red">*</span></b></label>
+                                                            <div>
+                                                                @Html.DropDownList("option", ViewBag.GSTRList as SelectList, "Select", new { @class = "form-control" })
+                                                            </div>
+
+                                                    </section>*@
+
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+
+
+
+                    </article>
+                }
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Add invoice item</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <div class="smart-form">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th>HSN</th>
+                                                        <th>Item Description</th>
+                                                        <th>Product Name</th>
+                                                        <th>Qty</th>
+                                                        <th>UQC</th>
+                                                        <th>Unit Price</th>
+
+                                                        <th>Taxable Amount</th>
+                                                        <th>Rate(%)</th>
+                                                        <th>IGST Amount</th>
+                                                        <th>CGST Amount</th>
+                                                        <th>SGST  Amount</th>
+                                                        <th>CESS Amount</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+
+                                                        <td>
+                                                            <label class="input" style="width:60px">
+                                                                <input type="text" name="HSN" id="hsn" onblur="taxableCalculation();">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input" style="width:80px">
+                                                                <input type="text" name="itemdesc" id="itemdesc" style="width:80px" maxlength="50">
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input" style="width:80px">
+                                                                <input type="text" name="productname" id="productname" style="width:80px" maxlength="50">
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input" style="width:60px">
+                                                                <input type="text" name="qty" id="qty" onblur="taxableCalculation();" onkeypress="return decimalInput(event)" class="floatinput">
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input" style="width:60px">
+                                                                @Html.DropDownList("optionunit", ViewBag.Units as SelectList, "Select", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input" style="width:80px">
+                                                                <input type="text" name="unitprice" id="unitprice" onblur="taxableCalculation();" onkeypress="return decimalInput(event)" class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input" style="width:100px">
+                                                                <input type="text" name="taxablevalue" id="taxablevalue" value="0" readonly style="background-color:#d9d9d9;width:100px"class="floatinput">
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="rate" id="rate" value="0" readonly style="background-color:#d9d9d9;width:100px" class="floatinput">
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="iamount" value="0" id="iamount" readonly style="background-color:#d9d9d9;width:100px"class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="camount" value="0" id="camount" readonly style="background-color:#d9d9d9;width:100px" class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" name="samount" value="0" id="samount" readonly style="background-color:#d9d9d9;width:100px" class="floatinput">
+                                                            </label>
+                                                        </td>
+
+                                                        <td>
+                                                            <label class="input" width="100px">
+                                                                <input type="text" name="cesssamount" id="cesssamount" value="0" readonly style="background-color:#d9d9d9;width:100px" class="floatinput">
+                                                            </label>
+                                                        </td>
+
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="13" align="center">
+                                                            <button type="Submit" id="btnSubmit" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </article>
+
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Update Item Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+
+                                    <div class="smart-form">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr class="row">
+
+
+                                                        <th>HSN<span style="color:red">*</span></th>
+                                                        <th>Item Description<span style="color:red">*</span></th>
+                                                        <th>Product Name<span style="color:red">*</span></th>
+                                                        <th>Qty<span style="color:red">*</span></th>
+                                                        <th>UQC<span style="color:red">*</span></th>
+                                                        <th>Unit Price<span style="color:red">*</span></th>
+
+                                                        <th>Taxable Amount<span style="color:red">*</span></th>
+                                                        <th>Rate(%)<span style="color:red">*</span></th>
+                                                        <th>IGST Amount</th>
+                                                        <th>CGST Amount</th>
+                                                        <th>SGST  Amount</th>
+                                                        <th>CESS Amount</th>
+                                                        <th>Update</th>
+                                                        <th>Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+    @{
+        int i = 1;
+        decimal igstamount = 0, cgstamount = 0, sgstamount = 0, cessRate = 0, quantity = 0, totalvalue = 0, rate = 0;
+
+    }
+    @foreach (var itemss in Model.items)
+    {
+        if (@itemss.cgstRate != 0 && @itemss.sgstRate != 0)
+        {
+            rate = @Convert.ToDecimal(itemss.cgstRate + @itemss.sgstRate);
+        }
+        else
+        {
+            rate = @Convert.ToDecimal(itemss.igstRate);
+        }
+
+        if ((@ViewBag.cgstin_state != "") && (@ViewBag.gstin_state != ""))
+        {
+            if (@ViewBag.cgstin_state != @ViewBag.gstin_state)
+            {
+                igstamount = @Convert.ToDecimal(itemss.taxableAmount * rate / 100);
+                @itemss.cgstRate = 0;
+                @itemss.sgstRate = 0;
+            }
+            else if (@ViewBag.gstin_state == @ViewBag.cgstin_state)
+            {
+                igstamount = @Convert.ToDecimal(itemss.taxableAmount * 0); ;
+                cgstamount = @Convert.ToDecimal(itemss.taxableAmount * (rate / 2)) / 100;
+                sgstamount = @Convert.ToDecimal(itemss.taxableAmount * (rate / 2)) / 100;
+            }
+
+        }
+        totalvalue = @Convert.ToDecimal(cgstamount + igstamount + sgstamount + @itemss.cgstRate)+ totalvalue;
+        <tr class="row">
+
+            <td>
+                <label class="input" style="width:60px">
+                    <input type="text" name="HSN1" id="hsn_@rowVal" value="@itemss.hsnCode" onblur="updateRate();">
+                </label>
+            </td>
+
+            <td>
+                <label class="input" style="width:80px">
+                    <input type="text" id="itemdesc_@rowVal" value="@itemss.productDesc" style="width:80px" maxlength="50">
+                </label>
+            </td>
+            <td>
+                <label class="input" style="width:80px">
+                    <input type="text" id="productname_@rowVal" value="@itemss.productName" style="width:80px" maxlength="50">
+                </label>
+            </td>
+            <td>
+                <label class="input" style="width:60px">
+                    <input type="text" id="qty_@rowVal" value="@itemss.quantity" onblur="updatedetails(@rowVal)" onkeypress="return decimalInput(event)" class="floatinput">
+                </label>
+            </td>
+            <td>
+                <label class="input" style="width:60px">
+                    @Html.DropDownList("optionunit", ViewBag.Units as SelectList, "Select", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();", @value = "ViewBag.qtyUt" })
+
+
+                </label>
+            </td>
+            <td>
+                <label class="input" style="width:80px">
+                    <input type="text" id="unitprice_@rowVal" value="@Convert.ToDecimal(itemss.taxableAmount / itemss.quantity).ToString("0.00") &nbsp;" onblur="updatedetails(@rowVal)" class="floatinput">
+
+                </label>
+            </td>
+
+            <td>
+                <label class="input" style="width:100px">
+                    <input type="text" id="taxablevalue_@rowVal" value="@itemss.taxableAmount" readonly style="background-color:#d9d9d9;width:100px" onblur="updatedetails(@rowVal)" class="floatinput">
+                </label>
+            </td>
+            <td>
+                <label class="input">
+                    <input type="text" id="rate_@rowVal" value="@Convert.ToString(Convert.ToDecimal(rate))" readonly style="background-color:#d9d9d9;width:50px" onblur="updatedetails(@rowVal)" class="floatinput">
+                </label>
+            </td>
+            <td>
+                <label class="input">
+                    <input type="text" id="iamount_@rowVal" value="@Convert.ToString(Convert.ToDecimal(igstamount))" readonly style="background-color:#d9d9d9;width:70px" class="floatinput">
+                </label>
+            </td>
+
+            <td>
+                <label class="input">
+                    <input type="text" id="camount_@rowVal" value="@Convert.ToString(Convert.ToDecimal(cgstamount))" readonly style="background-color:#d9d9d9;width:70px" class="floatinput">
+                </label>
+            </td>
+
+            <td>
+                <label class="input">
+                    <input type="text" id="samount_@rowVal" value="@Convert.ToString(Convert.ToDecimal(sgstamount))" readonly style="background-color:#d9d9d9;width:70px" onblur="updatedetails(@rowVal)" class="floatinput">
+                </label>
+            </td>
+
+            <td>
+                <label class="input" width="100px">
+                    <input type="text" id="csamount_@rowVal" value="@itemss.cessRate" readonly style="background-color:#d9d9d9;width:70px" class="floatinput">
+                </label>
+            </td>
+            <td>
+                <input type="button" id="editBtn_@rowVal" onclick="Edit(@itemss.itmsid,@rowVal)" value="Update" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+            </td>
+            <td>
+                <input type="button" id="delBtn_@rowVal" onclick="Delete(@itemss.itmsid,@rowVal)" value="Delete" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+            </td>
+        </tr>
+      
+        rowVal = rowVal + 1;
+    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                    <footer></footer>
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <br />
+                </article>
+
+
+
+
+
+
+            </div>
+            <div align="center">
+                <button type="submit" name="command" value="update" class="btn btn-primary" style="background-color:#508180;border:2px solid #508180;border-radius:5px;align-content:center">Update Details</button>
+            </div>
+        </section>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+        function limitTextarea(textarea, maxLines, maxChar) {
+            var lines = textarea.value.replace(/\r/g, '').split('\n'), lines_removed, char_removed, i;
+            if (maxLines && lines.length > maxLines) {
+                lines = lines.slice(0, maxLines);
+                lines_removed = 1
+            }
+            if (maxChar) {
+                i = lines.length;
+                while (i-- > 0) if (lines[i].length > maxChar) {
+                    lines[i] = lines[i].slice(0, maxChar);
+                    char_removed = 1
+                }
+                if (char_removed || lines_removed) {
+                    textarea.value = lines.join('\n')
+                }
+            }
+        }
+
+
+
+        function autocalname() {
+            var name = document.getElementById("name").value;
+            var sname = document.getElementById("sname");
+            sname.value = name;
+        }
+
+        function autocaladdress() {
+            var address = document.getElementById("address").value;
+            var saddress = document.getElementById("saddress");
+            saddress.value = address;
+        }
+
+</script>
+<script>
+function taxableCalculation() {
+        //Address = document.getElementById("address");
+        //SAdd = document.getElementById("saddress");
+        //SAdd.value = Address.value;
+    var qty = document.getElementById("qty").value;
+    console.log(qty);
+        var unitprice = document.getElementById("unitprice").value;
+        console.log(unitprice);
+        var rate = document.getElementById("rate").value;
+        console.log(rate);
+
+
+        var igsta = document.getElementById("iamount");
+        var cgsta = document.getElementById("camount");
+        var csgsta = document.getElementById("csamount");
+        var sgsta = document.getElementById("samount");
+
+        if ((qty != "") && (unitprice != "")) {
+
+            var discountValue;
+            discountValue = (((qty * unitprice) / 100));
+            document.getElementById("taxablevalue").value = ((unitprice * qty)).toFixed(2);
+        }
+        var taxablevalue = document.getElementById("taxablevalue").value;
+
+        if ((taxablevalue != "") && (rate != "")) {
+            var fromgstin = document.getElementById("gst").value;
+            var togstin = document.getElementById("gstin1").value;
+            var cgstin_state = fromgstin.substring(0, 2);
+            var gstin_state = togstin.substring(0, 2);
+            if ((gstin_state != "") && (cgstin_state != "")) {
+                if (gstin_state != cgstin_state) {
+                    igsta.value = (taxablevalue * rate) / 100;
+                    cgsta.value = "0";
+                    sgsta.value = "0";
+                }
+                else if (gstin_state == cgstin_state) {
+                    igsta.value = "0";
+                    cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                }
+            }
+        }
+    }
+</script>
+<script>
+    function updateRate(index) {
+
+        var row = $("#hsn_" + index).parent().parent();
+
+        var hsnid = $("#hsn_" + index).val();
+        $.ajax({
+            type: "GET",
+            url: '/OutwardB2B/AutoPopulate1',
+            data: { id: hsnid },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                document.getElementById("rate_" + index).value = data.rate;
+
+
+            }
+
+        });
+
+    }
+    $("#hsn_").on('blur', function () {
+
+        var txt = $('#hsn_').val().split("|");
+        $('#hsn_').val(txt[0]);
+        $("#rate_").val(txt[1]);
+
+
+
+    });
+
+
+
+    function updatedetails(index) {
+        var row = $(this).parent().parent();
+        var qty = document.getElementById("qty_" + index).value;
+        var unitprice = document.getElementById("unitprice_" + index).value;
+        var taxablevalue = document.getElementById("taxablevalue_" + index).value;
+        var rate = document.getElementById("rate_" + index).value;
+
+        var igsta = document.getElementById("iamount_" + index);
+        var cgsta = document.getElementById("camount_" + index);
+        var csgsta = document.getElementById("csamount_" + index);
+        var sgsta = document.getElementById("samount_" + index);
+
+        if ((qty != "") && (unitprice != "")) {
+
+            document.getElementById("taxablevalue_" + index).value = ((unitprice * qty)).toFixed(2);
+        }
+
+
+        if ((taxablevalue != "") && (rate != "")) {
+            var fromgstin = document.getElementById("gst").value;
+            var togstin = document.getElementById("gstin1").value;
+            var cgstin_state = fromgstin.substring(0, 2);
+            var gstin_state = togstin.substring(0, 2);
+            if ((gstin_state != "") && (cgstin_state != "")) {
+                if (gstin_state != cgstin_state) {
+                    igsta.value = (taxablevalue * rate) / 100;
+                    cgsta.value = "0";
+                    sgsta.value = "0";
+                }
+                else if (gstin_state == cgstin_state) {
+                    igsta.value = "0";
+                    cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+
+
+        $(document).ready(function () {
+            var ischeck = $("input[type=radio][name='isauto']:checked").val();
+
+
+            if (ischeck == "No" || ischeck == "") {
+                $('#invoiceno').removeAttr("readonly").css("background-color", "white");
+
+            }
+            else {
+                $('#invoiceno').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+
+            $(":radio").on('click', function () {
+                var ischeck = $(this).val();
+                if (ischeck == "No") {
+                    $('#invoiceno').removeAttr("readonly").css("background-color", "white");
+
+                }
+                else {
+                    $('#invoiceno').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+                }
+            });
+            var discresq = $('#isDiscountreq').val();
+            if (discresq != "No") {
+                $('#discount').removeAttr("readonly").css("background-color", "white");
+            }
+            else {
+                $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+            $("#isDiscountreq").on('change', function () {
+                var discresq = $('#isDiscountreq').val();
+                if (discresq != "No") {
+                    $('#discount').removeAttr("readonly").css("background-color", "white");
+                }
+                else {
+                    $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+                }
+            });
+
+            $("#hsn").on('blur', function () {
+
+                var txt = $('#hsn').val().split("|");
+                $('#hsn').val(txt[0]);
+                $("#rate").val(txt[1]);
+
+
+
+            });
+
+            $(document).ready(function () {
+
+                $("#hsn").autocomplete({
+
+                    minlength: 3,
+                    scroll: true,
+                    source: function (request, response) {
+
+                        $.ajax({
+
+                            url: "/OutwardB2B/AutoPopulate",
+                            type: "POST",
+                            dataType: "json",
+                            data: { Prefix: request.term },
+                            success: function (data) {
+
+                                response($.map(data, function (item) {
+
+
+
+                                    return {
+
+                                        label: item.hsncode + "-" + item.hsndesc,
+
+                                        value: item.hsncode + "|" + item.rate
+
+
+
+                                    };
+
+                                }));
+
+                            },
+                            messages: {
+
+                                noResults: "", results: "",
+
+                            }
+
+                        });
+
+                    }
+
+                });
+
+
+            })
+
+
+
+
+
+
+            $('#btnSubmit').click(function () {
+
+
+
+
+                var $checkoutForm = $('#EWAYGENERATION').validate({
+                    // Rules for form validation
+                    rules: {
+                        docnumber: {
+                            required: true
+                        },
+
+                        Documentdate: {
+                            required: true
+                        },
+                      
+                        gst: {
+                            required: true
+                        },
+
+                        
+                        statecode: {
+                            required: true
+                        },
+                        pincode: {
+                            required: true,
+                            minlength: 6,
+                            maxlength: 6
+                        },
+                       
+                        gstin1: {
+                            required: true
+                        },
+
+                      
+                        state1: {
+                            required: true
+                        },
+                        pincode1: {
+                            required: true,
+                            minlength: 6,
+                            maxlength: 6
+                        },
+
+                        transportername: {
+                            required: true
+                        },
+                        transporterid: {
+                            required: true
+                        },
+                        transporterDocNo: {
+                            required: true
+                        },
+
+
+                 
+
+                        AppDis: {
+                    required: true
+                },
+
+                        hsn: {
+                            required: true
+
+                        },
+                        itemdesc: {
+                            required: true
+
+                        },
+                        //taxablevalue: {
+                        //    required: true,
+                        //    maxlength: 14,
+                        //    number: true
+
+                        //},
+                        //rate: {
+                        //    required: true,
+                        //    number: true
+
+                        //},
+                        iamt: {
+                            required: true,
+                            number: true
+
+                        },
+
+                        unitprice:
+                            {
+                                required: true,
+                                number: true,
+                                min: 0.01
+                            },
+                        discount:
+                            {
+                                required: true,
+                                number: true,
+                                min: 0,
+                                max: 99
+                            }
+                            ,
+                        qty:
+                            {
+                                required: true,
+                                number: true,
+                                min: 0.01
+                            },
+                        //portcode: {
+                        //    required: true
+                        //},
+                        //billno: {
+                        //    required: true
+                        //},
+                        //billdate: {
+                        //    required: true
+                        //},
+                        invoiceno: {
+                            required: true
+                        },
+                        csamount: {
+                    required: true,
+                    number: true
+
+                },
+
+
+                    },
+
+                    // Messages for form validation
+                    messages: {
+                        docnumber: {
+                            required: 'Please Enter the Document Number'
+                        },
+                        Documentdate: {
+                            required: 'Please Enter Document Date'
+                        },
+                       
+                        gst: {
+                            required: 'Please enter GSTIN '
+                        },
+
+                       
+                        statecode: {
+                            required: 'Please Enter State'
+                        },
+                        pincode: {
+                            required: 'Please enter Pincode',
+                            digits: 'Digits only please'
+                        },
+                       
+                        gstin1: {
+                            required: 'Please Enter GSTIN'
+                        },
+
+                        
+                        state1: {
+                            required: 'Please Enter State'
+
+                        },
+                        pincode1: {
+                            required: 'Please enter Pincode',
+                            digits: 'Digits only please'
+                        },
+                        transportername: {
+                            required: 'Please Enter Transporter Name'
+                        },
+                        transporterid: {
+                            required: 'Please Enter Transporter Id'
+                        },
+                        transporterDocNo: {
+                            required: 'Please Enter Transporter Doc. No.'
+                        },
+                        isauto: {
+                            required: 'Please Select'
+                        },
+                      
+
+                        AppDis: {
+                            required: 'Please Enter Approx Distance'
+                        },
+
+
+                        hsn: {
+                            required: 'Please select HSN'
+
+                        },
+                        itemdesc: {
+                            required: 'Please enter Item Description'
+
+                        },
+                        //rate: {
+                        //    required: 'Please Enter the rate',
+                        //    number: 'Characters are not allowed'
+
+                        //},
+                        //taxablevalue: {
+                        //    required: 'Please enter Taxable Value',
+                        //    number: 'Characters are not allowed'
+
+                        //},
+                        iamt: {
+                            required: 'Please enter IGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+
+                        unitprice: {
+                            required: 'Please enter Unit Price',
+                            number: 'Characters are not allowed'
+
+                        },
+
+                        discount: {
+                            required: 'Please enter Discount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        qty: {
+                            required: 'Please enter Qty',
+                            number: 'Characters are not allowed'
+
+                        },
+                        csamount: {
+                            required: 'Please enter Cess Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+
+                        //portcode: {
+                        //    required: 'Please enter Shipping Bill Port Code'
+                        //},
+                        //billno: {
+                        //    required: 'Please enter Shipping Bill No'
+                        //},
+                        //billdate: {
+                        //    required: 'Please enter Shipping Bill Date'
+                        //},
+                        invoiceno: {
+                            required: 'Please enter invoice Number'
+                        }
+
+                    },
+
+                    // Do not change code below
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                })
+
+
+
+            });
+        })
+
+
+        //jQuery.extend(jQuery.validator.messages, {
+
+        //    maxlength: jQuery.validator.format("Value can not be more than 99990000000.00 Crores."),
+
+        //});
+
+
+
+
+</script>
+
+<script>
+        $('#name').bind('keypress', textInput);
+        $('#name1').bind('keypress', textInput);
+        $('#city').bind('keypress', textInput);
+        $('#city1').bind('keypress', textInput);
+        $('#transportername').bind('keypress', textInput);
+
+    function checkSpcialChar(event) {
+        if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+            event.returnValue = false;
+            return;
+        }
+        event.returnValue = true;
+    }
+
+
+    function EWAYGSTINTO() {
+        GST = document.getElementById("gstin1").value;
+
+        SCODE = document.getElementById("state1");
+        if (GST != "") {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+            if (res) {
+                var statecode = GST.substr(0, 2);
+                if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                    alert("State code should be within the range of 01 to 37");
+                    SCODE.value = "";
+
+
+                }
+                else {
+                    SCODE.value = statecode;//.toString();
+
+                }
+            }
+            else {
+                SCODE.value = "";
+
+                alert("GSTIN is not in correct format.");
+
+            }
+        }
+    }
+
+    //function copyText() {
+    //    GST = document.getElementById("gst");
+    //    PAN = document.getElementById("pan");
+    //    SCODE = document.getElementById("statecode");
+    //    SCODE.value = GST.value.substr(0, 2);
+    //    PAN.value = GST.value.substr(2, 10);
+
+    //}
+    function TransPortId() {
+        GST = document.getElementById("transporterid").value;
+
+
+    if (GST != "") {
+        var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+        var res = pat.test(GST);
+    }
+    }
+</script>
+
+<script>
+
+
+        function Edit(id, index) {
+
+            var row = $("#editBtn_" + index).parent().parent();
+
+            // var index = $(this).closest("tr").index();
+            var hsncode = row.find("#hsn_" + index).val();
+            var itemdesc = row.find("#itemdesc_" + index).val();
+            var productname = row.find("#productname_" + index).val();
+            var qty = row.find("#qty_" + index).val();
+            var unitprice = row.find("#unitprice_" + index).val();
+            var txamt = row.find("#taxablevalue_" + index).val();
+            var igsta = row.find("#iamount_" + index).val();
+            var cgsta = row.find("#camount_" + index).val();
+            var sgsta = row.find("#samount_" + index).val();
+            var cessa = row.find("#csamount_" + index).val();
+            var uqc = row.find("#uqc_" + index).val();
+
+
+            if (hsncode == '') {
+                alert("Select HSN Code");
+                return false;
+            }
+            else if (itemdesc == '') {
+                alert("Enter item description");
+                return false;
+            }
+            else if (qty == '') {
+                alert('Enter Qty');
+                return false;
+            }
+            else if (isNaN(qty)) {
+                alert('Characters are not allowed inside QTY');
+                return false;
+            }
+            else if (uqc == '') {
+                alert('Select UQC');
+                return false;
+            }
+            else if (unitprice == '') {
+                alert('Enter Unitprice');
+                return false;
+            }
+            else if (isNaN(unitprice)) {
+                alert('Characters are not allowed inside Unitprice');
+                return false;
+            }
+
+            //var hsncode = $(this).closest('tr').find('td:nth-child(1)').text();
+            var obj = {
+                id: id,
+                hsncode: hsncode,
+                itemdesc: itemdesc,
+                productname:productname,
+                qty: qty,
+                uqc: uqc,
+                unitprice: unitprice,
+                txamt: txamt,
+                rate: rate,
+                igsta: igsta,
+                cgsta: cgsta,
+                sgsta: sgsta,
+                cessa: cessa
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: '/EwayUpdateBill/UpdateItems',
+                data: JSON.stringify(obj),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+
+                }
+
+            });
+        }
+
+       function Delete(id, index) {
+
+           $.ajax({
+               type: "GET",
+               url: '/EwayUpdateBill/DeleteEway',
+               data: { id: id },
+               contentType: "application/json;charset=utf-8",
+               dataType: "json",
+               success: function (data)
+               {
+                   
+                       location.reload();   
+               }
+           });
+           }
+</script>
+
+@if (TempData["Update"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["Update"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+
+@if (TempData["Delete"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["Delete"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+@if (TempData["ItemsUpdated"] != null)
+{
+    <script type="text/javascript">
+                window.onload = function () {
+                    swal({
+                        title: "",
+                        text: "@TempData["ItemsUpdated"]",
+                        type: "success",
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                        },
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+
+                    }
+     );
+        };
+
+    </script>
+}
+
+
+<script>
+
+    function Validate() {
+        Number = document.getElementById("Vehicleno").value;
+
+        if (Number != "") {
+            var pat = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{2}[0-9]{4}$/;
+            var pat1 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{1}[0-9]{4}$/;
+            var pat2 = /^[A-Z|a-z]{2}[0-9]{6}$/;
+            var res = pat.test(Number);
+            var res1 = pat1.test(Number);
+            var res2 = pat2.test(Number);
+
+            if (res || res1 || res2) {
+
+            }
+            else {
+                Number.value = "";
+                alert("Vehicle Number is not in correct format.");
+                return false;
+
+            }
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#trans').on('change', function () {
+            if (this.value == '1') {
+
+                $('#Vehicleno').removeAttr("readonly").css("background-color", "white");
+            }
+            else {
+
+                $('#Vehicleno').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+        });
+    });
+
+    $('#AppDis').bind('keypress', numericInput);
+    
+   </script>
+

@@ -1,0 +1,250 @@
+﻿@model SmartAdminMvc.Models.TBL_Cust_GSTIN
+
+@{
+    ViewBag.Title = "WeP ASP PANEL";
+}
+<script src="~/Content/ownjs/GSTINValidation.js"></script>
+
+<div id="content">
+    
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+        <!-- START ROW -->
+
+        <div class="row">
+
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false">
+                    
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold">GSTIN Updation</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <form action="@Url.Action("Edit", "GSTINConfiguration")" method="POST" id="smart-form-register" class="smart-form" autocomplete="off">
+                                                                
+                                <fieldset>
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">GSTIN Username<i class="" style="color:red;">*</i></h6>                                            
+                                            <input type="text" name="gstusername" placeholder="GSTIN Username" id="gstusername" 
+                                                   class="form-control" value="@ViewBag.GSTINUSERNAME">
+                                            <input type="hidden"name="GSTINId" value="@ViewBag.GSTINID" />
+                                        </label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="input">
+                                           <h6 style="color:#71843f;font-weight:bold">GSTIN<i class="" style="color:red;">*</i></h6>                                             
+                                            <input type="text" name="gst" placeholder="GSTIN" id="gst" maxlength="15" readonly 
+                                                onblur="GSTINNo()" style="text-transform:uppercase;  background-color:#e1e1e1;" 
+                                                   class = "form-control" onkeypress="return checkSpcialChar(event)" value="@ViewBag.GSTINNO">
+                                         </label>
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">PAN</h6>                                            
+                                            <input type="text" name="pan" placeholder="PAN" id="pan" readonly class = "form-control" 
+                                                   style="text-transform:uppercase; background-color:#e1e1e1;" value="@ViewBag.PANNO">
+                                        </label>
+
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">State Code</h6>                                            
+                                            <input type="number" name="statecode" placeholder="State Code" id="statecode" readonly 
+                                                   class = "form-control" value="@ViewBag.STATECODE"
+                                                   style="-moz-appearance: textfield; text-transform:uppercase; background-color:#e1e1e1;">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">Address<i class="" style="color:red;">*</i></h6>                                            
+                                            <input type="text" name="address" placeholder="Address" id="address" class = "form-control"
+                                                   value="@ViewBag.ADDRESS">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-3" style="display:none;">
+                                        <label style="font-weight:bold;font-size:15px;">EWB User ID</label>
+                                        <label class="input">
+                                            <input type="text" name="ewbuserid" placeholder="EWB UserId" id="ewbuserid" value="00AEGPG1699M000">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label style="font-weight:bold;font-size:15px;">EWB Username</label>
+                                        <label class="input">
+                                            <input type="text" name="ewbusername" placeholder="EWB UserName" id="ewbusername" value="@ViewBag.EWBUSERNAME">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label style="font-weight:bold;font-size:15px;">EWB Password</label>
+                                        <label class="input">
+                                            <input type="text" name="ewbpassword" placeholder="EWB Password" id="ewbpassword" value="@ViewBag.EWBPASSWORD">
+                                        </label>
+                                    </section>
+                                </fieldset>
+
+                                <footer>
+                                    <button type="submit" class="btn btn-primary text-center " style="background-color:#496949;border-radius:10px;font-weight:bold">
+                                        Save
+                                    </button>
+                                    @Html.ActionLink("Cancel", "GSTIN","GSTINConfiguration", new { @Class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:15px;background-color:#496949" })
+
+                                </footer>
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </section>
+
+
+</div>
+
+<script>
+
+   
+    function copyText() {
+        GST = document.getElementById("gst").value;
+        PAN = document.getElementById("pan");
+        SCODE = document.getElementById("statecode");
+        if (GST != "") {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+            if (res) {
+                var statecode = GST.substr(0, 2);
+                if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                    alert("State code should be within the range of 01 to 37");
+                    SCODE.value = "";
+                    PAN.value = GST.substr(2, 10);
+
+                }
+                else {
+                    SCODE.value = statecode;//.toString();
+                    PAN.value = GST.substr(2, 10);
+                }
+            }
+            else {
+                SCODE.value = "";
+                PAN.value = "";
+                alert("GSTIN is not in correct format.");
+
+            }
+        }
+    }
+    //function copyText() {
+    //    GST = document.getElementById("GSTINNo");
+    //    PAN = document.getElementById("PANNo");
+    //    SCODE = document.getElementById("Statecode");
+    //    SCODE.value = GST.value.substr(0, 2);
+    //    PAN.value = GST.value.substr(2, 10);
+
+    //}
+
+    function checkSpcialChar(event) {
+        if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+            event.returnValue = false;
+            return;
+        }
+        event.returnValue = true;
+    }
+</script>
+
+@section pagespecific{
+    <script type="text/javascript">
+        // Model i agree button
+        $("#i-agree").click(function () {
+            var $this = $("#terms");
+            if ($this.checked) {
+                $('#myModal').modal('toggle');
+            } else {
+                $this.prop('checked', true);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+        // Validation
+        $(function () {
+
+
+            // Validation
+            $("#smart-form-register").validate({
+                // Rules for form validation
+                rules: {
+                    GSTINUserName: {
+                        required: true
+                    },
+                    GSTINNo: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+                    },
+                    Statecode: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 2
+                    },
+                    Address: {
+                        required:true,
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    GSTINUserName: {
+                        required: 'Please enter GSTIN Username'
+                    },
+                    GSTINNo: {
+                        required: 'Please enter GSTIN Number Not More Than 15 Characters',
+                    },
+                    Statecode: {
+                        required: 'Please enter first two values of GSTIN Number as Number only',
+                    },
+                    Address: {
+                        required:'Please enter Address',
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+}

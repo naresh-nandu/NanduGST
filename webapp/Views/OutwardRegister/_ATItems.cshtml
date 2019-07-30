@@ -1,0 +1,46 @@
+﻿
+<fieldset>
+
+    <section class="col col-3">
+        <label class="input">
+            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+            @Html.DropDownList("rate", ViewBag.Rates as SelectList, "Select TaxPayer GSTIN", new { @class = "form-control rate", @id = "rate" })
+            <b class="tooltip tooltip-bottom-right">Select Rates</b>
+        </label>
+    </section>
+    <section class="col col-3">
+        <label class="input">
+            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+            <input type="text" name="pos" placeholder="Advance received" maxlength="2" id="pos" class="pos" />
+            <b class="tooltip tooltip-bottom-right">Enter Advance received</b>
+        </label>
+    </section>
+    <section class="col col-3">
+        <label class="input">
+            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+            <input type="text" name="pos" placeholder="IGST" maxlength="2" id="pos" class="pos" />
+            <b class="tooltip tooltip-bottom-right">Enter IGST</b>
+        </label>
+    </section>
+    <section class="col col-3">
+        <label class="input">
+            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+            <input type="text" name="pos" placeholder="CGST" maxlength="2" id="pos" class="pos" />
+            <b class="tooltip tooltip-bottom-right">Enter CGST</b>
+        </label>
+    </section>
+    <section class="col col-3">
+        <label class="input">
+            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+            <input type="text" name="pos" placeholder="SGST" maxlength="2" id="pos" class="pos" />
+            <b class="tooltip tooltip-bottom-right">Enter SGST</b>
+        </label>
+    </section>
+    <section class="col col-3">
+        <label class="input">
+            <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+            <input type="text" name="pos" placeholder="CESS" maxlength="2" id="pos" class="pos" />
+            <b class="tooltip tooltip-bottom-right">Enter CESS</b>
+        </label>
+    </section>
+</fieldset>

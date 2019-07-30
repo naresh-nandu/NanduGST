@@ -1,0 +1,1864 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+@if (TempData["SaveMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SaveMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SaveMessage"] = null;
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+@if (@ViewBag.docNoDialogue == "OPEN_docNoPOPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#mydocNoModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+@if (TempData["ItemDeletedMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ItemDeletedMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+);
+        };
+
+    </script>
+}
+
+<style type="text/css">
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    .parent .popup {
+        display: none;
+    }
+
+    .parent:hover .popup {
+        display: block;
+    }
+</style>
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                EWayBill
+                <span>
+                    >&nbsp;
+                    Generate EWayBill
+                </span>
+            </h1>
+        </div>
+
+    </div>
+
+    <form action="@Url.Action("EWB", "EWBGeneration")" method="post" name="ewaygeneration" id="ewaygenerationn" autocomplete="off" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-collapsed="false" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Eway Bill Generation(Part-A)</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>GSTIN<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select Gstin", new { @Class = "form-control input-sm", @autopostback = "true", @id = "ddlGSTINNo", @onchange = "submit();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            @if (Session["LocationSetting"].ToString() == "True")
+                                            {
+                                                if (ViewBag.GstinNo != null)
+                                                {
+                                                    <section class="col col-3" style="margin-top:-2px;">
+                                                        <div class="form-group">
+                                                            <label>Location<span style="color:red">*</span></label>
+                                                            <div>
+                                                                @Html.DropDownList("branchId", ViewBag.BranchList as SelectList, "Select Location", new { @class = "form-control", id = "ddlGSTIN", autopostback = "true" })
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                }
+                                                else
+                                                {
+                                                    <section class="col col-3" style="margin-top:-2px;">
+                                                        <div class="form-group">
+                                                            <label>Location<span style="color:red">*</span></label>
+
+                                                            <select class="form-control" name="branchId">
+                                                                <option value="0">Select Location</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </section>
+                                                }
+                                            }
+
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Supply Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("supType", ViewBag.SupplyType as SelectList, "Select SupplyType", new { @Class = "form-control input-sm", @autopostback = "true", @id = "supType", @onchange = "submit()" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Sub Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("subSupType", ViewBag.SubSupplyType as SelectList, "Select SubSupplyType", new { @Class = "form-control input-sm", @id = "subSupType", @onblur = "taxableCalculation();", @onchange = "submit()" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            @if (ViewBag.subsupplyDesc != null)
+                                            {
+                                                <section class="col col-3">
+                                                    <label>Sub Supply Type Description</label>
+                                                    <label class="input">
+                                                        <input type="text" name="subsupplyDesc" id="subsupplyDesc" placeholder="Sub Supply Type Description" value="@Session["subsupplyDesc"]">
+                                                    </label>
+                                                </section>
+                                            }
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Document Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("docType", ViewBag.DocumentType as SelectList, "Select DocumentType", new { @Class = "form-control input-sm", @id = "docType", @onblur = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Transaction Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("invoiceType", ViewBag.InvoiceTypeList as SelectList, "Select Invoice Type", new { @Class = "form-control input-sm", @id = "invoiceType", @onblur = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Transaction Type<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("TransactionType", ViewBag.TransactionTypeList as SelectList, "Select Transaction Type", new { @Class = "form-control input-sm", @id = "TransactionType", @onblur = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Shipment Document Number<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="docNo" id="docNo" value="@Session["docNo"]" placeholder="Document Number">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Document Date</label><span style="color:red">*</span>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="docDate" id="docDate" value="@Session["docDate"]" placeholder="Document Date" class="datepicker" data-dateformat='dd/mm/yy' readonly>
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Taxable Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="totalTaxable" id="totalTaxable" value="@Session["TotalTaxableValue"]" placeholder="Total Taxable" readonly style="background-color:#d9d9d9;" class="floatinput">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Total Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="invalue" id="invalue" value="@Session["invalueoeway"]" placeholder="Total Value" readonly style="background-color:#d9d9d9;" class="floatinput">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Other Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="Othervalue" id="Othervalue" value="@Session["Othereway"]" placeholder="Total Value"  class="floatinput">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>CessNonAdvol Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="CessNonAdvolvalue" id="CessNonAdvolvalue" value="@Session["CessNonAdvoleway"]" placeholder="Total Value" class="floatinput">
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+
+                <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-11" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Dispatch Details(Part-A)</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+
+                                            <section class="col col-6" id="gstind">
+                                                <label>GSTIN<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="dispatchGstin" value="@Session["dispatchGstin"]" autocomplete="off" placeholder="GSTIN" id="dispatchGstin" maxlength="15" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)" onblur="taxableCalculation()">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Name</label>
+                                                <label class="input">
+                                                    <input type="text" name="dispatchName" id="dispatchName" autocomplete="off" value="@Session["dispatchName"]" placeholder="Name">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-6">
+                                                <label>Address Line 1</label>
+                                                <label class="input">
+                                                    <input type="text" name="dispatchAdd1" id="dispatchAdd1" autocomplete="off" value="@Session["dispatchAdd1"]" placeholder="Address Line1">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Address Line 2</label>
+                                                <label class="input">
+                                                    <input type="text" name="dispatchAdd2" id="dispatchAdd2" autocomplete="off" value="@Session["dispatchAdd2"]" placeholder="Address Line2">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>City<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="dispatchCity" id="dispatchCity" autocomplete="off" value="@Session["dispatchCity"]" placeholder="City">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>State Code</label>
+                                                <label class="input">
+                                                    <input type="number" name="dispatchStateCode" autocomplete="off" placeholder="State Code" value="@Session["dispatchStateCode"]" id="dispatchStateCode" onblur="taxableCalculation()">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Act From State Code</label>
+                                                <label class="input">
+                                                    <input type="number" name="actfromStateCode" autocomplete="off" placeholder="State Code" value="@Session["actfromStateCode"]" id="actfromStateCode">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Pincode<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="dispatchPinCode" id="dispatchPinCode" maxlength="6" autocomplete="off" value="@Session["dispatchPinCode"]" placeholder="Pincode" class="floatinput">
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+                <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="accordion">
+                    <!-- Widget ID (each widget will need unique ID)-->
+
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-12" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Ship To Details(Part-A)</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-6">
+
+                                                <label>GSTIN<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="ShipToGstin" value="@Session["ShipToGstin"]" autocomplete="off" placeholder="GSTIN" id="ShipToGstin" maxlength="15" style="text-transform:uppercase" onkeypress="return checkSpcialChar(event)" onblur="taxableCalculation()">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-6">
+                                                <label>Name</label>
+                                                <label class="input">
+                                                    <input type="text" name="ShipToName" id="ShipToName" autocomplete="off" value="@Session["ShipToName"]" placeholder="Name">
+                                                </label>
+                                            </section>
+
+
+                                            <section class="col col-6">
+                                                <label>Address Line 1</label>
+                                                <label class="input">
+                                                    <input type="text" name="ShipToAdd1" id="ShipToAdd1" autocomplete="off" value="@Session["ShipToAdd1"]" placeholder="Address Line1">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Address Line 2</label>
+                                                <label class="input">
+                                                    <input type="text" name="ShipToAdd2" id="ShipToAdd2" autocomplete="off" value="@Session["ShipToAdd2"]" placeholder="Address Line2">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-6">
+                                                <label>City<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="ShipToCity" id="ShipToCity" autocomplete="off" value="@Session["ShipToCity"]" placeholder="City">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>State Code</label>
+                                                <label class="input">
+                                                    <input type="number" name="ShipToStateCode" placeholder="State Code" value="@Session["ShipToStateCode"]" id="ShipToStateCode" onblur="taxableCalculation()">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Act to State Code</label>
+
+                                                <label class="input">
+                                                    <input type="number" name="acttoStateCode" placeholder="State Code" value="@Session["acttoStateCode"]" id="acttoStateCode">
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label>Pincode<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="ShipToPinCode" id="ShipToPinCode" maxlength="6" autocomplete="off" value="@Session["ShipToPinCode"]" placeholder="Pincode" class="floatinput">
+                                                </label>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+
+
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+                    </div>
+
+
+                </article>
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" hidden>
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-14" data-widget-collapsed="True" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Dispatch and Ship To Details(Part-A)</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label>Dispatch from GSTIN</label>
+                                                <label class="input">
+                                                    <input type="hidden" name="ActDispatchFromGSTIN" id="ActDispatchFromGSTIN" autocomplete="off" value="@Session["ActDispatchFromGSTIN"]" placeholder="Dispatch from GSTIN">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Dispatch from Trade Name</label>
+                                                <label class="input">
+                                                    <input type="hidden" name="ActDispatchFromTradeName" id="ActDispatchFromTradeName" autocomplete="off" value="@Session["ActDispatchFromTradeName"]" placeholder="Dispatch from Trade Name">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Ship To GSTIN</label>
+                                                <label class="input">
+                                                    <input type="hidden" name="ActShipToGSTIN" id="ActShipToGSTIN" autocomplete="off" value="@Session["ActShipToGSTIN"]" placeholder="Ship To GSTIN">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Ship To Trade Name</label>
+                                                <label class="input">
+                                                    <input type="hidden" name="ActShipToTradeName" id="ActShipToTradeName" autocomplete="off" value="@Session["ActShipToTradeName"]" placeholder="Ship To Trade Name">
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Widget ID (each widget will need unique ID)-->
+
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-3" data-widget-collapsed="false" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Transporter Details(Part-A)</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+
+                                            <section class="col col-4" id="transnamme">
+                                                <label>Transporter Name</label>
+                                                <label class="input">
+                                                    <input type="text" name="transName" id="transName" value="@Session["transName"]" placeholder="Transporter Name">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4" id="transiid">
+                                                <label>Transporter ID</label>
+                                                <label class="input">
+                                                    <input type="text" name="transId" autocomplete="off" id="transId" onblur="" value="@Session["transId"]" placeholder="Transporter ID">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label>Approximate Distance(In KM)<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="number" name="approDistance" class="approDistance" id="approDistance" autocomplete="off" value="@ViewBag.Distance" placeholder="Approximate Distance">
+                                                </label>
+                                            </section>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <article class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-4" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                        @*<header>
+                                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                                <h2 style="font-weight:bold;">Update Vehichle(Part-B)</h2>
+                                            </header>*@
+
+                                        <!-- widget div-->
+                                        <div>
+
+                                            <!-- widget edit box -->
+                                            <div class="jarviswidget-editbox">
+                                                <!-- This area used as dropdown edit box -->
+
+                                            </div>
+                                            <!-- end widget edit box -->
+                                            <!-- widget content -->
+                                            <div class="widget-body no-padding">
+                                                <div id="comment-form" class="smart-form">
+                                                    <fieldset class="smart-form">
+                                                        <div class="row">
+
+
+
+
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                        <!-- end widget content -->
+
+                                    </div>
+
+
+
+                                </article>
+                                <article class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-5" data-widget-collapsed="false" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                        <header>
+                                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                            <h2 style="font-weight:bold;">Part-B</h2>
+                                        </header>
+
+                                        <!-- widget div-->
+                                        <div>
+
+                                            <!-- widget edit box -->
+                                            <div class="jarviswidget-editbox">
+                                                <!-- This area used as dropdown edit box -->
+
+                                            </div>
+                                            <!-- end widget edit box -->
+                                            <!-- widget content -->
+                                            <div class="widget-body no-padding">
+                                                <div id="comment-form" class="smart-form">
+                                                    <fieldset class="smart-form">
+                                                        <div class="row">
+                                                            <section section class="col col-6">
+                                                                <div class="form-group">
+                                                                    <label>Transport Mode</label>
+                                                                    <div>
+                                                                        @Html.DropDownList("transMode", ViewBag.TransportMode as SelectList, "Select", new { @Class = "form-control input-sm", @id = "transMode" })
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+
+                                                            <section class="col col-6">
+                                                                <label>
+                                                                    Vechicle No
+                                                                    <span style="color:red">
+                                                                        <a href="#" id="VechDiv" style="padding:10px; font-weight:bold">?</a>
+                                                                    </span>
+                                                                </label>
+                                                                <label class="input">
+                                                                    <input type="text" name="vehicleNo" id="vehicleNo" onchange="VehicleNoValidate()" value="@Session["vehicleNo"]" maxlength="15" placeholder="Vechicle No" style="text-transform:uppercase">
+                                                                </label>
+                                                                <div id="vechDiv_info" style="background-color: #F7E7D3; width: 250px; height: 200px; right: 250px; position: absolute; z-index: 9999">
+                                                                    <table class="">
+                                                                        <tr>
+                                                                            <th>Format of Vehicle No.</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>AB121234</td>
+                                                                            <td>(or)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>AB12A1234</td>
+                                                                            <td>(or)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>AB12AB1234</td>
+                                                                            <td>(or)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>ABC1234</td>
+                                                                            <td>(or)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>AB123A1234</td>
+                                                                            <td>(or) </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>AB12ABC1234</td>
+                                                                            <td>(or) </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>DFXXXXXX&nbsp; (for Defence Vehicle)&nbsp; </td>
+                                                                            <td>&nbsp;&nbsp;(or) </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>TRXXXXXX&nbsp; (for Temporary RC)&nbsp;</td>
+                                                                            <td>&nbsp;&nbsp;(or)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>BPXXXXXX&nbsp; (for Bhutan)&nbsp;</td>
+                                                                            <td>&nbsp;&nbsp;(or)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>NPXXXXXX&nbsp; (for Nepal)&nbsp;</td>
+                                                                            <td></td>
+                                                                        </tr>
+
+                                                                    </table>
+                                                                </div>
+                                                            </section>
+
+                                                            <section class="col col-6">
+                                                                <label id="textlable">Transporter Document No</label>
+                                                                <label class="input">
+                                                                    <input type="text" name="transdocNo" autocomplete="transdocNo" id="transporterDocNo" maxlength="15" value="@Session["transdocNo"]" placeholder="Number">
+                                                                </label>
+                                                            </section>
+
+                                                            <section class="col col-6">
+                                                                <label id="datelabel">Transporter Date</label>
+                                                                <label class="input">
+                                                                    <i class="icon-append fa fa-calendar"></i>
+                                                                    <input type="text" name="transdocDate" autocomplete="off" id="transdocDate" value="@Session["transdocDate"]" placeholder="Date" class="datepicker" data-dateformat='dd/mm/yy' readonly>
+                                                                </label>
+                                                            </section>
+
+                                                            <section class="col col-6">
+                                                                <div class="form-group">
+                                                                    <label class="radio-inline" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h6>Vehicle Type</h6></label>
+
+                                                                    <div>
+                                                                        @if (Session["vehicleType"] == null)
+                                                                        {
+                                                                            <input type="radio" name="vehicleType" id="vehicleType" value="R" class="name" /><label>&nbsp;&nbsp;Regular&nbsp;&nbsp;&nbsp;</label>
+                                                                            <input type="radio" name="vehicleType" id="vehicleType" value="O" class="name"><label>&nbsp;&nbsp;Over dimensional cargo&nbsp;&nbsp;&nbsp;</label>
+                                                                        }
+                                                                        else if (Session["vehicleType"].ToString() == "O")
+                                                                        {
+                                                                            <input type="radio" name="vehicleType" id="vehicleType" value="R" class="name" /><label>Regular&nbsp;&nbsp;&nbsp;</label>
+                                                                            <input type="radio" name="vehicleType" id="vehicleType" value="O" class="name" checked><label>Over dimensional cargo&nbsp;&nbsp;&nbsp;</label>
+                                                                        }
+                                                                        else if (Session["vehicleType"].ToString() == "R")
+                                                                        {
+                                                                            <input type="radio" name="vehicleType" id="vehicleType" value="R" class="name" checked /><label>Regular&nbsp;&nbsp;&nbsp;</label>
+                                                                            <input type="radio" name="vehicleType" id="vehicleType" value="O" class="name"><label>Over dimensional cargo&nbsp;&nbsp;&nbsp;</label>
+                                                                        }
+                                                                    </div>
+
+                                                                </div>
+                                                            </section>
+
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                        <!-- end widget content -->
+
+                                    </div>
+
+                                </article>
+                                <article class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-6" data-widget-collapsed="true" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                        @*<header>
+                                                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                                <h2 style="font-weight:bold;">Update Vehichle(Part-B)</h2>
+                                            </header>*@
+
+                                        <!-- widget div-->
+                                        <div>
+
+                                            <!-- widget edit box -->
+                                            <div class="jarviswidget-editbox">
+                                                <!-- This area used as dropdown edit box -->
+
+                                            </div>
+                                            <!-- end widget edit box -->
+                                            <!-- widget content -->
+                                            <div class="widget-body no-padding">
+                                                <div id="comment-form" class="smart-form">
+                                                    <fieldset class="smart-form">
+                                                        <div class="row">
+
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                        <!-- end widget content -->
+
+                                    </div>
+
+                                </article>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-7" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Item Details</h2>
+                        </header>
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <hr style="border:1px solid #d9dbe4" />
+                                    <br />
+                                    @{Html.RenderPartial("_Transaction"); }
+
+                                </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+                    </div>
+                </article>
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["MasterdtlsEWAY"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["MasterdtlsEWAY"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-8" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Eway List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @if (Model != null)
+                                                {
+                                                    @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                                                             grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                             grid.Column("HSN", "HSN"),
+                                                             grid.Column("ItemDesc", "Item Description"),
+                                                             grid.Column("Product Name", "Product Name"),
+                                                             grid.Column("Quantity", "Qty"),
+                                                             grid.Column("UQC", "UQC"),
+                                                             grid.Column("Unit Price", "Unit Price"),
+                                                             grid.Column("Taxablevalue", "Taxable Value"),
+                                                             grid.Column("Rate", "Rate"),
+                                                             grid.Column("IGST Amount", "IGST Amount"),
+                                                             grid.Column("CGST Amount", "CGST Amount"),
+                                                             grid.Column("SGST Amount", "SGST Amount "),
+                                                             grid.Column("CESS Amount", "CESS Amount"),
+                                                             grid.Column(format: @<text>@Html.ActionLink("Delete", "Delete", new { id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+))
+                                                }
+                                            </div>
+                                            <footer>
+                                                <div class="row">
+
+
+                                                    <div class="col-md-6 text-center" style="margin-left:10px" ;>
+                                                        <button type="submit" id="savedata" name="command" value="save" onclick="return TransModeValid();"
+                                                                style="font-weight:bold;Border-radius:10px;width:180px" class="btn btn-primary">
+                                                            Save & Generate
+                                                        </button>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+
+                <!-- end widget -->
+            </div>  <!-- Widget ID (each widget will need unique ID)-->
+
+            <div class="modal fade" id="mydocNoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>*@
+                            <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                        </div>
+                        <div class="modal-body custom-scroll terms-body">
+                            @TempData["ConfirmMessage"]
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-default" name="command" value="Close" id="btnclose">Close</button>
+                            <button type="submit" id="savedata" name="command" value="Confirm" style="font-weight:bold; Border-radius:10px; width:180px" class="btn btn-primary">Continue</button>
+                        </div>
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+
+        </section>
+    </form>
+</div>
+
+<script>
+    // #region "Vehicle No Format Popup Scripts"
+    $(document).ready(function () {
+
+
+        var newLabel = 'Transporter Document No';
+        var dateLabel = 'Transporter Date';
+        $('#transMode').on('change', function () {
+            switch (this.value) {
+                case '1':
+                    newLabel = 'Transporter Document No';
+                    dateLabel = 'Transporter Date';
+                    break;
+                case '2':
+                    newLabel = 'RR No';
+                    dateLabel = 'RR Date';
+                    break;
+                case '3':
+                    newLabel = 'Airway Bill No';
+                    dateLabel = 'Airway Date';
+                    break;
+                case '4':
+                    newLabel = 'Bill Of Landing No';
+                    dateLabel = 'Bill Of Landing Date';
+                    break;
+            }
+            $('#textlable').text(newLabel);
+            $('#datelabel').text(dateLabel);
+
+        }).trigger('change');
+
+
+        //Hide your Input Parameter Div here
+        $('#vechDiv_info').hide();
+
+        //Diplay div on mouseover
+        $('#VechDiv').mouseover(function () {
+            $('#vechDiv_info').show("slow");
+        });
+
+        //Hide div on mouseover
+        $('#VechDiv').mouseout(function () {
+            //Check if mouse is over second div
+            if ($('#vechDiv_info').is(':hover')) {
+                //If so then show the second div
+                $('#vechDiv_info').show("slow");
+            } else {
+                $('#vechDiv_info').hide("slow");
+            }
+        });
+
+        //Hide div on mouseover from second div
+        $('#vechDiv_info').mouseout(function () {
+            $('#vechDiv_info').hide("slow");
+        });
+    });
+    // #endregion
+</script>
+
+<script type="text/javascript">
+
+    //   #region "TRANSMODE VALIDATIONS"
+
+    if (document.getElementById('transMode').value == "1") {
+        $("#transName").val("");
+        $('#vehicleNo').removeAttr("readonly").css("background-color", "white");
+        $("input[type=radio]").attr('disabled', false);
+    }
+    else if (document.getElementById('transMode').value == "2") {
+        $("#transName").val("Rail");
+        $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+        $("input[type=radio]").attr('checked', false);
+        $("input[type=radio]").attr('disabled', true);
+    }
+    else if (document.getElementById('transMode').value == "3") {
+        $("#transName").val("Air");
+        $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+        $("input[type=radio]").attr('checked', false);
+        $("input[type=radio]").attr('disabled', true);
+    }
+    else if (document.getElementById('transMode').value == "4") {
+        $("#transName").val("Ship");
+        $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+        $("input[type=radio]").attr('checked', false);
+        $("input[type=radio]").attr('disabled', true);
+    }
+    else {
+        $("input[type=radio]").attr('checked', false);
+        $("input[type=radio]").attr('disabled', true);
+    }
+
+    $('#transMode').on('change', function () {
+        if (document.getElementById('transMode').value == "1") {
+            $("#transName").val(document.getElementById('transName').value);
+            $('#vehicleNo').removeAttr("readonly").css("background-color", "white");
+            $("input[type=radio]").attr('disabled', false);
+        }
+        else if (document.getElementById('transMode').value == "2") {
+            $("#transName").val("Rail");
+            $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            $("input[type=radio]").attr('checked', false);
+            $("input[type=radio]").attr('disabled', true);
+        }
+        else if (document.getElementById('transMode').value == "3") {
+            $("#transName").val("Air");
+            $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            $("input[type=radio]").attr('checked', false);
+            $("input[type=radio]").attr('disabled', true);
+        }
+        else if (document.getElementById('transMode').value == "4") {
+            $("#transName").val("Ship");
+            $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            $("input[type=radio]").attr('checked', false);
+            $("input[type=radio]").attr('disabled', true);
+        }
+        else {
+            $("input[type=radio]").attr('checked', false);
+            $("input[type=radio]").attr('disabled', true);
+        }
+    })
+    //   #endregion
+
+
+    //$(document).ready(function () {
+    //    $("#approDistance").numeric();
+    //});
+
+    //function checkSpcialChar(event) {
+    //    if (!((event.keyCode != 46) && (event.keyCode != 8))) {
+    //        event.returnValue = false;
+    //        return;
+    //    }
+    //    event.returnValue = true;
+    //}
+
+    var docNo = $("#docNo").val();
+    var docDate = $("#docDate").val();
+
+    var usergstin = "";
+    var subType = "";
+    usergstin = $("#ddlGSTINNo").val();
+    $('#supType').on('change', function () {
+        subType = this.value;
+        if (subType == "O") {
+            if (usergstin.length > 0) {
+                $('#dispatchGstin').val(usergstin);
+                SCODE = document.getElementById("dispatchStateCode");
+                var statecode = usergstin.substr(0, 2);
+                SCODE.value = statecode;
+                $("#actfromStateCode").val(statecode);
+                $("#ShipToGstin").val('');
+                $("#ShipToStateCode").val('');
+                $("#acttoStateCode").val('');
+            }
+            else {
+
+                $('#dispatchGstin').val('');
+            }
+            $("dispatchName").val('');
+            $("#dispatchAdd1").val('');
+            $("#ShipToGstin").autocomplete({
+
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+
+                    $.ajax({
+
+                        url: "/EWBGeneration/CustList",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.gstinNo,
+                                    value: item.gstinNo + "|" + item.buyerName + "|" + item.Address
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        }
+        else if (subType == "I") {
+            if (usergstin.length > 0) {
+                $('#ShipToGstin').val(usergstin);
+                STCODE = document.getElementById("ShipToStateCode");
+                var statecode = usergstin.substr(0, 2);
+                STCODE.value = statecode;
+                $("#acttoStateCode").val(statecode);
+                $("#dispatchGstin").val('');
+                $("#dispatchStateCode").val('');
+                $("#actfromStateCode").val('');
+            }
+            else {
+
+                $('#ShipToGstin').val('');
+            }
+            $("#ShipToName").val('');
+            $("#ShipToAdd1").val('');
+            $("#dispatchGstin").autocomplete({
+
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+
+                    $.ajax({
+
+                        url: "/EWBGeneration/SupplierList",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.gstinNo,
+                                    value: item.gstinNo + "|" + item.supplierName + "|" + item.Address
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        }
+
+    })
+
+    $("#hsn").on('blur', function () {
+
+        var txt = $('#hsn').val().split("|");
+        $('#hsn').val(txt[0]);
+        $("#rate").val(txt[1]);
+
+
+    });
+
+    $(document).ready(function () {
+
+        $("#hsn").autocomplete({
+
+            minlength: 3,
+            scroll: true,
+            source: function (request, response) {
+
+                $.ajax({
+
+                    url: "/OutwardB2B/HsnAutoPopulate",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term, Action: $("#supType").val() },
+                    success: function (data) {
+
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.hsncode + "-" + item.hsndesc,
+                                value: item.hsncode + "|" + item.rate
+                            };
+                        }));
+                    },
+                    messages: {
+                        noResults: "", results: "",
+                    }
+                });
+            }
+        });
+    })
+
+    //$('#subSupType').change(function () {
+    //    debugger;
+    //    var typ = $('#subSupType').val();
+    //    if (typ == 8) {
+    //        $('#desc').show();
+    //    }
+    //    else {
+    //        $('#desc').hide();
+    //    }
+    //});
+
+    $("#ShipToGstin").on('blur', function () {
+        var txt = $('#ShipToGstin').val().split("|");
+        $('#ShipToGstin').val(txt[0]);
+        $("#ShipToName").val(txt[1]);
+        $("#ShipToAdd1").val(txt[2]);
+
+        var TRANSACTION = $('#supType').val();
+        var SUBTRANSACTION = $('#subSupType').val();
+        GST = document.getElementById("ShipToGstin").value;
+        SCODE = document.getElementById("ShipToStateCode");
+        ATSCODE = document.getElementById("acttoStateCode");
+        TPINCODE = document.getElementById("ShipToPinCode");
+        TRANSACTION = document.getElementById("supType").value;
+        SUBTRANSACTION = document.getElementById("subSupType").value;
+        //  if (GST != "") {
+        if (GST != "" && (GST == "URP" || GST == "urp") && TRANSACTION == "O" && SUBTRANSACTION == 3) {
+            SCODE.value = "00";
+            ATSCODE.value = "00";
+            TPINCODE.value = "999999";
+        }
+        else {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+            if (res) {
+                var statecode = GST.substr(0, 2);
+                if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                    alert("State code should be within the range of 01 to 37");
+                    SCODE.value = "";
+                }
+                else {
+                    SCODE.value = statecode;
+                    ATSCODE.value = statecode;
+                    TPINCODE.value = "";
+                }
+            }
+            else if (res == false) {
+                SCODE.value = "";
+                ATSCODE.value = "";
+                TPINCODE.value = "";
+            }
+            else {
+                SCODE.value = "";
+                alert("GSTIN is not in correct format.");
+            }
+        }
+        // }
+
+    });
+
+    $("#dispatchGstin").on('blur', function () {
+        var txt = $('#dispatchGstin').val().split("|");
+        $('#dispatchGstin').val(txt[0]);
+        $("#dispatchName").val(txt[1]);
+        $("#dispatchAdd1").val(txt[2]);
+
+        var TRANSACTION = $('#supType').val();
+        var SUBTRANSACTION = $('#subSupType').val();
+
+        GST = document.getElementById("dispatchGstin").value;
+        STCODE = document.getElementById("dispatchStateCode");
+        AFSTCODE = document.getElementById("actfromStateCode");
+        FPINCODE = document.getElementById("dispatchPinCode");
+
+        // if (GSTNo != "") {
+        if (GST != "" && (GST == "URP" || GST == "urp") && TRANSACTION == "I" && SUBTRANSACTION == 2) {
+            STCODE.value = "00";
+            AFSTCODE.value = "00";
+            FPINCODE.value = "999999";
+        }
+        else {
+            var pat = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+            var res = pat.test(GST);
+            if (res) {
+                var statecode = parseInt(GST.substr(0, 2));
+                if (statecode == 00 || (statecode > 37 && statecode != 98)) {
+                    alert("State code should be within the range of 01 to 37");
+                    STCODE.value = "";
+                }
+                else {
+                    STCODE.value = statecode;
+                    AFSTCODE.value = statecode;
+                    FPINCODE.value = "";
+                }
+            }
+            else if (res == false) {
+                STCODE.value = "";
+                ATSCODE.value = "";
+                FPINCODE.value = "";
+            }
+            else {
+                STCODE.value = "";
+                alert("GSTIN is not in correct format.");
+            }
+        }
+        //  }
+
+    });
+
+    function checkSpcialChar(event) {
+        if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+            event.returnValue = false;
+            return;
+        }
+        event.returnValue = true;
+    }
+
+
+    function taxableCalculation() {
+
+        var qty = document.getElementById("qty").value;
+        var unitprice = document.getElementById("unitprice").value;
+        var rate = document.getElementById("rate").value;
+        var invtype = document.getElementById("invoiceType").value;
+
+        var igsta = document.getElementById("iamount");
+        var cgsta = document.getElementById("camount");
+        var csgsta = document.getElementById("csamount");
+        var sgsta = document.getElementById("samount");
+
+        if ((qty != "") && (unitprice != "")) {
+
+            var discountValue;
+            discountValue = (((qty * unitprice) / 100));
+            document.getElementById("taxablevalue").value = ((unitprice * qty)).toFixed(2);
+        }
+        var taxablevalue = document.getElementById("taxablevalue").value;
+
+        if ((taxablevalue != "") && (rate != "")) {
+            var fromgstin = document.getElementById("dispatchGstin").value;
+            var togstin = document.getElementById("ShipToGstin").value;
+            var cgstin_state = document.getElementById("dispatchStateCode").value;
+            var gstin_state = document.getElementById("ShipToStateCode").value;
+            if (invtype == "DE" || invtype == "SEWP") {
+                igsta.value = (taxablevalue * rate) / 100;
+                cgsta.value = "0";
+                sgsta.value = "0";
+            }
+            if (invtype == "SEWOP") {
+                igsta.value = "0";
+                cgsta.value = "0";
+                sgsta.value = "0";
+                csgsta.value = "0";
+            }
+            if (invtype == "R") {
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (parseInt(gstin_state) != parseInt(cgstin_state)) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (parseInt(gstin_state) == parseInt(cgstin_state)) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+        }
+    }
+
+    function VehicleNoValidate() {
+        Number = document.getElementById("vehicleNo").value;
+        Number = Number.toUpperCase();
+        if (Number != "") {
+            var pattern1 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{2}[0-9]{4}$/;
+            var pattern2 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{1}[0-9]{4}$/;
+            var pattern3 = /^[A-Z|a-z]{2}[0-9]{6}$/;
+            var pattern4 = /^[A-Z a-z]{2}[0-9]{2}[A-Z a-z]{0,2}[0-9]{4}$/;
+            var pattern5 = /^[A-Z a-z]{3}[0-9]{4}$/;
+            var pattern6 = /^[A-Z a-z]{2}[0-9]{3}[A-Z a-z]{1}[0-9]{4}$/;
+            var pattern7 = /^[A-Z a-z]{2}[0-9]{2}[A-Z a-z]{3}[0-9]{4}$/;
+
+            if (Number.length >= 5) {
+                var res1 = pattern1.test(Number);
+                var res2 = pattern2.test(Number);
+                var res3 = pattern3.test(Number);
+                var res4 = pattern4.test(Number);
+                var res5 = pattern5.test(Number);
+                var res6 = pattern6.test(Number);
+                var res7 = pattern7.test(Number);
+                if (Number.substring(0, 2).toUpperCase() != "DF" && Number.substring(0, 2).toUpperCase() != "TR" && Number.substring(0, 2).toUpperCase() != "BP" && Number.substring(0, 2).toUpperCase() != "NP") {
+                    if (res1 || res2 || res3 || res4 || res5 || res6 || res7) {
+
+                    }
+                    else {
+                        $("#vehicleNo").val('');
+                        alert("Please enter a valid Vehicle No.");
+                        document.getElementById("vehicleNo").focus();
+                    }
+                }
+                else {
+                    if (Number.length > 8) {
+                        $("#vehicleNo").val('');
+                        alert("Please enter a valid Vehicle No.");
+                        document.getElementById("vehicleNo").focus();
+                    }
+                }
+            }
+            else {
+                $("#vehicleNo").val('');
+                alert("Please enter a valid Vehicle No.");
+                document.getElementById("vehicleNo").focus();
+            }
+        }
+    }
+
+    $('#dispatchName').bind('keypress', textInput);
+    $('#ShipToName').bind('keypress', textInput);
+    $('#dispatchCity').bind('keypress', textInput);
+    $('#ShipToCity').bind('keypress', textInput);
+    $('#transName').bind('keypress', textInput);
+    $('#approDistance').bind('keypress', numericInput);
+
+
+    $('#btnSubmitAdd').click(function () {
+        debugger;
+        var $checkoutForm = $('#ewaygenerationn').validate({
+            rules: {
+
+                ddlGSTINNo: {
+                    required: true
+                },
+
+                supType: {
+                    required: true
+                },
+
+                subSupType: {
+                    required: true
+                },
+
+                docType: {
+                    required: true
+                },
+
+                docNo: {
+                    required: true
+                },
+
+                docDate: {
+                    required: true
+                },
+
+                dispatchGstin: {
+                    required: true,
+                    maxlength: 15
+                },
+
+                dispatchPinCode: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 6
+                },
+                dispatchCity: {
+                    required: true
+                },
+                ShipToCity: {
+                    required: true
+                },
+                ShipToGstin: {
+                    required: true,
+                    maxlength: 15
+                },
+
+                ShipToPinCode: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 6
+                },
+
+                approDistance: {
+                    required: true
+                },
+
+                hsn: {
+                    required: true
+
+                },
+                invoiceType: {
+                    required: true
+
+                },
+
+                iamt: {
+                    required: true,
+                    number: true
+
+                },
+
+                unitprice:
+                    {
+                        required: true,
+                        number: true
+                    },
+                unit:
+                    {
+                        required: true
+                    }
+                ,
+                qty:
+                    {
+                        required: true,
+                        number: true,
+                        min: 0.01
+                    },
+
+                csamount: {
+                    required: true,
+                    number: true
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+                ddlGSTINNo: {
+                    required: 'Please select GSTIN'
+                },
+
+                supType: {
+                    required: 'Please select Supply Type'
+                },
+
+                subSupType: {
+                    required: 'Please select Sub Supply Type'
+                },
+
+                docType: {
+                    required: 'Please select Document Type'
+                },
+
+                docNo: {
+                    required: 'Please select Document Number'
+                },
+
+                docDate: {
+                    required: 'Please select Document Date'
+                },
+
+                dispatchGstin: {
+                    required: 'Please enter GSTIN'
+                },
+
+                dispatchPinCode: {
+                    required: 'Please enter PinCode'
+                },
+
+                ShipToGstin: {
+                    required: 'Please enter GSTIN'
+                },
+
+                dispatchCity: {
+                    required: 'Please enter dispatchCity'
+                },
+                ShipToCity: {
+                    required: 'Please enter ShipToCity'
+                },
+                ShipToPinCode: {
+                    required: 'Please enter PinCode'
+                },
+
+                approDistance: {
+                    required: 'Please enter Approximate Distance'
+                },
+
+                hsn: {
+                    required: 'Please enter HSN'
+
+                },
+                invoiceType: {
+                    required: 'Please select Invoice Type'
+
+                },
+
+                iamt: {
+                    required: 'Please enter IGST Amount'
+
+                },
+
+                unitprice:
+                    {
+                        required: 'Please enter Unitprice'
+                    },
+                unit:
+                    {
+                        required: 'Please enter UQC'
+                    }
+                ,
+                qty:
+                    {
+                        required: 'Please enter Qty'
+                    },
+
+                csamount: {
+                    required: 'Please enter CESS Amount'
+
+                }
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        })
+    })
+
+    $('#savedata').click(function () {
+
+        var $checkoutForm = $('#ewaygenerationn').validate({
+            // Rules for form validation
+            rules: {
+
+                ddlGSTINNo: {
+                    required: true
+                },
+
+                supType: {
+                    required: true
+                },
+
+                subSupType: {
+                    required: true
+                },
+
+                docType: {
+                    required: true
+                },
+
+                docNo: {
+                    required: true
+                },
+
+                docDate: {
+                    required: true
+                },
+                invoiceType: {
+                    required: true
+
+                },
+
+                dispatchGstin: {
+                    required: true,
+                    maxlength: 15
+                },
+
+                dispatchPinCode: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 6
+                },
+
+                ShipToGstin: {
+                    required: true,
+                    maxlength: 15
+                },
+
+              
+                approDistance: {
+                    required: true
+                }
+
+            },
+
+            // Messages for form validation
+            messages: {
+                ddlGSTINNo: {
+                    required: 'Please select GSTIN'
+                },
+
+                supType: {
+                    required: 'Please select Supply Type'
+                },
+
+                subSupType: {
+                    required: 'Please select Sub Supply Type'
+                },
+
+                docType: {
+                    required: 'Please select Document Type'
+                },
+
+                docNo: {
+                    required: 'Please select Document Number'
+                },
+
+                docDate: {
+                    required: 'Please select Document Date'
+                },
+
+                dispatchGstin: {
+                    required: 'Please enter GSTIN'
+                },
+                invoiceType: {
+                    required: 'Please select Invoice Type'
+
+                },
+
+                dispatchPinCode: {
+                    required: 'Please enter PinCode'
+                },
+
+                ShipToGstin: {
+                    required: 'Please enter GSTIN'
+                },
+
+                ShipToPinCode: {
+                    required: 'Please enter PinCode'
+                },
+
+                approDistance: {
+                    required: 'Please enter Approximate Distance'
+                }
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        })
+
+    });
+
+    function TransModeValid() {
+        var TransMode = "";
+        var TransDocNo = "";
+        var VehicleNo = "";
+        var VehicleType = "";
+        TransMode = $("#transMode").val();
+        TransDocNo = $("#transporterDocNo").val();
+        VehicleNo = $("#vehicleNo").val();
+        VehicleType = $("#vehicleType").val();
+        if (TransMode == "1") {
+            $("#transName").val(TransporterName);
+            if (VehicleNo == "") {
+                alert("Please Enter VehicleNo.");
+                //VehicleNo.focus();
+                return false;
+            }
+            if (VehicleType == "") {
+                alert("Please Select VehicleType.");
+                //VehicleType.focus();
+                return false;
+            }
+        }
+        else if (TransMode == "1") {
+            if ($('[type="checkbox"]').is(":checked")) {
+
+            } else {
+                alert("Please select Vehicle Type");
+                return false;
+            }
+        }
+        else if (TransMode == "2" || TransMode == "3" || TransMode == "4") {
+            if (TransDocNo == "") {
+                alert('Please Enter Trans Doc No');
+                //TransDocNo.focus();
+                return false;
+            }
+        }
+    }
+</script>
+
+
+
+<script>
+    function GetDist() {
+        debugger;
+        var email_uzivatele = $('#approDistance').val();
+        var data1 = $("#ShipToPinCode").val();
+        var data = $('#dispatchPinCode').val();
+        $.ajax({
+            type: "GET",
+            url: "/EWBGeneration/GetDist",
+            contentType: "application/json; charset=utf-8",
+            data: { data, data1 },
+            dataType: "json",
+            success: function (data) {
+                $('#approDistance').val(data);
+
+            }
+        });
+    }
+
+
+
+</script>

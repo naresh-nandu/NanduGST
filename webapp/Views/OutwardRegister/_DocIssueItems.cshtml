@@ -1,0 +1,83 @@
+﻿
+<br />
+<div class="smart-form">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+
+                    <th style="width:100px">Nature of Document<span style="color:red">*</span></th>
+                    <th style="width:100px">From Serial Number<span style="color:red">*</span></th>
+                    <th style="width:100px">To Serial Number<span style="color:red">*</span></th>
+                    <th style="width:100px">Total Number<span style="color:red">*</span></th>
+                    <th style="width:100px">Cancelled</th>
+                    <th style="width:100px">Net Issued<span style="color:red">*</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td>
+                        <label class="input">
+                            @Html.DropDownList("DocType", new SelectList(ViewBag.DocType, "Value", "Text"), "--Select--", new { @Class = "form-control input-sm" })
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="FromSno" id="FromSno"  maxlength="16" placeholder="Enter From Serial Number" >
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="ToSno" id="ToSno"  maxlength="16" placeholder="Enter To Serial Number">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="Total"  id="Total" placeholder="Enter Total Number" onchange="taxableCalculation();" >
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="Cancelled" value="0"  id="Cancelled" placeholder="Enter Cancelled" onchange="taxableCalculation();" >
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="NetIssue"  id="NetIssue" readonly style="background-color:#d9d9d9;" value="0" >
+                        </label>
+                    </td>
+
+                    
+
+
+                </tr>
+                <tr>
+                    <td colspan="13" align="center">
+                        <button type="Submit" id="btnSubmit" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+
+<script type="text/javascript">
+
+    $('.floatinput').on('keypress', function (e) {
+        return validateFloatKeyPress(this, e);
+
+    });
+    function decimalInput(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>

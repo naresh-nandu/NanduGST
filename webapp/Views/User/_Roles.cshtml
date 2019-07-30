@@ -1,0 +1,13 @@
+﻿@model SmartAdminMvc.Models.MAS_Roles
+
+
+
+<section class="col col-4">
+   @*<br />
+    <br />*@
+    <label class="input">
+        <i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>
+        @Html.DropDownListFor(model => model.Role_Name, new SelectList(ViewBag.Role, "Role_ID", "Role_Name"), "Please Select Role", new { @class = "form-control" })
+      
+    </label>
+</section>

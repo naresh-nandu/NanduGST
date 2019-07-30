@@ -1,0 +1,338 @@
+﻿
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.invoice != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.invoice)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 50);
+    }
+}
+
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        oTableStaticFlow = $('#example').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': true,
+                'aTargets': [0]
+            }],
+        });
+
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+    });
+
+</script>
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0 !important;
+        content: none !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        margin-left: 0em !important;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #chkSelectAll {
+        margin-left: 4px !important;
+    }
+
+    .dt-toolbar {
+        border-bottom: none !important;
+    }
+
+    .headerstyle {
+        background-color: #cbd2d5 !important;
+        color: #000 !important;
+        font-weight: bold;
+    }
+
+    #example_length {
+        margin-right: 55px;
+    }
+</style>
+
+
+<div id="content">
+    <!-- row -->
+    <div class="row">
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Invoice Generation
+                <span>
+                    >&nbsp;
+                    Invoices
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">Invoice Generation </h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <div id="comment-form" class="smart-form">
+                                <form action="@Url.Action("InvoicePdf", "DownloadPDF")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate" autocomplete="off">
+                                    <fieldset>
+                                        <div class="row ">
+                                            <section class="col col-3 ">
+                                                <label class="label">Select Invoice Type</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("option", ViewBag.Actionlist as SelectList, "Select Action", new { @class = "form-control", onchange = "submit();" })
+                                                </div>
+                                            </section>
+
+                                            @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() == "Checker")
+                                            {
+                                                <section class="col col-3">
+                                                    <label class="label">Select Maker</label>
+                                                    <div class="col-xs-9 col-lg-9 selectContainer">
+                                                        @Html.DropDownList("ddlMaker", ViewBag.MakerList as SelectList, "Select", new { @class = "form-control", onchange = "submit();" })
+                                                    </div>
+                                                </section>
+                                            }
+                                        </div>
+                                    </fieldset>
+
+                                </form>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+            </article>
+
+            @if (ViewBag.invoice != null)
+            {
+                if (Enumerable.Count(ViewBag.invoice) > 0)
+                {
+                    int i = 1;
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2 style="font-weight:bold;">Invoice List-@TempData["option"]</h2>
+                            </header>
+
+                            <div class="table-responsive" style="overflow:auto">
+                                <div class="container-fuild" style="background-color:white;">
+
+                                    <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable" style="width:95%">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>GSTIN</th>
+                                                @if (Convert.ToString(@TempData["option"]) == "CDNR")
+                                                {
+                                                    <th>Note No</th>
+                                                    <th>Note Date</th>
+                                                }
+                                                <th>Invoice No</th>
+                                                <th>Invoice Date</th>
+                                                <th>Invoice Amount</th>
+                                                <th>Print</th>
+                                                @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() == "Maker")
+                                                {
+                                                    <th>Edit</th>
+                                                }
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in result)
+                                            {
+                                                string strRowStatus = Convert.ToString(item.rowstatus);
+                                                <tr>
+                                                    <td>@Convert.ToInt32(i++)</td>
+                                                    <td>@item.gstin</td>
+                                                    @if (Convert.ToString(@TempData["option"]) == "CDNR")
+                                                    {
+                                                        <td>@item.nt_num</td>
+                                                        <td>@item.nt_dt</td>
+                                                    }
+                                                    <td>@item.inum</td>
+                                                    <td>@item.idt</td>
+                                                    <td>@item.val</td>
+                                                    @if (Convert.ToString(@TempData["option"]) == "B2B")
+                                                    {
+                                                        <td>@Html.ActionLink("Print", "Demo", new { InvId = item.inum, Invdate = item.idt }, new { @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+
+                                                    }
+                                                    else if (Convert.ToString(@TempData["option"]) == "B2CL")
+                                                    {
+                                                        <td>@Html.ActionLink("Print", "B2CL", new { InvId = item.inum, Invdate = item.idt }, new { @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+
+                                                    }
+                                                    else if (Convert.ToString(@TempData["option"]) == "B2CS")
+                                                    {
+                                                        <td>@Html.ActionLink("Print", "B2CS", new { InvId = item.inum, Invdate = item.idt }, new { @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+
+                                                    }
+                                                    else if (Convert.ToString(@TempData["option"]) == "EXP")
+                                                    {
+                                                        <td>@Html.ActionLink("Print", "EXP", "PDFDownload", new { InvoiceNo = item.inum, InvoiceDate = item.idt }, new { @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+
+                                                    }
+                                                    else if (Convert.ToString(@TempData["option"]) == "CDNR")
+                                                    {
+                                                        <td>@Html.ActionLink("Print", "Cdnr", new { InvId = item.nt_num, Invdate = item.nt_dt }, new { @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                    }
+
+                                                    @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() == "Maker")
+                                                    {
+                                                        if (strRowStatus == "1")
+                                                        {
+                                                            if (Convert.ToString(@TempData["option"]) == "B2B")
+                                                            {
+                                                                <td>@Html.ActionLink("Edit", "Index", "InvoiceEdit", new { inum = item.inum, idt = item.idt }, new { onclick = "return confirm('Are you sure to Edit?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                            }
+                                                            else if (Convert.ToString(@TempData["option"]) == "B2CL")
+                                                            {
+                                                                <td>@Html.ActionLink("Edit", "B2CLEdit", "OutwardB2CLEdit", new { InvId = item.inum, Invdate = item.idt }, new { onclick = "return confirm('Are you sure to Edit?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                            }
+                                                            else if (Convert.ToString(@TempData["option"]) == "B2CS")
+                                                            {
+                                                                <td>@Html.ActionLink("Edit", "B2CSEdit", "OutwardB2CSEdit", new { InvId = item.inum, Invdate = item.idt }, new { onclick = "return confirm('Are you sure to Edit?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                            }
+                                                            else if (Convert.ToString(@TempData["option"]) == "EXP")
+                                                            {
+                                                                <td>@Html.ActionLink("Edit", "EXP", "EXPUpdate", new { InvoiceNo = item.inum, InvoiceDate = item.idt }, new { onclick = "return confirm('Are you sure to Edit?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                            }
+                                                            else if (Convert.ToString(@TempData["option"]) == "CDNR")
+                                                            {
+                                                                <td>@Html.ActionLink("Edit", "Home", "OutwardCDNREdit", new { InvId = item.nt_num, Invdate = item.nt_dt }, new { onclick = "return confirm('Are you sure to Edit?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a href="#" class="btn btn-warning" style="background-color:darkgrey; font-weight:bold; Border-radius:5px; width:80px; margin-bottom:3px; padding:3px;">Edit</a></td>
+                                                        }
+                                                    }
+
+                                                    @if (Convert.ToString(@TempData["option"]) == "B2B" || Convert.ToString(@TempData["option"]) == "B2CS" || Convert.ToString(@TempData["option"]) == "B2CL" || Convert.ToString(@TempData["option"]) == "EXP")
+                                                    {
+                                                        <td>@Html.ActionLink("Delete", "Delete", new { InvId = item.inum, Invdate = item.idt, ActionType = TempData["option"], strUserId = TempData["UserId"], strRefNo = TempData["RefNo"] }, new { onclick = "return confirm('Are you sure to Delete?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                    }
+                                                    else if (Convert.ToString(@TempData["option"]) == "CDNR")
+                                                    {
+                                                        <td>@Html.ActionLink("Delete", "Delete", new { InvId = item.nt_num, Invdate = item.nt_dt, ActionType = TempData["option"], strUserId = TempData["UserId"], strRefNo = TempData["RefNo"] }, new { onclick = "return confirm('Are you sure to Delete?');", @class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;" })</td>
+                                                    }
+                                                </tr>
+
+                                            }
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </article>
+
+                }
+                else
+                {
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2 style="font-weight:bold;">Invoice List-@TempData["option"]</h2>
+                            </header>
+                            <div class="table-responsive" style="overflow:auto">
+                                <div class="container-fuild" style="background-color:white;">
+                                    <h2 style="font-weight:500;text-align:center;color: #3276b1;">No Data Found</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+        <!-- end row -->
+        <!-- row -->
+        <div class="row">
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+}

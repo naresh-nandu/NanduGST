@@ -1,0 +1,700 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.InputData != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.InputData)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+@{
+    WebGrid grid1 = null;
+    var result1 = new List<dynamic>();
+    if (ViewBag.OutputData != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.OutputData)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result1.Add(row);
+        }
+        grid1 = new WebGrid(source: result1, canPage: true, canSort: true);
+    }
+}
+
+<!-- MAIN CONTENT -->
+@using (Html.BeginForm("Reconcilation", "GSTR1BulkData", FormMethod.Post, new { @id = "BulkDataReconcilationForm", @name = "BulkDataReconcilationForm" }))
+{
+    <div id="content">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR-1
+                    <span>
+                        >&nbsp;
+                        Reconciliation
+                    </span>
+                </h1>
+            </div>
+            <!-- end col -->
+            <!-- right side of the page with the sparkline graphs -->
+            <!-- col -->
+            <!-- end col -->
+
+        </div>
+        <div class="alert alert-block alert-success">
+
+            @*<form action="@Url.Action("Index", "GSTR1BulkData")" method="POST" id="SummaryForm" class="smart-form" autocomplete="off">*@
+            <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> GSTR-1</h4>
+            <br />
+            <p>
+                <div class="widget-body">
+
+                    <div id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-3">
+                                    <label class="input">GSTIN</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "ALL", new { @class = "form-control", onchange = "submit();" })
+                                    </div>
+                                </section>
+                                <section class="col col-3">
+                                    <label class="input">Period</label>
+                                    <label class="input">
+                                        <input type="text" name="period" value="@ViewBag.Period" placeholder="Period" class="datepicker" data-dateformat='mmyy' onchange="submit();">
+                                    </label>
+                                </section>
+                            </div>
+                        </fieldset>
+                        <footer>
+                            @*<button type="submit" name="GSTR1Save" value="GSTR 1 Save" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                    GSTR 1 Save
+                                </button>*@
+                        </footer>
+                    </div>
+                </div>
+            </p>
+            @*</form>*@
+        </div>
+        <!-- end row -->
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>Reconciliation Summary</h2>
+                        </header>
+
+                        <div class="table table-responsive">
+                            @{
+                                decimal totaltxval = 0, totaliamt = 0, totalcamt = 0, totalsamt = 0, totalcsamt = 0;
+                                decimal totaltxvalOut = 0, totaliamtOut = 0, totalcamtOut = 0, totalsamtOut = 0, totalcsamtOut = 0;
+                            }
+                            @if (ViewBag.InputData != null)
+                            {
+                                if (Enumerable.Count(ViewBag.InputData) > 0)
+                                {
+                                    int i = 1;
+                                    @*<div class="container-fuild" style="background-color:white;">
+                                            <table id="InputData" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="9" style="background-color:orange; font-size:20px;" align="center"><b>Input Data</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th style="background-color:cornflowerblue; color:white;">Summary Type</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">Document Type</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">TXNType</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">No. of Invoices</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">Taxable Value</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">IGST Amount</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">CGST Amount</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">SGST Amount</th>
+                                                        <th style="background-color:cornflowerblue; color:white;">CESS Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in result)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.summarytype</td>
+                                                            <td>@item.documenttype</td>
+                                                            <td>@item.txntype</td>
+                                                            <td>@item.invcnt</td>
+                                                            <td>@item.txval</td>
+                                                            <td>@item.iamt</td>
+                                                            <td>@item.camt</td>
+                                                            <td>@item.samt</td>
+                                                            <td>@item.csamt</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <br />
+
+                                        </div>*@
+                                    <br />
+                                }
+                                else
+                                {
+                                    <h3>No Data Found</h3>
+                                }
+                            }
+
+                            @if (ViewBag.InputData != null)
+                            {
+                                if (Enumerable.Count(ViewBag.InputData) > 0)
+                                {
+                                    List<dynamic> lst = result;
+                                    for (int i = 0; i < lst.Count; i++)
+                                    {
+                                        totaltxval += Convert.ToDecimal(lst[i].txval);
+                                        totaliamt += Convert.ToDecimal(lst[i].iamt);
+                                        totalcamt += Convert.ToDecimal(lst[i].camt);
+                                        totalsamt += Convert.ToDecimal(lst[i].samt);
+                                        totalcsamt += Convert.ToDecimal(lst[i].csamt);
+                                    }
+
+                                    <table id="InputData" class="table table-striped table-responsive table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="9" style="background-color:orange; font-size:20px;" align="center"><b>Input Data for GSTIN - @ViewBag.STR_GSTINNO, Period - @ViewBag.STR_PERIOD</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="background-color:darkslateblue; color:white;">
+                                                <th>Summary Type</th>
+                                                <th>Document Type</th>
+                                                <th>TXNType</th>
+                                                <th>No. of Invoices</th>
+                                                <th>Taxable Value</th>
+                                                <th>IGST Amount</th>
+                                                <th>CGST Amount</th>
+                                                <th>SGST Amount</th>
+                                                <th>CESS Amount</th>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" rowspan="14">Invoice</td>
+                                                <td valign="middle" rowspan="2">Customer Invoice</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[0].invcnt</td>
+                                                <td align="right">@lst[0].txval</td>
+                                                <td align="right">@lst[0].iamt</td>
+                                                <td align="right">@lst[0].camt</td>
+                                                <td align="right">@lst[0].samt</td>
+                                                <td align="right">@lst[0].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[1].invcnt</td>
+                                                <td align="right">@lst[1].txval</td>
+                                                <td align="right">@lst[1].iamt</td>
+                                                <td align="right">@lst[1].camt</td>
+                                                <td align="right">@lst[1].samt</td>
+                                                <td align="right">@lst[1].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Invoice goods (Tax)</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[2].invcnt</td>
+                                                <td align="right">@lst[2].txval</td>
+                                                <td align="right">@lst[2].iamt</td>
+                                                <td align="right">@lst[2].camt</td>
+                                                <td align="right">@lst[2].samt</td>
+                                                <td align="right">@lst[2].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[3].invcnt</td>
+                                                <td align="right">@lst[3].txval</td>
+                                                <td align="right">@lst[3].iamt</td>
+                                                <td align="right">@lst[3].camt</td>
+                                                <td align="right">@lst[3].samt</td>
+                                                <td align="right">@lst[3].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Invoice service (Tax)</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[4].invcnt</td>
+                                                <td align="right">@lst[4].txval</td>
+                                                <td align="right">@lst[4].iamt</td>
+                                                <td align="right">@lst[4].camt</td>
+                                                <td align="right">@lst[4].samt</td>
+                                                <td align="right">@lst[4].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[5].invcnt</td>
+                                                <td align="right">@lst[5].txval</td>
+                                                <td align="right">@lst[5].iamt</td>
+                                                <td align="right">@lst[5].camt</td>
+                                                <td align="right">@lst[5].samt</td>
+                                                <td align="right">@lst[5].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Later Income</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[6].invcnt</td>
+                                                <td align="right">@lst[6].txval</td>
+                                                <td align="right">@lst[6].iamt</td>
+                                                <td align="right">@lst[6].camt</td>
+                                                <td align="right">@lst[6].samt</td>
+                                                <td align="right">@lst[6].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[7].invcnt</td>
+                                                <td align="right">@lst[7].txval</td>
+                                                <td align="right">@lst[7].iamt</td>
+                                                <td align="right">@lst[7].camt</td>
+                                                <td align="right">@lst[7].samt</td>
+                                                <td align="right">@lst[7].csamt</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Asset Sale</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[8].invcnt</td>
+                                                <td align="right">@lst[8].txval</td>
+                                                <td align="right">@lst[8].iamt</td>
+                                                <td align="right">@lst[8].camt</td>
+                                                <td align="right">@lst[8].samt</td>
+                                                <td align="right">@lst[8].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[9].invcnt</td>
+                                                <td align="right">@lst[9].txval</td>
+                                                <td align="right">@lst[9].iamt</td>
+                                                <td align="right">@lst[9].camt</td>
+                                                <td align="right">@lst[9].samt</td>
+                                                <td align="right">@lst[9].csamt</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Asset Transfer(Inter)</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[10].invcnt</td>
+                                                <td align="right">@lst[10].txval</td>
+                                                <td align="right">@lst[10].iamt</td>
+                                                <td align="right">@lst[10].camt</td>
+                                                <td align="right">@lst[10].samt</td>
+                                                <td align="right">@lst[10].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[11].invcnt</td>
+                                                <td align="right">@lst[11].txval</td>
+                                                <td align="right">@lst[11].iamt</td>
+                                                <td align="right">@lst[11].camt</td>
+                                                <td align="right">@lst[11].samt</td>
+                                                <td align="right">@lst[11].csamt</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Inter Store Transfer</td>
+                                                <td>InvB2B</td>
+                                                <td align="right">@lst[12].invcnt</td>
+                                                <td align="right">@lst[12].txval</td>
+                                                <td align="right">@lst[12].iamt</td>
+                                                <td align="right">@lst[12].camt</td>
+                                                <td align="right">@lst[12].samt</td>
+                                                <td align="right">@lst[12].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>InvB2C</td>
+                                                <td align="right">@lst[13].invcnt</td>
+                                                <td align="right">@lst[13].txval</td>
+                                                <td align="right">@lst[13].iamt</td>
+                                                <td align="right">@lst[13].camt</td>
+                                                <td align="right">@lst[13].samt</td>
+                                                <td align="right">@lst[13].csamt</td>
+                                            </tr>
+
+                                            <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                                                <td colspan="4">Invoice Total</td>
+                                                <td align="right">
+                                                    @Convert.ToDecimal(lst[0].txval + lst[1].txval + lst[2].txval + lst[3].txval
+                                           + lst[4].txval + lst[5].txval + lst[6].txval + lst[7].txval + lst[8].txval + lst[9].txval + lst[10].txval + lst[11].txval + lst[12].txval +lst[13].txval)
+                                            </td>
+                                            <td align="right">
+                                                @Convert.ToDecimal(lst[0].iamt + lst[1].iamt + lst[2].iamt + lst[3].iamt
+                                           + lst[4].iamt + lst[5].iamt + lst[6].iamt + lst[7].iamt + lst[8].iamt + lst[9].iamt + lst[10].iamt + lst[11].iamt + lst[12].iamt + lst[13].iamt)
+                                        </td>
+                                        <td align="right">
+                                            @Convert.ToDecimal(lst[0].camt + lst[1].camt + lst[2].camt + lst[3].camt
+                                           + lst[4].camt + lst[5].camt + lst[6].camt + lst[7].camt + lst[8].camt + lst[9].camt + lst[10].camt + lst[11].camt + lst[12].camt + lst[13].camt)
+                                    </td>
+                                    <td align="right">
+                                        @Convert.ToDecimal(lst[0].samt + lst[1].samt + lst[2].samt + lst[3].samt
+                                           + lst[4].samt + lst[5].samt + lst[6].samt + lst[7].samt + lst[8].samt + lst[9].samt + lst[10].samt + lst[11].samt + lst[12].samt + lst[13].samt)
+                                </td>
+                                <td align="right">
+                                    @Convert.ToDecimal(lst[0].csamt + lst[1].csamt + lst[2].csamt + lst[3].csamt
+                                           + lst[4].csamt + lst[5].csamt + lst[6].csamt + lst[7].csamt + lst[8].csamt + lst[9].csamt + lst[10].csamt + lst[11].csamt + lst[12].csamt + lst[13].csamt)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="middle" rowspan="1">Credit/Debit</td>
+                            <td valign="middle" rowspan="1">Customer Credit Memo</td>
+                            <td>CDN</td>
+                            <td align="right">@lst[14].invcnt</td>
+                            <td align="right">@lst[14].txval</td>
+                            <td align="right">@lst[14].iamt</td>
+                            <td align="right">@lst[14].camt</td>
+                            <td align="right">@lst[14].samt</td>
+                            <td align="right">@lst[14].csamt</td>
+                        </tr>
+                        @*<tr>
+                            <td>CDNUR</td>
+                            <td align="right">@lst[9].invcnt</td>
+                            <td align="right">@lst[9].txval</td>
+                            <td align="right">@lst[9].iamt</td>
+                            <td align="right">@lst[9].camt</td>
+                            <td align="right">@lst[9].samt</td>
+                            <td align="right">@lst[9].csamt</td>
+                        </tr>*@
+                        <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                            <td colspan="4">Credit/Debit Total</td>
+                            <td align="right">@Convert.ToDecimal(lst[14].txval @*+ lst[9].txval*@)</td>
+                            <td align="right">@Convert.ToDecimal(lst[14].iamt @*+ lst[9].iamt*@)</td>
+                            <td align="right">@Convert.ToDecimal(lst[14].camt @*+ lst[9].camt*@)</td>
+                            <td align="right">@Convert.ToDecimal(lst[14].samt @*+ lst[9].samt*@)</td>
+                            <td align="right">@Convert.ToDecimal(lst[14].csamt @*+ lst[9].csamt*@)</td>
+                        </tr>
+                        <tr>
+                            <td valign="middle" rowspan="3">NIL Rate</td>
+                            <td valign="middle" rowspan="3">InvNILRated</td>
+                            <td>CDN</td>
+                            <td align="right">@lst[15].invcnt</td>
+                            <td align="right">@lst[15].txval</td>
+                            <td align="right">@lst[15].iamt</td>
+                            <td align="right">@lst[15].camt</td>
+                            <td align="right">@lst[15].samt</td>
+                            <td align="right">@lst[15].csamt</td>
+                        </tr>
+                        @*<tr>
+                            <td>CDNUR</td>
+                            <td align="right">@lst[11].invcnt</td>
+                            <td align="right">@lst[11].txval</td>
+                            <td align="right">@lst[11].iamt</td>
+                            <td align="right">@lst[11].camt</td>
+                            <td align="right">@lst[11].samt</td>
+                            <td align="right">@lst[11].csamt</td>
+                        </tr>*@
+                        <tr>
+                            <td>InvB2B</td>
+                            <td align="right">@lst[16].invcnt</td>
+                            <td align="right">@lst[16].txval</td>
+                            <td align="right">@lst[16].iamt</td>
+                            <td align="right">@lst[16].camt</td>
+                            <td align="right">@lst[16].samt</td>
+                            <td align="right">@lst[16].csamt</td>
+                        </tr>
+                        <tr>
+                            <td>InvB2C</td>
+                            <td align="right">@lst[17].invcnt</td>
+                            <td align="right">@lst[17].txval</td>
+                            <td align="right">@lst[17].iamt</td>
+                            <td align="right">@lst[17].camt</td>
+                            <td align="right">@lst[17].samt</td>
+                            <td align="right">@lst[17].csamt</td>
+                        </tr>
+                        <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                            <td colspan="4">Nil Rate Total</td>
+                            <td align="right">@Convert.ToDecimal(lst[15].txval @*+ lst[11].txval*@ + lst[16].txval + lst[17].txval)</td>
+                            <td align="right">@Convert.ToDecimal(lst[15].iamt @*+ lst[11].iamt*@ + lst[16].iamt + lst[17].iamt)</td>
+                            <td align="right">@Convert.ToDecimal(lst[15].camt @*+ lst[11].camt*@ + lst[16].camt + lst[17].camt)</td>
+                            <td align="right">@Convert.ToDecimal(lst[15].samt @*+ lst[11].samt*@ + lst[16].samt + lst[17].samt)</td>
+                            <td align="right">@Convert.ToDecimal(lst[15].csamt @*+ lst[11].csamt*@ + lst[16].csamt + lst[17].csamt)</td>
+                        </tr>
+                        <tr>
+                            <td valign="middle" rowspan="2">Non GST</td>
+                            <td valign="middle" rowspan="2">InvNonGST</td>
+                            <td>InvB2B</td>
+                            <td align="right">@lst[18].invcnt</td>
+                            <td align="right">@lst[18].txval</td>
+                            <td align="right">@lst[18].iamt</td>
+                            <td align="right">@lst[18].camt</td>
+                            <td align="right">@lst[18].samt</td>
+                            <td align="right">@lst[18].csamt</td>
+                        </tr>
+                        <tr>
+                            <td>InvB2C</td>
+                            <td align="right">@lst[19].invcnt</td>
+                            <td align="right">@lst[19].txval</td>
+                            <td align="right">@lst[19].iamt</td>
+                            <td align="right">@lst[19].camt</td>
+                            <td align="right">@lst[19].samt</td>
+                            <td align="right">@lst[19].csamt</td>
+                        </tr>
+                        <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                            <td colspan="4">Non GST Total</td>
+                            <td align="right">@Convert.ToDecimal(lst[18].txval + lst[19].txval)</td>
+                            <td align="right">@Convert.ToDecimal(lst[18].iamt + lst[19].iamt)</td>
+                            <td align="right">@Convert.ToDecimal(lst[18].camt + lst[19].camt)</td>
+                            <td align="right">@Convert.ToDecimal(lst[18].samt + lst[19].samt)</td>
+                            <td align="right">@Convert.ToDecimal(lst[18].csamt + lst[19].csamt)</td>
+                        </tr>
+                        <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                            <td colspan="4" align="center">Total</td>
+                            <td align="right">@totaltxval</td>
+                            <td align="right">@totaliamt</td>
+                            <td align="right">@totalcamt</td>
+                            <td align="right">@totalsamt</td>
+                            <td align="right">@totalcsamt</td>
+                        </tr>
+                    </tbody>
+                                    </table>
+
+                                }
+                            }
+
+                            @if (ViewBag.OutputData != null)
+                            {
+                                if (Enumerable.Count(ViewBag.OutputData) > 0)
+                                {
+                                    List<dynamic> lstOut = result1;
+                                    for (int i = 0; i < lstOut.Count; i++)
+                                    {
+                                        totaltxvalOut += Convert.ToDecimal(lstOut[i].txval);
+                                        totaliamtOut += Convert.ToDecimal(lstOut[i].iamt);
+                                        totalcamtOut += Convert.ToDecimal(lstOut[i].camt);
+                                        totalsamtOut += Convert.ToDecimal(lstOut[i].samt);
+                                        totalcsamtOut += Convert.ToDecimal(lstOut[i].csamt);
+                                    }
+
+                                    <table id="OutputData" class="table table-striped table-responsive table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="8" style="background-color:orange; font-size:20px;" align="center"><b>Output Data for GSTIN - @ViewBag.STR_GSTINNO, Period - @ViewBag.STR_PERIOD</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="background-color:darkslateblue; color:white;">
+                                                <th>Summary Type</th>
+                                                <th>Document Type</th>
+                                                <th>No. of Invoices</th>
+                                                <th>Taxable Value</th>
+                                                <th>IGST Amount</th>
+                                                <th>CGST Amount</th>
+                                                <th>SGST Amount</th>
+                                                <th>CESS Amount</th>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" rowspan="4">Invoice</td>
+                                                <td>B2B</td>
+                                                <td align="right">@lstOut[0].invcnt</td>
+                                                <td align="right">@lstOut[0].txval</td>
+                                                <td align="right">@lstOut[0].iamt</td>
+                                                <td align="right">@lstOut[0].camt</td>
+                                                <td align="right">@lstOut[0].samt</td>
+                                                <td align="right">@lstOut[0].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>B2CL</td>
+                                                <td align="right">@lstOut[1].invcnt</td>
+                                                <td align="right">@lstOut[1].txval</td>
+                                                <td align="right">@lstOut[1].iamt</td>
+                                                <td align="right">@lstOut[1].camt</td>
+                                                <td align="right">@lstOut[1].samt</td>
+                                                <td align="right">@lstOut[1].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>B2CS</td>
+                                                <td align="right">@lstOut[2].invcnt</td>
+                                                <td align="right">@lstOut[2].txval</td>
+                                                <td align="right">@lstOut[2].iamt</td>
+                                                <td align="right">@lstOut[2].camt</td>
+                                                <td align="right">@lstOut[2].samt</td>
+                                                <td align="right">@lstOut[2].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>OTHER</td>
+                                                <td align="right">@lstOut[3].invcnt</td>
+                                                <td align="right">@lstOut[3].txval</td>
+                                                <td align="right">@lstOut[3].iamt</td>
+                                                <td align="right">@lstOut[3].camt</td>
+                                                <td align="right">@lstOut[3].samt</td>
+                                                <td align="right">@lstOut[3].csamt</td>
+                                            </tr>
+                                            <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                                                <td colspan="3">Invoice Total</td>
+                                                <td align="right">
+                                                    @Convert.ToDecimal(lstOut[0].txval + lstOut[1].txval + lstOut[2].txval + lstOut[3].txval)
+                                                </td>
+                                                <td align="right">
+                                                    @Convert.ToDecimal(lstOut[0].iamt + lstOut[1].iamt + lstOut[2].iamt + lstOut[3].iamt)
+                                                </td>
+                                                <td align="right">
+                                                    @Convert.ToDecimal(lstOut[0].camt + lstOut[1].camt + lstOut[2].camt + lstOut[3].camt)
+                                                </td>
+                                                <td align="right">
+                                                    @Convert.ToDecimal(lstOut[0].samt + lstOut[1].samt + lstOut[2].samt + lstOut[3].samt)
+                                                </td>
+                                                <td align="right">
+                                                    @Convert.ToDecimal(lstOut[0].csamt + lstOut[1].csamt + lstOut[2].csamt + lstOut[3].csamt)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" rowspan="2">Credit/Debit</td>
+                                                <td>CDNR</td>
+                                                <td align="right">@lstOut[4].invcnt</td>
+                                                <td align="right">@lstOut[4].txval</td>
+                                                <td align="right">@lstOut[4].iamt</td>
+                                                <td align="right">@lstOut[4].camt</td>
+                                                <td align="right">@lstOut[4].samt</td>
+                                                <td align="right">@lstOut[4].csamt</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CDNUR</td>
+                                                <td align="right">@lstOut[5].invcnt</td>
+                                                <td align="right">@lstOut[5].txval</td>
+                                                <td align="right">@lstOut[5].iamt</td>
+                                                <td align="right">@lstOut[5].camt</td>
+                                                <td align="right">@lstOut[5].samt</td>
+                                                <td align="right">@lstOut[5].csamt</td>
+                                            </tr>
+                                            <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                                                <td colspan="3">Credit/Debit Total</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[4].txval + lstOut[5].txval)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[4].iamt + lstOut[5].iamt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[4].camt + lstOut[5].camt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[4].samt + lstOut[5].samt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[4].csamt + lstOut[5].csamt)</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle">NIL Rate</td>
+                                                <td>NIL</td>
+                                                <td align="right">@lstOut[6].invcnt</td>
+                                                <td align="right">@lstOut[6].txval</td>
+                                                <td align="right">@lstOut[6].iamt</td>
+                                                <td align="right">@lstOut[6].camt</td>
+                                                <td align="right">@lstOut[6].samt</td>
+                                                <td align="right">@lstOut[6].csamt</td>
+                                            </tr>
+                                            <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                                                <td colspan="3">Nil Rate Total</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[6].txval)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[6].iamt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[6].camt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[6].samt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[6].csamt)</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle">Non GST</td>
+                                                <td>Non GST</td>
+                                                <td align="right">@lstOut[7].invcnt</td>
+                                                <td align="right">@lstOut[7].txval</td>
+                                                <td align="right">@lstOut[7].iamt</td>
+                                                <td align="right">@lstOut[7].camt</td>
+                                                <td align="right">@lstOut[7].samt</td>
+                                                <td align="right">@lstOut[7].csamt</td>
+                                            </tr>
+                                            <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                                                <td colspan="3">Non GST Total</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[7].txval)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[7].iamt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[7].camt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[7].samt)</td>
+                                                <td align="right">@Convert.ToDecimal(lstOut[7].csamt)</td>
+                                            </tr>
+                                            <tr style="background-color:cornflowerblue; color:white; font-weight:bold;">
+                                                <td colspan="3" align="center">Total</td>
+                                                <td align="right">@totaltxvalOut</td>
+                                                <td align="right">@totaliamtOut</td>
+                                                <td align="right">@totalcamtOut</td>
+                                                <td align="right">@totalsamtOut</td>
+                                                <td align="right">@totalcsamtOut</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                }
+                            }
+                        </div>
+
+
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                </article>
+            </div>
+        </section>
+
+    </div>
+                                }
+<!-- END MAIN CONTENT -->
+
+@if (TempData["Response"] != null)
+            {
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Response"])));
+        TempData["Response"] = null;
+    </script>
+}

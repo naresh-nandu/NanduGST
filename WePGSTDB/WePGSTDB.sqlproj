@@ -1,0 +1,2472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>WePGSTDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{e0dc8b6c-7806-4eed-a153-73c34ed9e803}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>WePGSTDB</RootNamespace>
+    <AssemblyName>WePGSTDB</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <GenerateCreateScript>True</GenerateCreateScript>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="Profiles" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\MAS_Resources.sql" />
+    <Build Include="dbo\Tables\MAS_Roles.sql" />
+    <Build Include="dbo\Tables\MAS_Roles_Resources.sql" />
+    <Build Include="dbo\Tables\registration_taxpayers.sql" />
+    <Build Include="dbo\Tables\StatusMaster.sql" />
+    <Build Include="dbo\Tables\Table_debug_messages.sql" />
+    <Build Include="dbo\Tables\TBL_Aggregator.sql" />
+    <Build Include="dbo\Tables\TBL_ASP_API_Transactions.sql" />
+    <Build Include="dbo\Tables\TBL_Audit_Log.sql" />
+    <Build Include="dbo\Tables\TBL_AUTH_KEYS.sql" />
+    <Build Include="dbo\Tables\TBL_AUTH_KEYS_EWB.sql" />
+    <Build Include="dbo\Tables\TBL_Buyer.sql" />
+    <Build Include="dbo\Tables\Tbl_CodeCategories.sql" />
+    <Build Include="dbo\Tables\Tbl_Codes.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_EWB_GEN_CONS_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_EWB_GEN_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_EWB_UPD_VEHNO_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_GSTR1_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_GSTR1_RECS_TALLY.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_GSTR2_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_GSTR3B_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_TRP_Customer_RECS.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_Docs.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_Docs_Upload.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_GSTIN.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_LOCATION.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_PAN.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_PAN_Docs.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_Settings.sql" />
+    <Build Include="dbo\Tables\TBL_Customer.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_ERROR_CODES.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GEN_CANCEL.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GEN_CONSOLIDATED.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GEN_CONSOLIDATED_GET.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GEN_CONSOLIDATED_GET_TRIPSHEET.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GEN_CONSOLIDATED_TRIPSHEET.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GEN_REJECT.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_GET.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_GET_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_GET_VehiclDetails.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_OTHERPARTY.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_OTHERPARTY_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_OTHERPARTY_VehiclDetails.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_GENERATION_VehiclDetails.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_RECVD_FILES.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_Transporter.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_UPDATE_VEHICLENO.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_EWB_GENERATION.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_EWB_GENERATION_CONSOLIDATED.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_EWB_UPDATE_VEHICLENO.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_AT.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_ATA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2BA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2CL_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2CLA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2CS.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2CS_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2CSA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_B2CSA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_CDN_B2CS.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_CDNRA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_CDNUR.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_CDNURA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_DOC.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_EXP_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_EXPA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_HSN.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_NIL.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_TXP.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR1_TXPA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_B2BUR_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_CDN.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_CDNUR.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_HSN.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_IMPG_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_IMPS_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_ITCRVSL.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_NIL.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_TXI.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR2_TXPD.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR3B_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_ACTION_TYPE.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_Download.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_ESIGN_DATA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_FILE_Response.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_SAVE_Response.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_SUBMIT_Response.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR_TYPE.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_AT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_AT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_ATA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_ATA_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2BA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2BA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2BA_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2BA_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CL_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CL_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CL_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CLA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CLA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CLA_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CLA_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CS_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CS_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CS_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CS_N.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CSA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_B2CSA_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNRA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNRA_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNRA_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNRA_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNUR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNUR_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNUR_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNURA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNURA_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_CDNURA_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_AT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_AT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2CL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2CL_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2CL_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2CL_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_B2CS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNUR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNUR_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_CDNUR_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_DOC_ISSUE.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_DOCS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_EXP.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_EXP_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_EXP_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_HSN.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_HSN_DATA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_NIL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_NIL_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_TXPD.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_D_TXPD_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_DOC_ISSUE.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_DOCS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_EXP.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_EXP_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_EXP_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_EXPA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_EXPA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_EXPA_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_HSN.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_HSN_DATA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_NIL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_NIL_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_SAVE_RETSTATUS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_TXP.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_TXP_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_TXPA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1_TXPA_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1ASummary.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1ASummaryAction.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1ASummaryActionList.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1Summary.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1SummaryAction.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR1SummaryActionList.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2B_INV_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2BUR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2BUR_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2BUR_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2BUR_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_B2BUR_INV_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNR_NT_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNUR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNUR_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNUR_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_CDNUR_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2B_INV_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2BUR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2BUR_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2BUR_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2BUR_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_B2BUR_INV_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNR_NT_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNUR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNUR_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNUR_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_CDNUR_ITMS_ITC.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_HSNSUM.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_HSNSUM_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_IMPG.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_IMPG_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_IMPS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_IMPS_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_NIL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_NIL_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_TXLI.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_TXLI_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_TXPD.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_D_TXPD_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_HSNSUM.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_HSNSUM_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_IMPG.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_IMPG_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_IMPS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_IMPS_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_ITCRVSL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_ITCRVSL_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_NIL.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_NIL_INTER.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_NIL_INTRA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_SAVE_RETSTATUS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_TXI.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_TXI_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_TXPD.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2_TXPD_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2A_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2Summary.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2SummaryAction.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR2SummaryActionList.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_inter_sup.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_inter_sup_comp_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_inter_sup_uin_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_inter_sup_unreg_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_intr_ltfee.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_intr_ltfee_intr_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_intr_ltfee_Late_Fee.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_inward_sup.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_inward_sup_isup_details.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_itc_elg.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_itc_elg_itc_avl.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_itc_elg_itc_inelg.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_itc_elg_itc_net.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_itc_elg_itc_rev.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_sup_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_sup_det_isup_rev.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_sup_det_osup_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_sup_det_osup_nil_exmp.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_sup_det_osup_nongst.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_sup_det_osup_zero.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_Tax_Pmt.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_Tax_Pmt_tx_py.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_Tax_Pmt_tx_py_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_Tax_Pmt_tx_py_det1.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_Tax_Pmt_txpaidAcash.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_D_Tax_Pmt_txpaidAcredit.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_inter_sup.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_inter_sup_comp_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_inter_sup_uin_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_inter_sup_unreg_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_intr_ltfee.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_intr_ltfee_intr_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_inward_sup.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_inward_sup_isup_details.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_itc_elg.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_itc_elg_itc_avl.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_itc_elg_itc_inelg.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_itc_elg_itc_net.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_itc_elg_itc_rev.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_SAVE_RETSTATUS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_sup_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_sup_det_isup_rev.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_sup_det_osup_det.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_sup_det_osup_nil_exmp.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_sup_det_osup_nongst.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR3B_sup_det_osup_zero.sql" />
+    <Build Include="dbo\Tables\TBL_HSN_MASTER.sql" />
+    <Build Include="dbo\Tables\TBL_MAS_EWAYBILL.sql" />
+    <Build Include="dbo\Tables\TBL_MAS_TRP.sql" />
+    <Build Include="dbo\Tables\TBL_Metro_Summary_Input_Data.sql" />
+    <Build Include="dbo\Tables\TBL_Metro_Summary_Output_Data.sql" />
+    <Build Include="dbo\Tables\TBL_METRO_TRADE_OUTWARD.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_PURCHASES.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_PURCHASES_BILL.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_PURCHASES_BILL_DET.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_PURCHASES_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_SALES.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_SALES_BILL.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_SALES_BILL_DET.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_SALES_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_TRANSACTIONS.sql" />
+    <Build Include="dbo\Tables\TBL_MOBILE_APP_TRANSACTIONS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_Nature_Of_Document.sql" />
+    <Build Include="dbo\Tables\TBL_RATE_MASTER.sql" />
+    <Build Include="dbo\Tables\TBL_RECONCILIATION_LOGS.sql" />
+    <Build Include="dbo\Tables\TBL_RECVD_FILE_ERRORS.sql" />
+    <Build Include="dbo\Tables\TBL_RECVD_FILE_RECORDS.sql" />
+    <Build Include="dbo\Tables\TBL_RECVD_FILES.sql" />
+    <Build Include="dbo\Tables\TBL_Settings_Reconciliation.sql" />
+    <Build Include="dbo\Tables\TBL_STATE_MASTER.sql" />
+    <Build Include="dbo\Tables\TBL_Supplier.sql" />
+    <Build Include="dbo\Tables\TBL_TMP_Buyer.sql" />
+    <Build Include="dbo\Tables\TBL_TMP_CSV_CustomerUpload.sql" />
+    <Build Include="dbo\Tables\TBL_TMP_CSV_UploadMaster.sql" />
+    <Build Include="dbo\Tables\TBL_TMP_HSN_MASTER.sql" />
+    <Build Include="dbo\Tables\TBL_TMP_RecordsProcess.sql" />
+    <Build Include="dbo\Tables\TBL_TMP_SUPPLIER.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Audit_Log.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Customer.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Package.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_RECVD_FILES.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Resources.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Roles.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Roles_Resources.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_UserAccess_Customer.sql" />
+    <Build Include="dbo\Tables\TBL_TRP_Userlist.sql" />
+    <Build Include="dbo\Tables\TBL_UQC_MASTER.sql" />
+    <Build Include="dbo\Tables\TBL_ValidGSTIN.sql" />
+    <Build Include="dbo\Tables\TBL_VIEW_TRACK_STATUS.sql" />
+    <Build Include="dbo\Tables\TBL_WEP_WALLET.sql" />
+    <Build Include="dbo\Tables\TBL_WEP_WALLET_TRANSACTIONS.sql" />
+    <Build Include="dbo\Tables\TBL_WePGST_PARTNER.sql" />
+    <Build Include="dbo\Tables\UserAccess_GSTIN.sql" />
+    <Build Include="dbo\Tables\UserList.sql" />
+    <Build Include="dbo\Views\View_Role_Resource_Menus.sql" />
+    <Build Include="dbo\Views\View_Role_Resource_SubMenus.sql" />
+    <Build Include="dbo\Views\View_TBL_METRO_TRADE_OUTWARD.sql" />
+    <Build Include="dbo\Views\View_TRP_Role_Resource_Menus.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\View_TRP_Role_Resource_SubMenus.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\qfn_JsonEscape.sql" />
+    <Build Include="dbo\Functions\qfn_XmlToJson.sql" />
+    <Build Include="dbo\Functions\udf_GSTINValidate.sql" />
+    <Build Include="dbo\Functions\udf_IsValidCtin.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_SplitGSTRRecordData.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateAmount.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateAndConvertDate.sql" />
+    <Build Include="dbo\Functions\udf_ValidateBOENo.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateBOEValue.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateCDNForB2CSInvoice.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateCDNForOrigInvoice.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateDate.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateDocType.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateExportType.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateGstAmount.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateGstin.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateGstItcAmount.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateHsnCode.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateHsnDesc.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateHsnDescription.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateInvoiceDate.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateInvoiceNo.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateInvoiceType.sql" />
+    <Build Include="dbo\Functions\udf_ValidateInvoiceValue.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateIsSEZ.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateItcEligibility.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNilAmount.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNilSupplyType.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNoteDate.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNoteNo.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNoteRsn.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNoteType.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateNumericData.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidatePeriod.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidatePlaceOfSupply.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidatePortCode.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidatePreGstRegime.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateQuantity.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateRate.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateReverseCharge.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateSerialNo.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateSupplyType.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateTaxableValue.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateUin.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\udf_SplitString.sql" />
+    <Build Include="dbo\Functions\udf-Str-Parse-Row.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Delete_Eway_consoBill.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Delete_Eway_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Delete_Eway_Record.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Delete_SupplierDetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_AuditLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_CustomerRegistration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_Inward_Gstr2_B2B.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_Inward_Gstr2_B2BA_invItems.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_Outward_Gstr1_B2B.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_Outward_Gstr1_B2B_invItems.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\ins_Role_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\ins_Role_Resource_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_Supplierdetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Ins_UserList.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\pr_SendSmsSQL.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_AuditLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_CustomersForModify.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_CustomersPendingApproval.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_Download_GSTR3_ByAction.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_GSTR1_FilingSummary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_UserAccess.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_UserAccess_ByHash.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Retrieve_UserDetailsForModify.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\sp_MSdel_dboMAS_Resources.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\sp_MSins_dboMAS_Resources.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\sp_MSupd_dboMAS_Resources.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\sp_TestSendMail.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_ApproveCustomer.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_Customer_Block_Unblock.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_CustomerDetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_Mismatch_InvoiceItemdata_GSTR2.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\update_Role_Resource_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_SupplierDetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_User_Block_Unblock.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_UserChangePassword.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Update_UserDetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Admin_GSTR1_Delete_SA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Admin_GSTR2_Delete_SA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Admin_GSTR2A_Delete_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_BulkCopyMetroData_Trade.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Compute_Chksum_GSTR1_B2B.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Compute_Chksum_GSTR1_B2CL.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Compute_Chksum_GSTR1_B2CS.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Compute_Chksum_GSTR1_CDNR.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Compute_Chksum_GSTR1_EXP.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Compute_Chksum_GSTR1_Invoices.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_CONS_EWB_Generation.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_EWB_Generation.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_EWB_UPDATE_VEHICLENO.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_B2B_RETSAVE.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_D_Save.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_MOBILE_APP.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_RETFILE.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_RETSAVE.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_Save.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR1_Update.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR2_MOBILE_APP.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR2_Save.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_GSTR3B_RETSAVE.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Construct_JSON_Update_Vehicle_No.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_All_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_All_GSTR1_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_All_GSTR2_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR1_B2CS_INV_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR1_B2CS_Others_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR1_D_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR1_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR2_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR2_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR3B_Data.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR3B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_INWARD_GSTR2_B2B_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_OUTWARD_GSTR1_B2B_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_OUTWARD_GSTR1_B2CL_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_OUTWARD_GSTR1_B2CS_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_OUTWARD_GSTR1_CDNR.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_OUTWARD_GSTR1_EXP_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_OUTWARD_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_PAN.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_Role.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Usp_Delete_TRP_Role.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Generate_PDF_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_GetToken.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_GetTotalGSTR1DataByGstnId.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_EWB_CONS_GEN.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_EWB_GEN.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_EWB_UPD_VEHNO_GEN.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR1_EXT_PERF.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR1_EXT_PERF_Tally.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR2_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR2_EXT_PERF.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR3B_EXT_PERF.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_TRP_Customer.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CONSO_EWAYBILL_Add.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CSV_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CSV_GSTR1B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CSV_GSTR1B2CS_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CSV_GSTR1CDNR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CSV_GSTR2_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_CSV_GSTR2B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Insert_CustomerRegistration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_EWAYBILL_GENERATION_CONSOLIDATED_EXT.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_EWAYBILL_GENERATION_EXT.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_EWAYBILL_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_EWAYBILL_Items_Add.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_EWAYBILL_UPDATE_VEHICLENO_EXT.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_HSN_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_INWARD_GSTR2_B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_INWARD_GSTR2_B2BUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_EWB_GENERATION_CONSOLIDATED_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_EWB_GENERATION_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_AT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_B2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_B2CL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_B2CS_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_CDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_CDNUR_SA.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_DOCISSUE_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_EXP_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_HSN_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_NIL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_SA.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_D_TXP_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1_RETSUM.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1AT_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1AT_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2B_EXT_old.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2B_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2CL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2CL_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2CS_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1B2CS_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1CDNR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1CDNR_EXT_TALLY.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1CDNUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1CDNUR_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1DOCISSUE_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1DOCISSUE_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1EXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1EXP_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1HSN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1HSN_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1NIL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1NIL_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1TXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR1TXP_EXT_TALLY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2_D_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2A_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2AB2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2ACDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2B2BUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2CDN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2CDNUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2HSN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2IMPG_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2IMPS_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2ITCRVSL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2NIL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2TXI_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2TXPD_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR3B_RETSUM.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_Mobile_App.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_Mobile_App_Purchases.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_Mobile_App_Purchases_Bill.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_Mobile_App_Sales.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_Mobile_App_Sales_Bill.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_Mobile_App_Transactions.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_insert_new_resourses.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_insert_new_roles_resourses.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_AT_TXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_B2CL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_OUTWARD_GSTR1_B2CL_EXT_N.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_OUTWARD_GSTR1_B2CS_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_B2CS_INV_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_CDNR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_OUTWARD_GSTR1_CDNR_EXT_N.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_DOC_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_EXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Outward_GSTR1_NIL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Insert_TRP_AuditLog.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_TRP_New_Roles_Resourses.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_TRP_Registration_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Usp_Insert_TRP_Role_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Insert_TRP_Role_Resource_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_TRP_Taxpayer_Registration.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_TRP_User_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Wallet_Balance.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_InsUpdDel_EwayBill_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_MIS_GSTIN_Customer_SalesSummary_B2B.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_MIS_GSTIN_PurchaseSummary.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_MIS_GSTIN_SalesSummary.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_MIS_GSTIN_SalesSummary_InvoiceType.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_MIS_GSTIN_SupplierInward_Register.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_MIS_InvoiceCountandDetails.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Process_GSTR1_RETSTATUS.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Process_GSTR2_RETSTATUS.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_EWB_CONSOLIDATED_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_EWB_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_EWB_UPDATE_VEHICLENO_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1_AMEND_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1AT_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1ATA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2B_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2BA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2CL_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2CLA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2CS_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2CS_INV_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2CS_N_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1B2CSA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1CDNR_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1CDNRA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1CDNUR_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1CDNURA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1DOCISSUE_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1EXP_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1EXPA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1HSN_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1HSNSUM_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1NIL_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1TXP_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR1TXPA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2B2B_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2B2BUR_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2CDN_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2CDNUR_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2HSN_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2IMPG_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2IMPS_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2ITCRVSL_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2NIL_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2TXI_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR2TXPD_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR3B_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_API_Invoice_Statistics.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_API_Statistics.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_CustomerGSTIN_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_CustomerGSTIN_DetailsById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_EWAYBill_GETAPI.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_EWB_Dashboard_SUMMARY.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_EWB_GENERATION.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_EWB_GENERATION_CONSOLIDATED.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_EWB_UPD_VEHICLENO.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTIN_Wise_Invoice_Count.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_Bulkdata_Processed_Summary.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_AT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_B2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_B2CL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_B2CS_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_CDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_CDNUR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_DOCISSUE_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_EXP_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_HSN_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_NIL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_D_TXP_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1_RETSUM.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1And2_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1AT_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1AT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1ATA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1ATA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2BA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2BA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CLA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CLA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CS_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CS_INV_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CS_Others_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CS_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CSA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1B2CSA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNRA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNRA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNUR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNURA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1CDNURA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1DOCISSUE_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1DOCISSUE_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1EXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1EXP_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1EXPA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1EXPA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1HSN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1HSN_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1NIL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1NIL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1TXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1TXP_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1TXPA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR1TXPA_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2_All_Ctin.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2_GSTR2A_Ctins.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2_ITC_Updation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2_RETSUM.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2A_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2AB2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2ACDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2B2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2B2BUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2B2BUR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2CDN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2CDN_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2CDNUR_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2CDNUR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2HSN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2HSN_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2IMPG_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2IMPG_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2IMPS_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2IMPS_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2ITCRVSL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2ITCRVSL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2NIL_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2NIL_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2TXI_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2TXI_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2TXPD_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR2TXPD_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR3B_D_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR3B_Dashboard.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR3B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR3B_Report.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR3B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR3B_Summary_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_HSN_MASTER.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_HSNDetails.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Invoice_Statistics.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Invoices_MissingInGSTR2.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Invoices_MissingInGSTR2A.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_JSON_Mobile_App.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_JSON_Mobile_App_Purchases.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_JSON_Mobile_App_Purchases_Bill.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_JSON_Mobile_App_Sales.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_JSON_Mobile_App_Sales_Bill.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_JSON_Mobile_App_Transactions.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_LOGS_GSTR1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Logs_GSTR1_SummaryReport.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Logs_Gstr1_UploadedData.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Logs_Gstr2_UploadedData.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Logs_GSTR2A_DownloadedData.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_LOGS_INWARD.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_LOGS_OUTWARD.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Logs_Reconciliation_Status.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Logs_Reconciliation_Summary.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Matched_Invoices.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Mismatched_Invoices.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Outward_AT_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Outward_DocIssue_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Outward_NilRated_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Outward_TXP_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_OutwardUpdate_GSTR1_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_PAN_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_PAN_DetailsById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_PDF_GSTR1B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Reconciliation_Setting.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Summary_Dashboard_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Summary_Dashboard_Flat.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Summary_Dashboard_Pie.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Retrieve_TRP_AuditLog.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_Customer_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_GSTIN_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_PAN_Details.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_Summary_Dashboard_Flat.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_TaxPayers.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_User_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_UserList.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_UserListById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_UserListByTRPUserId.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRPUser_Assignto_Taxpayer.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_RetrieveMismatchedInvoiceItemsInGSTR2andGSTR2A.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_RetrieveMismatchedInvoicesInGSTR2andGSTR2A.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TRP_UserAssigntoTaxpayer.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Conso_EWAYBILL_GENERATION_MASTER.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Ctin_Validation_Status.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Update_Customer_GSTIN.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_EWAYBILL_CONSO_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_EWAYBILL_GENERATION_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_EWAYBILL_GENERATION_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_EWAYBILL_GENERATION_Master_With_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_GSTR2_Inv_Itms_ITC.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_GSTR2_Invoice_Data.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_GSTR3B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_update_HSNDetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Invoice_Flag_GSTR1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Invoice_Flag_GSTR1_D.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Invoice_Flag_GSTR2.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Invoices_Mismatch_GSTR2and2A.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Invoices_MissingInGSTR2.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Invoices_MissingInGSTR2A.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_INWARD_GSTR2_B2B_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_INWARD_GSTR2_B2B_Master.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Matched_Invoices.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Matched_Invoices_999.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Mismatched_Invoices.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_AT_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_B2B_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_B2B_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_B2CL_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_B2CL_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_B2CS_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\Usp_Update_OUTWARD_GSTR1_B2CS_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_CDNR_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_CDNR_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_Doc_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_EXP_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_EXP_Master.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_NIL_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_OUTWARD_GSTR1_TXP_Items.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Update_TRP_Customer_Verify_Reject.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Update_TRP_Role_Resource_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Update_TRP_User_Block_Unblock.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_TRP_User_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_TRP_UserAssigntoTaxpayer.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\USP_Update_TRP_UserChangePassword.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Updated_EwayBill_Items.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Validate_InvoiceNo.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\User Defined Types\TBL_GSTR1A_B2B_INV_ITMS_type.sql" />
+    <Build Include="dbo\Tables\TBL_MAS_TRP_TaxpayerFileUpload.sql" />
+    <Build Include="dbo\Tables\TBL_MAS_TRP_TaxpayerDetails.sql" />
+    <Build Include="dbo\Tables\TBL_MAS_TRP_StateDist.sql" />
+    <Build Include="dbo\Tables\TBL_LocationAccess_Users.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6A.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISDA_INELGLST_DOCLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISDA_INELGLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISDA_ELGLST_DOCLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISDA_ELGLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISDA_DOCLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISDA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISD_INELGLST_DOCLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISD_INELGLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISD_ELGLST_DOCLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISD_ELGLST.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_ISD.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNRA_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNRA_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNRA_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNRA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNR_NT_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNR_NT_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNR_NT.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_CDNR.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2BA_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2BA_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2BA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2BA.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2B_INV_ITMS_DET.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2B_INV_ITMS.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6_B2B.sql" />
+    <Build Include="dbo\Tables\TBL_GSTR6.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR6_ISDA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR6_ISD.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR6_CDNA.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR6_CDN.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR6_B2BA_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EXT_GSTR6_B2B_INV.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_UPDATE_TRANSPORTER.sql" />
+    <Build Include="dbo\Tables\TBL_EWB_UPDATE_EXTEND_VALIDITY.sql" />
+    <Build Include="dbo\Tables\TBL_Cust_TRP_TaxPayer_Docs_Upload.sql" />
+    <Build Include="dbo\Tables\TBL_CSV_GSTR6_RECS.sql" />
+    <Build Include="dbo\Functions\udf_ValidateShippingBillDate.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Taxpayer_Details_Reg_Admin.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_Taxpayer_Details_Reg.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Update_EWB_GEN_PARTB_Details.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_RegistrationForm_List_Admin.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_TRP_RegistrationForm_List.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6CDNA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6CDN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6B2BA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6ACDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6AB2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_GSTR6A_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_EWB_Report.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_BULK_JSON_EWB_GENERATION.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Branch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Retrieve_Allocate_LocationToUsers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR6CDNA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR6CDN_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR6B2BA_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR6B2B_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Push_GSTR6_EXT_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Update_EWB_Transporter.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Update_EWB_OtherParty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_TRP_Taxpayer_Detail.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Retrieve_EWB_Update_Transporter.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_Retrieve_EWB_Extend_Validity.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6CDNA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6CDN_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6B2BA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6B2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6ACDNR_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6AB2BA_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6AB2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6AB2B_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR6A_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_GSTR2_D_B2B_SA.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_JSON_EWB_GET_API_SA.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Insert_BULK_JSON_EWB_GENERATION_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Ins_Upd_Del_Retrieve_Location.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR6_EXT_PERF.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Import_CSV_GSTR6_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR6_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Delete_All_GSTR6_EXT.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Build>
+    <Build Include="dbo\Functions\udf_ValidateVehicleNo.sql" />
+    <Build Include="dbo\Functions\udf_Validate_EWB_DocDate.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Delete_GSTR1_Ext_SA_Bulk.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Profiles\WePGSTDB_Dev.publish.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

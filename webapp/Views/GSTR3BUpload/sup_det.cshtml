@@ -1,0 +1,247 @@
+﻿
+
+@{
+    ViewBag.Title = "sup det";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container" ng-app="my-app" ng-controller="myCtrl">
+    <div class="row">
+        <br />
+        <div class="panel panel-default" style="padding:8px">
+            <div class="panel-body h4"
+                 style="background:#0a9490;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                3.1 Details of Outward Supplies and inward supplies liable to reverse charge
+            </div>
+
+            <form ng-submit="submit(OutwardSuppliesInwardSupplies);">
+                <input type="hidden" name="gstinid" id="gstinid" value='@Session["gstinid"]' />
+                <input type="hidden" name="fb" id="fp" value='@Session["fp"]' />
+                <table class="table table-bordered">
+
+                    <thead class="blue-grey lighten-4">
+                        <tr class="active">
+                            <th class="text-center"><b>Nature of supplies</b> </th>
+                            <th class="text-center"><b>Total Taxable <br />value (<i class="fa">&#xf156;</i>) </b> </th>
+                            <th class="text-center"><b> Integrated <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> Central <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> State / UT Tax <br />(<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> CESS (<i class="fa">&#xf156;</i>)</b></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><b>(a) Outward taxable supplies(other than zero rated,nil rated and exempted)</b></td>
+
+                        <td>
+                            <input type="hidden" valid-number class="form-control" ng-model="outwardSuppliesInwardSupplies.gstinid" />
+                            <input type="hidden" valid-number class="form-control" ng-model="outwardSuppliesInwardSupplies.fp" />
+                            <input type="hidden" valid-number class="form-control" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.Id" />
+
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.txval" />
+                        </td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.iamt" /></td>
+                        <td><input type="text" id="camt" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.camt" /></td>
+                        <td><input type="text" id="samt" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>(b) Outward taxable supplies(zero rated)</b></td>
+                        <td>
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.Id" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.txval" />
+                        </td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.iamt" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>(c) Other Outward taxable supplies(nil rated,exempted)</b></td>
+                        <td>
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nil_exmp.Id" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nil_exmp.txval" />
+                        </td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                    </tr>
+                    <tr>
+                        <td><b>(d) Inward supplies(liable to reverse change)</b></td>
+
+                        <td>
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.Id" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.txval" />
+                        </td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.iamt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>(e) Non-GST outward supplies</b> </td>
+                        <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nongst.Id" />
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nongst.txval" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            @if (Session["GSTR3BSetting"].ToString() != "True")
+                            {
+                                <input type="button" onclick="Delete()" value="Delete" style="border:2px solid #0a9490;background-color:#0a9490;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                            }
+                            <input type="button" class="btn btn-primary" value="CANCEL" style="float:right;margin-left:10px;" ng-click="clear();" onclick="window.history.go(-1);" />
+                        </td>
+                        <td>
+                            <input type="submit" class="btn btn-primary" value="CONFIRM" />
+                        </td>
+
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    //$(document).ready(function () {
+    //    //$("#samt").prop('disabled', true);
+    //    $('#camt').change(function () {
+    //        $('#samt').val($(this).val());
+
+    //    });
+    //    //$('#samt').change(function () {
+    //    //    $('#camt').val($(this).val());
+
+    //    //});
+    //    //$("#camt").keydown(function () {
+    //    //    $("#camt").css("background-color", "yellow");
+
+    //    //    var a = $("#camt").val();
+    //    //    $("#samt").val(a);
+    //    //    $("#samt").prop('disabled', true);
+    //    //});
+    //});
+
+    var app = angular.module('my-app', []);
+    app.controller('myCtrl', function ($scope, $http) {
+        $scope.submit = function () {
+            console.log($scope.OutwardSuppliesInwardSupplies);
+            debugger;
+            $http.post('/GSTR3BUpload/SaveOutwordSupply', $scope.OutwardSuppliesInwardSupplies)
+              .then(
+                 function (response) {
+                     if (response.data.result == true)
+                     { alert("updated successfully"); }
+                     else
+                     {
+                         alert("updation Failed");
+                     }
+
+                 },
+                function (response) {
+
+                }
+                     );
+        }
+
+        $scope.clear = function () {
+            $scope.OutwardSuppliesInwardSupplies = {};
+            //$http.get('/GSTR3BUpload/Index');
+            window.location.pathname = '/GSTR3BUpload/Index';
+
+        }
+
+        $http({
+            url: '/GSTR3BUpload/GetOutwordSupply',
+            method: "GET",
+            params: { gstinid: "@ViewBag.gstinid", fp: "@ViewBag.fp" }
+        }).then(function (result) {
+
+            $scope.OutwardSuppliesInwardSupplies = result.data
+        }, function (result) {
+            //some error
+            console.log(result);
+        });
+
+        //$http.get('/gstr3b/GetOutwordSupply')
+        //.then(function (result) {
+
+        //    $scope.OutwardSuppliesInwardSupplies = result.data
+        //}, function (result) {
+        //    //some error
+        //    console.log(result);
+        //});
+
+
+
+
+
+    });
+
+
+    app.directive('validNumber', function () {
+        return {
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModelCtrl) {
+                if (!ngModelCtrl) {
+                    return;
+                }
+
+                ngModelCtrl.$parsers.push(function (val) {
+                    if (angular.isUndefined(val)) {
+                        var val = '';
+                    }
+                    var clean = val.replace(/[^0-9\.]/g, '');
+                    var decimalCheck = clean.split('.');
+
+                    if (!angular.isUndefined(decimalCheck[1])) {
+                        decimalCheck[1] = decimalCheck[1].slice(0, 2);
+                        clean = decimalCheck[0] + '.' + decimalCheck[1];
+                    }
+
+                    if (val !== clean) {
+                        ngModelCtrl.$setViewValue(clean);
+                        ngModelCtrl.$render();
+                    }
+                    return clean;
+                });
+
+                element.bind('keypress', function (event) {
+                    if (event.keyCode === 32) {
+                        event.preventDefault();
+                    }
+                });
+            }
+        };
+    });
+
+
+</script>
+
+<style>
+    body {
+        background-color: #D3D3D3;
+    }
+</style>
+<script>
+    function Delete() {
+        var gstinid = $('#gstinid').val();
+        var fp = $('#fp').val();
+        $.ajax({
+            type: "GET",
+            url: '/GSTR3BUpload/Deletesupdet',
+            data: { gstinid: gstinid, fp: fp },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    }
+</script>

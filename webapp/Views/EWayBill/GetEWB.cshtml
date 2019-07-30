@@ -1,0 +1,361 @@
+﻿
+@if (TempData["ViewResponse"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ViewResponse"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ViewResponse"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+@using (Html.BeginForm("GetEWB", "EWayBill", FormMethod.Post, new { @id = "GetEWBForm", @name = "GetEWBForm" }))
+{
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-pencil-square-o fa-fw "></i>
+                    E-Way Bill
+                    <span>
+                        >
+                        Download
+                    </span>
+                </h1>
+            </div>
+        </div>
+
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">User GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">GET API List</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlEWAY", ViewBag.GetEwayList as SelectList, "Select", new { @class = "form-control", id = "ddlEWAY", autopostback = "true"})
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="billno1">
+                                                <label class="label">Cons/E-WayBillNo</label>
+                                                <label class="input">
+                                                    <input type="text" name="billno" maxlength="12" placeholder="Bill No" id="billno" value="@TempData["BillNo"]">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3" id="gstin1">
+                                                <label class="label">GSTIN</label>
+                                                <label class="input">
+                                                    <input type="text" name="gstin" maxlength="15" placeholder="GSTIN" id="gstin" value="@TempData["Gstin"]" >
+                                                </label>
+                                            </section>
+                                            <section class="col col-3" id="date1">
+                                                <label class="label">Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="date" id="date" placeholder="Date" class="datepicker" data-dateformat='dd/mm/yy' readonly value="@TempData["Date"]">
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="btnSubmit" value="GET EWAYBILL" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                            Get EWayBill
+                                        </button>
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+                <!-- WIDGET END -->
+                <!-- NEW WIDGET START -->
+                <!-- WIDGET END -->
+
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+
+                                    @if (ViewBag.GetOther != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.GetOther) > 0)
+                                        {
+                                            { Html.RenderPartial("_GetOther"); }
+                                        }
+                                    }
+
+                                    @if (ViewBag.getEWAYBill != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.getEWAYBill) > 0)
+                                        {
+                                            { Html.RenderPartial("_getEWAYBill"); }
+                                        }
+                                    }
+
+                                    @if (ViewBag.ConsList != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.ConsList) > 0)
+                                        {
+                                            { Html.RenderPartial("_getConsEWAYBill"); }
+                                        }
+                                    }
+
+                                    @if (ViewBag.TransList != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.TransList) > 0)
+                                        {
+                                            { Html.RenderPartial("_getETransList"); }
+                                        }
+                                    }
+                                    @if (ViewBag.TransListGSTIN != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.TransListGSTIN) > 0)
+                                        {
+                                            { Html.RenderPartial("_getETransListGSTIN"); }
+                                        }
+                                    }
+                                    
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+            </div>
+
+            <!-- end row -->
+
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+}
+
+<script type="text/javascript">
+    var EDate = $("#date");
+    var BillNo = $("#billno");
+    var Gstin = $("#gstin");
+    var Eway = $("#ddlEWAY");
+    if (EDate.val() == ""){
+
+        $("#date1").hide();
+    }
+    if (BillNo.val()=="") {
+        $("#billno1").hide();
+    }
+    
+    if (Gstin.val()=="") {
+        $("#gstin1").hide();
+    }
+
+
+    $(function () {
+        $("#ddlEWAY").change(function () {
+            if ($(this).val() == "1") {
+                $("#billno1").show();
+                $("#gstin1").hide();
+                $("#date1").hide();
+            }
+            if ($(this).val() == "5") {
+                $("#billno1").show();
+                $("#gstin1").hide();
+                $("#date1").hide();
+            }
+            if ($(this).val() == "2") {
+                $("#billno1").hide();
+                $("#gstin1").hide();
+                $("#date1").show();
+            }
+            if ($(this).val() == "4") {
+                $("#billno1").hide();
+                $("#gstin1").hide();
+                $("#date1").show();
+            }
+            if ($(this).val() == "3") {
+                $("#billno1").hide();
+                $("#gstin1").show();
+                $("#date1").show();
+            }
+           
+        });
+    });
+</script>
+
+@section pagespecific {
+    <script type="text/javascript">
+    
+        
+
+        $('#BillNo').bind('keypress', numericInput);
+        // DO NOT REMOVE : GLOBAL Common.Functions!
+
+        $(document).ready(function () {
+            
+            
+            // PAGE RELATED SCRIPTS
+
+            // class switcher for radio and checkbox
+            $('input[name="demo-switcher-1"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-1 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-1 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-1 input[type="radio"]').removeClass();
+                $('.demo-switcher-1 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+        })
+
+    </script>
+}

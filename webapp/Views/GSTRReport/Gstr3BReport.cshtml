@@ -1,0 +1,233 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+
+    var result = new List<dynamic>();
+    if (@ViewBag.Report != null)
+    {
+        foreach (var emprow in ViewBag.Report)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["error"] = null;
+}
+
+
+
+    <div id="content">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <i class="fa-fw fa fa-home"></i>
+                    Report
+                    <span>
+                        >&nbsp;
+                        GSTR 3B
+                    </span>
+                </h1>
+            </div>
+        </div>
+
+      
+            <!-- widget grid -->
+            <section id="widget-grid" class="">
+
+
+                <!-- START ROW -->
+
+                <div class="row">
+
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                <h2 style="font-weight:bold;">Gstr3B</h2>
+                            </header>
+
+                            <!-- widget div-->
+                            <div>
+
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+
+                                </div>
+                                <!-- end widget edit box -->
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    @using (Html.BeginForm("Gstr3BReport", "GSTRReport", FormMethod.Post, new { @id = "MyReport", @name = "MyReport" }))
+                                    {
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+
+                                            @*@Html.AntiForgeryToken()*@
+                                            <fieldset>
+
+                                                <div class="row">
+
+                                                    <section class="col col-3">
+                                                        <label class="col-form-label" style="font-weight:600">Form Period<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-calendar"></i>
+
+                                                            <input class="form-control datepicker" name="fromdate" id="fromdate" type="text" placeholder="From Period" data-dateformat='mmyy' value="@ViewBag.FromPeriod">
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-3">
+                                                        <label class="col-form-label" style="font-weight:600">To Period<span style="color:red">*</span></label>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-calendar"></i>
+
+                                                            <input class="form-control datepicker" name="todate" id="todate" type="text" placeholder="To Period" data-dateformat='mmyy' value="@ViewBag.ToPeriod">
+                                                        </label>
+                                                    </section>
+
+                                                </div>
+
+                                            </fieldset>
+                                            <br />
+
+
+                                            <footer>
+                                                <div class="col col-9" style="color:red;font-weight:bold">
+                                                    Note: To view Report, please download GSTR3B Download Under "GSTR Download --> GSTR3B Download".
+                                                </div>
+                                                <div>
+                                                    <button type="submit" class="btn btn-primary pull-right" id="gstr3breport" name="gstr3breport" value="Summary" style="background-color:#508180!important;border-radius:10px;font-weight:bold;border:2px solid #508180">
+                                                        Download Report
+                                                    </button>
+                                                </div>
+                                            </footer>
+
+                                         
+
+                                        </div>
+                                    }
+                                    </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+
+                    </article>
+                    <!-- NEW COL START -->
+                    <!-- END COL -->
+                    <!-- NEW COL START -->
+                    <!-- END COL -->
+
+                </div>
+
+                <!-- END ROW -->
+
+            </section>
+            <!-- end widget grid -->
+       
+
+        </div>
+
+ 
+ 
+    <script type="text/javascript">
+
+        $('#gstr3breport').click(function () {
+
+            var $checkoutForm = $('#MyReport').validate({
+                // Rules for form validation
+                rules: {
+
+                    fromdate: {
+                        required: true
+                    },
+                    todate: {
+                        required: true
+                    }
+
+                },
+                messages: {
+
+                    fromdate: {
+                        required: 'Please select From Date'
+                    },
+                    todate: {
+                        required: 'Please select To Date'
+                    }
+
+
+
+                }
+            });
+        })
+
+    </script>
+     

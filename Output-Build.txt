@@ -1,0 +1,5 @@
+﻿1>------ Clean started: Project: SmartAdminMvc, Configuration: Debug Any CPU ------
+2>------ Clean started: Project: GSTR1ADownload, Configuration: Debug Any CPU ------
+3>------ Clean started: Project: GSTR1Download, Configuration: Debug Any CPU ------
+4>------ Clean started: Project: GSTR2Download, Configuration: Debug Any CPU ------
+========== Clean: 4 succeeded, 0 failed, 0 skipped ==========

@@ -1,0 +1,362 @@
+﻿    <!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+@if (Session["Cust_ID"] != null)
+{
+    System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection(System.Configuration.ConfigurationManager.AppSettings["ConnectionString"]);
+
+    <aside id="left-panel">
+
+        <!-- User info -->
+        @{ Html.RenderPartial("_CurrentUser"); }
+
+        <nav>
+
+            <ul>
+                @{
+                    string Query = "", Query1 = "", Query2 = "";
+                    if (Session["TRP_ID"].ToString() != "" || Session["Package_ID"].ToString() != "")
+                    {
+                        if (Session["Package_ID"].ToString() == "1")
+                        {
+                            Query = "Select * from View_Role_Resource_Menus where FK_Parent_Resource_ID is null and Role_ID = '" + Session["ROLE_ID"].ToString() + "' and CustomerID = '" + Session["Cust_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' and Resource_ID not in ('1','4','61') order by Resource_MenuItem_ID asc";
+                        }
+                        if (Session["Package_ID"].ToString() == "2")
+                        {
+                            Query = "Select * from View_Role_Resource_Menus where FK_Parent_Resource_ID is null and Role_ID = '" + Session["ROLE_ID"].ToString() + "' and CustomerID = '" + Session["Cust_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' and Resource_ID not in ('1','4','46','48','5','6','61') order by Resource_MenuItem_ID asc";
+                        }
+                        if (Session["Package_ID"].ToString() == "3")
+                        {
+                            Query = "Select * from View_Role_Resource_Menus where FK_Parent_Resource_ID is null and Role_ID = '" + Session["ROLE_ID"].ToString() + "' and CustomerID = '" + Session["Cust_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' and Resource_ID not in ('1','2','4','45','46','48','5','6','61') order by Resource_MenuItem_ID asc";
+                        }
+                    }
+                    else
+                    {
+                        if (Session["Cust_ID"].ToString() == "1")
+                        {
+                            Query = "Select * from View_Role_Resource_Menus where FK_Parent_Resource_ID is null and Role_ID = '" + Session["ROLE_ID"].ToString() + "' and CustomerID = '" + Session["Cust_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' order by Resource_MenuItem_ID asc";
+                        }
+                        else
+                        {
+                            Query = "Select * from View_Role_Resource_Menus where FK_Parent_Resource_ID is null and Role_ID = '" + Session["ROLE_ID"].ToString() + "' and CustomerID = '" + Session["Cust_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' and Resource_ID not in ('1','10','11') order by Resource_MenuItem_ID asc";
+                        }
+                    }
+                    System.Data.SqlClient.SqlDataAdapter adt = new System.Data.SqlClient.SqlDataAdapter(Query, con);
+                    System.Data.DataTable dt = new System.Data.DataTable();
+                    adt.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        <li class="@Html.RouteIf("index", "active")">
+                            <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+                            <ul>
+                                @{
+                                    string path = HttpContext.Current.Request.Url.AbsolutePath;
+                                    string[] PageName = path.Split('/');
+                                    if (PageName[1].ToUpper() == "DASHBOARD" && PageName[2].ToUpper() == "SUMMARY")
+                                    {
+                                        <li class="active">
+                                            <a href="@Url.Action("Summary", "Dashboard")" title="Dashboard"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> Summary Dashboard</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="">
+                                            <a href="@Url.Action("Summary", "Dashboard")" title="Dashboard"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> Summary Dashboard</a>
+                                        </li>
+                                    }
+
+                                    if (PageName[1].ToUpper() == "HOME" && PageName[2].ToUpper() == "INDEX")
+                                    {
+                                        <li class="active">
+                                            <a href="@Url.Action("Index", "Dashboard")" title="Dashboard"><i class="fa fa-lg fa-fw fa-reorder"></i> Detailed Dashboard</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="">
+                                            <a href="@Url.Action("Index", "Dashboard")" title="Dashboard"><i class="fa fa-lg fa-fw fa-reorder"></i> Detailed Dashboard</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            if (dt.Rows[i]["Resource_Page_Name"].ToString() == "")
+                            {
+                                <li class="">
+                                    <a href="#" title="@dt.Rows[i]["Resource_Name"].ToString()">
+                                        @{
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "WeP Customer")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-users"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "HSN Master")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Users")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-user"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Outward Register")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-list-alt"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Inward Register")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-th-list"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Upload Information")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-upload"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "GSTR Uploads")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-copy"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "GSTR Downloads")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-table"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Reports")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-pencil-square-o"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "GST Knowledge Hub")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-pencil-square-o"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "GSTN / Tally Upload")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-copy"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Settings")
+                                            {
+                                                <i class="fa fa-cogs"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Reconciliation")
+                                            {
+                                                <i class="fa fa-indent"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "GSTR3B")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-copy"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "EWayBill")
+                                            {
+                                                <i class="fa fa-lg fa-fw fa-truck"></i>
+                                            }
+                                            if (dt.Rows[i]["Resource_Name"].ToString() == "Metro")
+                                            {
+                                                <i class="fa fa-lg fa fa-indent"></i>
+                                            }
+                                        }
+                                        <span class="menu-item-parent">@dt.Rows[i]["Resource_Name"].ToString()</span>
+                                    </a>
+                                    @{
+                                        if (Session["TRP_ID"].ToString() != "" || Session["Package_ID"].ToString() != "")
+                                        {
+                                            if (Session["Package_ID"].ToString() == "1")
+                                            {
+                                                Query1 = "Select * from View_Role_Resource_SubMenus where FK_Parent_Resource_ID is not null and FK_Parent_Resource_ID = '" + dt.Rows[i]["Resource_ID"].ToString() + "' and FK_Role_Resource_Role_ID = '" + Session["Role_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' order by Resource_MenuItem_ID asc";
+                                            }
+                                            if (Session["Package_ID"].ToString() == "2")
+                                            {
+                                                Query1 = "Select * from View_Role_Resource_SubMenus where FK_Parent_Resource_ID is not null and FK_Parent_Resource_ID = '" + dt.Rows[i]["Resource_ID"].ToString() + "' and FK_Role_Resource_Role_ID = '" + Session["Role_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' and Resource_ID not in ('53','54','55','56','57','58') order by Resource_MenuItem_ID asc";
+                                            }
+                                            if (Session["Package_ID"].ToString() == "3")
+                                            {
+                                                Query1 = "Select * from View_Role_Resource_SubMenus where FK_Parent_Resource_ID is not null and FK_Parent_Resource_ID = '" + dt.Rows[i]["Resource_ID"].ToString() + "' and FK_Role_Resource_Role_ID = '" + Session["Role_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' and Resource_ID not in ('53','54','55','56','57','58') order by Resource_MenuItem_ID asc";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Query1 = "Select * from View_Role_Resource_SubMenus where FK_Parent_Resource_ID is not null and FK_Parent_Resource_ID = '" + dt.Rows[i]["Resource_ID"].ToString() + "' and FK_Role_Resource_Role_ID = '" + Session["Role_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' order by Resource_MenuItem_ID asc";
+                                        }
+                                        System.Data.SqlClient.SqlDataAdapter adt1 = new System.Data.SqlClient.SqlDataAdapter(Query1, con);
+                                        System.Data.DataTable dt1 = new System.Data.DataTable();
+                                        adt1.Fill(dt1);
+                                        if (dt1.Rows.Count > 0)
+                                        {
+                                            <ul>
+                                                @{
+                                                    for (int j = 0; j < dt1.Rows.Count; j++)
+                                                    {
+                                                        if (dt1.Rows[j]["Resource_Page_Name"].ToString() == "" && dt1.Rows[j]["FK_Parent_Resource_ID"].ToString() != "")
+                                                        {
+                                                            if (PageName[1].ToUpper() == dt1.Rows[j]["Resource_Display_Name"].ToString().ToUpper() && PageName[2].ToUpper() == dt1.Rows[j]["Resource_Page_Name"].ToString().ToUpper())
+                                                            {
+                                                                <li class="active">
+                                                                    <a href="#" title="@dt1.Rows[j]["Resource_Name"].ToString()"><span class="menu-item-parent">@dt1.Rows[j]["Resource_Name"].ToString()</span></a>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="">
+                                                                    <a href="#" title="@dt1.Rows[j]["Resource_Name"].ToString()"><span class="menu-item-parent">@dt1.Rows[j]["Resource_Name"].ToString()</span></a>
+
+                                                                    @{
+                                                                        Query2 = "Select * from View_Role_Resource_SubMenus where Resource_Page_Name IS NULL AND FK_Parent_Resource_ID is not null and FK_Parent_Resource_ID = '" + dt1.Rows[j]["Resource_ID"].ToString() + "' and FK_Role_Resource_Role_ID = '" + Session["Role_ID"].ToString() + "' and Role_Resource_IsAssigned = '1' order by Resource_MenuItem_ID asc";
+                                                                        System.Data.SqlClient.SqlDataAdapter adt2 = new System.Data.SqlClient.SqlDataAdapter(Query2, con);
+                                                                        System.Data.DataTable dt2 = new System.Data.DataTable();
+                                                                        adt2.Fill(dt2);
+                                                                        if (dt2.Rows.Count > 0)
+                                                                        {
+                                                                            <ul>
+                                                                                @{
+                                                                                    for (int k = 0; k < dt2.Rows.Count; k++)
+                                                                                    {
+                                                                                        if (PageName[1].ToUpper() == dt2.Rows[k]["Resource_Display_Name"].ToString().ToUpper() && PageName[2].ToUpper() == dt2.Rows[k]["Resource_Page_Name"].ToString().ToUpper())
+                                                                                        {
+                                                                                            <li class="active">
+                                                                                                <a href="#" title="@dt2.Rows[k]["Resource_Name"].ToString()"><span class="menu-item-parent">@dt2.Rows[k]["Resource_Name"].ToString()</span></a>
+                                                                                            </li>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <li class="">
+                                                                                                <a href="#" title="@dt2.Rows[k]["Resource_Name"].ToString()"><span class="menu-item-parent">@dt2.Rows[k]["Resource_Name"].ToString()</span></a>
+                                                                                            </li>
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            </ul>
+                                                                        }
+                                                                    }
+
+                                                                    <ul>
+                                                                        <li>
+                                                                            <a href="#">RAJA</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (PageName[1].ToUpper() == dt1.Rows[j]["Resource_Display_Name"].ToString().ToUpper() && PageName[2].ToUpper() == dt1.Rows[j]["Resource_Page_Name"].ToString().ToUpper())
+                                                            {
+                                                                <li class="active">
+                                                                    <a href="@Url.Action(@dt1.Rows[j]["Resource_Page_Name"].ToString(), @dt1.Rows[j]["Resource_Display_Name"].ToString())" title="@dt1.Rows[j]["Resource_Name"].ToString()"><span class="menu-item-parent">@dt1.Rows[j]["Resource_Name"].ToString()</span></a>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="">
+                                                                    <a href="@Url.Action(@dt1.Rows[j]["Resource_Page_Name"].ToString(), @dt1.Rows[j]["Resource_Display_Name"].ToString())" title="@dt1.Rows[j]["Resource_Name"].ToString()"><span class="menu-item-parent">@dt1.Rows[j]["Resource_Name"].ToString()</span></a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                //string path = HttpContext.Current.Request.Url.AbsolutePath;
+                                //string[] PageName = path.Split('/');
+                                if (PageName[1].ToUpper() == dt.Rows[i]["Resource_Display_Name"].ToString().ToUpper() && PageName[2].ToUpper() == dt.Rows[i]["Resource_Page_Name"].ToString().ToUpper())
+                                {
+                                    <li class="active">
+                                        <a href="@Url.Action(@dt.Rows[i]["Resource_Page_Name"].ToString(), @dt.Rows[i]["Resource_Display_Name"].ToString())" title="@dt.Rows[i]["Resource_Name"].ToString()">
+                                            @{
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Add PAN No.")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Add GSTIN")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Customer Management")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Supplier Management")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "HSN Master")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Download Documents")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-download"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "GSTN / Tally Upload")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-copy"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Settings")
+                                                {
+                                                    <i class="fa fa-cogs"></i>
+                                                }
+                                            }
+                                            <span class="menu-item-parent">@dt.Rows[i]["Resource_Name"].ToString()</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="">
+                                        <a href="@Url.Action(@dt.Rows[i]["Resource_Page_Name"].ToString(), @dt.Rows[i]["Resource_Display_Name"].ToString())" title="@dt.Rows[i]["Resource_Name"].ToString()">
+                                            @{
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Add PAN No.")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Add GSTIN")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Customer Management")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Supplier Management")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "HSN Master")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-building-o"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Download Documents")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-download"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "GST Knowledge Hub")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-book"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "GSTN / Tally Upload")
+                                                {
+                                                    <i class="fa fa-lg fa-fw fa-copy"></i>
+                                                }
+                                                if (dt.Rows[i]["Resource_Name"].ToString() == "Settings")
+                                                {
+                                                    <i class="fa fa-cogs"></i>
+                                                }
+                                            }
+                                            <span class="menu-item-parent">@dt.Rows[i]["Resource_Name"].ToString()</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    }
+                }
+            </ul>
+        </nav>
+        <span class="minifyme" data-action="minifyMenu">
+            <i class="fa fa-arrow-circle-left hit"></i>
+        </span>
+
+    </aside>
+}
+<!-- END NAVIGATION -->

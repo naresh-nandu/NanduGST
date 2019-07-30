@@ -1,0 +1,1157 @@
+﻿
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    .parent .popup {
+        display: none;
+    }
+
+    .parent:hover .popup {
+        display: block;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Outward Register
+                <span>
+                    >&nbsp;
+                    CDN
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <div class="row">
+            <form action="@Url.Action("Home", "OutwardCDNR")" method="post" id="OutwardCDNR" novalidate="novalidate">
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-radius:20px;">
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Outward CDN</h2>
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                            </div>
+                            <div class="widget-body no-padding">
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Customer Name<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("name", new SelectList(ViewBag.buyname, "buyerid", "buyername", @Session["name"]), "--Select--", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Customer GSTIN</label>
+                                                <label class="input">
+                                                    <i class="icon-prepend fa fa-user"></i>
+                                                    <input type="text" name="gstin" id="gstin" placeholder="Customer GSTIN" readonly value="@Session["gstin"]" style="background-color:#d9d9d9;">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Place of Supply</label>
+                                                <label class="input">
+                                                    <input type="text" name="pos" id="pos" placeholder="State Code" value="@Session["pos"]">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Address</label>
+                                                <label class="input">
+                                                    <input type="text" name="address" id="address" placeholder="Address" readonly value="@Session["address"]" style="background-color:#d9d9d9;">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Taxpayer GSTIN<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "GSTINNo", "GSTINNo", @Session["cgstin"]), "Select", new { @Class = "form-control input-sm", @id = "cgstin", @onchange = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Note Type<span style="color:red">*</span></label>
+                                                @Html.DropDownList("notetype", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Credit", Value = "C" },
+                                                                                                                           new SelectListItem { Text = "Debit", Value = "D" },
+                                                                                                                              new SelectListItem { Text = "Refund", Value = "R" }}, "Value", "Text", @Session["notetype"]), "--Select--", new { @Class = "form-control input-sm" })
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Note Auto Generation<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @if (Session["isauto"] == null)
+                                                        {
+                                                            <input type="radio" name="isauto" value="Yes" /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No" checked><label>No&nbsp;&nbsp;&nbsp;</label>
+                                                        }
+                                                        else if (Session["isauto"].ToString() == "No")
+                                                        {
+                                                            <input type="radio" name="isauto" value="Yes" /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No" checked><label>No&nbsp;&nbsp;&nbsp;</label>
+                                                        }
+                                                        else if (Session["isauto"].ToString() == "Yes")
+                                                        {
+                                                            <input type="radio" name="isauto" value="Yes" checked /><label>Yes&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No"><label>No&nbsp;&nbsp;&nbsp;</label>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Note Number</label>
+                                                <label class="input">
+                                                    @if (Session["isauto"] == null || Session["isauto"].ToString() == "Yes")
+                                                    {
+                                                        <input type="text" name="notenum" id="notenum" maxlength="16" class="notenum" placeholder="Note Number" value="@Session["notenum"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" name="notenum" id="notenum" maxlength="16" class="notenum" placeholder="Note Number" value="@Session["notenum"]">
+                                                    }
+                                                </label>
+                                            </section>
+
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label>Note Date<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="notedate" placeholder="Note Date" class="datepicker" id="notedate" data-dateformat='dd-mm-yy' readonly value="@Session["notedate"]">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Reason code for issuing note<span style="color:red">*</span></label>
+                                                @*<label class="input">
+                                                        <input type="text" name="rns" placeholder="RNS" value="@Session["rns"]">
+                                                    </label>*@
+                                                <div>
+                                                    @Html.DropDownList("rns", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Sales Return", Value = "Sales Return" },
+                                                                                                                             new SelectListItem { Text = "Post Sale Discount", Value = "Post Sale Discount" },
+                                                                                                                              new SelectListItem { Text = "Deficiency in Services", Value = "Deficiency in Services" },
+                                                                                                                              new SelectListItem { Text = "Correction in Invoice", Value = "Correction in Invoice" },
+                                                                                                                              new SelectListItem { Text = "Change in POS", Value = "Change in POS" },
+                                                                                                                              new SelectListItem { Text = "Finalization of Provisional Assessment", Value = "Finalization of Provisional Assessment" },
+                                                                                                                              new SelectListItem { Text = "Others", Value = "Others" }}, "Value", "Text", @Session["rns"]), "--Select--", new { @Class = "form-control input-sm" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Pre GST<span style="color:red">*</span></label>
+                                                <div>
+
+                                                    @Html.DropDownList("pgst", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "Y" },
+                                                                                                                             new SelectListItem { Text = "No", Value = "N" }}, "Value", "Text", @Session["pgst"]), "--Select--", new { @Class = "form-control input-sm" })
+
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Invoice Number<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="invoice" class="invoice" id="invoice" placeholder="Invoice No." value="@Session["invoice"]">
+                                                </label>
+                                            </section>
+
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label>Invoice Date<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="invoicedate" placeholder="Invoice Date" class="datepicker" id="invoicedate" data-dateformat='dd-mm-yy' readonly value="@Session["invoicedate"]">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>Invoice Value<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="invalue" id="invalue" placeholder="Invoice Value" readonly value="@Session["invaluecdnr"]" class="floatinput" style="background-color:#d9d9d9;">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label>GSTR2 Filing Status<span style="color:red">*</span></label>
+                                                <div>
+
+                                                    @Html.DropDownList("cfs", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "Y" },
+                                                                                                                             new SelectListItem { Text = "No", Value = "N" }}, "Value", "Text", Session["cfs"]), "--Select--", new { @Class = "form-control input-sm" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Is Discount Applicable</label>
+                                                    @if (Session["MasterdtlsOCDNR"] != null)
+                                                    {
+                                                        if (((System.Data.DataTable)Session["MasterdtlsOCDNR"]).Rows.Count >= 1)
+                                                        {
+                                                            <div>
+                                                                @Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+                                                                                                                                new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text", @Session["discountreqocdnr"]), new { @Class = "form-control input-sm", @id = "isDiscountreq", @disabled = "true" })
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div>
+                                                            @Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+                                                                                                                                new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text", @Session["discountreqocdnr"]), new { @Class = "form-control input-sm", @id = "isDiscountreq" })
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+
+
+                                        <div class="row">
+                                            @if (Session["InvFormat"].ToString() == "1")
+                                            {
+                                                <section section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label>Service Type</label>
+                                                        <div>
+                                                            @Html.DropDownList("ddlserviceType", ViewBag.ServiceTypeList as SelectList, "Select", new { @Class = "form-control input-sm", @id = "serviceType" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label>Transport Mode</label>
+                                                        <div>
+                                                            @Html.DropDownList("transMode", ViewBag.TransportMode as SelectList, "Select", new { @Class = "form-control input-sm", @id = "transMode" })
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label>
+                                                        Vechicle No
+                                                        <span style="color:red">
+                                                            <a href="#" id="VechDiv" style="padding:10px; font-weight:bold">?</a>
+                                                        </span>
+                                                    </label>
+                                                    <label class="input">
+                                                        <input type="text" name="vehicleNo" id="vehicleNo" onchange="VehicleNoValidate()" value="@Session["vehicleNob2b"]" maxlength="15" placeholder="Vechicle No" style="text-transform:uppercase">
+                                                    </label>
+                                                    <div id="vechDiv_info" style="background-color: #F7E7D3; width: 250px; height: 200px; right: 250px; position: absolute; z-index: 9999">
+                                                        <table class="">
+                                                            <tr>
+                                                                <th>Format of Vehicle No.</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB121234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB12A1234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB12AB1234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>ABC1234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB123A1234</td>
+                                                                <td>(or) </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB12ABC1234</td>
+                                                                <td>(or) </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>DFXXXXXX&nbsp; (for Defence Vehicle)&nbsp; </td>
+                                                                <td>&nbsp;&nbsp;(or) </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TRXXXXXX&nbsp; (for Temporary RC)&nbsp;</td>
+                                                                <td>&nbsp;&nbsp;(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>BPXXXXXX&nbsp; (for Bhutan)&nbsp;</td>
+                                                                <td>&nbsp;&nbsp;(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>NPXXXXXX&nbsp; (for Nepal)&nbsp;</td>
+                                                                <td></td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label id="datelabel">Date Of Supply</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="dateOfSupply" autocomplete="off" id="dateOfSupply" value="@Session["dateOfSupplyb2b"]" placeholder="Date" class="datepicker" data-dateformat='dd/mm/yy' readonly>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label>CIN No</label>
+                                                    <label class="input">
+                                                        <input type="text" name="cinNo" id="cinNo" value="@Session["cinNob2b"]" placeholder="CIN Number" maxlength="50">
+                                                    </label>
+                                                </section>
+
+                                            }
+                                            <section class="col col-3">
+												<label>
+													@if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+													{
+														<label>Office Address</label>
+													}
+													else
+													{
+														<label>Additional Information</label>
+													}
+
+												</label>
+                                                <label class="input">
+                                                    <textarea name="comment1" cols="35" rows="8"></textarea>
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Item Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+
+                                    @{Html.RenderPartial("_Transaction"); }
+
+
+
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["MasterdtlsOCDNR"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["MasterdtlsOCDNR"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Outward CDNR Item List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable",
+                                                 columns: grid.Columns(
+                                                                            grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                                            grid.Column("HSN", "HSN"),
+                                                                            grid.Column("ItemDesc", "Item Description"),
+                                                                            grid.Column("Quantity", "Qty"),
+                                                                            grid.Column("UQC", "UQC"),
+                                                                            grid.Column("Unit Price", "Unit Price"),
+                                                                            grid.Column("Discount", "Discount"),
+                                                                            grid.Column("Taxablevalue", "Taxable Value"),
+                                                                            grid.Column("Rate", "Rate"),
+                                                                            grid.Column("IGST Amount", "IGST Amount"),
+                                                                            grid.Column("CGST Amount", "CGST Amount"),
+                                                                            grid.Column("SGST Amount", "SGST Amount "),
+                                                                            grid.Column("CESS Amount", "CESS Amount"),
+                                                                            grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { Id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+)
+)
+
+                                            </div>
+
+
+
+                                            <footer>
+                                                <div class="row">
+                                                    @if (Session["Setting"].ToString() == "False")
+                                                    {
+                                                        <div class="col-md-6 text-center">
+                                                            <button type="submit" name="command" value="save1" style="font-weight:bold;Border-radius:10px;width:80px;text-align:center;" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    }
+                                                    else if (Session["Setting"].ToString() == "True")
+                                                    {
+                                                        <div class="col-md-6 text-center">
+                                                            <button type="submit" name="command" value="save2" style="font-weight:bold;Border-radius:10px;width:180px;text-align:center;" class="btn btn-primary">Genarate Invoice</button>
+                                                        </div>
+                                                    }
+
+
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+            </form>
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+            alert(@Html.Raw(Json.Encode(TempData["Message"])));
+
+    </script>
+    TempData["Message"] = null;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.invoice').on("keyup", function (e) {
+
+            return validateFloatKeyPress(this, e);
+        });
+        $('.notenum').on("keyup", function (e1) {
+
+            return validateFloatKeyPress1(this, e1);
+        });
+
+    });
+
+    function validateFloatKeyPress(el, evt) {
+
+        var regex = /^[0-9A-Z/-]*$/i;
+        // var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if ($('#invoice').val() != "") {
+            if (!$('#invoice').val().match(regex)) {
+                alert("No special characters allowed except '-' and '/'.");
+                $('#invoice').val('');
+                //  return false;
+            }
+        }
+    }
+
+    function validateFloatKeyPress1(el1, evt1) {
+
+        var regex = /^[0-9A-Z/-]*$/i;
+        // var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if ($('#notenum').val() != "") {
+            if (!$('#notenum').val().match(regex)) {
+                alert("No special characters allowed except '-' and '/'.");
+                $('#notenum').val('');
+                //  return false;
+            }
+        }
+    }
+
+</script>
+
+@if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+{
+    <script type="text/javascript">
+        $("#hsn").on('blur', function () {
+            var txt = $('#hsn').val().split("|");
+            $('#hsn').val(txt[0]);
+            $("#rate").val(txt[1]);
+            var result = txt[2];
+            $("#itemdesc").val(result.slice(0, 30));
+        });
+
+        $(document).ready(function () {
+            $("#hsn").autocomplete({
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/OutwardB2B/AutoPopulate",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.hsncode + "-" + item.rate,
+                                    value: item.hsncode + "|" + item.rate + "|" + item.hsndesc
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#hsn").on('blur', function () {
+            var txt = $('#hsn').val().split("|");
+            $('#hsn').val(txt[0]);
+            $("#rate").val(txt[1]);
+        });
+
+        $(document).ready(function () {
+            $("#hsn").autocomplete({
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/OutwardB2B/AutoPopulate",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.hsncode + "-" + item.hsndesc,
+                                    value: item.hsncode + "|" + item.rate
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+        function taxableCalculation() {
+            var qty = document.getElementById("qty").value;
+            var unitprice = document.getElementById("unitprice").value;
+            var discount = document.getElementById("discount").value;
+            var rate = document.getElementById("rate").value;
+
+
+            var igsta = document.getElementById("iamount");
+            var cgsta = document.getElementById("camount");
+            var sgsta = document.getElementById("samount");
+
+            if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+                var discountValue;
+                discountValue = (((qty * unitprice) / 100) * discount);
+                document.getElementById("taxablevalue").value = ((unitprice * qty) - discountValue).toFixed(2);
+            }
+            var taxablevalue = document.getElementById("taxablevalue").value;
+
+            if ((taxablevalue != "") && (rate != "")) {
+                var cgstin = document.getElementById("cgstin").value;
+                var gstin = document.getElementById("pos").value;
+                var cgstin_state = cgstin.substring(0, 2);
+                var gstin_state = gstin.substring(0, 2);
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (gstin_state != cgstin_state) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (gstin_state == cgstin_state) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+
+
+
+        }
+    </script>
+    <script type="text/javascript">
+		function VehicleNoValidate() {
+			Number = document.getElementById("vehicleNo").value;
+			Number = Number.toUpperCase();
+			if (Number != "") {
+				var pattern1 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{2}[0-9]{4}$/;
+				var pattern2 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{1}[0-9]{4}$/;
+				var pattern3 = /^[A-Z|a-z]{2}[0-9]{6}$/;
+				var pattern4 = /^[A-Z a-z]{2}[0-9]{2}[A-Z a-z]{0,2}[0-9]{4}$/;
+				var pattern5 = /^[A-Z a-z]{3}[0-9]{4}$/;
+				var pattern6 = /^[A-Z a-z]{2}[0-9]{3}[A-Z a-z]{1}[0-9]{4}$/;
+				var pattern7 = /^[A-Z a-z]{2}[0-9]{2}[A-Z a-z]{3}[0-9]{4}$/;
+
+				if (Number.length >= 5) {
+					var res1 = pattern1.test(Number);
+					var res2 = pattern2.test(Number);
+					var res3 = pattern3.test(Number);
+					var res4 = pattern4.test(Number);
+					var res5 = pattern5.test(Number);
+					var res6 = pattern6.test(Number);
+					var res7 = pattern7.test(Number);
+					if (Number.substring(0, 2).toUpperCase() != "DF" && Number.substring(0, 2).toUpperCase() != "TR" && Number.substring(0, 2).toUpperCase() != "BP" && Number.substring(0, 2).toUpperCase() != "NP") {
+						if (res1 || res2 || res3 || res4 || res5 || res6 || res7) {
+
+						}
+						else {
+							$("#vehicleNo").val('');
+							alert("Please enter a valid Vehicle No.");
+							document.getElementById("vehicleNo").focus();
+						}
+					}
+					else {
+						if (Number.length > 8) {
+							$("#vehicleNo").val('');
+							alert("Please enter a valid Vehicle No.");
+							document.getElementById("vehicleNo").focus();
+						}
+					}
+				}
+				else {
+					$("#vehicleNo").val('');
+					alert("Please enter a valid Vehicle No.");
+					document.getElementById("vehicleNo").focus();
+				}
+			}
+		}
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+		$(document).ready(function () {
+
+						var invType = @Session["InvFormat"].ToString();
+
+			if (invType == 1) {
+				$('#vechDiv_info').hide();
+
+				//Diplay div on mouseover
+				$('#VechDiv').mouseover(function () {
+					$('#vechDiv_info').show("slow");
+				});
+
+				//Hide div on mouseover
+				$('#VechDiv').mouseout(function () {
+					//Check if mouse is over second div
+					if ($('#vechDiv_info').is(':hover')) {
+						//If so then show the second div
+						$('#vechDiv_info').show("slow");
+					} else {
+						$('#vechDiv_info').hide("slow");
+					}
+				});
+
+				//Hide div on mouseover from second div
+				$('#vechDiv_info').mouseout(function () {
+					$('#vechDiv_info').hide("slow");
+				});
+
+
+				if (document.getElementById('transMode').value == "1") {
+					$('#vehicleNo').removeAttr("readonly").css("background-color", "white");
+				}
+				else if (document.getElementById('transMode').value == "2") {
+					$('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+				}
+				else if (document.getElementById('transMode').value == "3") {
+					$('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+				}
+				else if (document.getElementById('transMode').value == "4") {
+					$('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+				}
+
+
+				$('#transMode').on('change', function () {
+					debugger;
+					if (document.getElementById('transMode').value == "1") {
+						$('#vehicleNo').removeAttr("readonly").css("background-color", "white");
+					}
+					else if (document.getElementById('transMode').value == "2") {
+						$('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+					}
+					else if (document.getElementById('transMode').value == "3") {
+						$('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+					}
+					else if (document.getElementById('transMode').value == "4") {
+						$('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+					}
+				})
+
+
+			}
+        var ischeck = $("input[type=radio][name='isauto']:checked").val();
+
+
+        if (ischeck == "No" || ischeck == "") {
+            $('#notenum').removeAttr("readonly").css("background-color", "white");
+
+        }
+        else {
+            $('#notenum').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+        }
+
+        $(":radio").on('click', function () {
+            var ischeck = $(this).val();
+            if (ischeck == "No") {
+                $('#notenum').removeAttr("readonly").css("background-color", "white");
+
+            }
+            else {
+                $('#notenum').val("-").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+        });
+        var discresq = $('#isDiscountreq').val();
+        if (discresq != "No") {
+            $('#discount').removeAttr("readonly").css("background-color", "white");
+        }
+        else {
+            $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+        }
+        $("#isDiscountreq").on('change', function () {
+            var discresq = $('#isDiscountreq').val();
+            if (discresq != "No") {
+                $('#discount').removeAttr("readonly").css("background-color", "white");
+            }
+            else {
+                $('#discount').val("0").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+        });
+
+
+        //$("#hsn").on('change', function () {
+        //    var hsnid = $(this).val();
+        //    $.ajax({
+        //        type: "GET",
+        //        url: '/OutwardCDNR/AutoPopulate',
+        //        data: { Prefix: hsnid },
+        //        contentType: "application/json;charset=utf-8",
+        //        dataType: "json",
+        //        success: function (data) {
+        //            $("#hsndesc").val(data.hsnDescription);
+        //            $("#unitprice").val(data.unitPrice);
+        //            $("#rate").val(data.rate);
+
+        //        }
+
+        //    });
+
+        //});
+
+        //$(document).on('change blur', '#cgstin, #name', function () {
+        //    var cgstin = $("#cgstin").val();
+        //    var gstin = $('#gstin').val();
+
+        //    var cgstin_state = cgstin.substring(0, 2);
+        //    var gstin_state = gstin.substring(0, 2);
+        //    if ((gstin_state != "") && (cgstin_state != "")) {
+        //        if (gstin_state == cgstin_state) {
+        //            $('#iamount').val("0").attr("readonly", "true");
+        //            $('#camount').removeAttr("readonly");
+        //            $('#samount').removeAttr("readonly");
+        //        }
+        //        else {
+        //            $('#iamount').removeAttr("readonly");
+        //            $('#camount').val("0").attr("readonly", "true");
+        //            $('#samount').val("0").attr("readonly", "true");
+        //        }
+        //    }
+
+        //});
+
+
+        $("#name").on('change', function () {
+            var name = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: '/OutwardCDNR/load',
+                data: { name: name },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#pos").val(data.StateCode);
+                    $("#address").val(data.Address);
+                    $("#gstin").val(data.GSTINno);
+                }
+
+            });
+        });
+
+        $('#btnSubmit').click(function(){
+        var $checkoutForm = $('#OutwardCDNR').validate({
+            // Rules for form validation
+            rules: {
+
+                taxablevalue: {
+                    required: true,
+                    maxlength: 14,
+                    number: true
+                },
+                rns: {
+                    required: true
+                },
+                rate: {
+                    required: true
+
+                },
+                cgstin: {
+                    required: true
+                },
+                name: {
+                    required: true
+                },
+                invoice: {
+                    required: true
+                },
+                invoicedate: {
+                    required: true
+                },
+                notetype: {
+                    required: true
+                },
+                notenum:{
+                    required: true
+                },
+                isauto: {
+                    required: true
+                },
+                notedate: {
+                    required: true
+                },
+                isauto: {
+                    required: true
+                    //number:true
+                },
+                igsta: {
+                    required: true,
+                    number: true
+                },
+                cgsta: {
+                    required: true,
+                    number: true
+                },
+                sgsta: {
+                    required: true,
+                    number: true
+                },
+                cessa: {
+                    //required: true,
+                    number: true
+                },
+                pgst: {
+                    required: true
+                },
+                cfs: {
+                    required: true
+                },
+                //invalue: {
+                //    required: true
+                //},
+                unitprice: {
+                    required: true,
+                    number: true,
+                    min: 0.01
+                },
+                discount: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max: 99
+                },
+                HSN: {
+                    required: true
+                },
+                itemdesc: {
+                    required: true
+                },
+                uqc: {
+                    required: true
+                },
+                qty: {
+                    required: true,
+                    number: true,
+                    min: 0.01
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+
+                taxablevalue: {
+                    required: 'Please enter Taxable Value',
+                    number: 'Characters are not allowed'
+                },
+                unitprice:{
+                    required:'Please enter UnitPrice'
+                },
+                isauto: {
+                    required: 'Please select Note Automatic Generation'
+                    //number: 'Characters are not allowed'
+
+                },
+                discount: {
+                    required: 'Please enter Discount',
+                    number: 'Characters are not allowed'
+                },
+
+                rns: {
+                    required: 'Please enter RNS'
+                },
+                rate: {
+                    required: 'Please select HSN Code from list'
+                },
+                cgstin: {
+                    required: 'Please select Taxpayer GSTIN'
+                },
+                name: {
+                    required: 'Please select Customer Name'
+                },
+                invoice: {
+                    required: 'Please enter Invoice Number'
+                },
+                invoicedate: {
+                    required: 'Please select Invoice Date'
+                },
+                notetype: {
+                    required: 'Please select Note Type'
+                },
+                notenum:{
+                    required:'Please enter Note Number'
+                },
+                isauto: {
+                    required: 'Please Select Note Automatic Generation'
+                },
+                notedate: {
+                    required: 'Please select Note Date'
+                },
+                igsta: {
+                    required: 'Please IGST Amount',
+                    number: 'Characters are not allowed'
+
+                },
+                cgsta: {
+                    required: 'Please enter CGST amount',
+                    number: 'Characters are not allowed'
+                },
+                itemdesc: {
+                    required: 'Please enter Item Description'
+
+                },
+                sgsta: {
+                    required: 'Please enter SGST/UTGST amount',
+                    number: 'Characters are not allowed'
+                },
+                cessa: {
+                    //required: 'Please enter cess amount',
+                    number: 'Characters are not allowed'
+                },
+                pgsr: {
+                    required: 'Please select Pre GST'
+                },
+                cfs: {
+                    required: 'Please enter CFS'
+                },
+                //invalue: {
+                //    required: 'Please enter Invoice value'
+                //},
+                HSN: {
+                    required: 'Please enter HSN'
+                },
+                hsndesc: {
+                    required: 'Please enter Item Desciption'
+                },
+                uqc: {
+                    required: 'Please select UQC'
+                },
+                qty: {
+                    required: 'Please enter Qty',
+                    number: 'Characters are not allowed'
+                }
+
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+        });
+    })
+    jQuery.extend(jQuery.validator.messages, {
+
+        maxlength: jQuery.validator.format("Value can not be more than 99990000000.00 Crores."),
+
+    });
+
+
+
+    $("#notedate").change(function () {
+
+        var InvoiceDate = $("#invoicedate").val().split("-");
+        var date1 = new Date(InvoiceDate[2], InvoiceDate[1] - 1, InvoiceDate[0]);
+        //console.log(date1);
+
+        var NoteDate = $("#notedate").val().split("-");
+        var date2 = new Date(NoteDate[2], NoteDate[1] - 1, NoteDate[0]);
+        //console.log(date2);
+
+
+
+        //});
+        if (date1 > date2) {
+            alert("Note Generation Date should be greater than or equal to Invoice Date");
+            //$('#invoicedate').val('');
+            $('#notedate').val('');
+        }
+
+    });
+
+    $("#invoicedate").change(function () {
+
+        var InvoiceDate = $("#invoicedate").val().split("-");
+        var date1 = new Date(InvoiceDate[2], InvoiceDate[1] - 1, InvoiceDate[0]);
+       // console.log(date1);
+
+        var NoteDate = $("#notedate").val().split("-");
+        var date2 = new Date(NoteDate[2], NoteDate[1] - 1, NoteDate[0]);
+       // console.log(date2);
+
+
+
+        //});
+        if (date1 > date2) {
+            alert("Note Generation Date should be greater than or equal to Invoice Date");
+            $('#invoicedate').val('');
+           // $('#notedate').val('');
+        }
+
+    });
+
+    </script>
+
+}
+

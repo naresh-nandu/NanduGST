@@ -1,0 +1,96 @@
+﻿<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container" ng-app="my-app" ng-controller="myCtrl">
+    <div class="row">
+        <br />
+        <div class="panel panel-default" style="padding:8px">
+            <div class="panel-body h4"
+                 style="background:#0a9490;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                3.1 Details of Outward Supplies and inward supplies liable to reverse charge
+            </div>
+            <form ng-submit="submit(OutwardSuppliesInwardSupplies);">
+
+                <table class="table table-bordered">
+
+                    <thead class="blue-grey lighten-4">
+                        <tr class="active">
+                            <th class="text-center"><b>Nature of supplies</b> </th>
+                            <th class="text-center"><b>Total Taxable <br />value (<i class="fa">&#xf156;</i>) </b> </th>
+                            <th class="text-center"><b> Integrated <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> Central <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> State / UT Tax <br />(<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> CESS (<i class="fa">&#xf156;</i>)</b></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><b>(a) Outward taxable supplies(other than zero rated,nil rated and exempted)</b></td>
+
+                        <td>
+                            <input type="hidden" valid-number class="form-control" ng-model="outwardSuppliesInwardSupplies.gstinid" />
+                            <input type="hidden" valid-number class="form-control" ng-model="outwardSuppliesInwardSupplies.fp" />
+                            <input type="hidden" valid-number class="form-control" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.Id" />
+
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.txval" />
+                        </td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.iamt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.samt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_det.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>(b) Outward taxable supplies(zero rated)</b></td>
+                        <td>
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.Id" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.txval" />
+                        </td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.iamt" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_zero.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>(c) Other Outward taxable supplies(nil rated,exempted)</b></td>
+                        <td>
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nil_exmp.Id" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nil_exmp.txval" />
+                        </td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                    </tr>
+                    <tr>
+                        <td><b>(d) Inward supplies(liable to reverse change)</b></td>
+
+                        <td>
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.Id" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.txval" />
+                        </td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.iamt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.samt" /></td>
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_isup_rev.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>(e) Non-GST outward supplies</b> </td>
+                        <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nongst.Id" />
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="OutwardSuppliesInwardSupplies.TBL_GSTR3B_sup_det_osup_nongst.txval" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <input type="button" class="btn btn-primary" value="CANCEL" style="float:right;margin-left:10px;" ng-click="clear();" onclick="window.history.go(-1);" />
+                        </td>
+                        <td>
+                            <input type="submit" class="btn btn-primary" value="CONFIRM" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>

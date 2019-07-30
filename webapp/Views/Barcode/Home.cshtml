@@ -1,0 +1,21 @@
+﻿@using (Html.BeginForm("Home", "Barcode", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <h2>Generate Bar Code</h2>
+            <input type="text" name="barcode" Class="form-control col-4" ID="textCode" />
+            <br /><br />
+            <input type="submit" Class="btn btn-primary" ID="btnGenerate" value="Generate" />
+            <hr />
+            <div>
+                @if (ViewBag.QRCodeImage != null)
+                {
+                    <img src="@ViewBag.QRCodeImage" />
+                }
+            </div>
+        </div>
+
+
+    </div>
+}

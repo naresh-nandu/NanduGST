@@ -1,0 +1,725 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+@if (TempData["SaveMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SaveMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SaveMessage"] = null;
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+@if (Convert.ToString(TempData["OTPSession"]) == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+
+    #wid-id-0 {
+        display: none;
+    }
+</style>
+<div id="content">
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                EWayBill
+                <span>
+                    >&nbsp;
+                    Generate Consolidate EWayBill
+                </span>
+            </h1>
+        </div>
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <form action="@Url.Action("CONSEWB", "EWBGeneration")" method="post" id="ConsEWB" name="ConsEWB" autocomplete="off" novalidate="novalidate">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Consolidated Manual E-Way Bill Entry </h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+                                        <div class="row">
+
+                                            <div>
+                                                <section class="col col-3">
+                                                    <label class="label"><b>GSTIN<span style="color:red">*</span></b></label>
+                                                    <label class="input">
+                                                        @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select Gstin", new { @Class = "form-control input-sm", @autopostback = "true", @id = "ddlGSTINNo", @onchange = "submit();" })
+                                                    </label>
+                                                </section>
+
+                                                @if (Session["LocationSetting"].ToString() == "True")
+                                                {
+                                                    if (ViewBag.GstinNo != null)
+                                                    {
+                                                        <section class="col col-3">
+                                                            <label><b>Location<span style="color:red">*</span></b></label>
+                                                            <div class="col-xs-12 col-lg-12 selectContainer">
+                                                                @Html.DropDownList("branchId", ViewBag.BranchList as SelectList, "Select Location", new { @class = "form-control", id = "ddlGSTIN", autopostback = "true" })
+                                                            </div>
+                                                        </section>
+                                                    }
+                                                    else
+                                                    {
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label style=""><b>Location<span style="color:red">*</span></b></label>
+                                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                                    <select class="form-control" name="branchId">
+                                                                        <option value="0">Select Location</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    }
+                                                }
+
+                                                <section class="col col-3">
+                                                    <label class="label"><b>Transport Mode<span style="color:red">*</span></b></label>
+                                                    <label class="input">
+                                                        @Html.DropDownList("transMode", ViewBag.TransportMode as SelectList, "Select", new { @Class = "form-control input-sm", @id = "transMode" })
+                                                    </label>
+
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label class="label"><b>From State<span style="color:red">*</span></b></label>
+                                                    <label class="input">
+                                                        @Html.DropDownList("dispatchStateCode", ViewBag.StateCode as SelectList, "Select", new { @Class = "form-control input-sm" })
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label class="label"><b>From Place<span style="color:red">*</span></b></label>
+                                                    <label class="input">
+                                                        <input type="text" name="fromplace" id="fromplace" value="@Session["fromplace"]" placeholder="Enter The Place">
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label class="label">
+                                                        <b>Vehicle Number</b>
+                                                        <span style="color:red">
+                                                            <a href="#" id="VechDiv" style="padding:10px; font-weight:bold">?</a>
+                                                        </span>
+                                                    </label>
+                                                    <label class="input">
+                                                        <input type="text" name="vehicleNo" id="vehicleNo" onchange="VehicleNoValidate()" value="@Session["vehicleNo"]" placeholder="Enter Vehicle No" style="text-transform:uppercase">
+                                                    </label>
+                                                    <div id="vechDiv_info" style="background-color: #F7E7D3; width: 250px; height: 200px; right: 250px; position: absolute; z-index: 9999">
+                                                        <table class="">
+                                                            <tr>
+                                                                <th>Format of Vehicle No.</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB121234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB12A1234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB12AB1234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>ABC1234</td>
+                                                                <td>(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB123A1234</td>
+                                                                <td>(or) </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AB12ABC1234</td>
+                                                                <td>(or) </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>DFXXXXXX&nbsp; (for Defence Vehicle)&nbsp; </td>
+                                                                <td>&nbsp;&nbsp;(or) </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TRXXXXXX&nbsp; (for Temporary RC)&nbsp;</td>
+                                                                <td>&nbsp;&nbsp;(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>BPXXXXXX&nbsp; (for Bhutan)&nbsp;</td>
+                                                                <td>&nbsp;&nbsp;(or)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>NPXXXXXX&nbsp; (for Nepal)&nbsp;</td>
+                                                                <td></td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label class="label"><b>Transporter Doc No</b></label>
+                                                    <label class="input">
+                                                        <input type="text" name="transdocNo" id="transdocNo" value="@Session["transdocNo"]" placeholder="Enter Transporter Doc No">
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label class="label"><b>Transporter Doc Date</b></label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="transdocDate" id="transdocDate" value="@Session["transDocDate"]" placeholder="Transporter Date" class="datepicker" data-dateformat='dd/mm/yy' readonly>
+                                                    </label>
+                                                </section>
+
+                                            </div>
+
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+                    </div>
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Add EwayBill</h2>
+                        </header>
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <hr style="border:1px solid #d9dbe4" />
+                                    <br />
+                                    @{Html.RenderPartial("_ConsTransaction"); }
+                                </div>
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+                    </div>
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["MasterdtlsCEWAY"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["MasterdtlsCEWAY"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Eway Bill List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                                                    grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                    grid.Column("EwbNo", "E-Way Bill No"),
+                                                    grid.Column("EwbDate", "E-Way Bill Date"),
+                                                    grid.Column("GeneratedBy", "Generated By"),
+                                                    grid.Column("DocNo", "Document No"),
+                                                    grid.Column("DocDate", "Document Date"),
+                                                    grid.Column("TaxVal", "Taxable Value"),
+                                                    grid.Column("FromPlace", "From Place"),
+                                                    grid.Column("ToPlace", "To Place"),
+                                                    grid.Column(format:@<text>@Html.ActionLink("Delete", "CONSDelete", new { id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+                                                ))
+                                            </div>
+
+                                            <footer>
+                                                <div class="row">
+                                                    <div class="col-md-6 text-center" style="margin-left:10px" ;>
+                                                        <button type="submit" id="btnSave" name="Command" value="Save" onclick="return TransModeValid();"
+                                                            style="font-weight:bold; Border-radius:10px; width:180px" class="btn btn-primary">Save & Generate</button>
+                                                    </div>
+                                                </div>
+                                            </footer>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+
+            </form>
+
+        </div>
+    </section>
+</div>
+
+<script>
+
+    function ValidIt() {
+        var pin = document.getElementById("ewaybillno");
+
+        var pat1 = /^\d{12}$/;
+
+        if (!pat1.test(pin.value)) {
+            alert("Ewaybill should be 12 digits ");
+
+        }
+    }
+
+</script>
+@if (TempData["EwayDeletedMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["EwayDeletedMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+);
+        };
+
+    </script>
+}
+
+    <script>
+        // #region "Vehicle No Format Popup Scripts"
+        $(document).ready(function () {
+            //Hide your Input Parameter Div here
+            $('#vechDiv_info').hide();
+
+            //Diplay div on mouseover
+            $('#VechDiv').mouseover(function () {
+                $('#vechDiv_info').show("slow");
+            });
+
+            //Hide div on mouseover
+            $('#VechDiv').mouseout(function () {
+                //Check if mouse is over second div
+                if ($('#vechDiv_info').is(':hover')) {
+                    //If so then show the second div
+                    $('#vechDiv_info').show("slow");
+                } else {
+                    $('#vechDiv_info').hide("slow");
+                }
+            });
+
+            //Hide div on mouseover from second div
+            $('#vechDiv_info').mouseout(function () {
+                $('#vechDiv_info').hide("slow");
+            });
+        });
+        // #endregion
+
+        //   #region "TRANSMODE VALIDATIONS"
+
+        if (document.getElementById('transMode').value == "1") {
+            $('#vehicleNo').removeAttr("readonly").css("background-color", "white");
+        }
+        else if (document.getElementById('transMode').value == "2") {
+            $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+        }
+        else if (document.getElementById('transMode').value == "3") {
+            $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+        }
+        else if (document.getElementById('transMode').value == "4") {
+            $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+        }
+        else {
+        }
+
+        $('#transMode').on('change', function () {
+            debugger;
+            if (document.getElementById('transMode').value == "1") {
+                $('#vehicleNo').removeAttr("readonly").css("background-color", "white");
+            }
+            else if (document.getElementById('transMode').value == "2") {
+                $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+            else if (document.getElementById('transMode').value == "3") {
+                $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+            else if (document.getElementById('transMode').value == "4") {
+                $('#vehicleNo').val("").attr("readonly", "true").css("background-color", "#d9d9d9");
+            }
+            else {
+            }
+        })
+        //   #endregion
+    </script>
+
+<script>
+    $("#ewbNo").on('blur', function () {
+
+        var txt = $('#ewbNo').val().split("|");
+        $("#ewbNo").val(txt[0]);
+        $('#ewbDate').val(txt[1]);
+        $("#generatedBy").val(txt[2]);
+        $('#docNo').val(txt[3]);
+        $("#docDate").val(txt[4]);
+        $('#taxVal').val(txt[5]);
+        $("#fromPlaces").val(txt[6]);
+        $('#toPlace').val(txt[7]);
+
+    });
+
+    $(document).ready(function () {
+        var usergstin = $("#ddlGSTINNo").val();
+        $("#ewbNo").autocomplete({
+
+            minlength: 3,
+            scroll: true,
+            source: function (request, response) {
+
+                $.ajax({
+
+                    url: "/EWBGeneration/ewbDetails",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term, Gstin: usergstin },
+
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.ewbNo,
+                                value: item.ewbNo + "|" + item.ewbDate + "|" + item.generatedBy + "|" + item.docNo + "|" + item.docDate + "|" + item.taxValue + "|" + item.fromPlace + "|" + item.toPlace                                
+                            };
+                        }));
+                    },
+                    messages: {
+                        noResults: "", results: "",
+                    }
+                });
+            }
+        });
+    })
+
+    function VehicleNoValidate() {
+        Number = document.getElementById("vehicleNo").value;
+        Number = Number.toUpperCase();
+        if (Number != "") {
+            var pattern1 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{2}[0-9]{4}$/;
+            var pattern2 = /^[A-Z|a-z]{2}[0-9]{2}[A-Z|a-z]{1}[0-9]{4}$/;
+            var pattern3 = /^[A-Z|a-z]{2}[0-9]{6}$/;
+            var pattern4 = /^[A-Z a-z]{2}[0-9]{2}[A-Z a-z]{0,2}[0-9]{4}$/;
+            var pattern5 = /^[A-Z a-z]{3}[0-9]{4}$/;
+            var pattern6 = /^[A-Z a-z]{2}[0-9]{3}[A-Z a-z]{1}[0-9]{4}$/;
+            var pattern7 = /^[A-Z a-z]{2}[0-9]{2}[A-Z a-z]{3}[0-9]{4}$/;
+
+            if (Number.length >= 5) {
+                var res1 = pattern1.test(Number);
+                var res2 = pattern2.test(Number);
+                var res3 = pattern3.test(Number);
+                var res4 = pattern4.test(Number);
+                var res5 = pattern5.test(Number);
+                var res6 = pattern6.test(Number);
+                var res7 = pattern7.test(Number);
+                if (Number.substring(0, 2).toUpperCase() != "DF" && Number.substring(0, 2).toUpperCase() != "TR" && Number.substring(0, 2).toUpperCase() != "BP" && Number.substring(0, 2).toUpperCase() != "NP") {
+                    if (res1 || res2 || res3 || res4 || res5 || res6 || res7) {
+
+                    }
+                    else {
+                        $("#vehicleNo").val('');
+                        alert("Please enter a valid Vehicle No.");
+                        document.getElementById("vehicleNo").focus();
+                    }
+                }
+                else {
+                    if (Number.length > 8) {
+                        $("#vehicleNo").val('');
+                        alert("Please enter a valid Vehicle No.");
+                        document.getElementById("vehicleNo").focus();
+                    }
+                }
+            }
+            else {
+                $("#vehicleNo").val('');
+                alert("Please enter a valid Vehicle No.");
+                document.getElementById("vehicleNo").focus();
+            }
+        }
+    }
+
+    $('#btnAdd').click(function () {
+
+        var $checkoutForm = $('#ConsEWB').validate({
+            // Rules for form validation
+            rules: {
+
+                ddlGSTINNo: {
+                    required: true
+                },
+                transMode: {
+                    required: true
+                },
+                dispatchStateCode: {
+                    required: true
+                },
+                fromplace: {
+                    required: true
+                },
+                //vehicleNo: {
+                //    required: true
+                //},
+                ewbNo: {
+                    required: true
+                }
+            },
+            messages: {
+
+                ddlGSTINNo: {
+                    required: 'Please select GSTIN'
+                },
+                transMode: {
+                    required: 'Please select Transport Mode'
+                },
+                dispatchStateCode: {
+                    required: 'Please select From State'
+                },
+                fromplace: {
+                    required: 'Please enter From Place'
+                },
+                //vehicleNo: {
+                //    required: 'Please enter Vehicle Number'
+                //},
+                ewbNo: {
+                    required: 'Please enter Eway Bill No'
+                }
+            }
+        });
+    })
+
+    $('#btnSave').click(function () {
+
+        var $checkoutForm = $('#ConsEWB').validate({
+            // Rules for form validation
+            rules: {
+
+                ddlGSTINNo: {
+                    required: true
+                },
+                transMode: {
+                    required: true
+                },
+                dispatchStateCode: {
+                    required: true
+                },
+                fromplace: {
+                    required: true
+                }
+                //vehicleNo: {
+                //    required: true
+                //}
+            },
+            messages: {
+
+                ddlGSTINNo: {
+                    required: 'Please select GSTIN'
+                },
+                transMode: {
+                    required: 'Please select Transport Mode'
+                },
+                dispatchStateCode: {
+                    required: 'Please select From State'
+                },
+                fromplace: {
+                    required: 'Please enter From Place'
+                }
+                //vehicleNo: {
+                //    required: 'Please enter Vehicle Number'
+                //}
+            }
+        });
+    })
+
+    function TransModeValid() {
+        var TransMode = "";
+        var TransDocNo = "";
+        var VehicleNo = "";
+        TransMode = $("#transMode").val();
+        TransDocNo = $("#transdocNo").val();
+        VehicleNo = $("#vehicleNo").val();
+        if (TransMode == "1") {
+            if (VehicleNo == "") {
+                alert("Please Enter VehicleNo.");
+                //VehicleNo.focus();
+                return false;
+            }
+        }
+        else if (TransMode == "2" || TransMode == "3" || TransMode == "4") {
+            if (TransDocNo == "") {
+                alert('Please Enter Trans Doc No');
+                //TransDocNo.focus();
+                return false;
+            }
+        }
+    }
+
+</script>

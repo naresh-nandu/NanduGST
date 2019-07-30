@@ -1,0 +1,307 @@
+﻿
+@if (TempData["ViewResponse"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ViewResponse"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ViewResponse"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                EWayBill
+                <span>
+                    >&nbsp;
+                 View & Print
+                </span>
+            </h1>
+        </div>
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+            @using (Ajax.BeginForm("Home", "EWayBill", new AjaxOptions { HttpMethod = "POST" }, new { enctype = "multipart/form-data", @id = "EWBListForm", @name = "EWBListForm" }))
+            {
+                <!-- Widget ID (each widget will need unique ID)-->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">E-Way Bill</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+
+                                            @if (Session["LocationSetting"].ToString() == "True")
+                                            {
+                                                if (ViewBag.GstinNo != null)
+                                                {
+                                                    <section class="col col-3">
+                                                        <label class="label">Location</label>
+                                                        <div class="col-xs-12 col-lg-12 selectContainer">
+                                                            @Html.DropDownList("ddlLocation", ViewBag.LocationList as SelectList, "ALL", new { @class = "form-control", id = "ddlLocation", autopostback = "true", onchange = "submit();" })
+                                                        </div>
+                                                    </section>
+                                                }
+                                                else
+                                                {
+                                                    <section class="col col-3">
+                                                        <label class="label">Location</label>
+                                                        <div class="col-xs-12 col-lg-12 selectContainer">
+                                                            <select class="form-control" name="ddlLocation">
+                                                                <option value="0">ALL</option>
+                                                            </select>
+                                                        </div>
+                                                    </section>
+                                                }
+                                            }
+
+                                            <section class="col col-3">
+                                                <label class="label">From Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="fromDate" id="fromDate" value="@ViewBag.FromDate" placeholder="From Date" class="datepicker" data-dateformat='dd/mm/yy' readonly onchange="submit();">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label">To Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="toDate" id="toDate" value="@ViewBag.ToDate" placeholder="To Date" class="datepicker" data-dateformat='dd/mm/yy' readonly onchange="submit();">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="EwbIds" id="EwbIds" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <!-- end widget -->
+            }
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">E-Way Bill List</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            @{Html.RenderPartial("_EWay");}
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">Consolidate E-Way Bill List</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            @{Html.RenderPartial("_ConsolidateEWay");}
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+
+
+</div>
+
+
+
+

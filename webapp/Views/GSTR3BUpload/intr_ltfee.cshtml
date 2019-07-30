@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewBag.Title = "Interest and Late fee";
+}
+<style>
+    table td, th {
+        padding: 3px;
+        /*border: 1px solid #c6c6c6;*/
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    body {
+        background-color: #D3D3D3;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="container" ng-app="my-app" ng-controller="myCtrls">
+
+    <div class="row">
+        <br />
+    </div>
+
+    <div class="row">
+        <br />
+        <div class="panel panel-default" style="padding:8px">
+            <div class="panel-body h4"
+                 style="background:#0a9490;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">5.1 Interest and Late fee</div>
+            <form ng-submit="submit(TBL_GSTR3B_InterestAndLateFee);">
+
+                @*<div ng-switch="TBL_GSTR3B_InterestAndLateFee.camt">
+                        <div ng-switch-when="0">
+                            <input type="text" valid-number class="form-control" placeholder=""/>
+                        </div>
+                        <div ng-switch-default>
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.camt" />
+                        </div>
+                    </div>*@
+
+                <input type="hidden" name="gstinid" id="gstinid" value='@Session["gstinid"]' />
+                <input type="hidden" name="fb" id="fp" value='@Session["fp"]' />
+                <table class="table table-bordered">
+                    <thead class="blue-grey lighten-4">
+                        <tr class="active">
+                            <th class="text-center"><b>Nature of supplies</b> </th>
+                            <th class="text-center"><b> Integrated <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> Central <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> State / UT Tax <br />(<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> CESS (<i class="fa">&#xf156;</i>)</b></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><b>Interest late fee</b></td>
+                        <td>
+
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.Id" />
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.Fp" />
+                            <input type="hidden" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.Gstinid" />
+                            <input type="text" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.iamt" />
+                        </td>
+                        @*<div ng-switch="TBL_GSTR3B_InterestAndLateFee.camt">
+                                       <div ng-switch-when="0">
+                                 <td><input type="text" valid-number class="form-control" placeholder="" /></td>
+                             </div>
+                             <div ng-switch-default>
+                               <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.camt" /></td>
+                                    </div>
+                            </div>*@
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.camt" /></td>
+
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.camt" /></td>
+
+                        <td><input type="text" valid-number class="form-control" placeholder="0.00" ng-model="TBL_GSTR3B_InterestAndLateFee.csamt" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <input type="button" class="btn btn-primary" value="CANCEL" style="float:right;margin-left:10px;" ng-click="clear();" />
+                            @if (Session["GSTR3BSetting"].ToString() != "True")
+                            {
+                                <input type="button" onclick="Delete()" value="Delete" style="border:2px solid #0a9490;background-color:#0a9490;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+
+                            }
+                            
+                                <input type="submit" class="btn btn-primary" value="CONFIRM" style="float:right" />
+                            
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    var app = angular.module('my-app', []);
+    app.controller('myCtrls', function ($scope, $http) {
+        $scope.submit = function () {
+            console.log($scope.TBL_GSTR3B_InterestAndLateFee);
+            debugger;
+
+            $http.post('/GSTR3BUpload/SaveInterestAndLatefee', $scope.TBL_GSTR3B_InterestAndLateFee)
+              .then(
+                 function (response) {
+                     if (response.data.result == true)
+                     {
+                         alert("updated successfully");
+                     }
+                     else {
+                         alert("Updation failed");
+                     }
+
+                 },
+                function (response) {
+
+                      }
+                     );
+        }
+
+        $scope.clear = function () {
+            $scope.TBL_GSTR3B_InterestAndLateFee = {};
+            window.location.pathname = '/GSTR3BUpload/Index';
+        }
+
+        $http({
+            url: '/GSTR3BUpload/GetInterestAndLatefee',
+            method: "GET",
+            params: { gstinid: "@ViewBag.gstinid", fp: "@ViewBag.fp" }
+        }).then(function (result) {
+
+            $scope.TBL_GSTR3B_InterestAndLateFee = result.data
+        }, function (result) {
+            //some error
+            console.log(result);
+        });
+        @*$scope.Delete = function () {
+        $http({
+            url: '/GSTR3BUpload/Deleteltfee',
+            method: "POST",
+            params: { gstinid: "@ViewBag.gstinid", fp: "@ViewBag.fp" }
+        }).then(function (message) {
+            $scope.TBL_GSTR3B_InterestAndLateFee = message.data
+
+        }, function (message) {
+            //some error
+            console.log(message);
+        });*@
+
+
+
+        //$http.get('/GSTR3BUpload/GetInterestAndLatefee')
+        //.then(function (result) {
+        //    console.log(result);
+        //    $scope.TBL_GSTR3B_InterestAndLateFee = result.data
+        //}, function (result) {
+        //    //some error
+        //    console.log(result);
+        //});
+
+
+
+
+
+    });
+
+
+    app.directive('validNumber', function () {
+        return {
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModelCtrl) {
+                if (!ngModelCtrl) {
+                    return;
+                }
+
+                ngModelCtrl.$parsers.push(function (val) {
+                    if (angular.isUndefined(val)) {
+                        var val = '';
+                    }
+                    var clean = val.replace(/[^0-9\.]/g, '');
+                    var decimalCheck = clean.split('.');
+
+                    if (!angular.isUndefined(decimalCheck[1])) {
+                        decimalCheck[1] = decimalCheck[1].slice(0, 2);
+                        clean = decimalCheck[0] + '.' + decimalCheck[1];
+                    }
+
+                    if (val !== clean) {
+                        ngModelCtrl.$setViewValue(clean);
+                        ngModelCtrl.$render();
+                    }
+                    return clean;
+                });
+
+                element.bind('keypress', function (event) {
+                    if (event.keyCode === 32) {
+                        event.preventDefault();
+                    }
+                });
+            }
+        };
+    });
+</script>
+<script>
+    function Delete() {
+        var gstinid = $('#gstinid').val();
+        var fp = $('#fp').val();
+        $.ajax({
+            type: "GET",
+            url: '/GSTR3BUpload/Deleteltfee',
+            data: { gstinid: gstinid, fp: fp },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    }
+</script>

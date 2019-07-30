@@ -1,0 +1,324 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+
+    var result = new List<dynamic>();
+    if (@ViewBag.Report != null)
+    {
+        foreach (var emprow in ViewBag.Report)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Report
+                <span>
+                    >&nbsp;
+                    Customer Sales
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+        <!-- START ROW -->
+
+        <div class="row">
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Customer Sales</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <br />
+
+
+                                <form action="@Url.Action("CustomerSalesReport", "MISReports")" method="post" id="MISReport" novalidate="novalidate">
+                                    @*@Html.AntiForgeryToken()*@
+                                    <fieldset>
+
+                                        <div class="row">
+
+                                            <section class="col col-3">
+                                                <label class="col-form-label" style="font-weight:600">Period<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+
+                                                    <input class="form-control datepicker" name="periodidr" id="periodidr" type="text" placeholder="Period" data-dateformat='mmyy' value="@ViewBag.Period">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label style="font-weight:600">GSTIN <span style="color:red">*</span></label>
+                                                    <div>
+                                                         @Html.DropDownList("cgstin", new SelectList(ViewBag.GSTINNoList, "GSTINNo", "GSTINNo", @TempData["cgstin"]), "ALL", new { @Class = "form-control input-sm", @id = "cgstin", })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+                                    <br />
+
+
+                                    <footer>
+                                        <div class="text-center col-md-7">
+                                            <button type="submit" class="btn btn-primary pull-left" id="customer" name="customer" value="Customer Sales" style="background-color:#508180!important;border-radius:10px;font-weight:bold;border:2px solid #508180">
+                                                View Report
+                                            </button>
+                                        </div>
+                                    </footer>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <!-- NEW COL START -->
+
+
+
+            @if (ViewBag.Report != null)
+            {
+                if (Enumerable.Count(ViewBag.Report) > 0)
+                {
+                    using (Html.BeginForm("ExportDataCustomer", "MISReports", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                            <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">View & Export Customer Sales Report</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+
+
+
+                                            @*@Html.AntiForgeryToken()*@
+                                            <div class="table-responsive text-center" style="margin:16px;">
+
+                                                @if (ViewBag.Report != null)
+                                                {
+                                                    if (Enumerable.Count(ViewBag.Report) > 0)
+                                                    {
+                                                        @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover",
+                                                             mode: WebGridPagerModes.All, firstText: "<< First", previousText: "< Prev",
+                                                             nextText: "Next >", lastText: "Last >>", emptyRowCellValue: "No Records Found");
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <h3>No Data Found</h3>
+                                                    }
+                                                }
+                                            </div>
+                                            <br />
+
+                                            <footer>
+
+                                                <div class="text-center col-md-7">
+                                                    <tr><td></td><td><input type="submit" name="command" id="customer" value="Export" class="btn btn-primary" style="background-color:#3276b1!important;border-radius:10px;font-weight:bold;border:2px solid #2c699d" /></td></tr>
+
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+
+                        </article>
+                    }
+
+
+                }
+
+                else
+                {
+                    <script type="text/javascript">
+                        alert(@Html.Raw(Json.Encode("No data found")));
+                    </script>
+
+                }
+            }
+
+
+            <!-- END COL -->
+            <!-- NEW COL START -->
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </section>
+    <!-- end widget grid -->
+
+
+</div>
+
+
+
+
+@section pagespecific{
+    <script type="text/javascript">
+
+   // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+          $(document).ready(function () {
+            $('#btnUpload').on('click', function () {
+
+            }
+            );
+
+            $("#MISReport").validate({
+                // Rules for form validation
+                rules: {
+
+                    periodidr: {
+                        required: true,
+
+                    },
+                    //cgstin: {
+                    //    required: true,
+
+                    //},
+
+
+                },
+
+
+                // Messages for form validation
+                messages: {
+
+                    //cgstin: {
+                    //    required: 'Please select GSTINNo',
+                    //},
+                    //gstn: {
+                    //    required: 'Please select gstin',
+                    //},
+                    periodidr: {
+                        required: 'Please select date'
+
+                    },
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        })
+
+
+    </script>
+
+
+
+
+}

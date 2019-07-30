@@ -1,0 +1,341 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 50);
+    }
+}
+<style type="text/css">
+    table.gridtable {
+        font-family: Verdana,Arial;
+        font-size: 11px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+        table.gridtable th {
+            background-color: #dedede;
+            padding: 8px;
+            border-width: 1px;
+            border-color: #666666;
+            border-style: solid;
+        }
+
+        table.gridtable td {
+            background-color: #ffffff;
+            padding: 8px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #666666;
+        }
+</style>
+
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+@using (Html.BeginForm("Index", "GSTRViewTrackStatus", FormMethod.Post, new { @id = "GSTRViewTrackStatusDownloadForm", @name = "GSTRViewTrackStatusDownloadForm" }))
+{
+    <div id="content">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR 
+                    <span>
+                        >&nbsp;
+                        View & Track
+                    </span>
+                </h1>
+            </div>
+            <!-- end col -->
+            <!-- right side of the page with the sparkline graphs -->
+            <!-- col -->
+            <!-- end col -->
+
+        </div>
+        <!-- end row -->
+        <!--
+                    The ID "widget-grid" will start to initialize all widgets below
+                    You do not need to use widgets if you dont want to. Simply remove
+                    the <section></section> and you can use wells or panels instead
+                    -->
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>GSTR View & Track</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        @Html.DropDownList("gstin", (ViewBag.GSTINNoList as SelectList), "--Select--", new { @Class = "form-control input-sm", autopostback = "true", onchange = "submit();" })
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="period" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.Period">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="toperiod">
+                                                <label class="label">To</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="toperiod" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.toPeriod" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Action</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <select class="form-control input-sm" name="action" id="action">
+                                                        <option>--Select--</option>
+                                                        <option value="RETTRACK">RETTRACK</option>
+                                                    </select>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="divCTIN">
+                                                <label class="label">GSTR Type</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <select class="form-control input-sm" name="type" id="type">
+                                                        <option>--Select--</option>
+                                                        <option value="R1">GSTR1</option>
+                                                        <option value="R3B">GSTR3B</option>
+                                                    </select>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="Download" id="Download" value="Download" class="btn btn-primary pull-left">Download</button>
+                                        @*<button type="submit" name="Export" id="Export" value="Export" class="btn btn-primary pull-right">Export</button>*@
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>@ViewBag.TitleHeaders</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding" style="overflow:scroll">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <fieldset>
+                                        <div class="row">
+                                            <section class="col col-12">
+                                                <label class="label"></label>
+                                                <div class="table-responsive">
+                                                    @if (ViewBag.Retstatus != null)
+                                                    {
+                                                        @ViewBag.Retstatus
+                                                    }
+                                                    else
+                                                    {
+                                                        if (@Model != null)
+                                                        {
+                                                            @grid.GetHtml(tableStyle: "gridtable")
+
+                                                        }
+                                                    }
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+
+                                    <footer></footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+
+
+                </article>
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+
+    <div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">GST Authentication</h4>
+                </div>
+                <div class="modal-body custom-scroll terms-body">
+                    <div id="left">
+                        <b>@ViewBag.AUTH_Response</b>
+                        <br /><br />
+                        <input type="text" id="OTP" name="OTP" class="form-group" placeholder="Enter OTP" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" name="OTPSubmit" value="GSTR 1 Save" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                            Submit
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+
+}
+
+@if (TempData["AuthMsg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["AuthMsg"])));
+        TempData["AuthMsg"] = null;
+    </script>
+}
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        TempData["Message"] = null;
+    </script>
+}
+
+@if (ViewBag.DownloadResponse != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(ViewBag.DownloadResponse)));
+    </script>
+}

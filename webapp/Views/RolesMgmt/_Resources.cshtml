@@ -1,0 +1,120 @@
+﻿@*@model List<SmartAdminMvc.Models.MAS_Resources>*@
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+
+    }
+}
+<div>
+    @if (TempData["Role"] != null)
+    {
+        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+            <header>
+                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                <h2>Resources - [ @ViewBag.RoleName ]</h2>
+
+            </header>
+
+
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div>
+
+                    <form id="resource-form" action="@Url.Action("Index","RolesMgmt")" method="post">
+
+                        <div>
+                            @*<input type="button" class="btn btn-sm btn-info" id="selectall" value="Select All" />*@
+                           <h3><span class="label label-success"><input type="checkbox" id="selectall" />&nbsp;Select All</span></h3>
+                       </div>
+                        <fieldset>
+                            @foreach (var item in result.Where(s => s.FK_Parent_Resource_ID == 0 ))
+                            {
+                                <ul>
+                                    <li>
+                                        @if (@item.Role_Resource_IsAssigned == true)
+                                        {
+                                            <input type="checkbox" class="checkBoxClass" name="ids" value="@item.Resource_ID" checked="checked" />
+                                            @item.Resource_Name
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="checkBoxClass" name="ids" value="@item.Resource_ID" />
+                                            @item.Resource_Name
+                                        }
+
+                                        <ul>
+                                            @foreach (var item1 in result.Where(s => s.FK_Parent_Resource_ID == item.Resource_ID))
+                                            {
+                                                <li>
+                                                    @if (@item1.Role_Resource_IsAssigned == true)
+                                                    {
+                                                        <input type="checkbox" class="checkBoxClass" name="ids" value="@item1.Resource_ID" checked="checked" />
+                                                        @item1.Resource_Name
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" class="checkBoxClass" name="ids" value="@item1.Resource_ID" />
+                                                        @item1.Resource_Name
+                                                    }
+                                                    <ul>
+                                                        @foreach (var item2 in result.Where(s => s.FK_Parent_Resource_ID == item1.Resource_ID))
+                                                        {
+                                                            <li>
+                                                                @if (@item2.Role_Resource_IsAssigned == true)
+                                                            {
+                                                                <input type="checkbox" class="checkBoxClass" name="ids" value="@item2.Resource_ID" checked="checked" />
+                                                                @item2.Resource_Name
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" class="checkBoxClass" name="ids" value="@item2.Resource_ID" />
+                                                                @item2.Resource_Name
+                                                            }
+                                                        </li>
+
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                </ul>
+                            }
+                        </fieldset>
+                        <footer>
+                            <section class="col col-3">                                
+                                <input type="submit" class="btn btn-sm btn-success" name="submit" value="Update" />                                
+                            </section>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+

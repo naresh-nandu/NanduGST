@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "InwardSupplies";
+}
+
+<style>
+    table td, th {
+        padding: 3px;
+        border: 1px solid #c6c6c6;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    body {
+        background-color: #D3D3D3;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default" style="padding:8px">
+            <div class="panel-body h4" style="background:#0a9490;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Values of exempt, nil-rated and non-GST inward supplies</div>
+            <input type="hidden" name="gstinid" id="gstinid" value='@Session["gstinid"]' />
+            <input type="hidden" name="fb" id="fp" value='@Session["fp"]' />
+            @*<div class="col-md-12">*@
+            @*<fieldset>
+                <legend>Values of exempt, nil-rated and non-GST inward supplies</legend>*@
+            <table class="table table-bordered">
+                <thead class="blue-grey lighten-4">
+                    <tr class="active">
+                        <th class="text-center">
+                            Nature of Supplies
+                        </th>
+                        <th class="text-center">
+                            Inter-State Supplies(&#8377;)
+                        </th>
+                        <th class="text-center">
+                            Intra-State Supplies(&#8377;)
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>From a supplier under composition scheme, Exempt and Nil rated supply</b></td>
+                        <td><input type="text" id="txtSupplierInter" placeholder="&#8377;0.00" class="form-control" value="0"/>
+                            <input type="hidden" id="txtSupplierInterid" placeholder="&#8377;0.00" class="form-control" />                      
+                        
+                        </td>
+                        <td><input type="text" id="txtSupplierIntra" placeholder="&#8377;0.00" class="form-control" value="0"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Non GST supply</b></td>
+                        <td>
+                            <input type="text" id="txtinwardint" placeholder="&#8377;0.00" class="form-control" value="0" />
+                            <input type="hidden" id="txtinwardintid" placeholder="&#8377;0.00" class="form-control" />
+                        </td>
+                        <td><input type="text" id="txtinwardcent" placeholder="&#8377;0.00" class="form-control" value="0"/></td>
+                    </tr>
+                    <tr>
+
+                        <td colspan="3">
+                            @if (Session["GSTR3BSetting"].ToString() != "True")
+                            {
+                                <input type="button" onclick="Delete()" value="Delete" style="border:2px solid #0a9490;background-color:#0a9490;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                            }
+                            <a href="/GSTR3BUpload/Index" class="btn btn-primary" id="Cancel" style="float:right;margin-left:10px;" onclick="window.history.go(-1);">Cancel</a>
+                           
+                                <a href="javascript:void('0');" class="btn btn-primary" id="Confirm" style="float:right;">Confirm</a>
+                           
+
+</tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript">
+    $('.form-control').on('keypress', function (e) {
+        //return e.metaKey || // cmd/ctrl
+        //  e.which <= 0 || // arrow keys
+        //  e.which == 8 || // delete key
+        //  /[0-9]/.test(String.fromCharCode(e.which)); // numbers
+
+        return validateFloatKeyPress(this, e);
+    });
+    $(document).ready(function () {
+        $("#Confirm").click(function () {
+            var gstinid = 1;
+            var gstr3bid = "1";
+            var data = {
+                "Common": {
+                    "Gstinid": "@ViewBag.gstinid",
+                    "Fp": "@ViewBag.fp"
+                },
+                "TBL_GSTR3B_inward_sup_isup_details": [
+                  {
+                      "ty": "19",
+                      "Id": $("#txtSupplierInterid").val() == "" ? 0 : $("#txtSupplierInterid").val(),
+                      "inter": $("#txtSupplierInter").val() == "" ? 0 : $("#txtSupplierInter").val(),
+                      "intra": $("#txtSupplierIntra").val() == "" ? 0 : $("#txtSupplierIntra").val(),
+                      "gstinid": gstinid,
+                      "gstr3bid": gstr3bid
+                  },
+                  {
+                      "ty": "20",
+                      "Id": $("#txtinwardintid").val() == "" ? 0 : $("#txtinwardintid").val(),
+                      "inter": $("#txtinwardint").val() == "" ? 0 : $("#txtinwardint").val(),
+                      "intra": $("#txtinwardcent").val() == "" ? 0 : $("#txtinwardcent").val(),
+                      "gstinid": gstinid,
+                      "gstr3bid": gstr3bid
+                  }
+                ]
+            };
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/GSTR3BUpload/SaveInwardSupplies',
+                data: { "json": JSON.stringify(data) },
+                success: function (json) {
+                    if (json.result) {
+                        alert('Updated Successfully');
+                    } else {
+                        alert('Updation Failed');
+                    }
+                },
+            });
+        });
+
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: '/GSTR3BUpload/GetInwardSupplies',
+            data: {
+                gstinid: '@ViewBag.gstinid',
+                fp:'@ViewBag.fp' 
+            },
+            success: function (json) {
+                if (json) {
+                    $.each(json.TBL_GSTR3B_inward_sup_isup_details, function (index, item) {
+                        if (item.ty == "19") {
+                            $("#txtSupplierInter").val(item.inter);
+                            $("#txtSupplierInterid").val(item.Id);
+                            $("#txtSupplierIntra").val(item.intra);
+                        }
+                        if (item.ty == "20") {
+                            $("#txtinwardint").val(item.inter);
+                            $("#txtinwardintid").val(item.Id);
+                        } $("#txtinwardcent").val(item.intra);
+                    });
+
+                } else {
+                    alert('failed');
+                }
+            },
+        });
+    });
+
+    function validateFloatKeyPress(el, evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        var number = el.value.split('.');
+        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        //just one dot (thanks ddlab)
+        if (number.length > 1 && charCode == 46) {
+            return false;
+        }
+        //get the carat position
+        var caratPos = getSelectionStart(el);
+        var dotPos = el.value.indexOf(".");
+        if (caratPos > dotPos && dotPos > -1 && (number[1].length > 1)) {
+            return false;
+        }
+        return true;
+    }
+
+    function getSelectionStart(o) {
+        if (o.createTextRange) {
+            var r = document.selection.createRange().duplicate()
+            r.moveEnd('character', o.value.length)
+            if (r.text == '') return o.value.length
+            return o.value.lastIndexOf(r.text)
+        } else return o.selectionStart
+    }
+</script>
+   <script>
+    function Delete() {
+        var gstinid = $('#gstinid').val();
+        var fp = $('#fp').val();
+        $.ajax({
+            type: "GET",
+            url: '/GSTR3BUpload/Deleteinward',
+            data: { gstinid: gstinid, fp: fp },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    }
+</script>

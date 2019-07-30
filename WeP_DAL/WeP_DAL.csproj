@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EDF5B45E-AA5C-4EAE-A0BC-0D416375470A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WeP_DAL</RootNamespace>
+    <AssemblyName>WeP_DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>WeP_DAL.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>WeP_DAL.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\webapp\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\webapp\bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BranchMgmt\BranchDataAccess.cs" />
+    <Compile Include="EwayBill\EwayAttributes.cs" />
+    <Compile Include="EwayBill\ReportAttributes.cs" />
+    <Compile Include="GSTR4\B2B.cs" />
+    <Compile Include="GSTR4\B2BA.cs" />
+    <Compile Include="GSTR4\CDNR.cs" />
+    <Compile Include="GSTR4\CDNRA.cs" />
+    <Compile Include="GSTR4\TDS.cs" />
+    <Compile Include="GSTR6\B2B.cs" />
+    <Compile Include="GSTR6\B2BA.cs" />
+    <Compile Include="GSTR6\CDN.cs" />
+    <Compile Include="GSTR6\CDNA.cs" />
+    <Compile Include="GSTR6\ISD.cs" />
+    <Compile Include="GSTR6\ISDA.cs" />
+    <Compile Include="GSTR9Attribute\Gstr9.cs" />
+    <Compile Include="GSTR9Attribute\GSTR9Attributes.cs" />
+    <Compile Include="GSTR9Attribute\gstr9data9.cs" />
+    <Compile Include="GSTR9Attribute\ListAttributes.cs" />
+    <Compile Include="GSTRDelete\GstrCommonDeleteDal.cs" />
+    <Compile Include="GSTRReport\Gstr3B2AReportDal.cs" />
+    <Compile Include="GSTRReport\Gstr3B2ASupplierReportDal.cs" />
+    <Compile Include="GSTRUpload\GstrAttribuesDal.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Reconcilation\ReconcilationDataAccess.cs" />
+    <Compile Include="Reconcilation\ReconcilationDataAccess6.cs" />
+    <Compile Include="SQLHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WeP_DAL.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WeP_GSTN\WeP_GSTN.csproj">
+      <Project>{7D018F00-8836-4FFE-BBFB-A2C83A2817E3}</Project>
+      <Name>WeP_GSTN</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

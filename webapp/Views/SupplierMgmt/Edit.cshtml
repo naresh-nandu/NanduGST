@@ -1,0 +1,345 @@
+﻿@model SmartAdminMvc.Models.TBL_Supplier
+
+
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Supplier Management
+                <span>
+                    >&nbsp;
+                    Updation
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+    <form action="@Url.Action("Edit","SupplierMgmt")" method="post" id="supplierEdit-form" novalidate="novalidate">
+        <section id="widget-grid" class="">
+
+            <div class="row">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Supplier Updation</h2>
+                        </header>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        @*<div class="widget-body no-padding">*@
+
+                        <div id="comment-form" class="smart-form">
+                            <fieldset class="smart-form">
+                                @Html.HiddenFor(model => model.SupplierId)
+                                <div class="row">
+
+                                    <section class="col col-4">
+                                        <label>Supplier Name</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-user" style="color:red;font-weight:bold">*</i>
+                                            @Html.EditorFor(model => model.SupplierName, new { @style = "disable:true", @id = "SupplierName" })
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.SupplierName, "", new { @class = "text-danger" })
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Email</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-envelope-o" style="color:red;font-weight:bold"></i>
+                                            @Html.EditorFor(model => model.EmailId)
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.EmailId, "", new { @class = "text-danger" })
+
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Mobile Number</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-phone" style="color:red;font-weight:bold"></i>
+
+
+                                            @Html.EditorFor(model => model.MobileNo)
+                                            @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger", @maxlength = "10" })
+
+
+                                        </label>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-4">
+                                        <label>GSTIN</label>
+                                        <label class="input">
+                                            <i class="icon-append" style="color:red;font-weight:bold">*</i>
+                                            @Html.EditorFor(model => model.GSTINno, new { htmlAttributes = new { @readonly = "readonly", @maxlength = "15", @class = "form-control", @onblur = "GSTINNo()", @style = "text-transform:uppercase; background-color:#e1e1e1;", @onkeypress = "checkSpcialChar(event)", @id = "gst" } })
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.GSTINno, "", new { @class = "text-danger" })
+                                    </section>
+
+
+                                    <section class="col col-4">
+                                        <label>State Code</label>
+                                        <label class="input">
+                                            @Html.EditorFor(model => model.StateCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", style = "text-transform:uppercase", @id = "statecode", @type = "number" } })
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.StateCode, "", new { @class = "text-danger" })
+                                    </section>
+
+
+                                    <section class="col col-4">
+                                        <label>PAN</label>
+                                        <label class="input">
+                                            @Html.EditorFor(model => model.PANNO, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", style = "text-transform:uppercase", @id = "pan" } })
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.PANNO, "", new { @class = "text-danger" })
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-4">
+                                        <label>Nature of Business</label>
+                                        <label class="input">
+                                            @Html.EditorFor(model => model.NatureOfBusiness)
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.NatureOfBusiness, "", new { @class = "text-danger" })
+
+
+                                    </section>
+
+
+                                    <section class="col col-4">
+                                        <label>Constitution of Business</label>
+                                        <label class="input">
+                                            @Html.EditorFor(model => model.ConstitutionOfBusiness)
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.ConstitutionOfBusiness)
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Address</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-bank" style="color:red;font-weight:bold">*</i>
+                                            @Html.EditorFor(model => model.Address)
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.Address)
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-4">
+                                        <label>Date of Registration</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            @Html.TextBoxFor(model => model.DateofCompRegistered, new { @class = "datepicker", @data_dateformat = "dd-mm-yy" })
+                                            @*<input type="text" value="@item.DateofCompRegistered" name="DOR" placeholder="Date of Registration" class="datepicker" data-dateformat='mm/dd/yy'>*@
+                                        </label>
+
+                                        @Html.ValidationMessageFor(model => model.DateofCompRegistered, "", new { @class = "text-danger", @readonly = "true" })
+
+
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Contact Person</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-user" style="color:red;font-weight:bold">*</i>
+                                            @Html.EditorFor(model => model.POCName)
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.POCName, "", new { @class = "text-danger" })
+
+                                    </section>
+                                </div>
+
+                            </fieldset>
+
+
+
+
+                            <footer>
+                                <div class="col col-md-12 text-center">
+
+                                    <input type="submit" value="Update" class="btn btn-success btnstyle" style="font-weight:bold" />
+                                    @Html.ActionLink("Cancel", "Create", "SupplierMgmt", new { @Class = "btn btn-success btnstyle", @Style = "font-weight:bold;" })
+
+                                </div>
+                            </footer>
+                        </div>
+
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </article>
+            </div>
+        </section>
+
+
+<!-- end row -->
+<!-- row -->
+<!-- end row -->
+     
+
+    </form>
+ </div>
+
+
+
+
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+
+    </script>
+    TempData["Message"] = null;
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+        function checkSpcialChar(event) {
+            if (!((event.keyCode >= 65) && (event.keyCode <= 90) || (event.keyCode >= 97) && (event.keyCode <= 122) || (event.keyCode >= 48) && (event.keyCode <= 57))) {
+                event.returnValue = false;
+                return;
+            }
+            event.returnValue = true;
+        }
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+        $('#SupplierName').bind('keypress', textInput);
+        $('#POCName').bind('keypress', textInput);
+        $('#MobileNo').bind('keypress', numericInput);
+
+       var $checkoutForm = $('#supplierEdit-form').validate({
+            // Rules for form validation
+            rules: {
+                SupplierName: {
+                    required: true
+                },
+                GSTINno: {
+                    required: true
+                },
+                //EmailId: {
+                //    required: true,
+                //    email: true
+                //},
+                POCName: {
+                    required: true
+                },
+
+                MobileNo: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                //DateofCompRegistered: {
+                //    required: true
+
+                //},
+                StateCode: {
+                    required: true,
+                    minlength: 2,
+                    maxlength:2
+                },
+
+                PANNO: {
+                    required: true
+
+                },
+
+                Address: {
+                    required: true
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+                SupplierName: {
+           required: 'Please enter Supplier Name'
+       },
+                 GSTINno: {
+                    required: 'Please enter GSTIN'
+                },
+                //EmailId: {
+                //    required: 'Please enter Email',
+                //    email: 'Please enter a VALID email address'
+                //},
+                POCName: {
+                    required: 'Please enter Conatct Person'
+                },
+                NatureOfBusiness: {
+                    required: 'Please enter nature of business'
+                },
+                MobileNo: {
+                    required: 'Please enter Mobile',
+                    digits: 'Digits only please'
+                },
+                //DateofCompRegistered: {
+                //    required: 'Please select Date of Registration'
+
+                //},
+                Address: {
+                    required: 'Please enter Address'
+                },
+                ConstitutionOfBusiness: {
+                    required: 'Please enter Constittion of Business'
+                },
+                StateCode: {
+                    required: 'Please enter correct State Code in GSTIN'
+                },
+                LegalName: {
+                    required: 'Enter Legal Name of Business'
+
+                },
+                PANNO: {
+                    required: 'Please Enter PAN'
+                }
+
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    })
+
+    </script>
+
+}
+
+
+
+

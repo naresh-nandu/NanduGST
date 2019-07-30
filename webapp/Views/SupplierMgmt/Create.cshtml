@@ -1,0 +1,666 @@
+﻿@model IEnumerable<SmartAdminMvc.Models.TBL_Supplier>
+
+@{
+    ViewBag.Title = "WeP GST PANEL";
+    var grid = new WebGrid(source: ViewBag.Supplierlist, rowsPerPage: 10);
+
+}
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["Message"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        oTableStaticFlow = $('#example').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [5]
+            }],
+        });
+
+    });
+
+
+    $($(".sorting_asc").get(5)).removeClass("sorting_asc");
+    $($(".sorting_asc").get(6)).removeClass("sorting_asc");
+
+    function editOrder(SupplierId) {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to Edit this Record?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Edit",
+            confirmButtonColor: "#ec6c62"
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                var Id = SupplierId;
+
+                window.location.href = "/SupplierMgmt/Edit/" + Id;
+
+            }
+        });
+    }
+
+    function deleteOrder(SupplierId) {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to delete this Record?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Delete",
+            confirmButtonColor: "#ec6c62"
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                $.ajax({
+                    url: "/SupplierMgmt/Delete/",
+                    data: { "Id": SupplierId },
+                    type: "GET"
+                })
+                    .done(function (data) {
+
+                        window.location.href = '/SupplierMgmt/Create';
+
+                        sweetAlert
+                            ({
+                                title: "",
+                                text: "Supplier Deleted Successfully",
+                                type: "success"
+                            },
+                                function () {
+                                    //window.location.href = '/BuyerMgmt/Index';
+                                });
+                    })
+                    .error(function (data) {
+                        swal("Oops", "We couldn't connect to the server!", "error");
+                    });
+
+
+            }
+        });
+    }
+
+</script>
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Supplier Management
+                <span>
+                    >&nbsp;
+                    Registration
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">Supplier Creation</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                <form action="@Url.Action("Create","SupplierMgmt")" method="post" id="supplier-form" novalidate="novalidate">
+
+                                    @*@Html.AntiForgeryToken()*@
+                                    @Html.ValidationSummary(true)
+
+
+
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-user" style="color:red">*</i>
+                                                    <input type="text" name="name" placeholder="Supplier Name" id="name" value="@ViewBag.SupName">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-envelope-o" style="color:red;font-weight:bold">*</i>
+                                                    <input type="text" name="email" placeholder="Enter Multiple Emails separated by semicolon" value="@ViewBag.Email">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-phone" style="color:red;font-weight:bold">*</i>
+                                                    <input type="text" name="mob" maxlength="10" placeholder="Mobile Number" id="mob" value="@ViewBag.MOB">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append" style="color:red;font-weight:bold">*</i>
+                                                    <input type="text" name="gstin" id="gst" placeholder="GSTIN" maxlength="15" value="@ViewBag.GSTINNo"
+                                                           onblur="GSTINNo()" style="text-transform:uppercase" onchange="submit();">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <input type="number" name="statecode" id="statecode" min="01" value="@ViewBag.StateCode" placeholder="State Code" readonly>
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <input type="text" name="PAN" id="pan" placeholder="PAN" value="@ViewBag.PANNo" readonly style="text-transform:uppercase;">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        @*<section class="col col-4">
+                                                <label class="input">
+                                                    <input type="text" name="LegalName" placeholder="Legal Name of Business" id="legalname">
+                                                </label>
+                                            </section>*@
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <input type="text" name="COB" placeholder="Constitution of Business" id="cob" value="@ViewBag.COB">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <input type="text" name="NOB" placeholder="Nature of Business" id="nob" value="@ViewBag.NOB">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="DOR" placeholder="Date of Registration" class="datepicker" value="@ViewBag.DOR"
+                                                           data-dateformat='dd-mm-yy' id="date" readonly>
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-user" style="color:red">*</i>
+                                                    <input type="text" name="POC" placeholder="Contact Person" id="poc" value="@ViewBag.POC">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-bank" style="color:red;font-weight:bold">*</i>
+                                                    <input type="text" name="address" placeholder="Address" id="address" value="@ViewBag.Address">
+                                                </label>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+
+                                    <footer>
+                                        <section>
+                                            <button type="submit" name="Create" value="Create" class="btn btn-primary" style="border-radius:10px;font-weight:bold;">
+                                                Create
+                                            </button>
+                                        </section>
+
+                                    </footer>
+
+
+                                </form>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-yellow" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Supplier CSV Upload</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <div class="smart-form">
+                                @*<form action="@Url.Action("Upload","SupplierMgmt")" method="post" id="uploadForm" >*@
+                                @using (Html.BeginForm("Upload", "SupplierMgmt", FormMethod.Post, new { enctype = "multipart/form-data", @id = "uploadForm", @name = "uploadForm" }))
+                                {
+                                    <fieldset>
+
+                                        @*<div class="row">*@
+
+                                        <section>
+                                            <div class="form-group">
+                                                <input type="file" id="FileUpload" name="FileUpload" />
+                                            </div>
+                                        </section>
+
+                                        <footer>
+                                            <div>
+                                                @if (TempData["TotalRecordsCount"] != null)
+                                                {
+                                                    <section class="col col-4" style="font-weight:bold">Total Records count: @TempData["TotalRecordsCount"].ToString()</section>
+                                                    <section class="col col-4" style="font-weight:bold">Total Processed Records count: @TempData["ProcessedRecordsCount"].ToString()</section>
+                                                    <section class="col col-4" style="font-weight:bold">@Html.ActionLink("Total Error Records count: " + @TempData["ErrorRecordsCount"].ToString(), "Download")</section>
+
+                                                }
+                                            </div>
+                                            <button type="submit" id="btnUpload" class="btn btn-sm btn-primary" style="border-radius:10px;font-weight:bold;">
+                                                Upload
+                                            </button>
+                                        </footer>
+                                            
+                                        
+
+                                        @*</div>*@
+                                    </fieldset>
+                                }
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+            </article>
+
+        
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Supplier List</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+
+                        <div id="comment-form" class="smart-form">
+                            <form action="@Url.Action("Create","SupplierMgmt")" method="post" id="supplier-form" novalidate="novalidate">
+
+
+                                <div class="table-responsive">
+
+                                    @if (ViewBag.Supplierlist != null)
+                                    {
+
+                                        if (Enumerable.Count(ViewBag.Supplierlist) > 0)
+                                        {
+
+
+                                            <div class="container-fuild" style="background-color:white;">
+                                                <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable">
+
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th>Supplier Name</th>
+                                                            <th>Email ID</th>
+                                                            <th>Mobile Number</th>
+                                                            <th>GSTIN</th>
+                                                            <th>Address</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+
+
+                                                    <tbody>
+                                                        @foreach (var item in ViewBag.SupplierList)
+                                                        {
+
+                                                            <tr>
+
+                                                                <td>@item.SupplierName</td>
+                                                                <td>@item.EmailId</td>
+                                                                <td>@item.MobileNo</td>
+                                                                <td>@item.GSTINno</td>
+                                                                <td>@item.Address</td>
+                                                                <td><input id='Edit' onclick='editOrder("@item.SupplierId")' type='button' value='Edit' class="btn btn-primary" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" /></td>
+                                                                <td><input id='Delete' onclick='deleteOrder("@item.SupplierId")' type='button' value='Delete' class="btn btn-danger" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" /></td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+
+
+                                                </table>
+
+                                            </div>
+
+
+                                        }
+
+                                        else
+                                        {
+                                            <div style="text-align:left">
+                                                <br /><br />
+                                                <h3 style="text-align:left !important">No Data Found</h3>
+                                            </div>
+
+                                        }
+                                    }
+
+                                    <footer>
+                                        <section>
+                                            <button type="submit" name="Export" value="Export" class="btn btn-primary" style="border-radius:10px;font-weight:bold;">
+                                                Export
+                                            </button>
+                                        </section>
+
+                                    </footer>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    </div>
+            </article>
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+
+
+</div>
+
+<script type="text/javascript">
+    $('#name').bind('keypress', textInput);
+    $('#poc').bind('keypress', textInput);
+    $('#mob').bind('keypress', numericInput);
+</script>
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            $('#btnUpload').on('click', function () {
+                var $checkoutForm = $('#uploadForm').validate({
+                    // Rules for form validation
+                    rules: {
+                        FileUpload: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        FileUpload: {
+                            required: 'Please select file to upload'
+                        }
+                    },
+
+                    // Do not change code below
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                });
+            });
+
+            var $checkoutForm = $('#supplier-form').validate({
+                // Rules for form validation
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    gstin: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+                    },
+                    //email: {
+                    //    required: true,
+                    //    email: true
+                    //},
+                    POC: {
+                        required: true
+                    },
+
+                    mob: {
+                        required: true
+                    },
+                    //DOR: {
+                    //    required: true
+
+                    //},
+                    statecode: {
+                        required: true,
+
+
+                    },
+
+                    PAN: {
+                        required: true,
+
+
+                    },
+
+                    address: {
+                        required: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    name: {
+                        required: 'Please enter Supplier Name'
+                    },
+                    gstin: {
+                        required: 'Please enter GSTIN'
+                    },
+                    //email: {
+                    //    required: 'Please enter Email',
+                    //    email: 'Please enter a VALID Email'
+                    //},
+                    POC: {
+                        required: 'Please enter Contact Person'
+                    },
+                    NOB: {
+                        required: 'Please enter Nature of Business'
+                    },
+                    mob: {
+                        required: 'Please enter Mobile Number',
+                        digits: 'Digits only please'
+                    },
+                    //DOR: {
+                    //    required: 'Please select Date of Registration'
+
+                    //},
+                    address: {
+                        required: 'Please enter Address'
+                    },
+                    COB: {
+                        required: 'Please enter Constitution of Business'
+                    },
+                    statecode: {
+                        required: 'Please enter correct Statecode in GSTIN'
+                    },
+                    LegalName: {
+                        required: 'Please enter Legal Name of Business'
+
+                    },
+                    PAN: {
+                        required: 'Please enter PAN'
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        })
+
+    </script>
+
+}
+<script>
+    $(document).ready(function () {
+        $('input[type=file]').change(function () {
+            var val = $(this).val().toLowerCase();
+            var regex = new RegExp("(.*?)\.(csv)$");
+            if (!(regex.test(val))) {
+                $(this).val('');
+                alert('Please select csv file format');
+            }
+        });
+    });
+</script> 

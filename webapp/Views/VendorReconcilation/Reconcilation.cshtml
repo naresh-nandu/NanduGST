@@ -1,0 +1,1276 @@
+﻿<!-- MAIN CONTENT -->
+
+
+@if (TempData["ReconcilationResponse"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ReconcilationResponse"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+		};
+		@TempData["Message"] = null;
+    </script>
+}
+
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                GSTR 2
+                <span>
+                    >&nbsp;
+                    RECONCILIATION
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+
+
+
+    <div class="alert alert-block alert-success">
+
+        <form method="POST" name="SummaryForm" id="SummaryForm" class="smart-form" autocomplete="off">
+
+            <h4 class="alert-heading"><i class="fa fa-check-square-o"></i>Settings</h4>
+            <br />
+            <p>
+                <div class="widget-body">
+
+                    <div id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                        <fieldset>
+
+                            <div class="row">
+                                @if (Session["f_year"] == "FinancialYear")
+                                {
+
+                                    <label class="radio radio-inline">
+
+                                        <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialYear" checked>
+                                        <span style="margin-left:0px">Invoice Date</span>
+
+                                    </label>
+                                    <label class="radio radio-inline" style="margin-left:auto">
+                                        <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialPeriod">
+                                        <span style="margin-left:0px">Period</span>
+                                    </label>
+                                }
+
+                                else if (Session["f_year"] == "FinancialPeriod")
+                                {
+                                    <label class="radio radio-inline">
+
+                                        <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialYear">
+                                        <span style="margin-left:0px">Invoice Date</span>
+
+                                    </label>
+                                    <label class="radio radio-inline" style="margin-left:auto">
+                                        <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialPeriod" checked>
+                                        <span style="margin-left:0px">Period</span>
+                                    </label>
+                                }
+
+                                else
+                                {
+                                    <label class="radio radio-inline">
+
+                                        <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialYear" checked>
+                                        <span style="margin-left:0px">Invoice Date</span>
+
+                                    </label>
+                                    <label class="radio radio-inline" style="margin-left:auto">
+                                        <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialPeriod">
+                                        <span style="margin-left:0px">Period</span>
+                                    </label>
+                                }
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </div>
+
+                <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Dashboard Summary</h4>
+                <br />
+            <p>
+                <div class="widget-body">
+
+                    <div id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-3">
+                                    <label class="input">GSTIN</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "ALL", new { @class = "form-control", id = "ddlGSTINNo" })
+                                    </div>
+                                </section>
+                                <section class="col col-3" id="frm">
+                                    <label class="input">From</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="period" id="period" value="@ViewBag.Period" placeholder="From" class="datepicker" data-dateformat='mmyy'>
+                                    </label>
+                                </section>
+                                <section class="col col-3" id="to">
+                                    <label class="input">To</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="toperiod" id="toperiod" value="@ViewBag.ToPeriod" placeholder="To" class="datepicker" data-dateformat='mmyy'>
+                                    </label>
+                                </section>
+
+
+                                <section class="col col-3" id="frmdt">
+                                    <label class="input">From Invoice Date</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="fromdate" id="fromdate" value="@ViewBag.FromDate" placeholder="From Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                    </label>
+                                </section>
+
+                                <section class="col col-3" id="todt">
+                                    <label class="input">To Invoice Date</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="todate" id="todate" value="@ViewBag.ToDate" placeholder="To Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                    </label>
+                                </section>
+
+                                @*<section class="col col-3" id="year">
+                                        <label class="col-form-label">Financial Year</label>
+                                        <label class="input">
+                                            @Html.DropDownList("years", ViewBag.yearlist as SelectList, "Select", new { @class = "form-control", id = "years" })
+                                        </label>
+                                    </section>*@
+
+                                <section class="col col-3" id="sname">
+                                    <label class="input">Supplier Name</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlSupplierName", ViewBag.SupplierName as SelectList, "ALL", new { @class = "form-control", id = "ddlSupplierName" })
+                                    </div>
+                                </section>
+
+                                <section class="col col-3" id="sgstin">
+                                    <label class="input">Supplier GSTIN</label>
+                                    <div class="col-xs-12 col-md-12 selectContainer">
+                                        @Html.DropDownList("ddlSupGSTIN", ViewBag.CTINNoList as SelectList, "ALL", new { @class = "form-control", id = "ddlSupGSTIN" })
+                                    </div>
+                                </section>
+
+                            </div>
+
+                            <div class="row">
+                                <div>
+                                    <button type="button" name="ViewDetails" id="ViewDetails" value="View Details" style="font-weight:bold; font-size:14px; border-radius:6px; padding:8px; text-align:center; margin-left:5px;" class="btn btn-primary pull-left">View Details</button>
+
+                                    
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </p>
+        </form>
+    </div>
+    <!-- end row -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-red" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Matched Invoices</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2</b></label>
+                                            <div class="label" id="MatchedTaxAmountGstr2">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2A</b></label>
+                                            <div class="label" id="MatchedTaxAmountGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2</b></label>
+                                            <div class="label" id="MatchedTaxableValueGstr2">0</div>
+                                        </section>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2A</b></label>
+                                            <div class="label" id="MatchedTaxableValueGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Invoices</b></label>
+                                            <div class="label" id="MatchedInvoices">0</div>
+                                        </section>
+
+                                        @*<button type="button" id="btnMatchedInvoices" name="btnMatchedInvoices" value="View Details" class="btn btn-md glyphicon glyphicon-chevron-right pull-right" style="width:2px;color:darkgreen;padding-left:10px;margin-right:10px;margin-bottom:5px; font-size:20px;"></button>*@
+                                        <button type="button" id="btnMatchedInvoices" name="btnMatchedInvoices" value="View Details" class="btn btn-primary pull-right" style="border-radius:23px; font-weight:800; margin-right:5px;margin-top:35px;height:35px;width:100px;">
+                                            View Details
+                                        </button>
+                                    </div>
+                                </fieldset>
+
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-green" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Mismatch Invoices</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2</b></label>
+                                            <div class="label" id="MismatchTaxAmountGstr2">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2A</b></label>
+                                            <div class="label" id="MismatchTaxAmountGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2</b></label>
+                                            <div class="label" id="MismatchTaxableValueGstr2">0</div>
+                                        </section>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2A</b></label>
+                                            <div class="label" id="MismatchTaxableValueGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Invoices</b></label>
+                                            <div class="label" id="MismatchInvoices">0</div>
+                                        </section>
+
+                                        <button type="button" id="btnMismatchInvoices" name="btnMismatchInvoices" value="View Details" class="btn btn-primary pull-right" style="border-radius:23px; font-weight:800; margin-right:5px;margin-top:35px;height:35px;width:100px;">
+                                            View Details
+                                        </button>
+
+                                    </div>
+
+                                </fieldset>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+
+            </article>
+
+            <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-orange" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2>Missing Invoices in Supplier's Data (GSTR2A)</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2</b></label>
+                                            <div class="label" id="MissingInGstr2ATaxAmountGstr2">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2A</b></label>
+                                            <div class="label" id="MissingInGstr2ATaxAmountGstr2A">0</div>
+                                        </section>
+
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2</b></label>
+                                            <div class="label" id="MissingInGstr2ATaxableValueGstr2">0</div>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2A</b></label>
+                                            <div class="label" id="MissingInGstr2ATaxableValueGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Invoices</b></label>
+                                            <div class="label" id="MissinginGSTR2A">0</div>
+                                        </section>
+
+                                        <button type="button" id="btnMissinginGSTR2A" name="btnMissinginGSTR2A" value="View Details" class="btn btn-primary pull-right" style="border-radius:23px; font-weight:800; margin-right:5px;margin-top:35px;height:35px;width:100px;">
+                                            View Details
+                                        </button>
+                                    </div>
+
+                                </fieldset>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Missing Invoices in My Data (GSTR2)</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2</b></label>
+                                            <div class="label" id="MissingInGstr2TaxAmountGstr2">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2A</b></label>
+                                            <div class="label" id="MissingInGstr2TaxAmountGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2</b></label>
+                                            <div class="label" id="MissingInGstr2TaxableValueGstr2">0</div>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2A</b></label>
+                                            <div class="label" id="MissingInGstr2TaxableValueGstr2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Invoices</b></label>
+                                            <div class="label" id="MissinginGSTR2">0</div>
+                                        </section>
+
+                                        <button type="button" id="btnMissinginGSTR2" name="btnMissinginGSTR2" value="View Details" class="btn btn-primary pull-right" style="border-radius:23px; font-weight:800; margin-right:5px;margin-top:35px;height:35px;width:100px;">
+                                            View Details
+                                        </button>
+
+                                    </div>
+
+                                </fieldset>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+
+            </article>
+
+            @*<article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="jarviswidget jarviswidget-color-pink" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Hold Invoices</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2</b></label>
+                                            <div class="label" id="HoldTaxAmountGSTR2">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Tax Amount GSTR2A</b></label>
+                                            <div class="label" id="HoldTaxAmountGSTR2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2</b></label>
+                                            <div class="label" id="HoldTaxableValueGSTR2">0</div>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Taxable Value GSTR2A</b></label>
+                                            <div class="label" id="HoldTaxableValueGSTR2A">0</div>
+                                        </section>
+
+                                        <section class="col col-lg-4">
+                                            <label class="label"><b>Invoices</b></label>
+                                            <div class="label" id="HoldInvoices">0</div>
+                                        </section>
+
+                                        <button type="button" id="btnHoldInvoices" name="btnHoldInvoices" value="View Details" class="btn btn-primary pull-right" style="border-radius:23px; font-weight:800; margin-right:5px;margin-top:35px;height:35px;width:100px;">
+                                            View Details
+                                        </button>
+
+                                    </div>
+
+                                </fieldset>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+            </article>
+
+            <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-blueLight" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2>Reconciliation Status</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-6">
+                                            <label class="label"><b>Accepted Invoices</b></label>
+                                            <div class="label" id="AcceptedInvoices">0</div>
+                                        </section>
+
+                                        <section class="col col-6">
+                                            <label class="label"><b>Modified Invoices</b></label>
+                                            <div class="label" id="ModifiedInvoices">0</div>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <section class="col col-6">
+                                            <label class="label"><b>Rejected Invoices</b></label>
+                                            <div class="label" id="RejectedInvoices">0</div>
+                                        </section>
+
+
+                                        <section class="col col-6">
+                                            <label class="label"><b>Hold Invoices</b></label>
+                                            <div class="label" id="PendingInvoices">0</div>
+                                        </section>
+
+                                    </div>
+
+                                </fieldset>
+
+                               <footer>
+                                        <button type="button" id="btnMismatchInvoicesAM" name="btnMismatchInvoicesAM" value="View Details" class="btn btn-primary pull-left" style="border-radius:13px; font-weight:600; visibility:hidden">
+                                            View Details
+                                        </button>
+                                    </footer> 
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <!-- end widget -->
+            </article>*@
+
+
+
+
+        </div>
+
+        <footer>
+             
+
+        </footer>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+<!-- END MAIN CONTENT -->
+
+
+<script type="text/javascript" language="javascript">
+
+    function ResetConfirmation() {
+
+        debugger;
+        var r = confirm("Are you sure you want to reset all accepted,Modified,Rejected and Hold Invoices to Zero?");
+        if (r == true) {
+            var radio = $("input[type=radio][name='reconsetting']:checked").val();
+            if (radio == "FinancialYear") {
+
+                $("#divLoading").show();
+                var frmdata = new FormData();
+                frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                frmdata.append("period", $("#period").val());
+                frmdata.append("toperiod", $("#toperiod").val());
+                frmdata.append("fromdate", $("#fromdate").val());
+                frmdata.append("todate", $("#todate").val());
+                frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                frmdata.append("reconsetting", radio);
+                //frmdata.append("years", $("#years").val());
+                frmdata.append("Reset", $("#Reset").val());
+                $.ajax
+                    ({
+                        url: '/GSTR2/Reconcilation',
+                        type: "POST",
+                        contentType: false,
+                        data: frmdata,
+                        //async: true,
+                        processData: false,
+                        // cache: false,
+                        success: function (resp) {
+                            debugger;
+                            $("#divLoading").hide();
+                            if (resp.success) {
+                                swal({
+                                    title: "",
+                                    text: resp.SuccessMessage,
+                                    type: "success",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            else {
+                                swal({
+                                    title: "",
+                                    text: resp.ErrorMessage,
+                                    type: "error",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            //alert(data);
+                        },
+                        error: function (xhr) {
+                            $("#divLoading").hide();
+                            alert(xhr.statusText);
+                        }
+                    })
+
+            }
+            else
+                debugger;
+            {
+                debugger;
+                $("#divLoading").show();
+                var frmdata = new FormData();
+                frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                frmdata.append("period", $("#period").val());
+                frmdata.append("toperiod", $("#toperiod").val());
+                frmdata.append("fromdate", $("#fromdate").val());
+                frmdata.append("todate", $("#todate").val());
+                frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                frmdata.append("reconsetting", radio);
+                //frmdata.append("years", $("#years").val());
+                frmdata.append("Reset", $("#Reset").val());
+                $.ajax
+                    ({
+                        url: '/GSTR2/Reconcilation',
+                        type: "POST",
+                        contentType: false,
+                        data: frmdata,
+                        //async: true,
+                        processData: false,
+                        // cache: false,
+                        success: function (resp) {
+                            debugger;
+                            $("#divLoading").hide();
+                            if (resp.success) {
+                                swal({
+                                    title: "",
+                                    text: resp.SuccessMessage,
+                                    type: "success",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            else {
+                                swal({
+                                    title: "",
+                                    text: resp.ErrorMessage,
+                                    type: "error",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            //alert(data);
+                        },
+                        error: function (xhr) {
+                            $("#divLoading").hide();
+                            alert(xhr.statusText);
+                        }
+                    })
+            }
+        }
+        else {
+            alert("You Have Cancelled RESET: Reconciliation Summary will be same as previous")
+        }
+    }
+
+
+    $(document).ready(function () {
+
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return decodeURI(results[1]) || 0;
+            }
+        }
+        var URLRedirectName = $.urlParam('Page');
+        var URLGSTINName = $.urlParam('Gstin');
+        var URLCTINName = $.urlParam('CTIN');
+        var URLSName = $.urlParam('SNAME');
+
+        if (URLRedirectName == "ViewDetails") {
+            LoadingData();
+        }
+
+        $("#ViewDetails").click(function () {
+            LoadingData();
+        });
+
+        $("#ddlSupplierName").change(function () {
+            LoadingData();
+            window.location.reload(true);
+        });
+
+
+        function LoadingData() {
+            debugger;
+            $("#divLoading").show();
+            var frmdata = new FormData();
+            var radio = $("input[type=radio][name='reconsetting']:checked").val();
+
+            if (radio == "FinancialPeriod") {
+                frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                frmdata.append("period", $("#period").val());
+                frmdata.append("toperiod", $("#toperiod").val());
+                frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                frmdata.append("reconsetting", radio);
+                frmdata.append("fromdate", $("#fromdate").val());
+                frmdata.append("todate", $("#todate").val());
+            }
+            else if (radio == "FinancialYear") {
+
+                frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                frmdata.append("fromdate", $("#fromdate").val());
+                frmdata.append("todate", $("#todate").val());
+                // frmdata.append("years", $("#years").val());
+                frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                frmdata.append("reconsetting", radio);
+                frmdata.append("period", $("#period").val());
+                frmdata.append("toperiod", $("#toperiod").val());
+            }
+            else {
+                frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                frmdata.append("fromdate", $("#fromdate").val());
+                frmdata.append("todate", $("#todate").val());
+                //frmdata.append("years", $("#years").val());
+                frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                frmdata.append("reconsetting", $("#reconsetting").val());
+                frmdata.append("period", $("#period").val());
+                frmdata.append("toperiod", $("#toperiod").val());
+            }
+
+            console.log(FormData);
+            $.ajax
+                ({
+                    url: '/GSTR2/Reconcilation',
+                    type: "POST",
+                    contentType: false,
+                    data: frmdata,
+                    //async: true,
+                    processData: false,
+                    // cache: false,
+                    success: function (resp) {
+                        $("#divLoading").hide();
+                        if (resp.success) {
+                            if (resp.SuccessMessage != null) {
+                                swal({
+                                    title: "",
+                                    text: resp.SuccessMessage,
+                                    type: "success",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            $("#MatchedInvoices").html(resp.MatchedInvoices);
+                            $("#MismatchInvoices").html(resp.MismatchInvoices);
+                            $("#MissinginGSTR2A").html(resp.MissinginGSTR2A);
+                            $("#MissinginGSTR2").html(resp.MissinginGSTR2);
+                            $("#AcceptedInvoices").html(resp.AcceptedInvoices);
+                            $("#RejectedInvoices").html(resp.RejectedInvoices);
+                            $("#PendingInvoices").html(resp.PendingInvoices);
+                            $("#ModifiedInvoices").html(resp.ModifiedInvoices);
+                            $("#HoldInvoices").html(resp.HoldInvoices);
+
+                            $("#MatchedTaxAmountGstr2").html(resp.MatchedTaxAmountGstr2);
+                            $("#MatchedTaxAmountGstr2A").html(resp.MatchedTaxAmountGstr2A);
+                            $("#MatchedTaxableValueGstr2").html(resp.MatchedTaxableValueGstr2);
+                            $("#MatchedTaxableValueGstr2A").html(resp.MatchedTaxableValueGstr2A);
+
+                            $("#MissingInGstr2ATaxAmountGstr2").html(resp.MissingInGstr2ATaxAmountGstr2);
+                            $("#MissingInGstr2ATaxAmountGstr2A").html(resp.MissingInGstr2ATaxAmountGstr2A);
+                            $("#MissingInGstr2ATaxableValueGstr2").html(resp.MissingInGstr2ATaxableValueGstr2);
+                            $("#MissingInGstr2ATaxableValueGstr2A").html(resp.MissingInGstr2ATaxableValueGstr2A);
+
+                            $("#MissingInGstr2TaxAmountGstr2").html(resp.MissingInGstr2TaxAmountGstr2);
+                            $("#MissingInGstr2TaxAmountGstr2A").html(resp.MissingInGstr2TaxAmountGstr2A);
+                            $("#MissingInGstr2TaxableValueGstr2").html(resp.MissingInGstr2TaxableValueGstr2);
+                            $("#MissingInGstr2TaxableValueGstr2A").html(resp.MissingInGstr2TaxableValueGstr2A);
+
+                            $("#MismatchTaxAmountGstr2").html(resp.MismatchTaxAmountGstr2);
+                            $("#MismatchTaxAmountGstr2A").html(resp.MismatchTaxAmountGstr2A);
+                            $("#MismatchTaxableValueGstr2").html(resp.MismatchTaxableValueGstr2);
+                            $("#MismatchTaxableValueGstr2A").html(resp.MismatchTaxableValueGstr2A);
+
+                            $("#HoldTaxAmountGSTR2").html(resp.HoldTaxAmountGSTR2);
+                            $("#HoldTaxAmountGSTR2A").html(resp.HoldTaxAmountGSTR2A);
+                            $("#HoldTaxableValueGSTR2").html(resp.HoldTaxableValueGSTR2);
+                            $("#HoldTaxableValueGSTR2A").html(resp.HoldTaxableValueGSTR2A);
+                        }
+                        else {
+                            $("#MatchedInvoices").html(0);
+                            $("#MismatchInvoices").html(0);
+                            $("#MissinginGSTR2A").html(0);
+                            $("#MissinginGSTR2").html(0);
+                            $("#AcceptedInvoices").html(0);
+                            $("#RejectedInvoices").html(0);
+                            $("#PendingInvoices").html(0);
+                            $("#ModifiedInvoices").html(0);
+                            $("#HoldInvoices").html(0);
+
+                            $("#MatchedTaxAmountGstr2").html(0);
+                            $("#MatchedTaxAmountGstr2A").html(0);
+                            $("#MatchedTaxableValueGstr2").html(0);
+                            $("#MatchedTaxableValueGstr2A").html(0);
+
+                            $("#MissingInGstr2ATaxAmountGstr2").html(0);
+                            $("#MissingInGstr2ATaxAmountGstr2A").html(0);
+                            $("#MissingInGstr2ATaxableValueGstr2").html(0);
+                            $("#MissingInGstr2ATaxableValueGstr2A").html(0);
+
+                            $("#MissingInGstr2TaxAmountGstr2").html(0);
+                            $("#MissingInGstr2TaxAmountGstr2A").html(0);
+                            $("#MissingInGstr2TaxableValueGstr2").html(0);
+                            $("#MissingInGstr2TaxableValueGstr2A").html(0);
+
+                            $("#MismatchTaxAmountGstr2").html(0);
+                            $("#MismatchTaxAmountGstr2A").html(0);
+                            $("#MismatchTaxableValueGstr2").html(0);
+                            $("#MismatchTaxableValueGstr2A").html(0);
+
+                            $("#HoldTaxAmountGSTR2").html(0);
+                            $("#HoldTaxAmountGSTR2A").html(0);
+                            $("#HoldTaxableValueGSTR2").html(0);
+                            $("#HoldTaxableValueGSTR2A").html(0);
+                        }
+                        //alert(data);
+                    },
+                    error: function (xhr) {
+                        $("#divLoading").hide();
+                        alert(xhr.statusText);
+                    }
+                })
+        }
+
+
+
+
+
+        $("#supplierwise").click(function () {
+            debugger;
+            var supp_name = jQuery("#ddlSupplierName option:selected").text();
+            if (supp_name == "ALL" || supp_name == "") {
+                alert("Please select a supplier to trigger a mail.");
+            }
+
+            else {
+                $("#divLoading").show();
+                var frmdata = new FormData();
+                var radio = $("input[type=radio][name='reconsetting']:checked").val();
+
+                if (radio == "FinancialPeriod") {
+                    frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                    frmdata.append("period", $("#period").val());
+                    frmdata.append("toperiod", $("#toperiod").val());
+                    frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                    frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                    frmdata.append("reconsetting", radio);
+                    frmdata.append("fromdate", $("#fromdate").val());
+                    frmdata.append("todate", $("#todate").val());
+                    frmdata.append("supplierwise", $("#supplierwise").val());
+                }
+                else if (radio == "FinancialYear") {
+
+                    frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                    frmdata.append("fromdate", $("#fromdate").val());
+                    frmdata.append("todate", $("#todate").val());
+                    // frmdata.append("years", $("#years").val());
+                    frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                    frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                    frmdata.append("reconsetting", radio);
+                    frmdata.append("period", $("#period").val());
+                    frmdata.append("toperiod", $("#toperiod").val());
+                    frmdata.append("supplierwise", $("#supplierwise").val());
+                }
+                else {
+                    frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+                    frmdata.append("fromdate", $("#fromdate").val());
+                    frmdata.append("todate", $("#todate").val());
+                    //frmdata.append("years", $("#years").val());
+                    frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+                    frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+                    frmdata.append("reconsetting", $("#reconsetting").val());
+                    frmdata.append("period", $("#period").val());
+                    frmdata.append("toperiod", $("#toperiod").val());
+                    frmdata.append("supplierwise", $("#supplierwise").val());
+                }
+
+                $.ajax
+                    ({
+                        url: '/GSTR2/Reconcilation',
+                        type: "POST",
+                        contentType: false,
+                        data: frmdata,
+                        //async: true,
+                        processData: false,
+                        // cache: false,
+                        success: function (resp) {
+                            debugger;
+                            $("#divLoading").hide();
+                            if (resp.success) {
+                                swal({
+                                    title: "",
+                                    text: resp.SuccessMessage,
+                                    type: "success",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            else {
+                                swal({
+                                    title: "",
+                                    text: resp.ErrorMessage,
+                                    type: "error",
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    },
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: true,
+                                });
+                            }
+                            //alert(data);
+                        },
+                        error: function (xhr) {
+                            $("#divLoading").hide();
+                            alert(xhr.statusText);
+                        }
+                    })
+            }
+        });
+
+
+        $("#RawData").click(function () {
+            var supp_name = jQuery("#ddlSupplierName option:selected").text();
+
+            $("#divLoading").show();
+            LoadingData();
+        });
+
+        $("#PanRawData").click(function () {
+            $("#divLoading").show();
+            LoadingData();
+
+        });
+
+        //$("#supplierwise").click(function () {
+        //    $("#divLoading").show();
+        //    LoadingData();
+
+        //});
+
+        //$("#btnSupplierWise").click(function () {
+
+        //    $("#divLoading").show();
+        //    LoadingData();
+        //});
+
+
+        $("#btnMissinginGSTR2A").click(function () {
+            document.location.href = '/VendorReconcilation/MissinginGSTR2A?Page=ViewDetails';
+        });
+        $("#btnMissinginGSTR2").click(function () {
+            document.location.href = '/VendorReconcilation/MissinginGSTR2?Page=ViewDetails';
+        });
+        $("#btnMatchedInvoices").click(function () {
+            document.location.href = '/VendorReconcilation/MatchedInvoices?Page=ViewDetails';
+        });
+        $("#btnMismatchInvoices").click(function () {
+            document.location.href = '/VendorReconcilation/MismatchInvoices?Page=ViewDetails';
+        });
+        $("#btnInvoiceDataCorrection").click(function () {
+            document.location.href = '/InvoiceDataCorrection/InvoiceData?Page=ViewDetails';
+        });
+        $("#btnHoldInvoices").click(function () {
+            document.location.href = '/VendorReconcilation/HoldInvoices?Page=ViewDetails';
+        });
+        $("#Back").click(function () {
+            document.location.href = '/InvoiceCorrection/InvoiceCorrection?Page=ViewDetails';
+        });
+    });
+
+
+</script>
+
+<script>
+    $('input:radio').change(function (e) {
+        debugger;
+        var radio = $("input[type=radio][name='reconsetting']:checked").val();
+        // var supp_name = jQuery("#ddlSupplierName option:selected").text();
+        if (radio == "FinancialYear") {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+            $("#sname").show();
+            $("$sgstin").show();
+        }
+        else if (radio == "FinancialPeriod") {
+            $("#frmdt").hide();
+            $("#todt").hide();
+            $("#frm").show();
+            $("#to").show();
+        }
+        else if (radio == "FinancialYear") {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+            $("#sname").show();
+            $("$sgstin").show();
+        }
+        else if (radio == "FinancialPeriod") {
+            $("#frmdt").hide();
+            $("#todt").hide();
+            $("#frm").show();
+            $("#to").show();
+        }
+        else {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+        }
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var radio = $("input[type=radio][name='reconsetting']:checked").val();
+        //var supp_name = jQuery("#ddlSupplierName option:selected").text();
+        if (radio == "FinancialYear") {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+            $("#sname").show();
+            $("$sgstin").show();
+        }
+        else if (radio == "FinancialPeriod") {
+            $("#frmdt").hide();
+            $("#todt").hide();
+            $("#frm").show();
+            $("#to").show();
+        }
+        else if (radio == "FinancialYear") {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+            $("#sname").show();
+            $("$sgstin").show();
+        }
+        else if (radio == "FinancialPeriod") {
+            $("#frmdt").hide();
+            $("#todt").hide();
+            $("#frm").show();
+            $("#to").show();
+        }
+        else {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+        }
+    })
+
+</script>
+
+
+

@@ -1,0 +1,69 @@
+﻿
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_GenOther = $('#G1_GenOther').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+    });
+
+</script>
+
+
+
+<div class="table table-responsive">
+
+    @if (ViewBag.GenOther != null)
+    {
+
+        int i = 1;
+        <div class="container-fuild" style="background-color:white;">
+            <table id="G1_GenOther" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                <thead>
+                    <tr>
+
+                        <th>S.No</th>
+                        <th>EWAY BillNo & Date</th>
+                        <th>Document Number & Date</th>
+                        <th>From GSTIN Info</th>
+                        <th>To GSTIN Info</th>
+                        <th>Total Inv.Value</th>
+                        <th>Status</th>
+                        <th>Reject Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ReportMgmt)
+                    {
+                        <tr>
+
+                            <td>@Convert.ToInt32(i++)</td>
+                            <td>@item.ewayBillNo & @item.ewayBillDate</td>
+                            <td>@item.docNo & @item.docDate</td>
+                            <td>@item.fromGstin,@item.fromTrdName</td>
+                            <td>@item.toGstin,@item.toTrdName</td>
+                            <td>@item.totalinvValue</td>
+                            <td>@item.status</td>
+                            <td>@item.rejectStatus</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+    }
+</div>
+
+
+

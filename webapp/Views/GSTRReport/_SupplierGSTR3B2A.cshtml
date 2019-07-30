@@ -1,0 +1,84 @@
+﻿<style>
+    .headerstyle{
+        text-align:center;
+        font-weight:bold;
+        font-size:15px;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_GenEWB = $('#sup_GSTR3B2A').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+    });
+
+</script>
+<div class="table table-responsive">
+    @if (ViewBag.SupGSTR3B2AReport != null)
+    {
+        <div class="container-fuild" style="background-color:white;">
+            <table id="sup_GSTR3B2A" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="headerstyle">Supplier Details</th>
+                        <th colspan="5" class="headerstyle">ITC Claimed in GSTR3B</th>
+                        <th colspan="5" class="headerstyle">ITC Available from GSTR2A</th>
+                        <th colspan="1" class="headerstyle">Excess ITC Claimed</th>
+                    </tr>
+                    <tr>
+                        <th>Supplier GSTIN</th>
+                        <th>Supplier Name</th>
+
+                        <th>SGST</th>
+                        <th>CGST</th>
+                        <th>IGST</th>
+                        <th>CESS</th>
+                        <th>Total</th>
+
+                        <th>SGST</th>
+                        <th>CGST</th>
+                        <th>IGST</th>
+                        <th>CESS</th>
+                        <th>Total</th>
+
+                        <th>Grand Total</th>
+
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @foreach (var item in Model.GSTRReportMgmt)
+                    {
+                        <tr>
+                            <td>@item.Ctin</td>
+                            <td>@item.CtinName</td>
+
+                            <td>@item.Sgst</td>
+                            <td>@item.Cgst</td>
+                            <td>@item.Igst</td>
+                            <td>@item.Cess</td>
+                            <td>@item.Total</td>
+
+                            <td>@item.samt</td>
+                            <td>@item.camt</td>
+                            <td>@item.iamt</td>
+                            <td>@item.csamt</td>
+                            <td>@item.TotalValue</td>
+
+                            <td>@item.GrandTotal</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    </div>

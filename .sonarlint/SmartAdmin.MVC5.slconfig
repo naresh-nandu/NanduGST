@@ -1,0 +1,11 @@
+{
+  "ServerUri": "http://wepdevopsvm.southindia.cloudapp.azure.com:55218/",
+  "Organization": null,
+  "ProjectKey": "gst",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AWLiQ6BADoHcEnDVmog0",
+      "ProfileTimestamp": "2018-04-20T14:25:05+05:30"
+    }
+  }
+}

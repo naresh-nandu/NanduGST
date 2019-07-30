@@ -1,0 +1,113 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.B2BUR != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.B2BUR)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+
+<div class="table table-responsive">
+
+    @if (ViewBag.B2BUR != null)
+    {
+        if (Enumerable.Count(ViewBag.B2BUR) > 0)
+        {
+
+            @grid.GetHtml(
+                          tableStyle: "table table-striped table-bordered table-hover gridtable",
+                           htmlAttributes: new { id = "checkableGrid2b2bur" },
+                          columns:
+                          grid.Columns(
+                              grid.Column(format:@<text><input type="checkbox" name="ids" value="@item.b2burid" /></text>, header: "{checkall}"),
+                                         grid.Column("SNo", "S.No"),
+                                         //grid.Column("cname", "Counter Party Name"),
+                                         grid.Column("inum", "Invoice No"),
+                                         grid.Column("idt", "Invoice Date"),
+                                         grid.Column("val", "Invoice Value"),
+                                         grid.Column("rt", "Rate"),
+                                         grid.Column("txval", "Taxable Value"),
+                                         grid.Column("camt", "CGST Amount"),
+                                         grid.Column("samt", "SGST Amount"),
+                                         grid.Column("csamt", "CESS Amount"),
+                                         grid.Column("elg", "Eligibility For ITC"),
+                                         grid.Column("tx_c", "ITC CGST Amount"),
+                                         grid.Column("tx_s", "ITC SGST Amount"),
+                                         grid.Column("tx_cs", "ITC CESS Amount")
+
+
+                                        )
+                                     )
+            <br />
+            <div class="text-center">
+                <button type="submit" name="command" value="GSTR2B2BUR" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage();">Delete</button>
+            </div>
+            <br />
+
+        }
+
+        else
+        {
+            <h3>No Data Found</h3>
+        }
+    }
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    // 1st replace first column header text with checkbox
+
+    $("#checkableGrid2b2bur th").each(function () {
+        if ($.trim($(this).text().toString().toLowerCase()) === "{checkall}") {
+            $(this).text('');
+            $("<input/>", { type: "checkbox", id: "cbSelectAll", value: "" }).appendTo($(this));
+            $(this).append("<span>Select All</span>");
+        }
+    });
+
+    //2nd click event for header checkbox for select /deselect all
+    $("#cbSelectAll").live("click", function () {
+        var ischecked = this.checked;
+        $('#checkableGrid2b2bur').find("input:checkbox").each(function () {
+            this.checked = ischecked;
+        });
+    });
+
+
+    //3rd click event for checkbox of each row
+    $("input[name='ids']").click(function () {
+        var totalRows = $("#checkableGrid2b2bur td :checkbox").length;
+        var checked = $("#checkableGrid2b2bur td :checkbox:checked").length;
+
+        if (checked == totalRows) {
+            $("#checkableGrid2b2bur").find("input:checkbox").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $("#cbSelectAll").removeAttr("checked");
+        }
+    });
+
+
+</script>
+
+

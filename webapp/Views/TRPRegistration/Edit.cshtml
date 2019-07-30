@@ -1,0 +1,245 @@
+﻿@model SmartAdminMvc.Models.TBL_Aggregator
+
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                TRP Management
+                <span>
+                    >&nbsp;
+                    Updation
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">TRP Registration </h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                <form action="@Url.Action("Edit", "TRPRegistration")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate" autocomplete="off">
+
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.TrpId)
+
+
+                                    <fieldset style="margin-bottom:9px;">
+
+                                        <section class="col col-6">
+
+                                            <label>TRP ID</label>
+                                            <label class="input">
+                                                <i class="icon-append fa fa-briefcase" style="color:red;">*</i>
+                                                @Html.EditorFor(model => model.AggregatorId, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.AggregatorId, "", new { @class = "text-danger" })
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-6">
+
+                                            <label>TRP Name</label>
+                                            <label class="input">
+                                                <i class="icon-append fa fa-user" style="color:red;">*</i>
+                                                @Html.EditorFor(model => model.AggregatorName, new { htmlAttributes = new { @class = "form-control",id= "AggregatorName" } })
+                                                @Html.ValidationMessageFor(model => model.AggregatorName, "", new { @class = "text-danger" })
+                                            </label>
+                                        </section>
+
+
+                                        <section class="col col-6">
+                                            <label>TRP Email</label>
+                                            <label class="input">
+                                                <i class="icon-append fa fa-envelope" style="color:red;">*</i>
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",id="Email"} })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            </label>
+                                        </section>
+                                        <section class="col col-6">
+                                            <label>TRP Mobile Number</label>
+                                            <label class="input">
+                                                <i class="icon-append fa fa-phone" style="color:red;">*</i>
+                                                @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control", id = "mob", maxlength = "10",minlenth="10" } })
+                                                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+
+
+                                            </label>
+                                        </section>
+
+
+
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" class="btn btn-primary" style="border-radius:8px;">
+                                            Update
+                                        </button>
+                                    </footer>
+                                </form>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+            <!-- end widget -->
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+
+        <div class="row">
+
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+<script type="text/javascript">    
+    $('#mob').bind('keypress', numericInput);
+</script>
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+
+        $('#AggregatorName').bind('keypress', textInput);
+
+        $('#mob').bind('keypress', numericInput);
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        var $checkoutForm = $('#checkout-form').validate({
+            // Rules for form validation
+            rules: {
+                AggregatorName: {
+                    required: true
+                },
+                AggregatorId: {
+                    required: true
+                },
+                
+                Email: {
+                    required: true,
+                    email: true
+                },
+                MobileNo: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10
+
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+                AggregatorName: {
+                    required: 'Please enter TRP Name'
+                },
+                AggregatorId: {
+                    required: 'Please enter TRP Id'
+                },
+                
+                Email: {
+                    required: 'Please enter  Email',
+                    email: 'Please enter a VALID email'
+                },
+
+                MobileNo: {
+                    required: 'Please enter  Mobile Number ',
+                    digits: 'Digits only please'
+                }
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+
+
+
+
+
+    })
+
+    </script>
+}
+
+

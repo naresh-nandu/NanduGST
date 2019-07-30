@@ -1,0 +1,884 @@
+﻿@model WeP_DAL.GSTR9Attribute.ReportViewModel
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div id="content">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+                GSTR9
+                <span>
+                    >
+                    Save
+                </span>
+            </h1>
+        </div>
+    </div>
+    @if (@ViewBag.OTPSession == "OPEN_POPUP")
+    {
+        <script>
+            window.onload = function () {
+
+                $(document).ready(function () {
+                    $('#myOTPModal').modal();
+
+                });
+
+            }
+        </script>
+    }
+    @if (TempData["AuthMsg"] != null)
+    {
+        <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["AuthMsg"])));
+        </script>
+    }
+    @using (Html.BeginForm("GSTR9Home", "GSTR9", FormMethod.Post, new { @id = "MyReport", @name = "MyReport" }))
+    {
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>GSTR-9</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">User GSTIN<span style="color:red">*</span></label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("strGSTIN", ViewBag.GSTINNoList as SelectList, "Select GSTIN", new { @class = "form-control", id = "strGSTIN", autopostback = "true", @onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Finacial Year<span style="color:red">*</span></label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("FinancialYear", ViewBag.GetFinancialList as SelectList, "Select Financial Year", new { @class = "form-control", id = "FinancialYear", autopostback = "true" })
+                                                </div>
+                                            </section>
+
+
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+
+
+                                        <button type="submit" name="command" id="btngetReport" value="getReport" class="btn btn-primary pull-right" style="border-radius:5px;font-weight:600">
+                                            Get Summary
+                                        </button>
+
+                                        <button type="submit" name="command" id="Savegstr9" value="Savegstr9" class="btn btn-primary pull-left" style="border-radius:5px;font-weight:600;">
+                                            Save GSTR9
+                                        </button>
+
+
+
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+
+
+
+                <!-- WIDGET END -->
+                <!-- NEW WIDGET START -->
+                <!-- WIDGET END -->
+                @if (ViewBag.Table4 != null)
+                {
+                    foreach (var item in Model.ReportMgmt)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table4?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table4(Details of advances, inward and outward supplies on which tax is payable)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+
+                    }
+                }
+
+                @if (ViewBag.Table5 != null)
+                {
+                    foreach (var item in Model.ReportMgmt1)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table5?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table5(Details of Outward supplies on which tax is not payable as declared in returns)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+
+
+
+                @if (ViewBag.Table6 != null)
+                {
+                    foreach (var item in Model.ReportMgmt2)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table6?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table6(Details of ITC availed as declared in returns filed during the financial year)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table7 != null)
+                {
+                    foreach (var item in Model.ReportMgmt3)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table7?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table7(Details of ITC Reversed and Ineligible ITC as declared in returns filed during the financial year)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table8 != null)
+                {
+                    foreach (var item in Model.ReportMgmt4)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table8?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table8(Other ITC related information during the financial year)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table9 != null)
+                {
+                    foreach (var item in Model.ReportMgmt5)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table9?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table9(Details of tax paid as declared in returns filed during the financial year)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table10 != null)
+                {
+                    foreach (var item in Model.ReportMgmt6)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table10?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table10(Particulars of the transactions for the previous FY declared in returns of Apr-Sep)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table14 != null)
+                {
+                    foreach (var item in Model.ReportMgmt7)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table14?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table14(Differential tax paid on account of declaration in 10 & 11 above)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;">Tax Payble</span> </td>
+                                                <td style="width:50%"><span>Tax Paid Through Cash</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.taxpayable</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.taxpayable" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.taxpaidthroughcash</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.taxpaidthroughcash" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;"> </span></td>
+                                                <td> </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;"> </span></td>
+                                                <input name="supdetailssamt" type="hidden" value=" " />
+                                                <td> </td>
+                                                <input name="supdetailscsamt" type="hidden" value=" " />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table15 != null)
+                {
+                    foreach (var item in Model.ReportMgmt8)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table15?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table15( Other Information Particulars of Demands and Refunds)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table16 != null)
+                {
+                    foreach (var item in Model.ReportMgmt9)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table16?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table16(supplies received from composition taxpayers and goods sent on approval basis)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.Table17 != null)
+                {
+                    foreach (var item in Model.ReportMgmt10)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table17?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table17(HSN Wise Summary of outward supplies)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+
+                    }
+                }
+                @if (ViewBag.Table18 != null)
+                {
+                    foreach (var item in Model.ReportMgmt11)
+                    {
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="panel panel-default" style="background-color:white;">
+                                <a href="~/GSTR9/Table18?GSTIN=@Session["strGSTIN"]&FinancialYear=@Session["FinancialYear"]">
+
+                                    <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Table18(HSN Wise Summary of inward supplies)</div>
+                                    <div style="min-height:120px;">
+                                        <br />
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                                <td style="width:50%"><span>Central Tax</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.iamt</span></td>
+                                                <input name="supdetailsiamt" type="hidden" value="@item.iamt" />
+                                                <input name="gstinid" type="hidden" value="" />
+                                                <input name="fp" type="hidden" value="" />
+                                                <td>@item.camt</td>
+                                                <input name="supdetailscamt" type="hidden" value="@item.camt" />
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">State/UT Tax</span></td>
+                                                <td>Cess</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="padding:15px;">@item.samt</span></td>
+                                                <input name="supdetailssamt" type="hidden" value="@item.samt" />
+                                                <td>@item.csamt</td>
+                                                <input name="supdetailscsamt" type="hidden" value="@item.csamt" />
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                        <div align="right">
+                            <input id='Delete' onclick='DeleteAll()' type='button' value='DeleteAll' class="btn btn-primary" style="font-weight:bold;Border-radius:10px;width:100px;padding:5px;" /> 
+
+                        </div>
+
+                    }
+                }
+
+
+            </div>
+
+
+            <!-- end row -->
+
+
+        </section>
+
+        <div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">GST Authentication</h4>
+                    </div>
+                    <div class="modal-body custom-scroll terms-body">
+                        <div id="left">
+                            <b>@ViewBag.AUTH_Response</b>
+                            <br /><br />
+                            <input type="text" id="OTP" name="OTP" class="form-group" placeholder="Enter OTP" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button type="submit" name="OTPSubmit" value="GSTR 1 Save" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                Submit
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!-- end widget grid -->
+    }
+</div>
+
+
+<style>
+    body {
+        background-color: #D3D3D3;
+    }
+</style>
+<script type="text/javascript">
+
+    $('#btngetReport').click(function () {
+
+        var $checkoutForm = $('#MyReport').validate({
+            // Rules for form validation
+            rules: {
+
+                strGSTIN: {
+                    required: true
+                },
+                FinancialYear: {
+                    required: true
+                }
+
+            },
+            messages: {
+
+                strGSTIN: {
+                    required: 'Please select GSTIN'
+                },
+                FinancialYear: {
+                    required: 'Please select Financial Year'
+                }
+
+
+
+            }
+        });
+    })
+
+    $('#Savegstr9').click(function () {
+
+        var $checkoutForm = $('#MyReport').validate({
+            // Rules for form validation
+            rules: {
+
+                strGSTIN: {
+                    required: true
+                },
+                FinancialYear: {
+                    required: true
+                }
+
+            },
+            messages: {
+
+                strGSTIN: {
+                    required: 'Please select GSTIN'
+                },
+                FinancialYear: {
+                    required: 'Please select Financial Year'
+                }
+
+
+
+            }
+        });
+    })
+
+</script>
+
+
+
+@if (TempData["SaveMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SaveMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SaveMessage"] = null;
+}
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["error"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["error"] = null;
+}
+
+@if (TempData["Delete"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["Delete"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["Delete"] = null;
+}
+
+<script>
+    function DeleteAll() {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to Delete all your data?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Delete",
+            confirmButtonColor: "#ec6c62"
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+
+                  
+
+                    window.location.href = "/gstr9/DeleteAllData/";
+
+                }
+            });
+    }</script>

@@ -1,0 +1,56 @@
+﻿@*@model List<SmartAdminMvc.Models.MAS_Roles>*@
+
+<div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false">
+    <header>
+        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+        <h2>Roles</h2>
+    </header>
+    
+    <div>
+        <!-- widget edit box -->
+
+        <form action="@Url.Action("Add","RolesMgmt")" method="post" class="smart-form" id="role-form" autocomplete="off">
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input">
+                        <i class="icon-append" style="color:red;"> * </i>
+                        <input type="text" id="name" name="name" placeholder="Enter Role Name to create" onkeypress = "checkSpcialChar(event)">
+                    </label>
+                </section>
+                <section class="col col-2">
+                    <input type="submit" class="form-control btn btn-primary" name="submit" value="ADD" />
+                </section>
+            </div>
+            <table class="table">
+                <tr class="alert alert-success">
+                    <th>Please click on created role to give access</th>
+                </tr>
+                <tr>
+                    <th>
+                        <h3>Active Roles</h3>
+                    </th>
+                </tr>
+
+                @foreach (var item in ViewBag.Roles)
+                {
+                    <tr>
+                        <td>
+                            @*@Html.ActionLink(, "Show", new { Id = item.Role_ID })*@
+                            <a href="@Url.Action("Show", new { Id = item.Role_ID })">@item.Role_Name</a>
+                        </td>
+                        <td align="right">
+                            <label class="input">
+                           
+                                @Html.ActionLink(" ", "Delete", new { Id = item.Role_ID }, new { @Class = "btn btn-md btn-warning glyphicon glyphicon-remove", onclick = "return confirm('Are you sure to Delete?');" })
+                               
+                            </label>
+                           
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </form>
+    </div>
+</div>
+

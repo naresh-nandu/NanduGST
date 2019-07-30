@@ -1,0 +1,686 @@
+﻿
+
+<style>
+    .sweet-alert .sa-icon {
+        height: 87px !important;
+    }
+
+    h2, h4 {
+        font-weight: bold !important;
+    }
+
+    h5 {
+        font-weight: 500;
+        font-size: 15px;
+    }
+</style>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+
+
+<div id="content">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+               EWayBill
+                <span>
+                    >
+                    EWay Bill Setting
+                </span>
+            </h1>
+        </div>
+    </div>
+
+
+    <section id="widget-grid" class="">
+
+        <div class="row">
+
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+
+                        <h2>Settings Updation</h2>
+
+                    </header>
+
+                    <div>
+
+                        <div class="jarviswidget-editbox">
+
+
+                        </div>
+                        <div class="widget-body">
+
+                            <form class="form-horizontal" action="@Url.Action("Home","EWBSetting")" method="post">
+                                <fieldset>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div id="accordion">
+                                            <div>
+                                                <h4>Location Settings</h4>
+                                                <div class="padding-10">
+                                                    <fieldset class="demo-switcher-1">
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" style="font-size:xx-small;font-family:'Times New Roman', Times, serif"><h5>Location Option</h5></label>
+                                                            <div class="col-md-6" style="margin-top:12px;">
+                                                                @if (Session["LocationSetting"].ToString() == "False")
+                                                                {
+                                                                    <label class="radio radio-inline">
+
+                                                                        <input type="radio" class="radiobox" name="strLocation" value="Enable">
+                                                                        <span>Enable</span>
+
+                                                                    </label>
+                                                                    <label class="radio radio-inline">
+                                                                        <input type="radio" class="radiobox" name="strLocation" value="Disable" checked>
+                                                                        <span>Disable</span>
+                                                                    </label>
+                                                                }
+                                                                else if (Session["LocationSetting"].ToString() == "True")
+                                                                {
+                                                                    <label class="radio radio-inline">
+
+                                                                        <input type="radio" class="radiobox" name="strLocation" value="Enable" checked>
+                                                                        <span>Enable</span>
+
+                                                                    </label>
+                                                                    <label class="radio radio-inline">
+                                                                        <input type="radio" class="radiobox" name="strLocation" value="Disable">
+                                                                        <span>Disable</span>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="radio radio-inline">
+
+                                                                        <input type="radio" class="radiobox" name="strLocation" value="Enable">
+                                                                        <span>Enable</span>
+
+                                                                    </label>
+                                                                    <label class="radio radio-inline">
+                                                                        <input type="radio" class="radiobox" name="strLocation" value="Disable">
+                                                                        <span>Disable</span>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        </div>
+
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div id="accordion1">
+
+                                            @*<div>
+                                                    <h4>GSTR3B Setting</h4>
+                                                    <div class="padding-10">
+                                                        <fieldset class="demo-switcher-6">
+                                                            <div class="form-group">
+                                                                <label class="col-md-6 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>GSTR3B auto population from GSTR1&GSTR2</h5></label>
+                                                                <div class="col-md-6" style="margin-top:12px;">
+                                                                    @if (Session["GSTR3BSetting"].ToString() == "False")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="GSTR3BSetting" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="GSTR3BSetting" value="Disable" checked>
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else if (Session["GSTR3BSetting"].ToString() == "True")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="GSTR3BSetting" value="Enable" checked>
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="GSTR3BSetting" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="GSTR3BSetting" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="GSTR3BSetting" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                            </div>
+
+                                                        </fieldset>
+                                                    </div>
+                                                </div>*@
+
+                                            <div>
+                                                <h4>Eway Bill Setting</h4>
+                                                <div class="padding-10">
+                                                    <fieldset class="demo-switcher-7">
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>Email Configuration For Eway Bill</h5></label>
+                                                            <div class="col-md-6" style="margin-top:12px;">
+                                                                @if (Session["ewbEmailSetting"].ToString() == "False")
+                                                                {
+                                                                    <label class="radio radio-inline">
+
+                                                                        <input type="radio" class="radiobox" name="strEwbEmail" value="Enable">
+                                                                        <span>Enable</span>
+
+                                                                    </label>
+                                                                    <label class="radio radio-inline">
+                                                                        <input type="radio" class="radiobox" name="strEwbEmail" value="Disable" checked>
+                                                                        <span>Disable</span>
+                                                                    </label>
+                                                                }
+                                                                else if (Session["ewbEmailSetting"].ToString() == "True")
+                                                                {
+                                                                    <label class="radio radio-inline">
+
+                                                                        <input type="radio" class="radiobox" name="strEwbEmail" value="Enable" checked>
+                                                                        <span>Enable</span>
+
+                                                                    </label>
+                                                                    <label class="radio radio-inline">
+                                                                        <input type="radio" class="radiobox" name="strEwbEmail" value="Disable">
+                                                                        <span>Disable</span>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="radio radio-inline">
+
+                                                                        <input type="radio" class="radiobox" name="strEwbEmail" value="Enable">
+                                                                        <span>Enable</span>
+
+                                                                    </label>
+                                                                    <label class="radio radio-inline">
+                                                                        <input type="radio" class="radiobox" name="strEwbEmail" value="Disable">
+                                                                        <span>Disable</span>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        </div>
+
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+
+                                            @*<div>
+                                                    <h4>EwayBill Setting</h4>
+                                                    <div class="padding-10">
+                                                        <fieldset class="demo-switcher-8">
+                                                            <div class="form-group">
+                                                                <label class="col-md-6 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>Eway Bill data transfer to GSTR1</h5></label>
+                                                                <div class="col-md-6" style="margin-top:12px;">
+                                                                    @if (Session["EwaytoGSTR1Setting"].ToString() == "False")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="Eway_to_GSTR1" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="Eway_to_GSTR1" value="Disable" checked>
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else if (Session["EwaytoGSTR1Setting"].ToString() == "True")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="Eway_to_GSTR1" value="Enable" checked>
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="Eway_to_GSTR1" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="Eway_to_GSTR1" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="Eway_to_GSTR1" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                            </div>
+
+                                                        </fieldset>
+
+                                                        <fieldset class="demo-switcher-9">
+                                                            <div class="form-group">
+                                                                <label class="col-md-6 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>GSTR1 data transfer to Eway Bill</h5></label>
+                                                                <div class="col-md-6" style="margin-top:12px;">
+                                                                    @if (Session["GSTR1toEwaySetting"].ToString() == "False")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="GSTR1_to_Eway" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="GSTR1_to_Eway" value="Disable" checked>
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else if (Session["GSTR1toEwaySetting"].ToString() == "True")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="GSTR1_to_Eway" value="Enable" checked>
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="GSTR1_to_Eway" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="GSTR1_to_Eway" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="GSTR1_to_Eway" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                            </div>
+
+                                                        </fieldset>
+                                                        <fieldset class="demo-switcher-10">
+                                                            <div class="form-group">
+                                                                <label class="col-md-6 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>Eway Bill Print Option</h5></label>
+                                                                <div class="col-md-6" style="margin-top:12px;">
+                                                                    @if (Session["EwayPrintSetting"].ToString() == "False")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="EwayPrint" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="EwayPrint" value="Disable" checked>
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else if (Session["EwayPrintSetting"].ToString() == "True")
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="EwayPrint" value="Enable" checked>
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="EwayPrint" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="radio radio-inline">
+
+                                                                            <input type="radio" class="radiobox" name="EwayPrint" value="Enable">
+                                                                            <span>Enable</span>
+
+                                                                        </label>
+                                                                        <label class="radio radio-inline">
+                                                                            <input type="radio" class="radiobox" name="EwayPrint" value="Disable">
+                                                                            <span>Disable</span>
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                            </div>
+
+                                                        </fieldset>
+                                                    </div>
+                                                </div>*@
+
+                                        </div>
+                                    </div>
+
+                                    
+
+                                </fieldset>
+                                <br /><br />
+                                <footer>
+                                    <section class="text-right">
+                                        <button class="btn btn-primary" type="submit" style="border-radius:4px;font-weight:bold">
+                                            Update
+                                        </button>
+                                    </section>
+                                </footer>
+
+
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+            <!-- NEW WIDGET START -->
+            <!-- WIDGET END -->
+
+        </div>
+
+        <!-- end row -->
+
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL Common.Functions!
+
+        $(document).ready(function () {
+
+            /*
+       * ACCORDION
+       */
+            //jquery accordion
+
+            var accordionIcons = {
+                header: "fa fa-plus",    // custom icon class
+                activeHeader: "fa fa-minus" // custom icon class
+            };
+
+            $("#accordion").accordion({
+                autoHeight: false,
+                heightStyle: "content",
+                collapsible: true,
+                animate: 300,
+                icons: accordionIcons,
+                header: "h4",
+                collapsible: true,
+                active: true,
+            })
+
+            $("#accordion1").accordion({
+                autoHeight: false,
+                heightStyle: "content",
+                collapsible: true,
+                animate: 300,
+                icons: accordionIcons,
+                header: "h4",
+                collapsible: true,
+                active: true,
+            })
+
+            $("#accordion2").accordion({
+                autoHeight: false,
+                heightStyle: "content",
+                collapsible: true,
+                animate: 300,
+                icons: accordionIcons,
+                header: "h4",
+                collapsible: true,
+                active: true,
+            })
+
+            //guard code here to check you have a valid activeIndex...
+
+
+            // PAGE RELATED SCRIPTS
+
+            // class switcher for radio and checkbox
+            $('input[name="demo-switcher-1"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-1 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-1 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-1 input[type="radio"]').removeClass();
+                $('.demo-switcher-1 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-2"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-2 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-2 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-2 input[type="radio"]').removeClass();
+                $('.demo-switcher-2 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-3"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-3 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-3 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-3 input[type="radio"]').removeClass();
+                $('.demo-switcher-3 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-4"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-4 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-4 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-4 input[type="radio"]').removeClass();
+                $('.demo-switcher-4 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-5"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-5 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-5 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-5 input[type="radio"]').removeClass();
+                $('.demo-switcher-5 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-6"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-6 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-6 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-6 input[type="radio"]').removeClass();
+                $('.demo-switcher-6 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-7"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-7 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-7 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-7 input[type="radio"]').removeClass();
+                $('.demo-switcher-7 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-8"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-8 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-8 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-8 input[type="radio"]').removeClass();
+                $('.demo-switcher-8 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-9"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-9 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-9 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-9 input[type="radio"]').removeClass();
+                $('.demo-switcher-9 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-10"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-10 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-10 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-10 input[type="radio"]').removeClass();
+                $('.demo-switcher-10 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-11"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-11 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-11 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-11 input[type="radio"]').removeClass();
+                $('.demo-switcher-11 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+        })
+
+    </script>
+}
+
+
+
+

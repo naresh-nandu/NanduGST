@@ -1,0 +1,109 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.Result != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.Result)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 50);
+    }
+}
+
+<div class="container" ng-app="my-app" ng-controller="myCtrl">
+    <div class="row">
+        <br />
+        <div class="panel panel-default" style="padding:8px">
+          
+            <form ng-submit="submit(Screen31);">
+
+                <table class="table table-bordered">
+                    <thead class="blue-grey lighten-4">
+                        <tr class="active">
+                            <th class="text-center"><b>Nature of supplies</b> </th>
+                            <th class="text-center"><b>Total Taxable <br />value (<i class="fa">&#xf156;</i>) </b> </th>
+                            <th class="text-center"><b> Integrated <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> Central <br />Tax (<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> State / UT Tax <br />(<i class="fa">&#xf156;</i>)</b></th>
+                            <th class="text-center"><b> CESS (<i class="fa">&#xf156;</i>)</b></th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in result)
+                    {
+
+                        if (item.supply_num == 1)
+                        {
+                    <tr>
+                        <td><b>(a) Outward taxable supplies(other than zero rated,nil rated and exempted)</b></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.txval" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.iamt" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.samt" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.csamt"/></td>
+                    </tr>
+                        }
+                        else if (item.supply_num == 2)
+                        {
+                    <tr>
+                        <td><b>(b) Outward taxable supplies(zero rated)</b></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.txval" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.iamt" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.csamt" /></td>
+                    </tr>
+                        }
+                        else if (item.supply_num == 3)
+                        {
+                    <tr>
+                        <td><b>(c) Other Outward taxable supplies(nil rated,exempted)</b></td>
+                        <td><input type="text" valid-number class="form-control"  value="@item.txval" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                    </tr>
+                        }
+                        else if (item.supply_num == 4)
+                        {
+                    <tr>
+                        <td><b>(d) Inward supplies(liable to reverse change)</b></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.txval" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.iamt" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.camt" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.samt" /></td>
+                        <td><input type="text" valid-number class="form-control" value="@item.csamt" /></td>
+                    </tr>
+                        }
+                        else if (item.supply_num == 5)
+                        {
+                    <tr>
+                        <td><b>(e) Non-GST outward supplies</b> </td>
+                        <td><input type="text" valid-number class="form-control" value="@item.txval" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                    </tr>
+                        }
+                    }
+                    <tr>
+                       
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>

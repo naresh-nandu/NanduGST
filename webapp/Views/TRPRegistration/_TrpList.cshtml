@@ -1,0 +1,96 @@
+﻿
+@model IEnumerable<SmartAdminMvc.Models.TBL_Aggregator>
+
+@{
+    ViewBag.Title = "WeP ASP PANEL";
+    var grid = new WebGrid(source:Model, rowsPerPage: 10);
+    int rowVal = 0;
+
+}
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+
+<section class="col col-12" style="text-indent:70px;">
+
+    @using (Html.BeginForm("Index", "TRPRegistration", FormMethod.Get))
+    {
+
+        <div class="row text-center" style="text-indent:80px;">
+            <div class="col col-12">
+
+                <b style="color:#3276b1;font-weight:bold;font-size:15px;font-family:verdana,arial,sans-serif;"> Search By :</b>
+
+
+                @Html.DropDownList("option", (ViewBag.Categories as SelectList), "Select Search Option", new { @style = "padding:5.5px;margin-bottom:8px;margin-right:-5px;" })
+
+
+                @Html.TextBox("search", null, new { style = "padding:4px;margin-bottom:8px;", autocomplete = "off", onchange = "submit();" })
+
+                <button type="submit" class="btn btn-primary" style="padding:5px;margin-bottom:8px;margin-top:6px;margin-left:-4px;">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"> </span>
+                </button>
+            </div>
+        </div>
+
+    }
+</section>
+
+<section class="col col-12">
+    @using (Html.BeginForm("Index", "TRPRegistration", FormMethod.Get))
+    {
+        <div class="table table-responsive">
+
+
+            @grid.GetHtml(
+                tableStyle: "table table-striped table-bordered table-hover gridtable",
+                 htmlAttributes: new { id = "checkableGrid" },
+                 columns:
+                    grid.Columns(
+                         grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                         grid.Column("AggregatorId", "TRP Id ↑↓"),
+                        grid.Column("AggregatorName", "TRP Name ↑↓"),
+                        grid.Column("Email", "Email ID ↑↓"),
+                        grid.Column("MobileNo", "Mobile Number ↑↓"),
+                        grid.Column(format:@<text>@Html.ActionLink("Edit", "Edit", new { Id = item.TrpId }, new { @Class = "btn btn-primary", onclick = "return confirm('Are you sure to Edit?');", @Style = "font-weight:bold;Border-radius:15px;width:80px;margin-bottom:3px;padding:3px;" })</text>, header: "Edit"),
+                        grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { Id = item.TrpId }, new { @Class = "btn btn-danger", onclick = "return confirm('Are you sure to Delete?');", @Style = "font-weight:bold;Border-radius:15px;width:80px;margin-bottom:3px;padding:3px;" })</text>, header: "Delete"),
+                         grid.Column(header: "Block & Unblock", format: item => (item.rowstatus==true)
+                                                      ? new HtmlString(Html.ActionLink(" Block ", "Block", new { Id = item.TrpId }, new { @Class = "btn btn-warning", onclick = "return confirm('Are you sure to Block?');", @Style = "width:100px;background-color:;font-weight:bold;Border-radius:15px;padding:4px;" }).ToString())
+                                                    : new HtmlString(Html.ActionLink("UnBlock", "UnBlock", new { Id = item.TrpId }, new { @Class = "btn btn-success", onclick = "return confirm('Are you sure to UnBlock?');", @Style = "width:100px;background-color: #496949;font-weight:bold;Border-radius:15px;padding:4px;" }).ToString()))
+
+
+
+
+                    )
+                )
+
+
+
+
+
+
+        </div>
+    }
+
+</section>
+

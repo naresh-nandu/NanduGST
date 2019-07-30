@@ -1,0 +1,12 @@
+﻿
+@model SmartAdminMvc.Models.MAS_Roles
+
+<section class="col col-4" style="margin-top:-16px;">
+    <label style="font-weight:600; font-size:15px;"> Select Role </label>
+    <i style="color:red;"> &nbsp;*</i>
+    <label class="input">
+        @Html.DropDownList("CategoryName", (ViewBag.Role as SelectList), "Select GSTR Number", new { @class = "form-control",@id= "CategoryName" })
+    </label>
+       
+
+</section>

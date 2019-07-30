@@ -1,0 +1,286 @@
+﻿
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+@if (@ViewBag.ModalDialog == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+            $(document).ready(function () {
+                $('#myModal').modal();
+            });
+        }
+    </script>
+}
+
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: auto;
+        overflow-x: hidden;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    input[type=search] {
+        margin: 0px !important;
+    }
+
+    .tblheader {
+        text-align: center;
+        color: white;
+        background-color: #85C1E9;
+    }
+
+    .tblbody {
+        text-align: center;
+    }
+</style>
+@using (Html.BeginForm("Home", "MakerCheckerApprover", FormMethod.Post, new { @id = "MakerCheckerApproverForm", @name = "MakerCheckerApproverForm", @autocomplete = "off" }))
+{
+    <div id="content">
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    Maker / Checker / Approver
+                    <span>
+                        >&nbsp;
+
+                    </span>
+                </h1>
+            </div>
+
+        </div>
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Maker Checker Approver</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>Approver</b><span style="color:red">*</span></label>
+                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlApprover", ViewBag.ApproverUserList as SelectList, "Select", new { @Class = "form-control" })
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>Checker</b><span style="color:red">*</span></label>
+                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlChecker", ViewBag.CheckerUserList as SelectList, "Select", new { @Class = "form-control" })
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>Maker</b><span style="color:red">*</span></label>
+                                                <div class="col-xs-12 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlMaker", ViewBag.MakerUserList as SelectList, "Select", new { @Class = "form-control" })
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="btnCreate" value="MakerCheckerApprover" id="MakerCheckerApprover" class="btn btn-primary" style="border-radius:40px;font-weight:600">
+                                            Submit
+                                        </button>
+                                    </footer>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+
+
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmation Message</h4>
+                </div>
+                <div class="modal-body custom-scroll terms-body">
+                    <b>Already this Maker is linked with other Checker. So if you continue, that linkage will get deleted. Are you want to Continue !!!</b>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" name="btnContinue" value="Continue" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                            Continue
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#MakerCheckerApproverForm').validate({
+                // Rules for form validation
+                rules: {
+                    ddlApprover: {
+                        required: true
+                    },
+                    ddlChecker: {
+                        required: true
+                    },
+                    ddlMaker: {
+                        required: true
+                    },
+                },
+
+                // Messages for form validation
+                messages: {
+                    ddlApprover: {
+                        required: 'Please select Approver'
+                    },
+                    ddlChecker: {
+                        required: 'Please select Checker'
+                    },
+                    ddlMaker: {
+                        required: 'Please select Maker'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+
+    </script>
+
+
+}

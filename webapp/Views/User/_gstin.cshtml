@@ -1,0 +1,20 @@
+﻿
+
+
+
+        <section class="col col-4">
+            
+            <label style="font-weight:600; font-size:15px;"> Select GSTIN </label>
+            <i style="color:red;"> &nbsp;*</i>
+            <label class="input">
+                @Html.DropDownList("GSTINId", (MultiSelectList)ViewBag.GSTINNoList, new { multiple = "multiple", @Class = "form-control", selected = true ,@style="width:300px"})
+
+
+            </label>
+        </section>
+
+
+     
+       
+    
+

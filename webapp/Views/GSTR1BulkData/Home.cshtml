@@ -1,0 +1,512 @@
+﻿
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+@if (@ViewBag.GetJsonSession == "OPEN_JSON_PAYLOAD")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myJsonPayloadModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+@using (Html.BeginForm("Home", "GSTR1BulkData", FormMethod.Post, new { @id = "GSTR1BulkDataForm", @name = "GSTR1BulkDataForm" }))
+{
+
+    <!-- MAIN CONTENT -->
+    <div id="content">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR 1
+                    <span>
+                        >&nbsp;
+                        SAVE
+                    </span>
+                </h1>
+            </div>
+            <!-- end col -->
+            <!-- right side of the page with the sparkline graphs -->
+            <!-- col -->
+            <!-- end col -->
+
+        </div>
+        <!-- end row -->
+        <!--
+                    The ID "widget-grid" will start to initialize all widgets below
+                    You do not need to use widgets if you dont want to. Simply remove
+                    the <section></section> and you can use wells or panels instead
+                    -->
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>GSTR-1 Save</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">Period</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" name="period" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.Period" onchange="submit();">
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            @*<section class="col col-3">
+                                                <label class="label">From Date</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="fromperiod" placeholder="" class="datepicker form-control" data-dateformat='dd-mm-yy' value="" onchange="submit();">
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">To Date</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="toperiod" placeholder="" class="datepicker form-control" data-dateformat='dd-mm-yy' value="" onchange="submit();">
+                                                </div>
+                                            </section>*@
+                                            @*<section class="col col-3">
+                                                <label class="label">Action</label>
+                                                <div class="col-xs-9 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlActionType", ViewBag.ActionList as SelectList, "Select Action", new { @class = "form-control", autopostback = "true", onchange = "submit();" })                                                    
+                                                </div>
+                                            </section>*@
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="InvIds" id="InvIds" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="GSTR1Save" value="GSTR 1 Save" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                            GSTR 1 Save
+                                        </button>
+                                        <button type="submit" name="GetJson" value="GetJson" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                            GET JSON PAYLOAD
+                                        </button>
+                                        @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>@ViewBag.TitleHeaders</h2>
+                        </header>
+
+                        <div id="tabs" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                            <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                @if (ViewBag.ActionType == "B2B" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-1">B2B</a>
+                                    </li>
+                                }
+                                @*@if (ViewBag.ActionType == "B2CL" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-2">B2CL</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "CDNR" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-3">CDNR</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-4">B2CS</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "EXP" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-5">EXP</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "HSNSUM" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-7">HSN</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "NIL" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-8">NIL</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "TXPD" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-9">TXPD</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "AT" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-10">AT</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "DOCISSUE" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-11">DOC-Issue</a>
+                                    </li>
+                                }
+                                @if (ViewBag.ActionType == "CDNUR" || ViewBag.ActionType == "ALL")
+                                {
+                                    <li>
+                                        <a href="#tabs-12">CDNUR</a>
+                                    </li>
+                                }*@
+                            </ul>
+                            @if (ViewBag.ActionType == "B2B" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-1">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1B2B");}
+                                </div>
+                                        }
+                            @*@if (ViewBag.ActionType == "B2CL" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-2">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1B2CL");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "CDNR" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-3">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1cdnr");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "B2CS" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-4">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1B2CS");}
+                                    @*<br />
+                                    @{Html.RenderPartial("_Gstr1B2CSInv");}*@
+                                @*</div>
+                                        }
+                            @if (ViewBag.ActionType == "EXP" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-5">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1Exp");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "HSNSUM" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-7">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1Hsn");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "NIL" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-8">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1Nil");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "TXPD" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-9">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1Txpd");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "AT" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-10">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1At");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "DOCISSUE" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-11">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1Doc");}
+                                </div>
+                                        }
+                            @if (ViewBag.ActionType == "CDNUR" || ViewBag.ActionType == "ALL")
+                            {
+                                <div id="tabs-12">
+                                    <br /><br />
+                                    @{Html.RenderPartial("_Gstr1Cdnur");}
+                                </div>
+                                        }*@
+                        </div>
+
+
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+                                                                        
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+    <!-- END MAIN CONTENT -->
+
+                                                                    <div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                        &times;
+                                                                                    </button>
+                                                                                    <h4 class="modal-title" id="myModalLabel">GST Authentication</h4>
+                                                                                </div>
+                                                                                <div class="modal-body custom-scroll terms-body">
+                                                                                    <div id="left">
+                                                                                        <b>@ViewBag.AUTH_Response</b>
+                                                                                        <br /><br />
+                                                                                        <input type="text" id="OTP" name="OTP" class="form-group" placeholder="Enter OTP" />
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                                            Cancel
+                                                                                        </button>
+                                                                                        <button type="submit" name="OTPSubmit" value="GSTR 1 Save" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                                                                            Submit
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div><!-- /.modal-content -->
+                                                                            </div><!-- /.modal-dialog -->
+                                                                        </div><!-- /.modal -->
+                                                                    </div>
+
+                                                                    <div class="modal fade" id="myJsonPayloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                        &times;
+                                                                                    </button>
+                                                                                    <h4 class="modal-title" id="myModalLabel">GSTR-1 JSON PAYLOAD</h4>
+                                                                                </div>
+                                                                                <div class="modal-body custom-scroll terms-body">
+                                                                                    <b>@ViewBag.GET_GSTR1JsonResponse</b>
+
+                                                                                </div><!-- /.modal-content -->
+                                                                            </div><!-- /.modal-dialog -->
+                                                                        </div><!-- /.modal -->
+                                                                    </div>
+                                        }
+
+@if (TempData["AuthMsg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["AuthMsg"])));
+        TempData["AuthMsg"] = null;
+    </script>
+}
+
+@if (TempData["SaveResponse"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["SaveResponse"])));
+        TempData["SaveResponse"] = null;
+    </script>
+}
+
+@if (TempData["UploadMessage"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["UploadMessage"])));
+        TempData["UploadMessage"] = null;
+    </script>
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#GSTR1SaveForm').validate({
+                // Rules for form validation
+                rules: {
+                    //ddlGSTINNo: {
+                    //    required: true
+                    //},
+                    //ddlActionType: {
+                    //    required: true
+                    //},
+                    period: {
+                        required: true
+                    },
+                },
+
+                // Messages for form validation
+                messages: {
+                    //ddlGSTINNo: {
+                    //    required: 'Please select GSTIN No'
+                    //},
+                    //ddlActionType: {
+                    //    required: 'Please select Action'
+                    //},
+                    period: {
+                        required: 'Please Select Period'
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+
+        $(document).ready(function () {
+
+
+            $('#tabs').tabs();
+            $('#tab').tabs();
+            /*
+             *  Simple tabs adding and removing
+             */
+
+
+
+        })
+    </script>
+
+
+}
+

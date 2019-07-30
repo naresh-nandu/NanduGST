@@ -1,0 +1,1045 @@
+﻿@{
+    int rowVal = 0;
+}
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod
+    }
+</style>
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Inward Register
+                <span>
+                    >&nbsp;
+                    B2B Edit
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <form action="@Url.Action("B2B", "InwardRegister")" method="post" id="InwardB2BEdit" novalidate="novalidate">
+
+
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">Inward B2B Edit</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                <fieldset class="smart-form">
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <div class="form-group">
+                                                <label>Supplier Name</label>
+                                                <div>
+                                                    @Html.DropDownList("name", new SelectList(ViewBag.supname, "supplierid", "suppliername", ViewBag.master.supplierid), "--Select--", new { @Class = "form-control input-sm", @id = "name", @onblur = "taxableCalculation();" })
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Supplier GSTIN</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <i class="icon-prepend fa fa-user"></i>
+                                                <input type="text" name="gstin" id="gstin" value="@ViewBag.master.ctin" placeholder="Supplier GSTIN" style="background-color:#d9d9d9;" readonly>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Place of Supply</label>
+                                            <label class="input">
+                                                <input type="text" name="pos" id="pos" value="@ViewBag.master.pos" placeholder="State Code" style="background-color:#d9d9d9;" readonly>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Address</label>
+                                            <label class="input">
+                                                <input type="text" name="address" id="address" placeholder="Address" value="@ViewBag.supplieraddress" style="background-color:#d9d9d9;" readonly>
+                                            </label>
+                                        </section>
+
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <div class="form-group">
+                                                <label>Taxpayer GSTIN</label>
+                                                <div>
+                                                    @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "GSTINNo", "GSTINNo", ViewBag.master.gstin), "--Select--", new { @Class = "form-control input-sm", @id = "cgstin", @onchange = "taxableCalculation();" })
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label> Invoice Number</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+
+                                                <input type="text" name="invoice" id="invoice" value="@ViewBag.master.inum" placeholder="Invoice No." style="background-color:#d9d9d9;" readonly>
+
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Invoice Date</label>@*<span style="color:red">*</span>*@
+                                            <label class="input">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input type="text" name="invoicedate" value="@ViewBag.master.idt" placeholder="Invoice Date" style="background-color:#d9d9d9;" readonly>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Invoice Value</label>
+                                            <label class="input">
+                                                <input type="text" name="invalue" value="@ViewBag.master.val" placeholder="Invoice Value" style="background-color:#d9d9d9;" readonly>
+                                            </label>
+                                        </section>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <section class="col col-3">
+                                            <div class="form-group">
+                                                <label>Reverse Charge</label>
+                                                <div>
+                                                    @Html.DropDownList("reversecharge", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "Y" }, new SelectListItem { Text = "No", Value = "N" } }, "Value", "Text", ViewBag.master.rchrg), "--Select--", new { @Class = "form-control input-sm" })
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <section class="col col-3">
+                                            <div class="form-group">
+                                                <label>Invoice type</label>
+                                                <div>
+                                                    @Html.DropDownList("invtype", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Regular B2B Invoices", Value = "R" },
+                                                                                                                            new SelectListItem { Text = "Deemed Exports", Value = "DE" },
+                                                                                                                            new SelectListItem { Text = "SEZ Exports with payment", Value = "SEWP" },
+                                                                                                                            new SelectListItem { Text = " SEZ exports without payment", Value = "SEWOP" } }, "Value", "Text", ViewBag.master.inv_typ), "--Select--", new { @Class = "form-control input-sm" })
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                    </div>
+
+                                </fieldset>
+                                <footer>
+                                    <div class="row">
+                                        <div class="col-md-6 text-center">
+                                            <button type="submit" id="btnSubmit" name="command" value="save" class="btn btn-primary">Update</button>
+                                        </div>
+                                    </div>
+                                </footer>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Item Details</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+
+                                <br />
+                                <div class="smart-form">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>HSN</th>
+                                                    @*<th>HSN Description</th>*@
+                                                    <th>Item Description</th>
+                                                    <th>Qty</th>
+                                                    <th>UQC</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Disc(%)</th>
+                                                    <th>Taxable Value</th>
+                                                    <th>Rate(%)</th>
+                                                    <th>IGST Amount</th>
+                                                    <th>CGST Amount</th>
+                                                    <th>SGST/UTGST Amount</th>
+                                                    <th>CESS Amount</th>
+                                                    <th>Eligibility</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+
+                                                    <td>
+                                                        @*<label class="input">
+                                                                <input type="text" name="HSN" id="hsn" autocomplete="on">
+                                                            </label>*@
+                                                        <label class="input" style="width:60px">
+                                                            @*@Html.DropDownList("HSN", new SelectList(ViewBag.HSNDetail, "hsnid", "hsncode"), "Select", new { @Class = "form-control input-sm", @id = "hsn", @onblur = "taxableCalculation();" })*@
+                                                            <input type="text" name="HSN" id="hsn">
+                                                        </label>
+                                                    </td>
+                                                    @*<td>
+                                                            <label class="input">
+                                                                <input type="text" name="HSNdesc" id="hsndesc" readonly>
+                                                            </label>
+                                                        </td>*@
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="itemdesc" id="itemdesc">
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="qty" id="qty" onblur="taxableCalculation();">
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input" style="width:60px">
+                                                            @Html.DropDownList("uqc", new SelectList(ViewBag.UQCList, "uqc", "uqcdesc"), "Select", new { @Class = "form-control input-sm", @id = "uqc" })
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="unitprice" id="unitprice" onblur="taxableCalculation();">
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input">
+                                                            @*@if (Session["discountreqb2b"] == null || Session["discountreqb2b"].ToString() == "No")
+                                                                {
+                                                                    <input type="text" name="discount" id="discount" onblur="taxableCalculation();" value="0" readonly>
+                                                                }
+                                                                else if (Session["discountreqb2b"].ToString() == "Yes")
+                                                                {*@
+                                                            <input type="text" name="discount" id="discount" onblur="taxableCalculation();" value="0">
+                                                            @*}*@
+
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="taxablevalue" id="taxablevalue" readonly>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="rate" id="rate" readonly>
+                                                            @*@Html.DropDownList("rate", new SelectList(ViewBag.Rates, "ratevalue", "ratevalue"), "--Select--", new { @Class = "form-control input-sm", @id = "rate", @onchange = "taxableCalculation();" })*@
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="iamount" value="0" id="iamount" readonly>
+                                                        </label>
+                                                    </td>
+
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="camount" value="0" id="camount" readonly>
+                                                        </label>
+                                                    </td>
+
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="samount" value="0" id="samount" readonly>
+                                                        </label>
+                                                    </td>
+
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" name="csamount" value="0" id="csamount">
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control input-sm" name="eligibility">
+                                                            <option value="ip">ip</option>
+                                                            <option value="cp">cp</option>
+                                                            <option value="no">no</option>
+                                                            <option value="is">is</option>
+                                                        </select>
+
+
+                                                    </td>
+
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="14" align="center">
+                                                        <button type="Submit" id="btnAdd" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br />
+
+
+
+                                <footer></footer>
+
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Update Inward B2B Item Details</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form1" class="smart-form">
+
+
+                                <div class="smart-form">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr class="row">
+
+                                                    <th>HSNCode</th>
+                                                    <th>ItemDescription</th>
+                                                    <th>Qty</th>
+                                                    <th>UQC</th>
+                                                    <th>UnitPrice</th>
+                                                    <th>Disc</th>
+                                                    <th>Tax</th>
+                                                    <th>Rate</th>
+                                                    <th>IGST Amount</th>
+                                                    <th>CGST Amount</th>
+                                                    <th>SGST Amount</th>
+                                                    <th>CESS Amount</th>
+                                                    <th>Eligibility</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var items in ViewBag.lineitms)
+                                                {
+
+
+                                                    <tr class="row">
+
+                                                        <td>
+                                                            <label class="input">
+                                                                @*@Html.DropDownList("HSN1", new SelectList(ViewBag.HSNDetail, "hsnid", "hsncode", items.hsncode), "Select", new { @Class = "form-control input-sm", @id = "hsncode_" + @rowVal, @onchange = "updateRate(" + @rowVal + ");", @onblur = "updatedetails(" + @rowVal + ")" })*@
+                                                                <input type="text" id="hsncode_@rowVal" value="@items.hsncode" readonly style="background-color:#d9d9d9;" />
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="itemdesc_@rowVal" value="@items.hsndesc" />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="qty_@rowVal" value="@items.qty" onblur="updatedetails(@rowVal)" />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                @Html.DropDownList("uqc1", new SelectList(ViewBag.UQCList, "uqc", "uqcdesc", items.uqc), "Select", new { @Class = "form-control input-sm", @id = "uqc_" + @rowVal })
+                                                                @*<input type="text" id="uqc" value="@items.uqc" />*@
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="unitprice_@rowVal" value="@items.unitprice" onblur="updatedetails(@rowVal)" />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="discount_@rowVal" value="@items.discount" onblur="updatedetails(@rowVal)" />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="txval_@rowVal" style="background-color:#d9d9d9;" value="@items.txval" readonly />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="rate_@rowVal" value="@items.rt" style="background-color:#d9d9d9;" readonly />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="iamt_@rowVal" value="@items.iamt" style="background-color:#d9d9d9;" readonly />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="camt_@rowVal" value="@items.camt" style="background-color:#d9d9d9;" readonly />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="samt_@rowVal" value="@items.samt" style="background-color:#d9d9d9;" readonly />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="csamt_@rowVal" value="@items.csamt" />
+                                                            </label>
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" id="elg_@rowVal" value="@items.elg" readonly style="background-color:#d9d9d9;" />
+                                                                @*@Html.DropDownList("elg1", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "ip", Value = "ip" },
+                                                                     new SelectListItem { Text = "cp", Value = "cp" },
+                                                                     new SelectListItem { Text = "is", Value = "is" },
+                                                                    new SelectListItem { Text = "no", Value = "no" } }, "Value", "Text", items.elg), "Select", new { @Class = "form-control input-sm", @id = "eligibility_" + @rowVal })*@
+
+                                                            </label>
+
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="button" id="editBtn_@rowVal" onclick="Edit(@items.b2bid,@rowVal)" value="Update" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="button" id="delBtn_@rowVal" onclick="Delete(@items.b2bid,@rowVal)" value="Delete" style="border:2px solid #a0aeb3;background-color:#a0aeb3;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+                                                        </td>
+                                                    </tr>
+                                                    rowVal = rowVal + 1;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                                <footer></footer>
+
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <!-- end row -->
+        <!-- row -->
+        <!-- end row -->
+
+
+
+    </form>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+    TempData["Message"] = null;
+}
+
+@if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+{
+    <script type="text/javascript">
+        $("#hsn").on('blur', function () {
+            var txt = $('#hsn').val().split("|");
+            $('#hsn').val(txt[0]);
+            $("#rate").val(txt[1]);
+            var result = txt[2];
+            $("#itemdesc").val(result.slice(0, 30));
+        });
+
+        $(document).ready(function () {
+            $("#hsn").autocomplete({
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/InwardB2B/AutoPopulate",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.hsncode + "-" + item.rate,
+                                    value: item.hsncode + "|" + item.rate + "|" + item.hsndesc
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+    /**/
+
+}
+else
+{
+    <script type="text/javascript">
+        $("#hsn").on('blur', function () {
+            var txt = $('#hsn').val().split("|");
+            $('#hsn').val(txt[0]);
+            $("#rate").val(txt[1]);
+        });
+
+        $(document).ready(function () {
+            $("#hsn").autocomplete({
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/InwardB2B/AutoPopulate",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.hsncode + "-" + item.hsndesc,
+                                    value: item.hsncode + "|" + item.rate
+                                };
+                            }));
+                        },
+                        messages: {
+                            noResults: "", results: "",
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+}
+
+<script type="text/javascript">
+    function taxableCalculation() {
+        var qty = document.getElementById("qty").value;
+        var unitprice = document.getElementById("unitprice").value;
+        var discount = document.getElementById("discount").value;
+        var rate = document.getElementById("rate").value;
+
+
+        var igsta = document.getElementById("iamount");
+        var cgsta = document.getElementById("camount");
+        var sgsta = document.getElementById("samount");
+
+        if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+            var discountValue;
+            discountValue = (((qty * unitprice) / 100) * discount);
+            document.getElementById("taxablevalue").value = ((unitprice * qty) - discountValue).toFixed(2);
+        }
+        var taxablevalue = document.getElementById("taxablevalue").value;
+
+        if ((taxablevalue != "") && (rate != "")) {
+            var cgstin = document.getElementById("cgstin").value;
+            var gstin = document.getElementById("pos").value;
+            var cgstin_state = cgstin.substring(0, 2);
+            var gstin_state = gstin.substring(0, 2);
+            if ((gstin_state != "") && (cgstin_state != "")) {
+                if (gstin_state != cgstin_state) {
+                    igsta.value = (taxablevalue * rate) / 100;
+                    cgsta.value = "0";
+                    sgsta.value = "0";
+                }
+                else if (gstin_state == cgstin_state) {
+                    igsta.value = "0";
+                    cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                }
+            }
+        }
+    }
+    function Edit(id, index) {
+        var row = $("#editBtn_" + index).parent().parent();
+        // var index = $(this).closest("tr").index();
+        var hsncode = row.find("#hsncode_" + index).val();
+        var itemdesc = row.find("#itemdesc_" + index).val();
+        var unitprice = row.find("#unitprice_" + index).val();
+        var rate = row.find("#rate_" + index).val();
+        var igsta = row.find("#iamt_" + index).val();
+        var cgsta = row.find("#camt_" + index).val();
+        var sgsta = row.find("#samt_" + index).val();
+        var cessa = row.find("#csamt_" + index).val();
+        var uqc = row.find("#uqc_" + index).val();
+        var discount = row.find("#discount_" + index).val();
+        var qty = row.find("#qty_" + index).val();
+        var txval = row.find("#txval_" + index).val();
+        //var hsncode = $(this).closest('tr').find('td:nth-child(1)').text();
+        if (hsncode == '') {
+            alert("Select HSN Code");
+            return false;
+        }
+        else if (itemdesc == '') {
+            alert("Enter item description");
+            return false;
+        }
+        else if (qty == '') {
+            alert('Enter Qty');
+            return false;
+        }
+        else if (isNaN(qty)) {
+            alert('Characters are not allowed inside QTY');
+            return false;
+        }
+        else if (uqc == '') {
+            alert('Select UQC');
+            return false;
+        }
+        else if (unitprice == '') {
+            alert('Enter Unitprice');
+            return false;
+        }
+        else if (isNaN(unitprice)) {
+            alert('Characters are not allowed inside Unitprice');
+            return false;
+        }
+
+        var obj = {
+            id: id,
+            hsncode: hsncode,
+            itemdesc: itemdesc,
+            qty: qty,
+            uqc: uqc,
+            unitprice: unitprice,
+            discount: discount,
+            txval: txval,
+            rate: rate,
+            igsta: igsta,
+            cgsta: cgsta,
+            sgsta: sgsta,
+            cessa: cessa
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/InwardRegister/B2BEdit',
+            data: JSON.stringify(obj),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                location.reload();
+
+            }
+
+        });
+    }
+
+    function Delete(id, index) {
+
+        $.ajax({
+            type: "GET",
+            url: '/InwardRegister/B2BDelete',
+            data: { Id: id },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                location.reload();
+
+            }
+
+        });
+
+    }
+
+    function updatedetails(index) {
+        var row = $(this).parent().parent();
+        var qty = document.getElementById("qty_" + index).value;
+        var unitprice = document.getElementById("unitprice_" + index).value;
+        var discount = document.getElementById("discount_" + index).value;
+        var rate = document.getElementById("rate_" + index).value;
+
+        var igsta = document.getElementById("iamt_" + index);
+        var cgsta = document.getElementById("camt_" + index);
+        var sgsta = document.getElementById("samt_" + index);
+        var cessa = document.getElementById("csamt_" + index);
+
+        if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+            var discountValue;
+            discountValue = (((qty * unitprice) / 100) * discount);
+            document.getElementById("txval_" + index).value = ((unitprice * qty) - discountValue).toFixed(2);
+        }
+        var taxablevalue = document.getElementById("txval_" + index).value;
+
+        if ((taxablevalue != "") && (rate != "")) {
+            var cgstin = document.getElementById("cgstin").value;
+            var gstin = document.getElementById("pos").value;
+            var cgstin_state = cgstin.substring(0, 2);
+            var gstin_state = gstin.substring(0, 2);
+            if ((gstin_state != "") && (cgstin_state != "")) {
+                if (gstin_state != cgstin_state) {
+                    igsta.value = (taxablevalue * rate) / 100;
+                    cgsta.value = "0";
+                    sgsta.value = "0";
+                }
+                else if (gstin_state == cgstin_state) {
+                    igsta.value = "0";
+                    cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                }
+            }
+        }
+
+
+
+    }
+
+    function updateRate(index) {
+
+        var row = $("#hsncode_" + index).parent().parent();
+
+        var hsnid = $("#hsncode_" + index).val();
+        $.ajax({
+            type: "GET",
+            url: '/InwardB2B/AutoPopulate1',
+            data: { id: hsnid },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                document.getElementById("rate_" + index).value = data.rate;
+
+
+            }
+
+        });
+
+    }
+
+    $(document).ready(function () {
+
+        $("#name").on('change', function () {
+            var name = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: '/InwardB2B/load',
+                data: { name: name },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#pos").val(data.StateCode);
+                    $("#address").val(data.Address);
+                    $("#gstin").val(data.GSTINno);
+                }
+
+            });
+        });
+
+        $("#btnsubmit").on('click', function () {
+            var $checkoutForm = $('#InwardB2BEdit').validate({
+                // Rules for form validation
+                rules: {
+
+                    cgstin: {
+                        required: true
+                    },
+                    name: {
+                        required: true
+                    },
+
+                    invtype: {
+                        required: true
+                    },
+
+                    reversecharge: {
+                        required: true
+                    },
+
+
+
+                },
+
+                // Messages for form validation
+                messages: {
+
+                    cgstin: {
+                        required: 'Please select Taxpayer GSTIN'
+                    },
+                    name: {
+                        required: 'Please select Customer Name'
+                    },
+
+                    reversecharge: {
+                        required: 'Please select Reverse Charge'
+
+                    },
+
+                    invtype: {
+                        required: 'Please select Invoice Type'
+
+                    }
+
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            })
+        });
+
+        $("#btnAdd").on('click', function () {
+            var $checkoutForm = $('#InwardB2BEdit').validate({
+                // Rules for form validation
+                rules: {
+                    uqc: {
+                        required: true
+                    },
+                    cgstin: {
+                        required: true
+                    },
+                    name: {
+                        required: true
+                    },
+
+                    invtype: {
+                        required: true
+                    },
+                    invoicedate: {
+                        required: true
+                    },
+
+                    reversecharge: {
+                        required: true
+                    },
+
+                    HSN: {
+                        required: true
+
+                    },
+                    itemdesc: {
+                        required: true
+
+                    },
+                    taxablevalue: {
+                        required: true,
+                        number: true
+
+                    },
+
+                    iamount: {
+                        required: true,
+                        number: true
+
+                    },
+                    camount: {
+                        required: true,
+                        number: true
+
+                    },
+                    samount: {
+                        required: true,
+                        number: true
+
+                    },
+                    csamount: {
+                        //required: true,
+                        number: true
+
+                    },
+                    unitprice:
+                    {
+                        required: true,
+                        number: true,
+                        min: 0.01
+                    },
+                    discount:
+                    {
+                        required: true,
+                        number: true,
+                        min: 0,
+                        max: 99
+                    }
+                    ,
+                    qty:
+                    {
+                        required: true,
+                        number: true,
+                        min: 0.01
+                    }
+
+                },
+
+
+                messages: {
+                    uqc: {
+                        required: 'Please select UQC'
+                    },
+                    cgstin: {
+                        required: 'Please select Taxpayer GSTIN'
+                    },
+                    name: {
+                        required: 'Please select Customer Name'
+                    },
+
+                    invoicedate: {
+                        required: 'Please select Invoice Date'
+
+                    },
+
+                    reversecharge: {
+                        required: 'Please select Reverse Charge'
+
+                    },
+                    HSN: {
+                        required: 'Please select HSN'
+
+                    },
+                    itemdesc: {
+                        required: 'Please enter Item Description'
+
+                    },
+
+                    taxablevalue: {
+                        required: 'Please enter Taxable Value',
+                        number: 'Characters are not allowed'
+
+                    },
+                    iamount: {
+                        required: 'Please enter IGST Amount',
+                        number: 'Characters are not allowed'
+
+                    },
+                    camount: {
+                        required: 'Please enter CGST Amount',
+                        number: 'Characters are not allowed'
+
+                    },
+                    samount: {
+                        required: 'Please enter SGST/UTGST Amount',
+                        number: 'Characters are not allowed'
+
+                    },
+                    csamount: {
+                        //required: 'Please enter CESS Amount',
+                        number: 'Characters are not allowed'
+
+                    },
+                    unitprice: {
+                        required: 'Please enter Unit Price',
+                        number: 'Characters are not allowed'
+
+                    },
+                    discount: {
+                        required: 'Please enter Discount',
+                        number: 'Characters are not allowed'
+
+                    },
+                    qty: {
+                        required: 'Please enter Qty',
+                        number: 'Characters are not allowed'
+
+                    },
+                    invtype: {
+                        required: 'Please select Invoice Type'
+
+                    }
+
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            })
+        });
+
+    })
+</script>
+

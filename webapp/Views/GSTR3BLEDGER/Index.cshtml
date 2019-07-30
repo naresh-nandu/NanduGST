@@ -1,0 +1,600 @@
+﻿
+
+@model SmartAdminMvc.Models.Ledger.LedgerSummary
+
+<style type="text/css">
+    table.gridtable {
+        font-family: Verdana,Arial;
+        font-size: 11px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+        table.gridtable th {
+            background-color: #dedede;
+            padding: 8px;
+            border-width: 1px;
+            border-color: #666666;
+            border-style: solid;
+        }
+
+        table.gridtable td {
+            background-color: #ffffff;
+            padding: 8px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #666666;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        var table = $("table.gridtable");
+        var row = table.insertRow(0);
+        //DOM manipulation code
+
+    });
+</script>
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+@using (Html.BeginForm("Index", "GSTR3BLEDGER", FormMethod.Post, new { @id = "GSTR3BLedgerForm", @name = "GSTR3BLedgerForm" }))
+{
+
+    <div id="content">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR3B
+                    <span>
+                        >&nbsp;
+                        LEDGER
+                    </span>
+                </h1>
+            </div>
+
+
+        </div>
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Ledger</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        @*@Html.AntiForgeryToken()*@
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">GSTIN</label>
+                                        <div class="col-xs-9 col-lg-9 selectContainer">
+                                            <label class="input">
+                                                @Html.DropDownList("gstin", (ViewBag.GSTINNoList as SelectList), "Please Select GSTIN", new { @Class = "form-control input-sm", autopostback = "true", onchange = "submit();" })
+                                            </label>
+                                        </div>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label">Period</label>
+                                        <div class="col-xs-9 col-lg-9 selectContainer">
+                                            <label class="input">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input type="text" name="period" placeholder="" class="datepicker" data-dateformat='mmyy' value="@ViewBag.Period">
+                                            </label>
+                                        </div>
+                                    </section>
+
+                                </div>
+
+                            </fieldset>
+
+                            <footer>
+                                <button type="submit" name="GetLedger" id="GetLedger" value="GetLedger" class="btn btn-primary pull-right">GetLedger</button>
+                                <button type="submit" name="Export" id="Export" value="Export" class="btn btn-primary pull-right">Export</button>
+                                        </footer>
+
+                                        <div class="message">
+                                            <i class="fa fa-check fa-lg"></i>
+                                            <p>
+                                                Your comment was successfully added!
+                                            </p>
+                                        </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    @if (@Model != null)
+                    {
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-3" data-widget-editbutton="false">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                <h2>Liability Ledger Summary</h2>
+                            </header>
+
+                            <div class="table table-responsive">
+
+
+                                <div class="container-fuild" style="background-color:white;">
+                                    <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                        <thead>
+                                            @*<tr>
+                                    <td colspan="3" class="upload">#</td>
+                                    <td colspan="1" class="upload">Upload Status</td>
+                                    <td colspan="1" class="upload">Filing Status</td>
+                                </tr>*@
+                                            <tr>
+                                                @*<th class="upload">S.No</th>*@
+                                                @*<th class="upload">GSTIN</th>*@
+                                                <th class="upload" style="text-align:center">Description</th>
+                                                <th class="upload" style="text-align:center">IGST</th>
+                                                <th class="upload" style="text-align:center">CGST</th>
+                                                <th class="upload" style="text-align:center">SGST</th>
+                                                @*<th>GSTR2</th>
+                                    <th>GSTR3</th>*@
+                                                <th class="upload" style="text-align:center">CESS</th>
+                                                @*<th>GSTR2</th>
+                                    <th>GSTR3</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    @Model.LiabilityLedger.cl_bal.desc
+                                                </td>
+
+                                                <td>
+                                                    @Model.LiabilityLedger.cl_bal.igstbal.tot
+                                                </td>
+                                                <td>
+                                                    @Model.LiabilityLedger.cl_bal.cgstbal.tot
+                                                </td>
+                                                <td>
+                                                    @Model.LiabilityLedger.cl_bal.sgstbal.tot
+                                                </td>
+                                                <td>
+                                                    @Model.LiabilityLedger.cl_bal.cessbal.tot
+                                                </td>
+                                            </tr>
+
+                                            @*@foreach (var item in result)
+                                {
+                                    <tr>
+                                        <td>@Convert.ToInt32(i++)</td>
+                                        <td>@item.CompanyName</td>
+                                        <td><a style="text-decoration:underline" href="@Url.Action("Index","Home",  new { @gstin = @item.GSTINNo, @period = ViewBag.Period})">@item.GSTINNo</a></td>
+                                        <td>
+                                            @if (item.GSTR1_U == 0)
+                                            {
+                                                <div class="text-danger red">Pending</div>
+                                            }
+                                            else if (item.GSTR1_U == 1)
+                                            {
+                                                <div class="text-warning red">In Progress</div>
+                                            }
+                                            else if (item.GSTR1_U == 2)
+                                            {
+                                                <div class="text-success red">Completed</div>
+                                            }
+                                        </td>
+
+                                        <td>
+                                            @if (item.GSTR1_F == 0)
+                                            {
+                                                <div class="text-danger red">Pending</div>
+                                            }
+                                            else if (item.GSTR1_F == 1)
+                                            {
+                                                <div class="text-success red">Completed</div>
+                                            }
+                                        </td>
+
+                                    </tr>
+                                }*@
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                @*}
+
+                    else
+                    {
+                        <div style="text-align:left">
+                            <br /><br />
+                            <h3 style="text-align:left !important">No Data Found</h3>
+                        </div>
+
+                    }
+                    }*@
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-3" data-widget-editbutton="false">
+
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>ITC Ledger Summary</h2>
+
+                </header>
+
+                <div class="table table-responsive">
+
+
+
+                    <div class="container-fuild" style="background-color:white;">
+                        <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                            <thead>
+
+                                <tr>
+
+                                    <th class="upload" style="text-align:center">Description</th>
+                                    <th class="upload" style="text-align:center">IGST</th>
+                                    <th class="upload" style="text-align:center">CGST</th>
+                                    <th class="upload" style="text-align:center">SGST</th>
+
+                                    <th class="upload" style="text-align:center">CESS</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <span>Opening Balance</span>
+
+                                    </td>
+
+                                    <td>
+                                        @Model.ITC_Ledger.itcLdgDtls.op_bal.igstTaxBal
+                                    </td>
+                                    <td>
+                                        @Model.ITC_Ledger.itcLdgDtls.op_bal.cgstTaxBal
+                                    </td>
+                                    <td>
+                                        @Model.ITC_Ledger.itcLdgDtls.op_bal.sgstTaxBal
+                                    </td>
+                                    <td>
+                                        @Model.ITC_Ledger.itcLdgDtls.op_bal.cessTaxBal
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                         <span>Closing Balance</span>
+                                    </td>
+
+                                    <td>
+                                        @Model.ITC_Ledger.itcLdgDtls.cl_bal.igstTaxBal
+                                    </td>
+                                    <td>
+                                        @Model.ITC_Ledger.itcLdgDtls.cl_bal.cgstTaxBal
+                                    </td>
+                                    <td>
+                                      @Model.ITC_Ledger.itcLdgDtls.cl_bal.sgstTaxBal
+                                    </td>
+                                    <td>
+                                       @Model.ITC_Ledger.itcLdgDtls.cl_bal.cessTaxBal
+                                    </td>
+                                </tr>
+
+                                @if (Model.ITC_Ledger.provCrdBalList.provCrdBal.Count() < 1)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            <span>Provision Credit</span>
+                                        </td>
+
+                                        <td>
+                                           <span>0</span>
+                                        </td>
+                                        <td>
+                                            <span>0</span>
+                                        </td>
+                                        <td>
+                                            <span>0</span>
+                                        </td>
+                                        <td>
+                                            <span>0</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    foreach (var item in Model.ITC_Ledger.provCrdBalList.provCrdBal)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span>Provision Credit</span>
+                                            </td>
+
+                                            <td>
+                                                @item.igstProCrBal
+                                            </td>
+                                            <td>
+                                                @item.cgstProCrBal
+                                            </td>
+                                            <td>
+                                                @item.sgstProCrBal
+                                            </td>
+                                            <td>
+                                                @item.igstProCrBal
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+                        <div class="jarviswidget jarviswidget-color-teal" id="wid-id-3" data-widget-editbutton="false">
+
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                <h2>Cash ITC Summary</h2>
+
+                            </header>
+
+                            <div class="table table-responsive">
+
+                                @*@if (ViewBag.Summary != null)
+                    {*@
+                                @*if (Enumerable.Count(ViewBag.Summary) > 0)
+                    {*@
+                                @*int i = 1;*@
+
+                                <div class="container-fuild" style="background-color:white;">
+                                    <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                        <thead>
+                                            @*<tr>
+                                    <td colspan="3" class="upload">#</td>
+                                    <td colspan="1" class="upload">Upload Status</td>
+                                    <td colspan="1" class="upload">Filing Status</td>
+                                </tr>*@
+                                            <tr>
+                                                @*<th class="upload">S.No</th>*@
+                                                <th class="upload" style="text-align:center">Descripton</th>
+                                                <th class="upload" style="text-align:center">IGST</th>
+                                                <th class="upload" style="text-align:center">CGST</th>
+                                                <th class="upload" style="text-align:center">SGST</th>
+                                                @*<th>GSTR2</th>
+                                    <th>GSTR3</th>*@
+                                                <th class="upload" style="text-align:center">CESS</th>
+                                                @*<th>GSTR2</th>
+                                    <th>GSTR3</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span>Cash Balance</span>
+                                                </td>
+
+                                                <td>
+                                                    @Model.CashITCBalance.cash_bal.igst_tot_bal
+                                                </td>
+                                                <td>
+                                                    @Model.CashITCBalance.cash_bal.cgst_tot_bal
+                                                </td>
+                                                <td>
+                                                    @Model.CashITCBalance.cash_bal.sgst_tot_bal
+                                                </td>
+                                                <td>
+                                                    @Model.CashITCBalance.cash_bal.cess_tot_bal
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span>ITC Balance</span>
+                                                </td>
+
+                                                <td>
+                                                    @Model.CashITCBalance.itc_bal.igst_bal
+                                                </td>
+                                                <td>
+                                                    @Model.CashITCBalance.itc_bal.cgst_bal
+                                                </td>
+                                                <td>
+                                                    @Model.CashITCBalance.itc_bal.sgst_bal
+                                                </td>
+                                                <td>
+                                                    @Model.CashITCBalance.itc_bal.cess_bal
+                                                </td>
+                                            </tr>
+                                            @*@foreach (var item in result)
+                                {
+                                    <tr>
+                                        <td>@Convert.ToInt32(i++)</td>
+                                        <td>@item.CompanyName</td>
+                                        <td><a style="text-decoration:underline" href="@Url.Action("Index","Home",  new { @gstin = @item.GSTINNo, @period = ViewBag.Period})">@item.GSTINNo</a></td>
+                                        <td>
+                                            @if (item.GSTR1_U == 0)
+                                            {
+                                                <div class="text-danger red">Pending</div>
+                                            }
+                                            else if (item.GSTR1_U == 1)
+                                            {
+                                                <div class="text-warning red">In Progress</div>
+                                            }
+                                            else if (item.GSTR1_U == 2)
+                                            {
+                                                <div class="text-success red">Completed</div>
+                                            }
+                                        </td> 
+
+                                        <td>
+                                            @if (item.GSTR1_F == 0)
+                                            {
+                                                <div class="text-danger red">Pending</div>
+                                            }
+                                            else if (item.GSTR1_F == 1)
+                                            {
+                                                <div class="text-success red">Completed</div>
+                                            }
+                                        </td>
+
+                                    </tr>
+                                }*@
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                @*}
+
+                    else
+                    {
+                        <div style="text-align:left">
+                            <br /><br />
+                            <h3 style="text-align:left !important">No Data Found</h3>
+                        </div>
+
+                    }
+                    }*@
+
+                            </div>
+
+                        </div>
+
+                        <footer>
+                            <button type="submit" name="offset" id="OffsetLiability" value="OffsetLiability" class="btn btn-primary pull-right" style="margin-left:1080px">OffsetLiability</button>
+                            @*<button type="submit" name="Export" id="Export" value="Export" class="btn btn-primary pull-right">Export</button>*@
+                        </footer>
+
+                    }
+
+                    <!-- end widget -->
+
+                </article>
+            </div>
+        </section>
+
+
+    </div>
+}
+
+
+
+
+@if (TempData["AuthMsg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["AuthMsg"])));
+        TempData["AuthMsg"] = null;
+    </script>
+}
+@if (ViewBag.GSTINEmptyOrNull != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(ViewBag.GSTINEmptyOrNull)));
+        //ViewBag.GSTNEmptyOrNull = null;
+    </script>
+}
+@if (ViewBag.PeriodEmptyOrNull != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(ViewBag.PeriodEmptyOrNull)));
+        ViewBag.PeriodEmptyOrNull = null;
+    </script>
+}
+
+
+
+@if (TempData["OffsetLiabilityResponseMessage"] != null)
+{
+
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["OffsetLiabilityResponseMessage"])));
+        TempData["OffsetLiabilityResponseMessage"] = null;
+    </script>
+}
+
+@if (TempData["Message"] != null)
+{
+
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        TempData["Message"] = null;
+    </script>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#divTOKEN").hide();
+        if ($("#action").val() == "FILEDET") {
+            $("#divTOKEN").show();
+        } else {
+            $("#divTOKEN").hide();
+        }
+        $("#action").change(function () {
+            if ($("#action").val() == "FILEDET") {
+                $("#divTOKEN").show();
+            } else {
+                $("#divTOKEN").hide();
+            }
+        });
+    });
+</script>

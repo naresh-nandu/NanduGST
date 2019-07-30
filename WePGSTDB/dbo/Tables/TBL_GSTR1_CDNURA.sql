@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR1_CDNURA] (
+    [cdnuraid]     INT             IDENTITY (1, 1) NOT NULL,
+    [gstr1id]      INT             NOT NULL,
+    [flag]         VARCHAR (1)     NULL,
+    [typ]          VARCHAR (6)     NULL,
+    [ont_num]      VARCHAR (50)    NULL,
+    [ont_dt]       VARCHAR (50)    NULL,
+    [ntty]         VARCHAR (1)     NULL,
+    [nt_num]       VARCHAR (50)    NULL,
+    [nt_dt]        VARCHAR (50)    NULL,
+    [p_gst]        VARCHAR (1)     NULL,
+    [inum]         VARCHAR (50)    NULL,
+    [idt]          VARCHAR (50)    NULL,
+    [val]          DECIMAL (18, 2) NULL,
+    [diff_percent] DECIMAL (4, 2)  NULL,
+    [gstinid]      INT             NULL,
+    [rsn]          VARCHAR (50)    NULL,
+    [chksum]       VARCHAR (75)    NULL,
+    [createddate]  DATETIME        NULL,
+    [createdby]    INT             NULL,
+    [custid]       INT             NULL,
+    PRIMARY KEY CLUSTERED ([cdnuraid] ASC),
+    CONSTRAINT [FK_TBL_GSTR1_CDNURA_TBL_GSTR1] FOREIGN KEY ([gstr1id]) REFERENCES [dbo].[TBL_GSTR1] ([gstr1id])
+);
+

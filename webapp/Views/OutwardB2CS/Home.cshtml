@@ -1,0 +1,546 @@
+﻿
+
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Outward Register
+                <span>
+                    >&nbsp;
+                    B2CS
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <div class="row">
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-radius:20px;">
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Outward B2CS</h2>
+                    </header>
+
+                    <div>
+
+                        <div class="jarviswidget-editbox">
+
+                        </div>
+
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+                                
+
+                                            <form action="@Url.Action("Home", "OutwardB2CS")" method="post" id="OutwardB2CS" novalidate="novalidate">
+                                                <fieldset>
+                                                   
+                                                    <div class="row">
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label>Taxpayer GSTIN</label>
+                                                                <div>
+                                                                    @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "GSTINNo", "GSTINNo"), "--Select--", new { @Class = "form-control input-sm",@id="cgstin", @onchange = "taxableCalculation();" })
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>Place of Supply</label>
+                                                            <label class="input">
+                                                                <input type="text" name="pos" id="pos" placeholder="State Code"  maxlength="2" min="00" max="37" onblur = "taxableCalculation();" >
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label>Supply Type</label>
+                                                               
+                                                                    <label class="input">
+                                                                        <input type="text" name="stype" id="stype" placeholder="Supply Type" readonly>
+                                                                    </label>
+                                                                        @*<select class="form-control input-sm" name="stype" id="stype">
+                <option value="0" >--Select--</option>
+                <option value="Inter"  >INTER</option>
+                <option value="Intra" >INTRA</option>
+            </select>*@
+</div>
+                                                           
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label>Type</label>
+                                                                <div>
+                                                                    <select class="form-control input-sm" name="type" id= "type" onchange="display();">
+                                                                        <option value="0">--Select--</option>
+                                                                        <option value="E">Ecom</option>
+                                                                        <option value="OE">Other than ecom</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-3">
+                                                            <label>Ecom Operator Gstin</label>
+                                                            <label class="input">
+                                                                <input type="text" name="etin" id="etin" placeholder="Etin" readonly>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label>HSN</label>
+                                                                <div>
+                                                                    @Html.DropDownList("hsn", new SelectList(ViewBag.HSNDetail, "hsnid", "hsncode"), "--Select--", new { @Class = "form-control input-sm", @id = "hsn", @onblur = "taxableCalculation();" })
+                                                                </div>
+                                                                </div>
+
+                                                        </section>
+
+                                                        <section class="col col-3">
+                                                            <label>HSN Description</label>
+                                                            <label class="input">
+                                                                <input type="text" name="hsndesc" placeholder="Description" id="hsndesc" readonly>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>Item Description</label>
+                                                            <label class="input">
+                                                                <input type="text" name="itemdesc" placeholder="Description" id="itemdesc" >
+                                                            </label>
+                                                        </section>
+                                                        
+                                                       
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-3">
+                                                            <label>Qty</label>
+                                                            <label class="input">
+                                                                <input type="text" name="qty" placeholder="Quantity" id="qty" onblur="taxableCalculation();">
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label>UQC</label>
+                                                                <div>
+                                                                    @Html.DropDownList("uqc", new SelectList(ViewBag.UQCList, "uqc", "uqcdesc"), "--Select--", new { @Class = "form-control input-sm", @id = "uqc" })
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>Unit price</label>
+                                                            <label class="input">
+                                                                <input type="text" name="unitprice" id="unitprice" placeholder="Unit price" onblur="taxableCalculation();">
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <div class="form-group">
+                                                                <label>Is Discount Applicable</label>
+                                                                @Html.DropDownList("isDiscountreq", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "No", Value = "No" },
+                                                                                                                                new SelectListItem { Text = "Yes", Value = "Yes" } }, "Value", "Text"), new { @Class = "form-control input-sm", @id = "isDiscountreq"})
+
+                                                            </div>
+                                                        </section>
+                                                       
+                                                       
+                                                       
+                                                        
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-3">
+                                                            <label>Discount(%)</label>
+                                                            <label class="input">
+                                                                <input type="text" name="discount" id="discount" placeholder="Discount" onblur="taxableCalculation();" value="0" readonly>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>Taxable Value</label>
+                                                            <label class="input">
+                                                                <input type="text" name="taxvalue" id="taxablevalue" placeholder="Taxable Value" readonly>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>Rate(%)</label>
+                                                            <label class="input">
+                                                                <input type="text" name="rate" id="rate" placeholder="Rate" readonly>
+                                                                @*@Html.DropDownList("rate", new SelectList(ViewBag.Rates, "ratevalue", "ratevalue"), "--Select--", new { @Class = "form-control input-sm", @id = "rate", @onchange = "taxableCalculation();" })*@
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>IGST Amount</label>
+                                                            <label class="input">
+                                                                <input type="text" name="igsta" placeholder="IGST Amount" value="0" id="iamount" readonly>
+                                                            </label>
+                                                        </section>
+                                                     
+                                                     
+                                                       </div>
+                                                    <div class="row">
+                                                        <section class="col col-3">
+                                                            <label>CGST Amount</label>
+                                                            <label class="input">
+                                                                <input type="text" name="cgsta" placeholder="CGST Amount" value="0" id="camount" readonly>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+
+                                                            <label>SGST/UTGST Amount</label>
+                                                            <label class="input">
+                                                                <input type="text" name="sgsta" placeholder="SGST/UTGST Amount" value="0" id="samount" readonly>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label>CESS Amount</label>
+                                                            <label class="input">
+                                                                <input type="text" name="cessa" placeholder="CESS Amount" value="0" id="csamount">
+                                                            </label>
+                                                        </section>
+                                                    </div>
+                                            </fieldset>
+                                                <footer>
+                                                    <div class="col-md-12 text-center">
+                                                        <input type="submit" value="Save" id="btnsubmit"class="btn btn-success btnstyle"  style="font-weight:bold" />
+                                                    </div>
+                                                </footer>
+                                             </form>
+                                       </div>
+                            </div>
+
+                    </div>
+
+
+                </div>
+            </article>
+        </div>
+
+    </section>
+
+
+</div>
+
+
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">
+            alert(@Html.Raw(Json.Encode(TempData["Message"])));
+          
+        </script>
+        TempData["Message"] = null;
+    }
+
+
+
+
+
+@section pagespecific{
+<script type="text/javascript" >
+
+    function display()
+    {
+        var type = $('#type').val();
+        if (type == "E")
+        {
+            $('#etin').removeAttr("readonly");
+        }
+        else {
+
+            $('#etin').val("").attr("readonly", "true");
+        }
+    }
+    function taxableCalculation() {
+        var qty = document.getElementById("qty").value;
+        var unitprice = document.getElementById("unitprice").value;
+        var discount = document.getElementById("discount").value;
+        var rate = document.getElementById("rate").value;
+
+
+        var igsta = document.getElementById("iamount");
+        var cgsta = document.getElementById("camount");
+        var sgsta = document.getElementById("samount");
+        var cgstin = document.getElementById("cgstin").value;
+        var gstin = document.getElementById("pos").value;
+        var cgstin_state = cgstin.substring(0, 2);
+        var gstin_state = gstin.substring(0, 2);
+
+        if ((qty != "") && (unitprice != "") && (discount != "")) {
+
+            var discountValue;
+            discountValue = (((qty * unitprice) / 100) * discount);
+            document.getElementById("taxablevalue").value = ((unitprice * qty) - discountValue).toFixed(2);
+        }
+        var taxablevalue = document.getElementById("taxablevalue").value;
+
+        if ((taxablevalue != "") && (rate != "")) {
+     
+            if ((gstin_state != "") && (cgstin_state != "")) {
+                if (gstin_state != cgstin_state) {
+                    igsta.value = (taxablevalue * rate) / 100;
+                    cgsta.value = "0";
+                    sgsta.value = "0";
+                  
+                }
+                else if (gstin_state == cgstin_state) {
+                    igsta.value = "0";
+                    cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                   
+                }
+            }
+        }
+        if ((gstin_state != "") && (cgstin_state != "")) {
+            if (gstin_state != cgstin_state)
+            { $('#stype').val("INTER"); }
+            else if (gstin_state == cgstin_state)
+            { $('#stype').val("INTRA"); }
+        }
+        else
+        { $('#stype').val(""); }
+    }
+</script>
+    
+    <script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        $("#isDiscountreq").on('change', function () {
+            var discresq = $('#isDiscountreq').val();
+            if (discresq != "No") {
+                $('#discount').removeAttr("readonly");
+            }
+            else {
+                $('#discount').val("0").attr("readonly", "true");
+            }
+        });
+
+        $("#hsn").on('change', function () {
+            var hsnid = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: '/OutwardB2CS/AutoPopulate',
+                data: { Prefix: hsnid },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#hsndesc").val(data.hsnDescription);
+                    $("#unitprice").val(data.unitPrice);
+                    $("#rate").val(data.rate);
+
+                }
+
+            });
+
+        });
+        //$(document).on('change blur', '#cgstin, #pos', function () {
+      
+        //    var cgstin = $('#cgstin').val();
+        //    var pos = $('#pos').val();
+
+        //    var cgstin_state = cgstin.substring(0, 2);
+        //    var state = pos.substring(0, 2);
+        //    if ((state != "") && (cgstin_state != "")) {
+        //        if (state == cgstin_state) {
+        //            $('#iamount').val("0").attr("readonly", "true");
+        //            $('#camount').removeAttr("readonly");
+        //            $('#samount').removeAttr("readonly");
+        //        }
+        //        else {
+        //            $('#iamount').removeAttr("readonly");
+        //            $('#camount').val("0").attr("readonly", "true");
+        //            $('#samount').val("0").attr("readonly", "true");
+        //        }
+        //    }
+        //});
+
+
+      
+        $('#btnsubmit').on('click', function () {
+            var $regexname = /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ][0-9a-zA-Z]{1}$/;
+
+            if ($('#etin').val() != "") {
+                if (!$('#etin').val().match($regexname)) {
+                    alert("Wrong Etin");
+                    return false;
+                }
+            }
+        });
+
+        var $checkoutForm = $('#OutwardB2CS').validate({
+
+            // Rules for form validation
+            rules: {
+                uqc: {
+                    required: true
+                },
+                taxvalue: {
+                    required: true,
+                    number: true
+                },
+                //rate: {
+                //    required: true,
+                //    number: true
+                //},
+                cgstin: {
+                    required: true
+                },
+                stype: {
+                    required: true
+                },
+                hsn: {
+                    required: true
+                },
+                itemdesc: {
+                    required: true
+                },
+                igsta: {
+                    required: true,
+                    number: true
+                },
+                cgsta: {
+                    required: true,
+                    number: true
+                },
+                sgsta: {
+                    required: true,
+                    number: true
+                },
+                qty: {
+                    required: true,
+                    number: true,
+                    min: 0.01
+                },
+                pos: {
+                    required: true
+                },
+                cessa: {
+                    //required: true,
+                    number: true
+                },
+                type: {
+                    required: true
+                },
+                //unitprice: {
+                //    required: true,
+                //    number: true,
+                //    min: 0.01
+                //},
+                discount: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max: 99
+                }
+
+            },
+
+            // Messages for form validation
+            messages: {
+                uqc: {
+                    required: 'Please select UQC'
+                },
+                taxvalue: {
+                    required: 'Please enter Taxable Value',
+                    number: 'Characters are not allowed'
+                },
+                pos: {
+                    required: 'Please enter Place of Supply'
+                },
+                //rate: {
+                //    required: 'Please select Rate',
+                //    number: 'Characters are not allowed'
+                //},
+                cgstin: {
+                    required: 'Please select Taxpayer GSTIN'
+                },
+                type: {
+                    required: 'Please select Type'
+                },
+                stype: {
+                    required: 'Please select Supply Type'
+                },
+                //unitprice: {
+                //    required: 'Please enter  Unit Price',
+                //    number: 'Characters are not allowed'
+
+                //},
+                discount: {
+                    required: 'Please enter Discount',
+                    number: 'Characters are not allowed'
+                },
+                hsn: {
+                    required: 'Please select HSN'
+                },
+                item: {
+                    required: 'Please enter Item Desciption'
+                },
+                igsta: {
+                    required: 'Please IGST Amount',
+                    number: 'Characters are not allowed'
+
+                },
+                cgsta: {
+                    required: 'Please enter CGST Amount',
+                    number: 'Characters are not allowed'
+                },
+                sgsta: {
+                    required: 'Please enter SGST/UTGST Amount',
+                    number: 'Characters are not allowed'
+                },
+                cessa: {
+                    //required: 'Please enter cess amount',
+                    number: 'Characters are not allowed'
+
+                },
+                qty: {
+                    required: 'Please enter Qty',
+                    number: 'Characters are not allowed'
+                }
+
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    })
+
+    </script>
+
+}
+

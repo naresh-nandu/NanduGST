@@ -1,0 +1,149 @@
+﻿<style>
+	#helpicon {
+		font-size: 30px;
+		margin-top: -6px;
+	}
+</style>
+<!-- logout button -->
+<div id="logout" class="btn-header transparent pull-right">
+	@if (Session["Partner_Company"].ToString() == "NA")
+	{
+		<span> <a href="@Url.Action("Logout", "account")" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+	}
+	else
+	{
+		<form name="f1" method="POST" action="@Session["Partner_LogoutURL"].ToString()">
+			<input type="hidden" name="em" value="@Session["Partner_CustEmail"].ToString()">
+			<input type="hidden" name="pwd" value="@Session["Partner_CustPassword"].ToString()">
+			<button type="submit" name="Logout" value="Logout" style="margin-top:10px; height:30px;"><i class="fa fa-sign-out"></i></button>
+		</form>
+	}
+	@*<span> <a href="@Url.Action("Logout", "account")" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>*@
+
+</div>
+<!-- end logout button -->
+<!-- search mobile button (this is hidden till mobile view port) -->
+<div id="search-mobile" class="btn-header transparent pull-right">
+	<span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+</div>
+<!-- end search mobile button -->
+<!-- input: search field -->
+<!-- end input: search field -->
+<!-- fullscreen button -->
+<div id="fullscreen" class="btn-header transparent pull-right">
+	<span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+</div>
+<!-- end fullscreen button -->
+<!-- collapse menu button -->
+<div id="hide-menu" class="btn-header pull-right">
+	<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+</div>
+<!-- end collapse menu -->
+<!-- #MOBILE -->
+<!-- Top menu profile link : this shows only when top menu is active -->
+<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+	<li class="">
+		<a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+			<img src="~/content/img/avatars/male.png" alt="" class="online" />
+		</a>
+		<ul class="dropdown-menu pull-right">
+			<li>
+				<a href="~/account/ChangePassword" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Change Password</a>
+			</li>
+			<li class="divider"></li>
+			<li>
+				<a href="~/ProfileMgmt/CustomerProfile" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> Profile</a>
+			</li>
+			@*<li class="divider"></li>*@
+			@*<li>
+					<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> S</>hortcut</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full S</>creen</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					@*<a href="@Url.Action("logout", "account")" class="padding-10 padding-top-5 padding-bottom-5"><i class="fa fa-sign-out fa-lg"></i> <strong>Logout</strong></a>*@
+			@*@if (Session["Partner_Company"].ToString() == "NA")
+						{
+							<a href="@Url.Action("logout", "account")" class="padding-10 padding-top-5 padding-bottom-5"><i class="fa fa-sign-out fa-lg"></i> <strong>Logout </strong ></a>
+						}
+						else
+						{
+							<form name="f1" method="POST" action="@Session["Partner_LogoutURL"].ToString()">
+								<input type="hidden" name="em" value="@Session["Partner_CustEmail"].ToString()">
+								<input type="hidden" name="pwd" value="@Session["Partner_CustPassword"].ToString()">
+								<button type="submit" name="Logout" value="Logout" class="padding-10 padding-top-5 padding-bottom-5 btn btn-link" ><i class="fa fa-sign-out fa-lg"></i> Logout</button>
+							</form>
+						}
+				</li>*@
+		</ul>
+	</li>
+</ul>
+
+
+<!-- #Voice Command: Start Speech -->
+<!-- end voice command -->
+<!-- multiple lang dropdown : find all flags in the flags page -->
+<div id="logout" class="btn-header transparent pull-right">
+	<span> <a href="#" title="Company Name"><i class="fa fa-users"></i></a>  @Session["CompanyName"] </span>
+</div>
+
+@*<ul class="header-dropdown-list hidden-xs">
+
+	<li>
+		<a href="#" style="text-align:center;font-weight:bold" class="dropdown-toggle" data-toggle="dropdown" title="Need Help / Report Issue"><i class="glyphicon glyphicon-question-sign" id="helpicon"></i><span></span></a>
+		<ul class="dropdown-menu">
+			<li>
+				@{Html.RenderPartial("_HelpReport");}
+			</li>
+		</ul>
+	</li>
+		</ul>*@
+
+@if (Session["Partner_Company"].ToString() == "NA")
+{
+	<div id="logout" class="btn-header transparent pull-right">
+		<span style="font-weight:bold">
+			<a href="@Url.Action("Home", "NeedHelp_ReportIssues")" title="Need Help"><i class="glyphicon glyphicon-question-sign"></i></a>
+			Need Help &nbsp;
+		</span>
+	</div>
+}
+	@if (Session["WalletPack"].ToString() == "True")
+	{
+		using (System.Data.SqlClient.SqlConnection wt_con = new System.Data.SqlClient.SqlConnection(System.Configuration.ConfigurationManager.AppSettings["ConnectionString"]))
+		{
+			System.Data.SqlClient.SqlDataAdapter adt1 = new System.Data.SqlClient.SqlDataAdapter("Select TOP 1 * from TBL_WEP_WALLET where CustId = '" + Session["Cust_ID"].ToString() + "' and TRPId IS NULL", wt_con);
+			System.Data.DataTable dt1 = new System.Data.DataTable();
+			adt1.Fill(dt1);
+			if (dt1.Rows.Count > 0)
+			{
+				Session["Wallet_Balance"] = dt1.Rows[0]["TotalValue"].ToString();
+			}
+			else
+			{
+				Session["Wallet_Balance"] = "0.00";
+			}
+		}
+
+
+		<div id="logout" class="btn-header transparent pull-right">
+			<span style="font-weight:bold">
+				<a href="https://portal.wepdigital.com/login" target="_blank" title="Wallet Balance"><i class="fa fa-database"></i></a>
+				Add Money &nbsp;
+			</span>
+		</div>
+
+		<div id="logout" class="btn-header transparent pull-right">
+			<span style="font-weight:bold">
+				<a href="@Url.Action("WalletTransactions", "Account")" title="Wallet Balance"><i class="glyphicon glyphicon-shopping-cart"></i></a>
+				<i class="fa fa-rupee"></i> @Session["Wallet_Balance"] &nbsp;
+			</span>
+		</div>
+
+
+	}
+
+	<!-- end multiple lang -->

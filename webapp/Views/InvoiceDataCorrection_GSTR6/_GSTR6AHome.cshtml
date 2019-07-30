@@ -1,0 +1,159 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.GSTR6A != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.GSTR6A)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 1000);
+    }
+}
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+        oTableStaticFlow1 = $('#example1').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+
+    });
+</script>
+
+@if (ViewBag.GSTR6A != null)
+{
+    if (Enumerable.Count(ViewBag.GSTR6A) > 0)
+    {
+
+        <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2 style="font-weight:bold;">Missing Invoices in GSTR-6</h2>
+                </header>
+
+
+                <div class="table-responsive" style="overflow:auto">
+                    <div class="container-fuild" style="background-color:white;">
+                        <table id="example1" class="table table-striped table-responsive table-bordered table-hover gridtable" style="width:95%">
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>S.No</th>
+                                    <th>GSTIN</th>
+                                    <th>Supplier GSTIN</th>
+                                    @if (Convert.ToString(Session["action"]) == "CDNR")
+                                    {
+                                        <th>Note Number</th>
+                                        <th>Note Date</th>
+                                    }
+                                    <th>Invoice No</th>
+                                    <th>Invoice Date</th>
+                                    <th>Invoice Value</th>
+                                    @*<th>Taxable Value</th>
+                                    <th>Total Tax Amount</th>*@
+                                    @if (Convert.ToString(Session["action"]) == "B2B")
+                                    {
+                                        <th>POS</th>
+                                        @*<th>Invoice Type</th>*@
+                                    }
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                @foreach (var item in result)
+                                {
+
+                                    <tr>
+                                        <td><input class="check-box" id="GSTR6AId" name="GSTR6AId" type="radio" value="@item.invid" /></td>
+                                        <td>@item.SNo</td>
+                                        <td>@item.gstin</td>
+                                        <td>@item.ctin</td>
+                                        @if (Convert.ToString(Session["action"]) == "CDNR")
+                                        {
+                                            <td>@item.nt_num</td>
+                                            <td>@item.nt_dt</td>
+                                        }
+                                        <td>@item.inum</td>
+                                        <td>@item.idt</td>
+                                        <td>@item.val</td>
+                                        @*<td>@item.txval</td>
+                                        <td>@item.TotaltaxAmount</td>*@
+                                        @if (Convert.ToString(Session["action"]) == "B2B")
+                                        {
+                                            <td>@item.pos</td>
+                                            @*<td>@item.inv_typ</td>*@
+                                        }
+                                    </tr>
+
+                                }
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </article>
+
+    }
+    else
+    {
+        <article class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2 style="font-weight:bold;">Missing Invoices in GSTR-6</h2>
+                </header>
+                <div class="table-responsive" style="overflow:auto">
+                    <div class="container-fuild" style="background-color:white;">
+                        <h2 style="font-weight:500;text-align:center;color: #3276b1;">No Data Found</h2>
+                    </div>
+                </div>
+            </div>
+        </article>
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

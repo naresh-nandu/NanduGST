@@ -1,0 +1,19 @@
+﻿@model SmartAdminMvc.Models.TBL_Cust_GSTIN
+
+<fieldset>
+    <legend style="font-weight:600;font-size:15px;">Delete GSTIN Number</legend>
+    <div class="form-group" style="margin-top:-15px;">
+        <p style="font-weight:600;font-size:13px;">Select GSTIN Number</p>
+        <div class="col-md-5">
+            @Html.DropDownList("gstid", (SelectList)ViewBag.GSTINNumber, "Select GSTIN Number", new {  selected = true, @style = "padding:3px" })
+            <br /><br />
+            <footer>
+                <button type="submit" class="btn btn-primary pull-left" name="command" value="delete" onclick='ShowMessage()'>
+                    Delete
+                </button>
+            </footer>
+        </div>
+        <br /><br />
+    </div>
+
+    </fieldset>

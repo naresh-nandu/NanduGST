@@ -1,0 +1,90 @@
+﻿
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_GSTRSummary = $('#G1_GSTRSummary').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+    });
+
+
+    function ShowMessage(param) {
+        var data = $(param).parent().parent()["0"].childNodes[3].innerText;
+        $('#strExportAction').val(data);
+
+    }
+    
+
+</script>
+
+
+
+<div class="table table-responsive">
+
+    @if (ViewBag.GSTRSummary != null)
+    {
+
+        int i = 1;
+        <div class="container-fuild" style="background-color:white;">
+            <table id="G1_GSTRSummary" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                <thead>
+                    <tr>
+
+                        <th>S.No</th>
+                        <th>Action Type</th>
+                        <th>Record Count</th>
+                        <th>No Of Invoices</th>
+                        <th>Taxable Value</th>
+                        <th>IGST Amount</th>
+                        <th>CGST Amount</th>
+                        <th>SGST Amount</th>
+                        <th>CESS Amount</th>
+                        <th>Export</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.GSTR1Summary)
+                    {
+                        
+                    <tr>
+                        <td>@Convert.ToInt32(i++)</td>
+                        <td>@item.ActionType</td>
+                        <td>@item.RecordCount</td>
+                        <td>@item.NoOfInvoices</td>
+                        <td>@item.txval</td>
+                        <td>@item.iamt</td>
+                        <td>@item.camt</td>
+                        <td>@item.samt</td>
+                        <td>@item.csamt</td>
+                        <td>
+                            @if (item.RecordCount != 0)
+
+                            {
+                                <button type="submit" name="command" id="exportrawData" value="exportrawData" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage(this);" style="font-weight:bold;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;">
+                                    Export
+                                </button>
+                            }
+                            </td>
+                        
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+    }
+</div>
+
+
+
+

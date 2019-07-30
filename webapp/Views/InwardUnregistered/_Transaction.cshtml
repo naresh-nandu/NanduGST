@@ -1,0 +1,148 @@
+﻿<br />
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+
+                    <th>HSN<span style="color:red">*</span></th>
+                    <th>Item Description<span style="color:red">*</span></th>
+                    <th>Qty<span style="color:red">*</span></th>
+                    <th>UQC<span style="color:red">*</span></th>
+                    <th>Unit Price<span style="color:red">*</span></th>
+                    <th>Disc(%)</th>
+                    <th>Taxable Value<span style="color:red">*</span></th>
+                    <th>Rate(%)<span style="color:red">*</span></th>
+                    <th>IGST Amount</th>
+                    <th>CGST Amount</th>
+                    <th>SGST/UTGST Amount</th>
+                    <th>CESS Amount</th>
+                    <th>Eligibility</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td>
+                        @*<label class="input">
+                                <input type="text" name="HSN" id="hsn" autocomplete="on">
+                            </label>*@
+                        <label class="input" style="width:60px">
+                            @*@Html.DropDownList("HSN", new SelectList(ViewBag.HSNDetail, "hsnid", "hsncode"), "Select", new { @Class = "form-control input-sm", @id = "hsn", @onblur = "taxableCalculation();" })*@
+                            <input type="text" name="HSN" id="hsn">
+                        </label>
+                    </td>
+                    @*<td>
+                        <label class="input">
+                            <input type="text" name="HSNdesc" id="hsndesc">
+                        </label>
+                    </td>*@
+                    <td>
+                        <label class="input">
+                            <input type="text" name="itemdesc" id="itemdesc" maxlength="50">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="qty" id="qty" onblur="taxableCalculation();" onkeypress="return decimalInput(event)" class="floatinput">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:70px">
+                            @Html.DropDownList("uqc", new SelectList(ViewBag.UQCList, "uqc", "uqcdesc"), "Select", new { @Class = "form-control input-sm", @id = "uqc" })
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="unitprice" id="unitprice" onblur="taxableCalculation();" onkeypress="return decimalInput(event)" class="floatinput">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            @if (Session["discountreqb2b"] == null || Session["discountreqb2b"].ToString() == "No")
+                            {
+                                <input type="text" name="discount" id="discount" onblur="taxableCalculation();" value="0" readonly class="floatinput">
+                            }
+                            else if (Session["discountreqb2b"].ToString() == "Yes")
+                            {
+                                <input type="text" name="discount" id="discount" onblur="taxableCalculation();" value="0" class="floatinput">
+                            }
+
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input" style="width:100px">
+                            <input type="text" name="taxablevalue" id="taxablevalue" readonly class="floatinput" style="background-color:#d9d9d9;width:100px">
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="rate" id="rate" onblur="taxableCalculation();"  style="width:50px" class="floatinput" >
+                            @*@Html.DropDownList("rate", new SelectList(ViewBag.Rates, "ratevalue", "ratevalue"), "--Select--", new { @Class = "form-control input-sm", @id = "rate", @onchange = "taxableCalculation();" })*@
+                        </label>
+                    </td>
+                    <td>
+                        <label class="input">
+                            <input type="text" name="iamount" value="0" id="iamount" readonly class="floatinput" style="background-color:#d9d9d9;">
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="camount" value="0" id="camount" readonly class="floatinput" style="background-color:#d9d9d9;">
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="samount" value="0" id="samount" readonly class="floatinput" style="background-color:#d9d9d9;">
+                        </label>
+                    </td>
+
+                    <td>
+                        <label class="input">
+                            <input type="text" name="csamount" value="0" id="csamount" class="floatinput" style="background-color:#d9d9d9;">
+                        </label>
+                    </td>
+                    <td>
+                        <select class="form-control input-sm" name="eligibility">
+                            <option value="ip">ip</option>
+                            <option value="cp">cp</option>
+                            <option value="no">no</option>
+                            <option value="is">is</option>
+                        </select>
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="13" align="center">
+                        <button type="Submit" id="btnSubmit" name="command" class="btn btn-sm btn-success" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" value="add">Add</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      
+            
+    </div>
+    
+
+
+<br />
+
+<script type="text/javascript">
+    $('.floatinput').on('keypress', function (e) {
+        return validateFloatKeyPress(this, e);
+
+    });
+    function decimalInput(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>

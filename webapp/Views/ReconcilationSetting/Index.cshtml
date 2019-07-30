@@ -1,0 +1,261 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.Result != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.Result)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 50);
+    }
+}
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+
+<div id="content">
+    <!-- row -->
+    <div class="row">
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Reconcilation Setting
+                <span>
+                    >&nbsp;
+                   Index
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">Reconcilation Setting</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <div id="comment-form" class="smart-form">
+                                @using (Html.BeginForm("Index", "ReconcilationSetting", FormMethod.Post, new { encType = "multipart/form-data", @class = "smart-form client-form", id = "smart-form-register", @name = "smart-form-register" }))
+                                {
+                                    
+                                    <fieldset>
+
+                                        <section class="col col-4">
+                                            <label style="font-weight:bold;font-size:15px;">GSTIN</label>
+                                            <label class="input">
+                                                @*<i class="icon-append" style="color:#a90329;font-weight:bold"><i style="color:red;">*</i></i>*@
+                                                @Html.DropDownList("GSTIN", new SelectList(ViewBag.GSTINList, "GSTINNo", "GSTINNo"), "--Select--", new { @Class = "form-control input-sm", @id = "GSTIN" })
+                                            </label>
+                                        </section>
+                                        <section class="col col-4">
+                                            <label style="font-weight:bold;font-size:15px;">Amount Adjust</label>
+                                            <label class="input">
+                                                @Html.DropDownList("Rates", new SelectList(ViewBag.Rates, "Text", "Value"), "--Select--", new { @Class = "form-control input-sm", @id = "Rates" })
+                                            </label>
+                                        </section>
+                                    </fieldset>
+
+                                    <footer>
+                                        <section>
+                                            <button type="submit" class="btn btn-primary" style="background-color:#508180!important;border-radius:10px;font-weight:bold;">
+                                               Update
+                                            </button>
+                                        </section>
+                                    </footer>
+                                            }
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+            </article>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Reconcilation Setting List</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <div id="comment-form1" class="smart-form">
+                                <fieldset>
+                                    <div class="row">
+                                        
+                                        <section class="col col-12">
+
+                                            <div class="table table-responsive">
+
+                                                @if (ViewBag.Result != null)
+                                                {
+                                                    if (Enumerable.Count(ViewBag.Result) > 0)
+                                                    {
+
+                                                        @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover",
+                                                             mode: WebGridPagerModes.All, firstText: "<< First", previousText: "< Prev",
+                                                             nextText: "Next >", lastText: "Last >>", emptyRowCellValue: "No Records Found")
+
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <h3>No Data Found</h3>
+                                                    }
+                                                }
+</div>
+                                                </section>
+                                    </div>
+                                </fieldset>
+                                <footer></footer>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+            </article>           <!-- end widget -->
+        </div>
+        <!-- end row -->
+        <!-- row -->
+        <div class="row">
+            <!-- a blank row to get started -->
+            <div class="col-sm-12">
+                <!-- your contents here -->
+            </div>
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>
+
+@section pagespecific{
+
+    <script type="text/javascript">
+      
+        // Validation
+        $(function () {
+            // Validation
+            $("#smart-form-register").validate({
+                // Rules for form validation
+                rules: {
+
+                    GSTIN: {
+                        required: true,
+                       
+                    },
+                    Rates:{
+                        required: true,
+                    }
+                    
+                },
+
+                // Messages for form validation
+                messages: {
+
+
+                    GSTIN: {
+                        required: 'Please select GSTIN',
+
+
+                    },
+                    Rates: {
+                        required: 'Please select AmountAdjust',
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+}
+@if (TempData["MSG"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["MSG"]");
+        };
+    </script>
+}
+

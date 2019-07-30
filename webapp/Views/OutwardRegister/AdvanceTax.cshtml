@@ -1,0 +1,481 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        width: 800px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: auto;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+        background-color: palegoldenrod;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Outward Register
+                <span>
+                    >&nbsp;
+                    AdvanceTax
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <form action="@Url.Action("AdvanceTax", "OutwardRegister")" method="post" id="OutwardB2B" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Outward AdvanceTax</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+
+                                            <section class="col col-3">
+                                                <div class="form-group">
+                                                    <label>Taxpayer GSTIN<span style="color:red">*</span></label>
+                                                    <div>
+                                                        @Html.DropDownList("cgstin", new SelectList(ViewBag.TaxPayerGSTIN, "GSTINNo", "GSTINNo", @Session["GSTINAT"]), "--Select--", new { @Class = "form-control input-sm", @id = "cgstin", @onchange = "taxableCalculation();" })
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label>Period</label><span style="color:red">*</span>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="period" id="period" value="@Session["periodAT"]" placeh placeholder="Select Period" class="datepicker" data-dateformat='mmyy'>
+                                                </label>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Item Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+
+                                    @{Html.RenderPartial("_AdvanceTaxItems"); }
+
+
+
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["MasterDtAT"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["MasterDtAT"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Outward Advance Tax Item List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                                                                          grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                                          grid.Column("Advance Tax Type", "Advance Tax Type"),
+                                                                          grid.Column("Rate", "Rate"),
+                                                                          grid.Column("Place of Supply", "Place of Supply"),
+                                                                          grid.Column("Advance Amount", "Advance Amount"),
+                                                                          grid.Column("IGST Amount", "IGST Amount"),
+                                                                          grid.Column("CGST Amount", "CGST Amount"),
+                                                                          grid.Column("SGST Amount", "SGST Amount "),
+                                                                          grid.Column("CESS Amount", "CESS Amount"),
+                                                                          grid.Column(format:@<text>@Html.ActionLink("Delete", "ATDelete", new { Id = item.SnoAT }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+                              )
+                         )
+
+                                            </div>
+
+
+
+                                            <footer>
+                                                <div class="row">
+
+                                                    <div class="col-md-6 text-center">
+                                                        <button type="submit" name="command" value="save" style="font-weight:bold;Border-radius:10px;width:80px;text-align:center;" class="btn btn-primary">Save</button>
+                                                    </div>
+
+
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+
+
+
+
+                <!-- end widget -->
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+            <!-- end row -->
+
+        </section>
+        <div id="popup_pdf">
+
+        </div>
+    </form>
+</div>
+
+
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+
+    </script>
+    TempData["Message"] = null;
+}
+
+
+
+
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        $('#pos').bind('keypress', numericInput);
+
+        function limitTextarea(textarea, maxLines, maxChar) {
+            var lines = textarea.value.replace(/\r/g, '').split('\n'), lines_removed, char_removed, i;
+            if (maxLines && lines.length > maxLines) {
+                lines = lines.slice(0, maxLines);
+                lines_removed = 1
+            }
+            if (maxChar) {
+                i = lines.length;
+                while (i-- > 0) if (lines[i].length > maxChar) {
+                    lines[i] = lines[i].slice(0, maxChar);
+                    char_removed = 1
+                }
+                if (char_removed || lines_removed) {
+                    textarea.value = lines.join('\n')
+                }
+            }
+        }
+
+        function taxableCalculation() {
+            var rate = document.getElementById("rate").value;
+            var igsta = document.getElementById("iamount");
+            var cgsta = document.getElementById("camount");
+            var sgsta = document.getElementById("samount");
+            var taxablevalue = document.getElementById("ad_amt").value;
+            var gstin = document.getElementById("pos").value;
+
+            if (gstin != "") {
+
+                if (gstin == 00 || (gstin > 37 && gstin != 98)) {
+                    alert("State code should be within the range of 01 to 37");
+                    document.getElementById("pos").value = "";
+                    return false;
+                }
+            }
+            if ((taxablevalue != "") && (rate != "")) {
+                var cgstin = document.getElementById("cgstin").value;
+                var gstin = document.getElementById("pos").value;
+
+               
+                var cgstin_state = cgstin.substring(0, 2);
+                var gstin_state = gstin.substring(0, 2);
+                if ((gstin_state != "") && (cgstin_state != "")) {
+                    if (gstin_state != cgstin_state) {
+                        igsta.value = (taxablevalue * rate) / 100;
+                        cgsta.value = "0";
+                        sgsta.value = "0";
+                    }
+                    else if (gstin_state == cgstin_state) {
+                        igsta.value = "0";
+                        cgsta.value = (taxablevalue * (rate / 2)) / 100;
+                        sgsta.value = (taxablevalue * (rate / 2)) / 100;
+                    }
+                }
+            }
+        }
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+
+
+        $(document).ready(function () {
+
+
+
+
+
+            $('#btnSubmit').click(function () {
+
+
+
+                var $checkoutForm = $('#OutwardB2B').validate({
+                    rules: {
+
+                        cgstin: {
+                            required: true
+                        },
+                        period: {
+                            required: true
+                        },
+                        actiontype: {
+                            required: true
+                        },
+                        ad_amt: {
+                            required: true,
+                            number: true
+
+                        },
+                        pos: {
+                            required: true
+                        },
+                        rate: {
+                            required: true,
+                            number: true
+
+                        },
+                        iamount: {
+                            required: true,
+                            number: true
+
+                        },
+                        camount: {
+                            required: true,
+                            number: true
+
+                        },
+                        samount: {
+                            required: true,
+                            number: true
+
+                        },
+                        csamount: {
+                            //required: true,
+                            number: true
+
+                        }
+
+                    },
+
+                    // Messages for form validation
+                    messages: {
+
+                        cgstin: {
+                            required: 'Please select Taxpayer GSTIN'
+                        },
+                        period: {
+                            required: 'Please select Period'
+                        },
+                        actiontype: {
+                            required: 'Please select Advance Tax Type'
+                        },
+                        ad_amt: {
+                            required: 'Please enter Advance Amount'
+
+
+                        },
+                        pos: {
+                            required: 'Please enter Place of Supply'
+                        },
+                        rate: {
+                            required: 'Please select Rate'
+
+                        },
+                        iamount: {
+                            required: 'Please enter IGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        camount: {
+                            required: 'Please enter CGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        samount: {
+                            required: 'Please enter SGST/UTGST Amount',
+                            number: 'Characters are not allowed'
+
+                        },
+                        csamount: {
+                            //required: 'Please enter CESS Amount',
+                            number: 'Characters are not allowed'
+
+                        }
+
+
+                    },
+
+                    // Do not change code below
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                })
+
+
+
+            });
+        })
+
+    </script>
+
+}

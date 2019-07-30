@@ -1,0 +1,87 @@
+﻿
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_GenEWB = $('#G1_GenEWBActive').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+    });
+
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="table table-responsive">
+
+    @if (ViewBag.Active != null)
+    {
+
+        int i = 1;
+        <div class="container-fuild" style="background-color:white;">
+            <table id="G1_GenEWBActive" class="table table-bordered">
+                <thead class="blue-grey lighten-4">
+                    <tr class="active">
+
+                        <th>S.No</th>
+                        <th>Eway Bill and Generated Date</th>
+                        <th>Valid Upto</th>
+                        <th>Document Details</th>
+                        <th>From GSTIN Info</th>
+                        <th>To GSTIN Info</th>
+                        <th>Transporter Details</th>
+                        <th>Vehicle Details</th>
+                        <th>Branch Name</th>
+                        <th>Total Value</th>
+                        <th>Total Invoice Amount</th>
+                        <th>IGST Amount</th>
+                        <th>CGST Amount</th>
+                        <th>SGST Amount</th>
+                        <th>CESS Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ReportMgmt)
+                    {
+                        <tr>
+
+                            <td>@Convert.ToInt32(i++)</td>
+                            <td>@item.Eway_Bill_Details</td>
+                            <td>@item.Eway_Bill_Validity</td>
+                            <td>@item.Document_Details</td>
+                            <td>@item.From_Details</td>
+                            <td>@item.To_Details</td>
+                            <td>@item.Transported_Details</td>
+                            <td>@item.Vehicle_Details</td>
+                            <td>@item.BranchName</td>
+                            <td>@item.Taxable_Value</td>
+                            <td>@item.Total_Invoice_Amount</td>
+                            <td>@item.IGST_Amount</td>
+                            <td>@item.CGST_Amount</td>
+                            <td>@item.SGST_Amount</td>
+                            <td>@item.CESS_Amount</td>
+
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    }
+</div>
+
+
+

@@ -1,0 +1,113 @@
+﻿<br />
+                <div class="smart-form">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th rowspan="3">S.No.</th>
+                                    <th colspan="3">Invoice</th>
+                                    <th colspan="2">IGST</th>
+                                    @*<th colspan="2">CGST</th>*@
+                                    @*<th colspan="2">SGST</th>*@
+                                    <th colspan="2">CESS</th>
+                                    @*<th rowspan="3">Eligibility of ITC.</th>*@
+                                    <th rowspan="3">Action</th>
+                                </tr>
+                                <tr>
+                                    <th rowspan="2">HSN/SAC</th>
+                                    <th rowspan="2">Category</th>
+                                    <th rowspan="2">Taxable Value</th>
+                                    <th rowspan="2">Rate(%)</th>
+                                    <th rowspan="2">Amount</th>
+                                    @*<th rowspan="2">Rate(%)</th>
+                                    <th rowspan="2">Amount</th>*@
+                                    @*<th rowspan="2">Rate(%)</th>
+                                    <th rowspan="2">Amount</th>*@
+                                    <th rowspan="2">Rate(%)</th>
+                                    <th rowspan="2">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="HSN">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select class="form-control input-sm" name="category">
+                                            <option value="G">Goods</option>
+                                            <option value="S">Services</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="taxablevalue" id="taxablevalue" onblur="totalcalculation1();">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="irate" id="irate"  onblur="igstcalculation();">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="iamount" id="iamount" readonly> 
+                                        </label>
+                                    </td>
+                                    @*<td>
+                                        <label class="input">
+                                            <input type="text" name="crate">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="camount">
+                                        </label>
+                                    </td>*@
+                                    @*<td>
+                                        <label class="input">
+                                            <input type="text" name="srate">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="samount">
+                                        </label>
+                                    </td>*@
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="csrate" id="csrate" onblur="cesscalculation();">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="input">
+                                            <input type="text" name="csamount" id="csamount" readonly>
+                                        </label>
+                                    </td>
+                                    @*<td>
+                                        <select class="form-control input-sm" name="eligibility">
+                                            <option></option>
+                                            <option></option>
+                                        </select>
+                                    </td>*@
+
+                                    <td>
+                                        <button type="Submit" id="btnSubmit" name="command" style="font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" class="btn btn-sm btn-success" value="add">Add</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                    
+<br />
+@section pagespecific{
+    <script type="text/javascript">
+        $('#btnSubmit').click(function (event) {
+            $('#item-form').submit()
+        })
+   </script>
+    }
+

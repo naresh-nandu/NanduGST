@@ -1,0 +1,411 @@
+﻿<table border="0" width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+        <td width="10%" align="center">
+            @if (@ViewBag.LogoPath != "")
+            {
+                <center><img src="~/@ViewBag.LogoPath" style="width:60px; height:60px;" /></center>
+            }
+        </td>
+		<td width="80%">
+			<table border="0" width="100%" style="border:0px solid;" class="" cellpadding="0" cellspacing="0">
+				<tr>
+					<td align="center"><h1><b>Supplier Name&nbsp;:&nbsp;@ViewBag.SupplierName</b></h1></td>
+				</tr>
+				<tr>
+					<td align="center"><h2><b>Address&nbsp;:&nbsp;@ViewBag.supadd</b></h2></td>
+				</tr>
+				<tr>
+					<td align="center"><b></b></td>
+				</tr>
+			</table>
+		</td>
+		<td width="10%"></td>
+	</tr>
+</table>
+
+
+<div style="border:1px solid; border-color:#52876a" class="">
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr style="height:30px;">
+			<td width="20%"></td>
+            <td width="60%" align="center" valign="middle" style="color:#52876a;"><h2><b>INVOICE</b></h2></td>
+            <td width="20%" style="color:red;">
+                <input type="checkbox" value="Original for Receipent" />Original for Recipient<br />
+                <input type="checkbox" value="Duplicate for Supplier/Transporter" />Duplicate for Supplier/Transporter<br />
+                <input type="checkbox" value="Triplicate for Supplier" />Triplicate for Supplier
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:0px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="50%">
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    @*<tr>
+                        <td width="25%">Reverse Charge</td>
+                        <td width="75%">:&nbsp;&nbsp;@ViewBag.rchrg</td>
+                    </tr>*@
+                    <tr>
+                        <td width="30%">Invoice No</td>
+                        <td width="70%">:&nbsp;&nbsp;@ViewBag.InvID</td>
+                    </tr>
+                    <tr>
+                        <td>Place of Supply</td>
+                        <td>:&nbsp;&nbsp;@ViewBag.state</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%">
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="30%">State Code</td>
+                        <td width="70%">:&nbsp;&nbsp;@ViewBag.pos</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice Date</td>
+                        <td>:&nbsp;&nbsp;@ViewBag.InvDate</td>
+                    </tr>
+                    @*<tr>
+                        <td width="30%"></td>
+                        <td width="70%">&nbsp;&nbsp;</td>
+                    </tr>*@
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center">
+                <b>Details of Receiver | Billed to:</b>
+            </td>
+            <td align="center">
+                <b>Details of Consignee | Shipped to:</b>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%">
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="30%">Name</td>
+                        <td width="70%">:&nbsp;&nbsp;@ViewBag.cusname</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Address</td>
+                        <td valign="top">:&nbsp;&nbsp;@ViewBag.cusAddress</td>
+                    </tr>
+                    <tr>
+                        <td>GSTIN</td>
+                        <td>:&nbsp;&nbsp;@ViewBag.cusgst</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>:&nbsp;&nbsp;@ViewBag.state</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%">
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="30%">Name</td>
+                        <td width="70%">:&nbsp;&nbsp;@ViewBag.cusname</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Address</td>
+                        <td valign="top">:&nbsp;&nbsp;@ViewBag.cusAddress</td>
+                    </tr>
+                    <tr>
+                        <td>GSTIN</td>
+                        <td>:&nbsp;&nbsp;@ViewBag.cusgst</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>:&nbsp;&nbsp;@ViewBag.state</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr align="center" style="height:50px; border-bottom:1px solid; border-color:#52876a; background-color:#b9e9d3; font-weight:bold;">
+            <td width="2%" align="center" style="border-right:1px solid; border-color:#52876a">Sr. No</td>
+            <td width="12%" align="center" style="border-right:1px solid; border-color:#52876a">Name of Product / Service</td>
+            <td width="5%" align="center" style="border-right:1px solid; border-color:#52876a">HSN Code</td>
+            @*<td width="2%" align="center" style="border-right:1px solid; border-color:#52876a">UOM</td>*@
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">Qty</td>
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">Unit Price</td>
+            <td width="5%" align="center" style="border-right:1px solid; border-color:#52876a">Amount</td>
+            <td width="5%" align="center" style="border-right:1px solid; border-color:#52876a">Discount</td>
+            <td width="5%" align="center" style="border-right:1px solid; border-color:#52876a">Taxable Value</td>
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">Rate of Tax</td>
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">CGST Amount</td>
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">SGST Amount</td>
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">IGST Amount</td>
+            <td width="4%" align="center" style="border-right:1px solid; border-color:#52876a">CESS Amount</td>
+            <td width="5%" align="center" style="border-right:1px solid; border-color:#52876a; background-color:#b9e9d3;">Total</td>
+        </tr>
+        @{
+            int i = 1;
+            decimal totalvalue = 0, itemtotal = 0, totaltaxval = 0, totaligstval = 0, totalcgstval = 0, totalsgstval = 0, totalcessval = 0;
+            decimal totalqty = 0, totalprice = 0, totalgstamount = 0;
+        }
+        @foreach (var item in @ViewBag.inv)
+        {
+
+            <tr align="" style="height:30px;">
+                <td valign="middle" style="border-right:1px solid; border-color:#52876a" align="center">@i</td>
+                <td valign="middle" style="border-right:1px solid; border-color:#52876a">@item.hsndesc</td>
+                <td valign="middle" style="border-right:1px solid; border-color:#52876a">@item.hsncode</td>
+                @*<td valign="middle" style="border-right:1px solid; border-color:#52876a"></td>*@
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.qty &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.unitprice &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@Convert.ToDecimal(item.qty * item.unitprice).ToString("0.00") &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.discount &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a; background-color:#b9e9d3;">@item.txval &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.rt &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.camt &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.samt &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.iamt &nbsp;</td>
+                <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a">@item.csamt &nbsp;</td>
+                @{
+					itemtotal = Convert.ToDecimal(item.txval + item.camt + item.samt + item.csamt + item.iamt);
+
+                    <td valign="middle" align="right" style="border-right:1px solid; border-color:#52876a; background-color:#b9e9d3;">@Convert.ToDecimal(itemtotal) &nbsp;</td>
+                    totalqty += Convert.ToDecimal(item.qty);
+                    totalprice += Convert.ToDecimal(item.qty * item.unitprice);
+                    totaltaxval += Convert.ToDecimal(item.txval);
+                    totaligstval += Convert.ToDecimal(item.iamt);
+                    totalcgstval += Convert.ToDecimal(item.camt);
+                    totalsgstval += Convert.ToDecimal(item.samt);
+                    totalcessval += Convert.ToDecimal(item.csamt);
+                    totalvalue += itemtotal;
+                }
+            </tr>
+                        i++;
+                    }
+        @{
+            int j = 11 - i;
+            totalgstamount = totaligstval + totalcgstval + totalsgstval;
+        }
+        @if (j > 0)
+        {
+            for (int k = i; k <= 10; k++)
+            {
+                <tr align="" style="height:30px;">
+                    <td style="border-right:1px solid; border-color:#52876a" align="center">@k</td>
+                    <td style="border-right:1px solid; border-color:#52876a"></td>
+                    <td style="border-right:1px solid; border-color:#52876a"></td>
+                    @*<td style="border-right:1px solid; border-color:#52876a"></td>*@
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a; background-color:#b9e9d3;"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a"></td>
+                    <td align="right" style="border-right:1px solid; border-color:#52876a; background-color:#b9e9d3;"></td>
+                </tr>
+            }
+        }
+        <tr style="height:40px; border:1px solid; border-color:#52876a; background-color:#b9e9d3; font-weight:bold;" cellpadding="0" cellspacing="0">
+            <td valign="middle" align="right" colspan="3" style="border-right:1px solid; border-color:#52876a;">
+                Total&nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToString(Convert.ToDecimal(totalqty)) &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totalprice).ToString("0.00") &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totaltaxval) &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totalcgstval) &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totalsgstval) &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totaligstval) &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totalcessval) &nbsp;
+            </td>
+            <td valign="middle" align="right" colspan="1" style="border-right:1px solid; border-color:#52876a;">
+                @Convert.ToDecimal(totalvalue) &nbsp;
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="62%">
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" valign="top"><b>Total Invoice Amount in Words:</b></td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center"><b>@SmartAdminMvc.Models.Common.Functions.NumberToText(Convert.ToString(totalvalue))</b></td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                </table>
+                <table border="0" width="100%" style="border:1px solid; border-bottom:none; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr style="border-top:1px solid; border-color:#52876a;">
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    @*<tr>
+            <td align="center">&nbsp;</td>
+        </tr>*@
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="38%">
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr style="border-bottom:2px solid; border-left:1px solid; border-color:#52876a; background-color:#b9e9d3;">
+                        <td width="60%"><b>Total Amount Before Tax</b></td>
+                        <td align="center" width="5%"><b> : </b></td>
+                        <td align="right" width="35%" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totaltaxval)&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid; border-color:#52876a">
+                        <td>Add : IGST</td>
+                        <td align="center"><b> : </b></td>
+                        <td align="right" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totaligstval)&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid; border-color:#52876a">
+                        <td>Add : CGST</td>
+                        <td align="center"><b> : </b></td>
+                        <td align="right" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totalcgstval)&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid; border-color:#52876a">
+                        <td>Add : SGST / UTGST</td>
+                        <td align="center"><b> : </b></td>
+                        <td align="right" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totalsgstval)&nbsp;&nbsp;</td>
+                    </tr>
+                    @*<tr style="border-bottom:2px solid; border-color:#52876a">
+            <td>Add : IGST</td>
+            <td align="center"><b> : </b></td>
+            <td align="right" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totaligstval)&nbsp;&nbsp;</td>
+        </tr>*@
+                    <tr style="border-bottom:2px solid; border-color:#52876a; background-color:#b9e9d3;">
+                        <td><b>Tax Amount : GST</b></td>
+                        <td align="center"><b> : </b></td>
+                        <td align="right" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totalgstamount)&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid; border-color:#52876a; background-color:#b9e9d3;">
+                        <td><b>Total Amount After Tax</b></td>
+                        <td align="center"><b> : </b></td>
+                        <td align="right" style="border-left:1px solid; border-color:#52876a">@Convert.ToDecimal(totalvalue)&nbsp;&nbsp;</td>
+                    </tr>
+                </table>
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td colspan="3"><b>&nbsp;</b></td>
+                    </tr>
+                </table>
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr style="border:1px solid; border-bottom:1px solid; border-color:#52876a">
+                        <td width="60%"><b>GST Payable on Reverse Charge</b></td>
+                        <td align="center" width="5%"><b> : </b></td>
+                        <td align="center" width="35%" style="border-left:1px solid; border-color:#52876a">Y</td>
+                    </tr>
+                </table>
+                <table border="0" width="100%" style="border:1px solid; border-color:#52876a" class="" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td colspan="3" align="center" style="font-size:smaller;">Certified that the particulars given above are true and correct.</td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="3"><b>For, @ViewBag.cusname</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>&nbsp;</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>&nbsp;</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>&nbsp;</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>&nbsp;</b></td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="3"><b>Authorised Signatory</b></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<br />
+
+
+

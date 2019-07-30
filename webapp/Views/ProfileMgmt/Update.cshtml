@@ -1,0 +1,141 @@
+﻿@model SmartAdminMvc.Models.TBL_Customer
+
+<div id="content">
+
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                User Updation
+                <span>
+                    >&nbsp;
+                    Update
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+        <!-- START ROW -->
+
+        <div class="row">
+
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false">
+                    <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold">Customer Profile Updation </h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <form action="@Url.Action("EditUser", "ProfileMgmt")" method="POST" enctype="multipart/form-data" id="smart-form-register" class="smart-form">
+
+                                @Html.HiddenFor(model => model.CustId)
+                                <fieldset>
+                                    <section>
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">Name</h6>
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </label>
+                                    </section>
+
+                                    <section>
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">Designation</h6>
+                                            @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                        </label>
+                                    </section>
+
+                                    <section>
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">Company</h6>
+                                            @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+                                        </label>
+                                    </section>
+
+                                    <section>
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">Address</h6>
+                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                        </label>
+                                    </section>
+
+                                    <section>
+                                        <label class="input">
+                                            <h6 style="color:#71843f;font-weight:bold">Upload Logo</h6>
+                                            <input type="file" id="FileUpload" name="FileUpload" />
+                                        </label>
+                                    </section>
+                                </fieldset>
+
+                                <footer>
+                                    <button type="submit" class="btn btn-primary text-center " style="background-color:#71843f;border-radius:10px;font-weight:bold;border:#71843f">
+                                        Update
+                                    </button>
+                                    @Html.ActionLink("Cancel", "CustomerProfile", "ProfileMgmt", new { @Class = "btn btn-primary", @Style = "font-weight:bold;Border-radius:10px;background-color:#71843f;border:#71843f" })
+                                </footer>
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </section>
+
+
+</div>

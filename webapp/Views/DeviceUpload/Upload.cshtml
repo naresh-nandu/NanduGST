@@ -1,0 +1,489 @@
+﻿@using SmartAdminMvc.Models;
+@*@model TBL_GSTR_ACTION_TYPE*@
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+<!-- MAIN CONTENT -->
+<div id="content" style="overflow:hidden">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Device Upload
+                <span>
+                    >&nbsp;
+                    Upload
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                @using (Ajax.BeginForm("Upload", "DeviceUpload", new AjaxOptions { HttpMethod = "POST" }, new { @id = "checkout-form", @name = "checkout-form" }))
+                {
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Device Uploads</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <p style="font-weight:600;font-size:15px;">Select GSTIN</p>
+                                                    <div class="col-md-10">
+                                                        @Html.DropDownList("CategoryName", (ViewBag.GSTINNoList as SelectList), "Select GSTIN", new { @Class = "form-control", @onchange = "submit();", @id = "CategoryName" })
+                                                    </div>
+                                                    <br /><br />
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <p style="font-weight:600;font-size:15px;">Select GSTR Type</p>
+                                                    <div class="col-md-10">
+                                                        @Html.DropDownList("GSTRList", (ViewBag.gstrtypeList as SelectList), "Select GSTR Type", new { @class = "form-control", @onchange = "submit();", @id = "GSTRList" })
+                                                    </div>
+                                                    <br /><br />
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <p style="font-weight:600;font-size:15px;">Select Device Type</p>
+                                                    <div class="col-md-10">
+                                                        @Html.DropDownList("DeviceList", (ViewBag.Device as SelectList), "Select Device Type", new { @class = "form-control", @onchange = "submit();", @id = "DeviceList" })
+                                                    </div>
+                                                    <br /><br />
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="InvIds" id="InvIds" />
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer></footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+                    </div>
+
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" style="overflow:hidden">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>Upload Data</h2>
+                        </header>
+                        @if (Session["ActionID"] != null)
+                        {
+                            if ((string)Session["ActionID"] == "GSTR1")
+                            {
+                                <div id="tabs" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                    <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                        <li>
+                                            <a href="#tabs-1">B2B</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-2">B2CL</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-3">CDNR</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-4">B2CS</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-5">EXP</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-7">HSN</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-8">NIL</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-9">TXP</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#tabs-10">AT</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-11">DOC-Issue</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-12">CDNUR</a>
+                                        </li>
+                                    </ul>
+                                    <div id="tabs-1">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2B");}
+                                    </div>
+                                    <div id="tabs-2">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CL");}
+                                    </div>
+                                    <div id="tabs-3">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1cdnr");}
+                                    </div>
+                                    <div id="tabs-4">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CS");}
+                                    </div>
+                                    <div id="tabs-5">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Exp");}
+                                    </div>
+                                    <div id="tabs-7">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Hsn");}
+                                    </div>
+                                    <div id="tabs-8">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Nil");}
+                                    </div>
+                                    <div id="tabs-9">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Txpd");}
+                                    </div>
+                                    <div id="tabs-10">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1At");}
+                                    </div>
+                                    <div id="tabs-11">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Doc");}
+                                    </div>
+                                    <div id="tabs-12">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Cdnur");}
+                                    </div>
+                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div id="tab" class="col-lg-12 col-md-12 gstr2" style="margin-bottom:15px;width:100%">
+                                                    <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;width:100%">
+                                                        <li>
+                                                            <a href="#tab-1">B2B</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-2">IMPG</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-3">IMPS</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-4">CDN</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-5">NIL-SUPPLIES</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-7">TXI</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-8">TXPD</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-9">HSN-SUM</a>
+                                                        </li>
+
+                                                        <li>
+                                                            <a href="#tab-10">B2BUR</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-11">ITC-RVSL</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#tab-12">CDNUR</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div id="tab-1">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2B2b");}
+                                                    </div>
+                                                    <div id="tab-2">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Impg");}
+                                                    </div>
+                                                    <div id="tab-3">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Imps");}
+                                                    </div>
+                                                    <div id="tab-4">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Cdn");}
+                                                    </div>
+                                                    <div id="tab-5">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Nil");}
+                                                    </div>
+                                                    <div id="tab-7">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Txi");}
+                                                    </div>
+                                                    <div id="tab-8">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Txpd");}
+
+                                                    </div>
+                                                    <div id="tab-9">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Hsn");}
+                                                    </div>
+                                                    <div id="tab-10">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2B2bur");}
+                                                    </div>
+                                                    <div id="tab-11">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Itc");}
+                                                    </div>
+                                                    <div id="tab-12">
+                                                        <br /><br />
+                                                        @{Html.RenderPartial("_Gstr2Cdnur");}
+                                                    </div>
+
+                                                    <br /> <br />
+
+                                                    <!-- end widget content -->
+
+                                                </div>
+                                                                }
+                                                            }
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <fieldset>
+                                        @*<div class="row">
+                                                <section class="col col-12">
+                                                    <label class="label"></label>
+                                                    <div class="text-center">
+
+                                                    </div>
+                                                </section>
+                                            </div>*@
+
+                                    </fieldset>
+
+                                    <footer>
+
+
+                                        <button type="submit" class="btn btn-primary" name="command" value="save">
+                                            Upload Data
+                                        </button>
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- end widget content -->
+
+                            </div>
+                            <!-- end widget div -->
+
+                        </div>
+                        <!-- end widget -->
+                    </div>
+                                                            }
+            </article>
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+        </div>
+    </section>
+    <!-- end widget grid -->
+
+</div>
+<!-- END MAIN CONTENT -->
+@if (ViewData["Feedback"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(ViewData["Feedback"])));
+    </script>
+}
+
+
+@if (TempData["UploadMessage"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["UploadMessage"])));
+        TempData["UploadMessage"] = null;
+    </script>
+}
+
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#checkout-form').validate({
+                // Rules for form validation
+                rules: {
+                    //CategoryName: {
+                    //    required: true
+                    //},
+                    //GSTRList: {
+                    //    required: true
+                    //},
+                    //DeviceList: {
+                    //    required: true
+                    //}
+                },
+
+                // Messages for form validation
+                messages: {
+                    //CategoryName: {
+                    //    required: 'Please select GSTIN'
+                    //},
+                    //GSTRList: {
+                    //    required: 'Please select GSTR'
+                    //},
+                    //DeviceList: {
+                    //    required: 'Please select Device'
+                    //}
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+        
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+            
+            $('#tabs').tabs();
+            $('#tab').tabs();
+            /*
+             *  Simple tabs adding and removing
+             */
+        })
+
+    </script>
+}

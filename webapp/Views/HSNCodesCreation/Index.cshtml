@@ -1,0 +1,550 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+}
+
+
+<div>
+    <div id="content">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <i class="fa-fw fa fa-home"></i>
+                    HSN Codes
+                    <span>
+                        >&nbsp;
+                        Creation
+                    </span>
+                </h1>
+            </div>
+
+
+        </div>
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">HSN Code Creation</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <form action="@Url.Action("Index","HSNCodesCreation")" method="post" id="hsn-form" novalidate="novalidate" autocomplete="off">
+
+                                        @*@Html.AntiForgeryToken()*@
+                                        @Html.ValidationSummary(true)
+
+
+
+                                        <fieldset class="smart-form">
+                                            <section class="col col-3">
+                                                <label><b>HSN Type</b></label>
+                                                <label class="input">
+
+                                                    <select id="hsntype" name="hsntype" Class="form-control input-sm">
+                                                        <option value="">--Select--</option>
+                                                        <option value="INWARD">Inward</option>
+                                                        <option value="OUTWARD">Outward</option>
+
+                                                    </select>
+
+                                                </label>
+                                            </section>
+                                            <div class="row">
+                                                <section class="col col-3">
+                                                    <div class="form-group">
+                                                        <label><b>HSN Entry</b></label>
+                                                        <div>
+
+                                                            <input type="radio" name="isauto" value="Yes" /><label> &nbsp;From Database&nbsp;&nbsp;&nbsp;</label>
+                                                            <input type="radio" name="isauto" value="No"><label> &nbsp;Manual&nbsp;&nbsp;&nbsp;</label>
+
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                            <div class="row" id="fromdb" style="display:none">
+                                                <section class="col col-3">
+                                                    <label>HSN Code</label>
+                                                    <label class="input">
+                                                        @Html.DropDownList("hsncode", new SelectList(ViewBag.HSNCodes, "hsncode", "hsncode"), "--Select--", new { @Class = "form-control input-sm", @id = "hsncode" })
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label>HSN Description</label>
+                                                    <label class="input">
+
+                                                        <select id="hsndesc" name="hsndesc" Class="form-control input-sm"></select>
+
+                                                    </label>
+                                                </section>
+                                                @*<section class="col col-3">
+                                                        <label>Unit Price</label>
+                                                        <label class="input">
+                                                            <input type="text" name="unitprice" id="unitprice" placeholder="Unit Price" readonly >
+                                                        </label>
+                                                    </section>*@
+
+                                                <section class="col col-3">
+                                                    <label>Rate</label>
+                                                    <label class="input">
+                                                        <input type="text" name="rate" id="rate" placeholder="Rate" readonly>
+                                                    </label>
+                                                </section>
+
+                                            </div>
+                                            <div class="row" id="manual" style="display:none">
+                                                <section class="col col-3">
+                                                    <label>HSN Code</label>
+                                                    <label class="input">
+                                                        <input type="text" name="hsncode1" id="hsncode1" placeholder="HSN Code" maxlength="8">
+                                                        @*@Html.DropDownList("hsncode", new SelectList(ViewBag.HSNCodes, "hsncode", "hsncode"), "--Select--", new { @Class = "form-control input-sm", @id = "hsncode" })*@
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label>HSN Description</label>
+                                                    <label class="input">
+
+                                                        <input type="text" name="hsndesc1" id="hsndesc1" placeholder="HSN Description">
+
+                                                    </label>
+                                                </section>
+                                                @*<section class="col col-3">
+                                                        <label>Unit Price</label>
+                                                        <label class="input">
+                                                            <input type="text" name="unitprice" id="unitprice" placeholder="Unit Price" readonly>
+                                                        </label>
+                                                    </section>*@
+
+                                                <section class="col col-3">
+                                                    <label>Rate</label>
+                                                    <label class="input">
+                                                        @Html.DropDownList("rate1", new SelectList(ViewBag.Rates, "ratevalue", "ratevalue"), "--Select--", new { @Class = "form-control input-sm", @id = "rate1" })
+                                                    </label>
+                                                </section>
+
+                                            </div>
+                                        </fieldset>
+
+                                        <footer>
+                                            <section>
+                                                <button type="submit" class="btn btn-md" style="border-radius:10px;font-weight:bold;background:#cbd2d5;color:#333">
+                                                    <b>Create</b>
+                                                </button>
+                                            </section>
+
+                                        </footer>
+
+
+                                    </form>
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+
+
+                </article>
+
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget jarviswidget-color-yellow" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">HSN CSV Upload</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+                                <div class="smart-form">
+                                    @*<form action="@Url.Action("Upload","SupplierMgmt")" method="post" id="uploadForm" >*@
+                                    @using (Html.BeginForm("Upload", "HSNCodesCreation", FormMethod.Post, new { enctype = "multipart/form-data", @id = "uploadForm", @name = "uploadForm" }))
+                                    {
+                                        <fieldset>
+
+                                            @*<div class="row">*@
+
+                                            <section>
+                                                <div class="form-group">
+                                                    <input type="file" id="FileUpload" name="FileUpload" />
+                                                </div>
+                                            </section>
+
+                                            <section>
+                                                <button type="submit" id="btnUpload" class="btn btn-sm btn-primary" style="border-radius:10px;font-weight:bold;">
+                                                    Upload
+                                                </button>
+                                            </section>
+
+                                            @*</div>*@
+                                        </fieldset>
+                                    }
+                                </div>
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>HSN List</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <fieldset>
+                                        <div class="row">
+                                            <section class="col col-12">
+                                                <label class="label"></label>
+                                                <div class="table-responsive">
+                                                    @if (@Model != null)
+                                                    {
+                                                        @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable",
+                                                           columns: grid.Columns(
+                                                                grid.Column("S_No", "S.No"),
+                                                                grid.Column("HSN Code", "HSN Code"),
+                                                         grid.Column("Item Description", "Item Description"),
+                                                         //grid.Column("Unit Price", "Unit Price"),
+                                                         grid.Column("Rate", "Rate"),
+                                                          grid.Column("HSN Type", "HSN Type"),
+                                                         grid.Column(format:@<text>@Html.Raw("<input type='button' value='Edit' onclick = 'Edit(" + item.hsnid + ")' class='btn btn-primary' style='font-weight:bold; Border-radius:5px; width:60px;height:30px; padding: 3px'/>")</text>, header: "Edit"),
+                                                         //< input id = 'Edit' onclick = 'editOrder("@item.hsnid")' type = 'button' value = 'Edit' class="btn btn-primary" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" />
+                                                            @*grid.Column(format:@<text>@Html.ActionLink(" ", " ", new { Id = item.hsnid }, new { @Class = "glyphicon glyphicon-edit", @style = "border-radius:8px;font-weight:bold;width:70px;text-align:center; height: 30px;border:#71843f", @id="editBtn", onclick = "return Edit(" + item.hsnid+ ")" }) </text>, header: "Edit"),*@
+                                                         grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { Id = item.hsnid }, new { @Class = "btn btn-danger", @style = "border-radius:5px;font-weight:bold;width:60px; height:30px;padding: 3px;", onclick = "return confirm('Are you sure to Delete?');" }) </text>, header: "Delete")
+                                                          @*grid.Column(format:@<text>@Html.Raw("<input type='button' value='Delete' class='btn btn-danger' style='font - weight:bold; Border - radius:5px; width: 60px; padding: 3px' onclick='return confirm('Are you sure to Delete?')/>")</text>, header: "Delete")*@
+
+                                                         ),
+                                                     mode: WebGridPagerModes.All, firstText: "<< First", previousText: "< Prev",
+                                                     nextText: "Next >", lastText: "Last >>", emptyRowCellValue: "No Records Found")
+                                                     }
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+
+                                    <footer></footer>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                </article>
+
+                @*<div id="comment-form1" class="smart-form">*@
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <!-- end widget -->
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </section>
+
+
+    </div>
+</div>
+
+
+<div id="popup">
+
+</div>
+
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+    TempData["Message"] = null;
+}
+
+<script type="text/javascript">
+
+    function Edit(pid) {
+        var ph = $("#popup");
+        ph.load("Edit/"+pid, function () {
+            ph.dialog({
+                modal: true,
+                width: 500,
+                height: 325,
+                resizable: true
+            });
+        });
+    }
+</script>
+@section pagespecific{
+    <script type="text/javascript">
+        //$('#hsncode1').bind('keypress', numericInput);
+
+    $(document).ready(function () {
+
+        $(":radio").on('click', function () {
+            var ischeck = $(this).val();
+            if (ischeck == "No") {
+                $('#manual').css("display", "block");
+                $('#fromdb').css("display", "none");
+            }
+            else {
+                $('#manual').css("display", "none");
+                $('#fromdb').css("display", "block");
+            }
+        });
+      $('#hsncode').on('change', function () {
+
+          var hsncode = $(this).val();
+          $.ajax({
+              type: "GET",
+              url: '/HSNCodesCreation/AutoPopulate',
+              data: { hsncode: hsncode },
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              success: function (result) {
+                  $("#hsndesc").html("");
+                  $("#hsndesc").html('<option>--select--</option>');
+                  $.each($.parseJSON(result), function (i, city) {
+                      $("#hsndesc").append
+                      ($('<option></option>').val(city.hsnid).html(city.hsndesc))
+                  })
+              },
+              error: function () {
+                  alert("Something went wrong..")
+              },
+
+          });
+        });
+
+      $('#hsndesc').on('change', function () {
+
+          var hsnid = $(this).val();
+          $.ajax({
+              type: "GET",
+              url: '/HSNCodesCreation/AutoPopulateRates',
+              data: { hsnid: hsnid },
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              success: function (result) {
+                  //$("#hsndesc").html("");
+                  //$.each($.parseJSON(result), function (i, city) {
+                  //    $("#hsndesc").append
+                  //    ($('<option></option>').val(city.hsnid).html(city.hsndesc))
+                  //})
+                  $('#unitprice').val(result.unitprice);
+                  $('#rate').val(result.rate)
+              },
+              error: function () {
+                  alert("Something went wrong..")
+              },
+
+          });
+      });
+
+
+        $('#btnUpload').on('click', function () {
+            var $checkoutForm = $('#uploadForm').validate({
+                // Rules for form validation
+                rules: {
+                    hsntype: {
+                        required: true
+                    },
+                    FileUpload: {
+                        required: true
+                    }
+                },
+                messages: {
+                    hsntype:
+                  {
+                      required: 'Please select HSN Type'
+                  },
+                    FileUpload: {
+                        required: 'Please select file to upload'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+
+        var $checkoutForm = $('#hsn-form').validate({
+            // Rules for form validation
+            rules: {
+                hsntype :{
+                    required:true
+                },
+                isauto:
+                    {
+                        required:true
+                    },
+                hsncode1: {
+                    required: true
+                },
+                hsndesc1: {
+                    required: true
+                },
+                rate1: {
+                    required: true,
+                    number: true
+                },
+                hsncode: {
+                    required: true
+                },
+                hsndesc: {
+                    required: true
+                },
+                rate: {
+                    required: true,
+                    number: true
+                },
+            },
+
+            // Messages for form validation
+            messages: {
+                hsntype:
+                   {
+                       required: 'Please select HSN Type'
+                   },
+                isauto:
+                    {
+                        required: 'Please select option'
+                    },
+                hsncode1: {
+                    required: 'Please enter HSN Code'
+                },
+                hsndesc1: {
+                    required: 'Please enter HSN Description'
+                },
+                rate1: {
+                    required: 'Please enter Rate',
+                    number: 'Enter only numbers'
+                },
+                rate: {
+                    required: 'Please enter Rate',
+                    number:'Enter only numbers'
+                },
+                hsncode: {
+                    required: 'Please select HSN Code'
+                },
+                hsndesc: {
+                    required: 'Please select HSN Description'
+                },
+
+
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    })
+
+    </script>
+
+}

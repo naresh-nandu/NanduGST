@@ -1,0 +1,305 @@
+﻿
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+               Need Help
+                <span>
+                    >&nbsp;
+                    Home
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+            <article class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></article>
+            <article class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">Need Help</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                <form action="@Url.Action("Home","NeedHelp_ReportIssues")" method="post" id="supplier-form" class="smart-form" novalidate="novalidate" autocomplete="off">
+
+                                    @*@Html.AntiForgeryToken()*@
+                                    @Html.ValidationSummary(true)
+
+
+                                    <fieldset>
+
+                                       
+
+                                        <section class="col col-6">
+                                            <label class="label" style="font-weight:500;font-size:15px">Email Id<span style="color:red">*</span></label>
+                                            <label class="input">
+                                                <input type="text" name="emailId" id="emailId" placeholder="Please enter Email Id" value="">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-6">
+                                            <label class="label" style="font-weight:500;font-size:15px">Mobile No<span style="color:red">*</span></label>
+                                            <label class="input">
+                                                <input type="text" name="mobileNo" maxlength="10" placeholder="Please enter Mobile No" id="mobileNo" value="">
+                                            </label>
+                                        </section>
+
+
+                                        <section class="col col-6">
+                                            <label class="label" style="font-weight:500;font-size:15px">Task Type<span style="color:red">*</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("taskType", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "ASP", Value = "SWSupport-ASP" },
+                                                                                                                       new SelectListItem { Text = "GSP", Value = "SWSupport-GSP" } },
+                                                                                                                       "Value", "Text", @Session["taskType"]), "-Select Task Type-", new { @Class = "form-control input-sm",@id= "taskType" })
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-6">
+                                            <label class="label" style="font-weight:500;font-size:15px">Problem Type<span style="color:red">*</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("problemType", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "GSP", Value = "GSP" },
+                                                                                                                          new SelectListItem { Text = "ASP-With Filing", Value = "ASP-WITHFILING" },
+                                                                                                                          new SelectListItem { Text = "ASP-With Out Filing", Value = "ASP-WITHOUTFILING" } },
+                                                                                                                        "Value", "Text", @Session["taskType"]), "-Select Problem Type-", new { @Class = "form-control input-sm",@id= "problemType" })
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-6">
+                                            <label class="label" style="font-weight:500;font-size:15px">Task Summary<span style="color:red">*</span></label>
+                                            <label class="input">
+                                                <textarea class="form-control" name="taskSummary" cols="10" rows="10" id="message-text"></textarea>
+                                            </label>
+                                        </section>
+
+
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <section>
+                                            <button type="submit" name="Create" value="Create" class="btn btn-primary" style="border-radius:10px;font-weight:bold;">
+                                                Submit
+                                            </button>
+                                        </section>
+
+                                    </footer>
+                                </form>
+                                <div class="message">
+                                    <i class="fa fa-check fa-lg"></i>
+                                    <p>
+                                        Your comment was successfully added!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+
+            <article class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></article>
+        </div>
+    </section>
+
+
+</div>
+
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        $('#taskType').on('change', function () {
+            $('#problemType').html('');
+            if ($('#taskType').val() == "SWSupport-ASP") {
+                $('#problemType').append('<option value="ASP-WITHFILING">ASP-With Filing</option>');
+                $('#problemType').append('<option value="ASP-WITHOUTFILING">ASP-With Out Filing</option>');
+            }
+            else if ($('#taskType').val() == "SWSupport-GSP") {
+                $('#problemType').append('<option value="GSP">GSP</option>');
+            }
+            else {
+                $('#problemType').append('<option value="ASP-WITHFILING">ASP-With Filing</option>');
+                $('#problemType').append('<option value="ASP-WITHOUTFILING">ASP-With Filing</option>');
+                $('#problemType').append('<option value="GSP">GSP</option>');
+            }
+        });
+
+
+        $('#name').bind('keypress', textInput);
+        $('#poc').bind('keypress', textInput);
+        $('#mobileno').bind('keypress', numericInput);
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+            
+
+            var $checkoutForm = $('#supplier-form').validate({
+                // Rules for form validation
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    gstin: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    POC: {
+                        required: true
+                    },
+
+                    mob: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+
+                    statecode: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 2
+
+                    },
+
+                    PAN: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+
+                    },
+
+                    address: {
+                        required: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    name: {
+                        required: 'Please enter Company Name'
+                    },
+                    gstin: {
+                        required: 'Please enter GSTIN'
+                    },
+                    email: {
+                        required: 'Please enter Email ',
+                        email: 'Please enter a VALID Email '
+                    },
+                    POC: {
+                        required: 'Please enter Contact Person'
+                    },
+
+                    mob: {
+                        required: 'Please enter Mobile Number',
+
+                    },
+
+                    address: {
+                        required: 'Please enter Address'
+                    },
+
+                    statecode: {
+                        required: 'Please enter the first two characters of GSTIN as Number only'
+                    },
+
+                    PAN: {
+                        required: 'Please enter PAN  '
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        })
+
+    </script>
+
+}
+

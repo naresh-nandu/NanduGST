@@ -1,0 +1,356 @@
+﻿
+
+<div id="content">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                User Management
+                <span>
+                    >&nbsp;
+                    User Registration
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                        <h2 style="font-weight:bold;">User Registration </h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+                                <form action="@Url.Action("Registration", "User")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate" autocomplete="off">
+
+                                    @Html.ValidationSummary(true)
+
+                                    <fieldset>
+                                        <div class="row ">
+                                            <section class="col col-4 ">
+
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-user" style="color:red;"> *</i>
+                                                    <input type="text" id="name" name="name" placeholder="Name of the person" />
+                                                </label>
+                                            </section>
+                                            <section class="col col-4 " style="display:none">
+
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-user" style="color:red;"> *</i>
+                                                    <input type="text" id="username" name="username" placeholder="User Name" />
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-suitcase" style="color:red;">*</i>
+                                                    <input type="text" id="designation" name="designation" placeholder="Designation">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-envelope" style="color:red;">*</i>
+                                                    <input type="email" id="email" name="email" placeholder="Email">
+                                                </label>
+                                            </section>
+
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-lock" style="color:red;">*</i>
+                                                    <input type="password" id="Password" name="Password" placeholder="Password">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-phone" style="color:red;">*</i>
+                                                    <input type="text" id="phone" maxlength="10" name="phone" placeholder="Mobile Number">
+                                                </label>
+                                            </section>
+
+                                            @{Html.RenderPartial("_Roles");}
+                                        </div>
+                                        <div class="row ">
+                                            @{Html.RenderPartial("_gstin");}
+
+                                            @if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+                                            {
+                                                <section class="col col-4">
+                                                    <label class="input">
+                                                        @Html.DropDownList("ddlMakerCheckerApprover", ViewBag.MakerCheckerApproverList as SelectList, "Select", new { @Class = "form-control" })
+                                                    </label>
+                                                </section>
+                                            }
+                                            else
+                                            {
+                                                <section class="col col-4" style="display:none;">
+                                                    <label class="input">
+                                                        @Html.DropDownList("ddlMakerCheckerApprover", ViewBag.MakerCheckerApproverList as SelectList, "Select", new { @Class = "form-control" })
+                                                    </label>
+                                                </section>
+                                            }
+
+                                            @if (Session["AutoGenInvNoSetting"].ToString() == "True")
+                                            {
+                                                <section class="col col-4">
+                                                    <label class="input">
+                                                        <input type="text" name="stationcode" id="stationcode" class="form-control" placeholder="Station Code" maxlength="6" />
+                                                    </label>
+                                                </section>
+                                            }
+                                            else
+                                            {
+                                                <section class="col col-4" style="display:none;">
+                                                    <label class="input">
+                                                        <input type="text" name="stationcode" id="stationcode" class="form-control" placeholder="Station Code" maxlength="6" />
+                                                    </label>
+                                                </section>
+                                            }
+                                        </div>
+
+
+                                    </fieldset>
+
+
+                                    <footer>
+                                        <button type="submit" name="btnRegister" id="btnRegister" class="btn btn-primary">
+                                            Register
+                                        </button>
+                                    </footer>
+                                </form>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+
+            </article>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Users List</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+
+                        @{Html.RenderPartial("_UserList");}
+
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </article>           <!-- end widget -->
+        </div>
+
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $('#name').bind('keypress', textInput);
+
+    $('#phone').bind('keypress', numericInput);
+
+</script>
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+      alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#checkout-form').validate({
+                // Rules for form validation
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    designation: {
+                        required: true
+                    },
+                    username: {
+                        required: true
+
+                    },
+                    Password: {
+                        required: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    phone: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+                    Role_Name: {
+                        required: true
+
+                    },
+                    GSTINId: {
+                        required: true
+                    },
+                    name: {
+                        required: true
+                    },
+                    card: {
+                        required: true,
+                        creditcard: true
+                    },
+                    cvv: {
+                        required: true,
+                        digits: true
+                    },
+                    month: {
+                        required: true
+                    },
+                    year: {
+                        required: true,
+                        digits: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    name: {
+                        required: 'Please enter Name of the Person'
+                    },
+                    designation: {
+                        required: 'Please enter Designation'
+                    },
+                    username: {
+                        required: 'Please enter User Name'
+
+                    },
+                    Password: {
+                        required: 'Please enter Password'
+                    },
+                    email: {
+                        required: 'Please enter Email',
+                        email: 'Please enter a VALID Email'
+                    },
+
+                    phone: {
+                        required: 'Please enter Mobile Number',
+                        digits: 'Digits only please'
+                    },
+                    Role_Name: {
+                        required: 'Please select Role'
+                    },
+                    GSTINId: {
+                        required: 'Please select GSTIN'
+                    },
+                    card: {
+                        required: 'Please enter your card number'
+                    },
+                    cvv: {
+                        required: 'Enter CVV2',
+                        digits: 'Digits only'
+                    },
+                    month: {
+                        required: 'Select month'
+                    },
+                    year: {
+                        required: 'Enter year',
+                        digits: 'Digits only please'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+
+    </script>
+}
+
+@if (Session["AutoGenInvNoSetting"].ToString() == "True")
+{
+    <script type="text/javascript">
+        $("#btnRegister").click(function () {
+            if (document.getElementById('stationcode').value == "") {
+                alert('Please Enter Station Code');
+                return false;
+            }
+        });
+    </script>
+}

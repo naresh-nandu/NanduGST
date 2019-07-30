@@ -1,0 +1,301 @@
+﻿
+@if (TempData["ViewResponse"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ViewResponse"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ViewResponse"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+@using (Html.BeginForm("Cancel", "EWayBill", FormMethod.Post, new { @id = "CancelEWBForm", @name = "CancelEWBForm" }))
+{
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-pencil-square-o fa-fw "></i>
+                    EWayBill
+                    <span>
+                        >
+                        Cancel / Print
+                    </span>
+                </h1>
+            </div>
+        </div>
+
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+                                <div id="comment-form" class="smart-form">
+                                    
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="label">GSTIN<span style="color:red">*</span></label>
+                                                <div>
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", id = "ddlGSTINNo", autopostback = "true", onchange = "submit();" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Enter Bill No<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="billno" maxlength="12" placeholder="Bill No" id="billno">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="label">Reason<span style="color:red">*</span></label>
+                                                <div>
+                                                    @Html.DropDownList("ddlReasonCode", ViewBag.ReasonList as SelectList, "Select", new { @class = "form-control", id = "ddlReasonCode", autopostback = "true" })
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label">Remarks<span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="remarks" placeholder="Remarks" id="remarks">
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" name="btnCancel" value="Cancel" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600">
+                                            Cancel EWayBill
+                                        </button>
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+                <!-- WIDGET END -->
+                <!-- NEW WIDGET START -->
+                <!-- WIDGET END -->
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+            usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-togglebutton="false"
+            data-widget-deletebutton="false"
+            data-widget-fullscreenbutton="false"
+            data-widget-custombutton="false"
+            data-widget-collapsed="true"
+            data-widget-sortable="false"
+
+            -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>E-Way Bill List</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body">
+
+                                @if (ViewBag.CancelList != null)
+                                {
+                                    if (Enumerable.Count(ViewBag.CancelList) > 0)
+                                    {
+                                        { Html.RenderPartial("_GetCancel"); }
+                                    }
+                                }
+
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+            </div>
+
+            <!-- end row -->
+
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+}
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        $('#billno').bind('keypress', numericInput);
+        $("#billno").on('blur', function () {
+
+            var txt = $('#billno').val();
+            $('#billno').val(txt);
+            
+        });
+
+        $(document).ready(function () {
+           var usergstin = $("#ddlGSTINNo").val();
+           $("#billno").autocomplete({
+
+                minlength: 3,
+                scroll: true,
+                source: function (request, response) {
+
+                    $.ajax({
+
+                        url: "/EWayBill/ewbNoList",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term, Gstin: usergstin },
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+
+
+
+                                return {
+
+                                    label: item.ewbNo,
+
+                                    value: item.ewbNo
+
+
+
+                                };
+
+                            }));
+
+                        },
+                        messages: {
+
+                            noResults: "", results: "",
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+
+        })
+
+    </script>
+}

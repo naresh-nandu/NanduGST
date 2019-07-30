@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR2A_B2B_INV_ITMS] (
+    [itmsid]   INT IDENTITY (1, 1) NOT NULL,
+    [invid]    INT NOT NULL,
+    [num]      INT NULL,
+    [gstinid]  INT NULL,
+    [gstr2aid] INT NULL,
+    PRIMARY KEY CLUSTERED ([itmsid] ASC)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [nci_wi_TBL_GSTR2A_B2B_INV_ITMS_B5261E0D2B2639D622B669AC9CE1A411]
+    ON [dbo].[TBL_GSTR2A_B2B_INV_ITMS]([invid] ASC, [num] ASC);
+

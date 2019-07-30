@@ -1,0 +1,182 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_Cancel = $('#G1_Cancel').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+
+
+    });
+
+</script>
+<br />
+<br />
+@using (Html.BeginForm("Table15", "GSTR9", FormMethod.Post, new { @id = "MyReport", @name = "MyReport" }))
+{
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-pencil-square-o fa-fw "></i>
+                    GSTR9
+                    <span>
+                        >
+                        Save
+                    </span>
+                </h1>
+            </div>
+        </div>
+        <section id="widget-grid" class="">
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                <article class="col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+
+                        -->
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>GSTR9</b></h2>
+
+                        </header>
+
+                        <!-- widget div-->
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+                            <input type="hidden" name="gstin" id="gstin" value="@Session["strGSTIN"]" />
+                            <input type="hidden" name="fp" id="fp" value="@Session["Todate"]" />
+                            <div class="table table-responsive">
+
+                                @if (ViewBag.Table15 != null)
+                                {
+
+                                    int i = 1;
+                                    <div class="container-fuild" style="background-color:white;">
+                                        <table id="G1_Cancel" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>S.No</th>
+                                                  
+                                                    <th>Nature of Supplies</th>
+                                            
+                                                    <th>Integrated Tax</th>
+                                                    <th>Central Tax</th>
+                                                    <th>State / UT Tax</th>
+                                                    <th>CESS</th>
+                                                    <th>Interest</th>
+                                                    <th>Penalty</th>
+                                                    <th>Late Fee</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ReportMgmt)
+                                                {
+                                                    <tr>
+
+                                                        <td>@Convert.ToInt32(i++)</td>
+                                                  
+                                                        <td>@item.natureofsupplies</td>
+                                         
+                                                        <td>@item.iamt</td>
+                                                        <td>@item.camt</td>
+                                                        <td>@item.samt</td>
+                                                        <td>@item.csamt</td>
+                                                        <td>@item.interest</td>
+                                                        <td>@item.penalty</td>
+                                                        <td>@item.latefee_oth</td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br />
+                                    <input type="button" onclick="Delete()" value="Delete" style="border:2px solid #0a9490;background-color:#0a9490;border-radius:5px;font-weight:bold;padding:5px;color:white" />
+
+
+
+                                }
+                            </div>
+                            <input type="button" class="btn btn-primary" value="CANCEL" style="float:right;margin-left:10px;" ng-click="clear();" onclick="window.history.go(-1);" />
+
+                        </div>
+                </article>
+            </div>
+        </section>
+    </div>
+}
+    @if (TempData["Delete"] != null)
+    {
+        <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["Delete"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+        </script>
+        TempData["Delete"] = null;
+    }
+
+        <script>
+            function Delete() {
+                debugger;
+                var gstin = $('#gstin').val();
+                var fp = $('#fp').val();
+                $.ajax({
+                    type: "Get",
+                    url: '/Gstr9/Table15Delete',
+                    data: { gstin: gstin, fp: fp },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        location.reload();
+                    }
+                });
+            }
+        </script>

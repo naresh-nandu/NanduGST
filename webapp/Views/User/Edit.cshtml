@@ -1,0 +1,195 @@
+﻿@model SmartAdminMvc.Models.TBL_Cust_GSTIN
+<br />
+<div id="content">
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+        <!-- START ROW -->
+
+        <div class="row">
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold">Edit User</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <form action="@Url.Action("Edit", "User")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                                <fieldset>
+
+
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <div class="form-group">
+                                                <p style="font-weight:600;font-size:15px;">Select GSTIN</p>
+                                                <div class="col-md-10" style="margin-top:3px;">
+
+                                                    @Html.DropDownListFor(model => model.GSTINNo, new SelectList(ViewBag.gstin, "GSTINId", "GSTINNo"), "Select GSTIN", new { @style = "padding:5px;" })
+                                                    <br /><br />
+                                                    <div class="adduser">
+
+
+                                                    </div>
+                                                </div>
+                                                <br /><br />
+                                            </div>
+
+                                        </section>
+                                        <section class="col col-9">
+                                            <div class="table table-responsive">
+                                                <table class="table table-striped table-bordered table-hover" style="display:none">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Name</th>
+                                                            <th>Designation</th>
+                                                            <th>Email Id</th>
+                                                            <th>Mobile Number</th>
+                                                            <th>Status</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbldata"></tbody>
+                                                </table>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                </fieldset>
+
+
+                                @*<footer class="col-md-12 ">
+                                    <div class="col-md-6">
+
+
+                                    </div>
+                                </footer>*@
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- END COL -->
+            <!-- NEW COL START -->
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </section>
+    <!-- end widget grid -->
+
+
+</div>
+<!-- END MAIN CONTENT -->
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+        $("#GSTINNo").on('change', function () {
+            var v = $(this).val();
+            $(".adduser>p").hide();
+            $(".adduser").append('<p><a href="/User/AddUser?gstin=' + v + '" class="btn btn-primary" style="background-color:;font-weight:bold;Border-radius:8px;padding:5px;">ADD USER</a></p>');
+           // $('a').append("href='/Tables/AddUser?gstin=''"+v+"'");
+            $('#tbldata').empty();
+
+                $('table').hide();
+
+
+
+           $.ajax({
+               type: "GET",
+               url: '/User/getData',
+            data:{id:v},
+
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success:successfunc
+
+        });
+           function successfunc(data) {
+
+               var tr;
+               if(data.length>0){
+                   $('table').show();
+               }
+               var j = 1;
+               for (var i = 0; i < data.length; i++) {
+                   tr = $('<tr class="mmm"/>');
+
+                   tr.append("<td>" + j + "</td>");
+                   tr.append("<td>"+ data[i].Name +"</td>");
+                   tr.append("<td>" + data[i].Designation + "</td>");
+                   tr.append("<td>" + data[i].Email + "</td>");
+
+                   tr.append("<td>" + data[i].MobileNo + "</td>");
+                   tr.append("<td>" + data[i].Status + "</td>");
+                   tr.append("<td><a href='/User/UserEdit?custid=" + data[i].CustId + "&UserId=" + data[i].UserId + "' onclick='ShowMessage()' style='font-weight:bold;Border-radius:10px;width:80px;margin-bottom:3px;padding:3px;' class='btn btn-primary'>" + "EDIT USER</a></td>");
+                   tr.append("<td><a href='/User/UserDelete?userid=" + data[i].UserId + "&gstin=" + v + "' onclick='ShowMsg()' style='font-weight:bold;Border-radius:10px;width:80px;margin-bottom:3px;padding:3px;' class='btn btn-danger'>" + "Delete</a></td>");
+
+                   $('table').append(tr);
+                   j++;
+               }
+        }
+        });
+
+        function ShowMessage() {
+            var result = confirm("Are You Sure To Edit?");
+            if (result==true) {
+                return true;
+            } else {
+                alert("Cancel");
+                return false;
+            }
+        }
+
+        function ShowMsg() {
+            var result = confirm("Are You Sure To Delete?");
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+}
+

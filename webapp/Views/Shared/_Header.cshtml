@@ -1,0 +1,59 @@
+﻿    <!-- HEADER -->
+<header id="header">
+    <div id="logo-group" style="background-color:whitesmoke;">
+
+        <!-- PLACE YOUR LOGO HERE -->
+        <div id="logout" class="btn-header">
+            @if (Session["Partner_Company"].ToString() == "NA")
+            {
+                <span> <img src="~/@Session["LogoPath"].ToString()" width="50" height="50" style="float:left;margin-top:-9px;" class="pull-left" /><h2 style="text-align:center; margin-top:8px; font-weight:bold" class="txt-color-darken">WeP GST Panel</h2> </span>
+            }
+            else
+            {
+                if (Session["Partner_Company"].ToString() == "JK Foundation")
+                {
+                    <span> <img src="~/@Session["Partner_LogoPath"].ToString()" style="float:left;margin-top:-9px;" class="pull-left" width="50" height="50" /><h2 style="text-align:center; margin-top:8px; font-weight:bold" class="txt-color-darken">@Session["Partner_Company"].ToString()</h2> </span>
+                }
+                if (Session["Partner_Company"].ToString() == "Hamara Kendra")
+                {
+                    <span> <center><img src="~/@Session["Partner_LogoPath"].ToString()" height="47" /></center> </span>
+                }
+            }
+        </div>
+
+        @*<span id="logo"> <img src="~/Content/images/icon-wep-logo.gif" style="height:50px;width:50px;margin-top:-15px;border:2px solid red;border-radius:60px;" alt="Wep GSP Panel" contextmenu="Wep GSP Panel"> </span>*@
+        <!-- END LOGO PLACEHOLDER -->
+        @if (Request.IsAuthenticated)
+        {
+            <!-- Note: The activity badge color changes when clicked and resets the number to 0
+            Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+
+            <!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
+
+            <!-- END AJAX-DROPDOWN -->
+        }
+    </div>
+    @if (Request.IsAuthenticated)
+    {
+        <!-- projects dropdown -->
+        <!-- end projects dropdown -->
+    }
+    <section id="top-right">
+        @if (@Model is HelperResult)
+        {
+            @Model
+        }
+        else
+        {
+            <div class="pull-left">
+                <div id="logout" class="btn-header transparent pull-right">
+                    <span> <a href="#" title="User Name"><i class="fa fa-user"></i></a> Welcome User -&nbsp;@Session["UserName"] - [ @Session["Role_Name"] ] ( Preview )</span>
+                </div>
+            </div>
+            <div class="pull-right">
+                @Html.Partial("_TopRight")
+            </div>
+        }
+    </section>
+</header>
+<!-- END HEADER -->

@@ -1,0 +1,803 @@
+﻿
+@using SmartAdminMvc.Models;
+@*@model TBL_GSTR_ACTION_TYPE*@
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+
+    WebGrid grid1 = null;
+    var result1 = new List<dynamic>();
+
+    WebGrid grid2 = null;
+    var result2 = new List<dynamic>();
+
+    if (ViewBag.ImportSummary != null)
+    {
+        foreach (var emprow in ViewBag.ImportSummary)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true);
+    }
+
+    if (ViewBag.externalSummary != null)
+    {
+        foreach (var emprow in ViewBag.externalSummary)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result1.Add(row);
+        }
+        grid1 = new WebGrid(source: result2, canPage: true, canSort: true);
+    }
+    if (ViewBag.gstr9summary != null)
+    {
+        foreach (var emprow in ViewBag.gstr9summary)
+        {
+            var row = (IDictionary<string, object>
+    )new ExpandoObject();
+            Dictionary<string, object>
+                eachEmpRow = (Dictionary<string, object>
+                    )emprow;
+
+            foreach (KeyValuePair<string, object>
+                keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result2.Add(row);
+        }
+        grid2 = new WebGrid(source: result2, canPage: true, canSort: true);
+    }
+}
+
+
+
+
+
+@if (TempData["UploadMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["UploadMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["UploadMessage"] = null;
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_G1_RETFILE = $('#ImportSummary').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+    });
+
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow_G1_RETFILE = $('#gstr9summary').DataTable({
+            "lengthMenu": [[10, 50, 100, 500, 1000, -1], [10, 50, 100, 500, 1000, "All"]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+        $($(".sorting_asc").get(0)).removeClass("sorting_asc");
+    });
+
+
+</script>
+
+<script type="text/javascript">
+    function ShowMessage(param) {
+        var gstin = $(param).parent().parent()["0"].childNodes[3].innerText;
+        var fp = $(param).parent().parent()["0"].childNodes[5].innerText;
+        var action = $(param).parent().parent()["0"].childNodes[7].innerText;
+        $('#actionType').val(action);
+        $('#period').val(fp);
+        $('#gstin').val(gstin);
+    }
+</script>
+
+<style>
+
+    .modal-dialog {
+        text-align: center;
+        width: 90%;
+        height: 90%;
+        margin: 5%;
+        padding: 0;
+    }
+
+    .modal-content {
+        text-align: center;
+        height: auto;
+        min-height: 90%;
+        border-radius: 0;
+    }
+</style>
+
+@if (@ViewBag.externalSummary != null)
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#summaryModal').modal();
+
+            });
+
+        }
+    </script>
+}
+@if (@ViewBag.gstr9summary != null)
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#summaryModal').modal();
+
+            });
+
+        }
+    </script>
+}
+
+<!-- MAIN CONTENT -->
+<div id="content" style="overflow:hidden">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                GSTR
+                <span>
+                    >&nbsp;
+                    CSV Uploads
+                </span>
+            </h1>
+        </div>
+        <!-- end col -->
+        <!-- right side of the page with the sparkline graphs -->
+        <!-- col -->
+        <!-- end col -->
+
+    </div>
+    <!-- end row -->
+    <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            @using (Html.BeginForm("Index", "GSTRUpload", FormMethod.Post, new { enctype = "multipart/form-data", @id = "GSTRUploadForm", @name = "GSTRUploadForm" }))
+            {
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>GSTR CSV Uploads</b></h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label class="label">GSTR</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("ddlGSTR", ViewBag.GSTRList as SelectList, "Select GSTR", new { @class = "form-control" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label class="label">Source Type</label>
+                                                <div class="col-xs-9 col-lg-9 selectContainer">
+                                                    @Html.DropDownList("SourceType", ViewBag.SOURCEList as SelectList, "Select Source Type", new { @class = "form-control" })
+                                                </div>
+                                            </section>
+
+                                            @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() != "Checker")
+                                            {
+                                                <section class="col col-4" id="File">
+                                                    <label class="label">Upload File</label>
+                                                    <div class="form-group">
+                                                        <input type="file" id="FileUpload" name="FileUpload" multiple="multiple" />
+                                                    </div>
+                                                </section>
+                                            }
+                                            else if (Session["MakerCheckerApproverSetting"].ToString() == "False")
+                                            {
+                                                <section class="col col-4" id="File">
+                                                    <label class="label">Upload File</label>
+                                                    <div class="form-group">
+                                                        <input type="file" id="FileUpload" name="FileUpload" multiple="multiple" />
+                                                    </div>
+                                                </section>
+                                            }
+
+                                            @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() == "Checker")
+                                            {
+                                                <section class="col col-4">
+                                                    <label class="label">Select Maker</label>
+                                                    <div class="col-xs-9 col-lg-9 selectContainer">
+                                                        @Html.DropDownList("ddlMaker", ViewBag.MakerList as SelectList, "Select", new { @class = "form-control" })
+                                                    </div>
+                                                </section>
+                                            }
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="actionType" id="actionType" />
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="period" id="period" />
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="gstin" id="gstin" />
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+
+                                    <footer>
+                                        <div>
+                                            @if (TempData["TotalRecordsCount"] != null)
+                                            {
+                                                <section class="col col-4" style="font-weight:bold">Total Records count: @TempData["TotalRecordsCount"].ToString()</section>
+                                                <section class="col col-4" style="font-weight:bold">Total Processed Records count: @TempData["ProcessedRecordsCount"].ToString()</section>
+                                                <section class="col col-4" style="font-weight:bold">@Html.ActionLink("Total Error Records count: " + @TempData["ErrorRecordsCount"].ToString(), "Download")</section>
+                                                @*<a href="@Url.Action("Index","GSTRUpload")" id="DownloadExcel" class=""><strong>@TempData["ErrorRecordsCount"].ToString() </strong></a>*@
+
+                                                @*@Html.ActionLink("Download File", "Download")*@
+                                            }
+                                        </div>
+                                        @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() != "Checker")
+                                        {
+                                            <button type="submit" name="command" id="btnImport" value="Import" class="btn btn-primary" style="border-radius:5px;font-weight:600">
+                                                Import Data
+                                            </button>
+                                        }
+                                        else if (Session["MakerCheckerApproverSetting"].ToString() == "False")
+                                        {
+                                            <button type="submit" name="command" id="btnImport" value="Import" class="btn btn-primary" style="border-radius:5px;font-weight:600">
+                                                Import Data
+                                            </button>
+                                        }
+                                    </footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <!-- end widget -->
+
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2><b>GSTR CSV Uploads-View Summary</b></h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+
+                                <div class="table-responsive" style="margin:5px;">
+                                    @if (ViewBag.ImportSummary != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.ImportSummary) > 0)
+                                        {
+                                            int i = 1;
+                                            <div class="container-fuild" style="background-color:white;">
+                                                <table id="ImportSummary" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Gstin No</th>
+                                                            <th>Period</th>
+                                                            <th>ActionType</th>
+                                                            <th>No OF Records</th>
+                                                            <th>No Of Invoices</th>
+                                                            <th>Taxable Value</th>
+                                                            <th>IGST Amount</th>
+                                                            <th>CGST Amount</th>
+                                                            <th>SGST Amount</th>
+                                                            <th>CESS Amount</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in result)
+                                                        {
+                                                            <tr style="height:60px;">
+                                                                <td valign="middle">@Convert.ToInt32(i++)</td>
+                                                                <td valign="middle">@item.GstinNo</td>
+                                                                <td valign="middle">@item.Period</td>
+                                                                <td valign="middle">@item.ActionType</td>
+                                                                <td valign="middle">@item.RecordCount</td>
+                                                                <td valign="middle">@item.NoOfInvoices</td>
+                                                                <td valign="middle">@item.txval</td>
+                                                                <td valign="middle">@item.iamt</td>
+                                                                <td valign="middle">@item.camt</td>
+                                                                <td valign="middle">@item.samt</td>
+                                                                <td valign="middle">@item.csamt</td>
+                                                                <td valign="middle">
+
+                                                                    <button type="submit" name="command" id="btnRetrieveDelete" value="Delete" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage(this);" style="font-weight:500;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;">
+                                                                        Delete
+                                                                    </button>
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        }
+                                        else
+                                        {
+                                            <h3>No Data Found</h3>
+                                        }
+                                    }
+
+                                    <br />
+
+
+
+                                </div>
+
+                                <div id="comment-form" class="smart-form">
+                                    <footer>
+                                        <button type="submit" name="command" value="ExRetrive" id="btnRetrieveDelete" class="btn btn-primary" style="border-radius:5px;font-weight:600">
+                                            View Summary
+                                        </button>
+                                        @*<button type="submit" name="command" value="Upload" class="btn btn-primary" style="border-radius:5px;font-weight:600">
+                                                GSTR Upload
+                                            </button>*@
+
+
+                                    </footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <!-- end widget -->
+
+                </article>
+
+                <div class="modal fade text-center" style="border-radius:5px;" id="summaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background:#568a89;color:#fff;border-color:#508180!important">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel"><b>View Summary Data</b></h4>
+                            </div>
+                            <div class="modal-body terms-body">
+                                <div class="table-responsive">
+                                    @if (ViewBag.externalSummary != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.externalSummary) > 0)
+                                        {
+                                            int i = 1;
+                                            <div class="container-fuild" style="background-color:white;">
+                                                <table id="ImportSummary" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Gstin No</th>
+                                                            <th>Period</th>
+                                                            <th>ActionType</th>
+                                                            <th>No OF Records</th>
+                                                            <th>No Of Invoices</th>
+                                                            <th>Taxable Value</th>
+                                                            <th>IGST Amount</th>
+                                                            <th>CGST Amount</th>
+                                                            <th>SGST Amount</th>
+                                                            <th>CESS Amount</th>
+
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in result1)
+                                                        {
+                                                            <tr style="height:60px;">
+                                                                <td valign="middle">@Convert.ToInt32(i++)</td>
+                                                                <td valign="middle">@item.GstinNo</td>
+                                                                <td valign="middle">@item.Period</td>
+                                                                <td valign="middle">@item.ActionType</td>
+                                                                <td valign="middle">@item.RecordCount</td>
+                                                                <td valign="middle">@item.NoOfInvoices</td>
+                                                                <td valign="middle">@item.txval</td>
+                                                                <td valign="middle">@item.iamt</td>
+                                                                <td valign="middle">@item.camt</td>
+                                                                <td valign="middle">@item.samt</td>
+                                                                <td valign="middle">@item.csamt</td>
+                                                                <td valign="middle">
+                                                                    @if (Session["MakerCheckerApproverSetting"].ToString() == "True" && Session["MakerCheckerApproverType"].ToString() != "Checker")
+                                                                    {
+                                                                        <button type="submit" name="command" id="btnRetrieveDelete" value="ExDelete" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage(this);" style="font-weight:500;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;">
+                                                                            Delete
+                                                                        </button>
+                                                                    }
+                                                                    else if (Session["MakerCheckerApproverSetting"].ToString() == "False")
+                                                                    {
+                                                                        <button type="submit" name="command" id="btnRetrieveDelete" value="ExDelete" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage(this);" style="font-weight:500;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;">
+                                                                            Delete
+                                                                        </button>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        }
+                                        else
+                                        {
+                                            <h3>No Data Found</h3>
+                                        }
+                                    }
+
+
+                                    @if (ViewBag.gstr9summary != null)
+                                    {
+                                        if (Enumerable.Count(ViewBag.gstr9summary) > 0)
+                                        {
+                                            int i = 1;
+                                            <div class="container-fuild" style="background-color:white;">
+                                                <table id="gstr9summary" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Gstin No</th>
+                                                            <th>Period</th>
+                                                            <th>Taxable Value</th>
+                                                            <th>IGST Amount</th>
+                                                            <th>CGST Amount</th>
+                                                            <th>SGST Amount</th>
+                                                            <th>CESS Amount</th>
+                                                            <th>Tax Payable</th>
+                                                            <th>Tax Paid Through Cash</th>
+                                                            <th>Interest</th>
+                                                            <th>Penalty</th>
+                                                            <th>Latefee</th>
+
+
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in result2)
+                                                        {
+                                                            <tr style="height:60px;">
+                                                                <td valign="middle">@Convert.ToInt32(i++)</td>
+                                                                <td valign="middle">@item.GSTIN</td>
+                                                                <td valign="middle">@item.Period</td>
+                                                                <td valign="middle">@item.Txval</td>
+                                                                <td valign="middle">@item.Iamt</td>
+                                                                <td valign="middle">@item.Camt</td>
+                                                                <td valign="middle">@item.Samt</td>
+                                                                <td valign="middle">@item.Csamt</td>
+                                                                <td valign="middle">@item.TaxPayable</td>
+                                                                <td valign="middle">@item.TaxPaidThroughCash</td>
+                                                                <td valign="middle">@item.Interest</td>
+                                                                <td valign="middle">@item.Penalty</td>
+                                                                <td valign="middle">@item.Latefee</td>
+
+                                                                <td valign="middle">
+                                                                    <button type="submit" name="command" id="btnRetrieveDelete" value="ExDelete" class="btn btn-primary btn-lg btnstyle" onclick="javascript:return ShowMessage(this);" style="font-weight:500;Border-radius:5px;width:80px;margin-bottom:3px;padding:3px;">
+                                                                        Delete
+                                                                    </button>
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        }
+                                        else
+                                        {
+                                            <h3>No Data Found</h3>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" name="command" value="Upload" class="btn btn-primary " style="border-radius:5px;font-weight:600">
+                                    GSTR Upload
+                                </button>
+
+
+                                <button type="button" class="btn btn-primary" style="font-weight:600;Border-radius:5px;" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+                    <!-- end row -->
+                    <!-- row -->
+
+                    <div class="row">
+
+                        <!-- a blank row to get started -->
+                        <div class="col-sm-12">
+                            <!-- your contents here -->
+                        </div>
+
+                    </div>
+
+                    <!-- end row -->
+                </div>
+            }
+        </div>
+    </section>
+    <!-- end widget grid -->
+
+
+
+</div>
+<!-- END MAIN CONTENT -->
+
+
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        //$("#FileUpload").change(function (e) {
+        //    if (this.files[0].size > 5120 * 1024) {
+        //        alert("File size should be less than 5 MB.");
+        //        $('#FileUpload').val('');
+
+        //    }
+
+        //});
+
+
+        $(document).ready(function () {
+            $('#btnImport').click(function () {
+                var $checkoutForm = $('#GSTRUploadForm').validate({
+                    // Rules for form validation
+                    rules: {
+                        ddlGSTR: {
+                            required: true
+                        }
+                        ,
+                        FileUpload: {
+                            required: true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages: {
+                        ddlGSTR: {
+                            required: 'Please select GSTR'
+                        }
+                        ,
+                        FileUpload: {
+                            required: 'Please select Files'
+                        }
+                    },
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                });
+            })
+        })
+
+        $(document).ready(function () {
+            $('#btnRetrieveDelete').click(function () {
+                var $checkoutForm = $('#GSTRUploadForm').validate({
+                    // Rules for form validation
+                    rules: {
+                        ddlGSTR: {
+                            required: true
+                        }
+
+                    },
+
+                    // Messages for form validation
+                    messages: {
+                        ddlGSTR: {
+                            required: 'Please select GSTR'
+                        }
+
+                    },
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element.parent());
+                    }
+                });
+            })
+        })
+
+
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            var source = document.getElementById('SourceType').value;
+            if (source == "2" || source == "3" || source == "4") {
+                $("#File").hide();
+                $("#btnImport").hide();
+            }
+            else if (source == "1") {
+                $("#File").show();
+                $("#btnImport").show();
+            }
+            else {
+                $("#File").show();
+                $("#btnImport").show();
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#SourceType").change(function () {
+            debugger;
+            var source = document.getElementById('SourceType').value;
+            if (source == "2" || source == "3" || source == "4") {
+                $("#File").hide();
+                $("#btnImport").hide();
+            }
+            else if (source == "1") {
+                $("#File").show();
+                $("#btnImport").show();
+            }
+            else {
+                $("#File").show();
+                $("#btnImport").show();
+            }
+        });
+
+    </script>
+}
+

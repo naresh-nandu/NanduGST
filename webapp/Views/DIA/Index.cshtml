@@ -1,0 +1,802 @@
+﻿@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+@*<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">*@
+<style>
+    .SmallBox {
+        width: 900px;
+    }
+
+    .popover {
+        max-width: 800px;
+    }
+</style>
+<script>
+    var firstSubItem = "";
+    var GvDashDetails;
+    $(document).ready(function () {
+        GetDashBoardMainItems();    
+        $("#searchRelatedItemsID").hide();
+        $("#dashboardID li a").first().trigger("click");
+        $("#dashboardID li ul li a").first().trigger("click");
+       // $("#dashboardID li ul li a").first().css({ "background": "grey"});
+    });
+
+
+    function GetDashBoardMainItems() {
+        $("#loadIcon").show();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDashboardDetails", "Dia")',
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                PopulateDashBoardDetails(data);
+                $("#loadIcon").hide();
+                $('#listResults li:first').on('click', function () {
+                    alert("Wunderbar!");
+                });
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+
+    function GetContentDetails(contentId)
+    {
+        $("#loadIcon").show();
+        var dataa ={ContentId: contentId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetContentDetails","Dia")',
+            dataType: "json",
+            data: { ContentId: contentId },
+            //async: false,
+            success: function (data) {
+                $("#loadIcon").hide();
+                PopulateContentDetails(data);
+                PopulateRelatedContentDetails(data);
+                GetContentAuthorTeamDetails(contentId);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+        });
+    }
+
+    function GetAuthorImage(authorId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetAuthorImage", "Dia")',
+            dataType: "json",
+            data: { AuthorId: authorId },
+            //async: false,
+            success: function (data) {
+                return data;
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+        });
+    }
+
+    function GetRelatedContentDetails(contentId,categoryId)
+    {
+        var pdata = { ContentId: contentId, CategoryId: categoryId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRelatedContentDetails", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                PopulateContentDetails(data);
+                PopulateRelatedContentDetails(data);
+
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+
+
+    function GetSearchDetails(relatedCategoryID)
+    {
+        $("#loadIcon").show();
+        var searchstr = document.getElementById('searchString').value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SearchContent", "Dia")',
+            dataType: "json",
+            data: { SearchString: searchstr, RelatedCategoryID: relatedCategoryID},
+            //async: false,
+            success: function (data) {
+                $("#loadIcon").hide();
+                $("#searchRelatedItemsID").show();
+                GvDashDetails = data;
+                PopulateSearchDashBoardDetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+
+    function GetContentInfoDetails(contentId) {
+        var dataa = { ContentId: contentId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetContentInfo", "Dia")',
+            dataType: "json",
+            data: { ContentId: contentId },
+            //async: false,
+            success: function (data) {
+                PopulateContentInfoDetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+    function GetContentAuthorTeamDetails(contentId) {
+        var dataa = { ContentId: contentId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetContentAuthorTeamDetails", "Dia")',
+            dataType: "json",
+            data: { ContentId: contentId },
+            //async: false,
+            success: function (data) {
+                PopulateContentAuthorTeamDetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+
+    function PopulateDashBoardDetails(dashDetails) {
+        $('#dashboardContents').html("");
+        $('#contentTitle').html("");
+        $('#contentDetails').html("");
+        $('#relatedContentDetails').html("");
+        $('#contentAuthorTeamDetails').html("");
+        var strHtml = '<nav><ul id="dashboardID">';
+        for (var i = 0; i < dashDetails.data.length; i++) {
+            strHtml += '<li class=""><a href="#"  style="font-size:110%;"><span class="menu-item-parent">' + dashDetails.data[i].name + '</span><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a>';
+            if (dashDetails.data[i].isDir == "1") {
+                strHtml += AddSubItem(dashDetails.data[i].children);
+            }
+            strHtml += '</li>';
+        }
+        strHtml += '</ul></nav>';
+        $('#dashboardContents').html(strHtml);
+    }
+
+
+
+    function ShowSearchContentDetails(data) {
+        for (var i = 0; i < GvDashDetails.data.length; i++)
+        {
+            if (GvDashDetails.data[i].id == data)
+            {
+                $('#contentTitle').html(GvDashDetails.data[i].nameortitle);
+                $('#contentDetails').html(GvDashDetails.data[i].description);
+                PopulateSearchRelatedContentDetails(GvDashDetails.data[i]);
+                //PopulateSearchRelatedContentDetails(i);
+                GetContentAuthorTeamDetails(GvDashDetails.data[i].id);
+                return;
+            }
+        }
+    }
+
+    function PopulateSearchDashBoardDetails(dashDetails) {
+
+        $('#dashboardContents').html("");
+        $('#contentTitle').html("");
+        $('#contentDetails').html("");
+        $('#relatedContentDetails').html("");
+        $('#contentAuthorTeamDetails').html("");
+        var strHtml = '<nav><ul>';
+        for (var i = 0; i < dashDetails.data.length; i++) {
+            strHtml += '<li><a href="#" onclick="ShowSearchContentDetails(' +dashDetails.data[i].id+ ');"><span class="menu-item-parent">' + dashDetails.data[i].nameortitle + '</span></a>';
+            strHtml += '</li>';
+        }
+        strHtml += '</ul></nav>';
+        $('#dashboardContents').append(strHtml);
+    }
+
+
+
+    function AddSubItem(subItems) {
+        var strHtml = '<ul>';
+        for (var j = 0; j < subItems.length; j++) {
+            var count = j + 1;
+            strHtml += '<li class=""><a href="#" onClick="GetContentDetails(' + subItems[j].contentId + ');"><span class="menu-item-parent">' + subItems[j].name + '</span></a></li>';
+        }
+        strHtml += '</ul>';
+        return strHtml;
+    }
+
+
+    function PopulateContentDetails(contentDetails) {
+
+
+        $('#contentTitle').html(contentDetails.data.nameortitle);
+        $('#contentDetails').html(contentDetails.data.description);
+    }
+
+    function PopulateRelatedContentDetails(data) {
+        var rcDetails = "";
+        var relatedCateogryList = data.data.relatedCateogryList;
+        rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Team" onClick="GetContentAuthorTeamDetails(' + data.data.id + ');"><span class="glyphicon glyphicon-user fa-2x" aria-hidden="true"></span></a></div>';
+        for (var i = 0; i < relatedCateogryList.length; i++) {
+            if (relatedCateogryList[i].name == "QnA") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: QnA"  onClick="GetRelatedQNAContentDetails(\'' + data.data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-list-alt fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Legislation") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Legislation" onClick="GetRelatedLegislationContentDetails(\'' + data.data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-education fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Contributions") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Contributions"><span class="glyphicon glyphicon-book fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Reference Material") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Reference Material" onClick="GetRelatedReferenceMaterialContentDetails(\'' + data.data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-book fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Government FAQs") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Government FAQs" onClick="GetRelatedGovFAQsContentDetails(\'' + data.data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-th-list fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Webcast") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Webcast" onClick="GetRelatedWebcastContentDetails(\'' + data.data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-globe fa-2x" aria-hidden="true"></span></a></div>';
+            }
+
+        }
+        if (data.data.documentName) {
+            rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Attachment" onClick="ShowAttachmentDetails(\'' + data.data.documentName + '\',\'' + data.data.id + '\');"><span class="glyphicon glyphicon-paperclip fa-2x" aria-hidden="true"></span></a></div>';
+        }
+        rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Info" onClick="GetContentInfoDetails(' + data.data.id + ');"><span class="glyphicon glyphicon-info-sign fa-2x" aria-hidden="true"></span></a></div>';
+        $('#relatedContentDetails').html(rcDetails);
+    }
+
+    /*******************************************************************************************
+    *************Related Content Legislation Methods********************************************
+    **********************Start****************************************************************/
+
+    function GetRelatedLegislationContentDetails(contentID, relatedCategoryId)
+    {
+
+        var pdata = { ContentId: contentID, CategoryId: relatedCategoryId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRelatedContentDetails", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                ShowRelatedLegislationDetails(data);
+                //alert(data.data.length);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+    function ShowRelatedLegislationDetails(relatedContentDetails) {
+        var qnaDetails = '<div class="who clearfix"><h4> Related Legislation</h4></div >';
+        for (var i = 0; i < relatedContentDetails.data.length; i++) {
+            var defImg = "'Content/images/persona-placeholder.png'";
+            qnaDetails += '<div class="who clearfix"><a href="#" id="' + relatedContentDetails.data[i].id + '" onClick="ShowRelatedDescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+            //qnaDetails += '<div class="who clearfix"><a href="#" id="popover" onClick="ShowRelatedQNADescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+        }
+        $('#contentAuthorTeamDetails').html(qnaDetails);
+    }
+
+
+
+    /*******************************************************************************************
+    *************Related Content Reference Material Methods*************************************/
+
+    function GetRelatedReferenceMaterialContentDetails(contentID, relatedCategoryId)
+    {
+
+        var pdata = { ContentId: contentID, CategoryId: relatedCategoryId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRelatedContentDetails", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                ShowRelatedReferenceMaterialDetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+    function ShowRelatedReferenceMaterialDetails(relatedContentDetails) {
+        var qnaDetails = '<div class="who clearfix"><h4> Related Reference Material</h4></div >';
+        for (var i = 0; i < relatedContentDetails.data.length; i++) {
+            var defImg = "'Content/images/persona-placeholder.png'";
+            qnaDetails += '<div class="who clearfix"><a href="#" id="' + relatedContentDetails.data[i].id + '" onClick="ShowRelatedDescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+            //qnaDetails += '<div class="who clearfix"><a href="#" id="popover" onClick="ShowRelatedQNADescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+        }
+        $('#contentAuthorTeamDetails').html(qnaDetails);
+    }
+
+    /*******************************************************************************************
+    *************Related Content Webcast Methods***********************************************/
+
+    function GetRelatedWebcastContentDetails(contentID, relatedCategoryId)
+    {
+
+        var pdata = { ContentId: contentID, CategoryId: relatedCategoryId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRelatedContentDetails", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                ShowRelatedWebcastDetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+    function ShowRelatedWebcastDetails(relatedContentDetails) {
+        var qnaDetails = '<div class="who clearfix"><h4> Related Webcast</h4></div >';
+        for (var i = 0; i < relatedContentDetails.data.length; i++) {
+            var defImg = "'Content/images/persona-placeholder.png'";
+            qnaDetails += '<div class="who clearfix"><a href="#" id="' + relatedContentDetails.data[i].id + '" onClick="ShowRelatedDescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+            //qnaDetails += '<div class="who clearfix"><a href="#" id="popover" onClick="ShowRelatedQNADescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+        }
+        $('#contentAuthorTeamDetails').html(qnaDetails);
+    }
+
+
+    /*******************************************************************************************
+    *************Related Content Government FAQs Methods***************************************/
+
+    function GetRelatedGovFAQsContentDetails(contentID, relatedCategoryId)
+    {
+
+        var pdata = { ContentId: contentID, CategoryId: relatedCategoryId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRelatedContentDetails", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                ShowRelatedGovFAQsDetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+    function ShowRelatedGovFAQsDetails(relatedContentDetails) {
+        var qnaDetails = '<div class="who clearfix"><h4> Related Government FAQs</h4></div >';
+        for (var i = 0; i < relatedContentDetails.data.length; i++) {
+            var defImg = "'Content/images/persona-placeholder.png'";
+            qnaDetails += '<div class="who clearfix"><a href="#" id="' + relatedContentDetails.data[i].id + '" onClick="ShowRelatedDescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+            //qnaDetails += '<div class="who clearfix"><a href="#" id="popover" onClick="ShowRelatedQNADescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+        }
+        $('#contentAuthorTeamDetails').html(qnaDetails);
+    }
+
+
+    /******************************************************************************************
+    *************Related Content QNA Methods***************************************************/
+
+    function GetRelatedQNAContentDetails(contentID, relatedCategoryId)
+    {
+
+        var pdata = { ContentId: contentID, CategoryId: relatedCategoryId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRelatedContentDetails", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                ShowRelatedQNADetails(data);
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+    function ShowRelatedQNADetails(relatedContentDetails)
+    {
+        var qnaDetails = '<div class="who clearfix"><h4> Related QNA</h4></div >';
+        for (var i = 0; i < relatedContentDetails.data.length; i++) {
+            var defImg = "'Content/images/persona-placeholder.png'";
+            var nameortitle = relatedContentDetails.data[i].nameortitle;
+            //nameortitle = nameortitle.replace(/'/g, "\\'");
+            var description = relatedContentDetails.data[i].description;
+
+            nameortitle = encodeURIComponent(nameortitle);
+            description = encodeURIComponent(description);
+            
+            qnaDetails += '<div class="who clearfix"><a href="#" id="' + relatedContentDetails.data[i].id + '" onClick="ShowRelatedDescDetails(\'' + encodeURIComponent(relatedContentDetails.data[i].nameortitle) + '\',\'' + encodeURIComponent(relatedContentDetails.data[i].description) + '\',\'' + relatedContentDetails.data[i].id + '\')">' + relatedContentDetails.data[i].nameortitle + '</a></div>'
+        }
+        $('#contentAuthorTeamDetails').html(qnaDetails);
+    }
+
+    function ShowRelatedDescDetails(title, description, idd)
+    {
+        description = decodeURIComponent(description);
+        title = decodeURIComponent(title);
+
+        description = '<div id="" style="overflow: auto; height:400px;">' + description + '</div>';
+
+        $('.popover').popover('hide');
+
+        $('#' + idd).popover({
+            html: true,
+            title: title + '<a href="#" class="close" data-dismiss="alert" onClick>&times;</a>',
+            content: description,
+            placement: 'left',
+               template: '<div class="popover" role="tooltip" style="width:800px;">' +
+             '<div class="arrow"></div>'  +
+             '<h3 class="popover-title"></h3>' +
+             '<div class="popover-content"></div>' +
+             '</div>'
+        }).popover('show');
+
+        $(document).on("click", ".popover .close", function () {
+
+            $('.popover').popover('hide');
+
+        });
+    }
+
+
+
+
+    /******************************************************************************************
+    *************Related Content Attachement Methods*******************************************/
+
+    //Show Attachement name on
+    function ShowAttachmentDetails(attachementFile, dataID) {
+        var authDetails = '<div class="who clearfix"><h4> Related Attachment</h4></div >';
+        authDetails += '<div class="who clearfix"><a href="#" onClick="OpenPdfAttachment(\'' + dataID + '\')">' + attachementFile + '</a></div>';
+        $('#contentAuthorTeamDetails').html(authDetails);
+    }
+
+    //OPen PDF Attachement Document
+    function OpenPdfAttachment(contentId)
+    {
+         var dataa = { ContentId: contentId };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetPdfAttachmentData", "Dia")',
+            dataType: "json",
+            data: { ContentId: contentId },
+            //async: false,
+            success: function (data) {
+                if (data.status == 1) {
+                    var data = data.data;
+                    var fileName = "doc.pdf";
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE workaround
+                        var byteCharacters = atob(data);
+                        var byteNumbers = new Array(byteCharacters.length);
+                        for (var i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        var byteArray = new Uint8Array(byteNumbers);
+                        var blob = new Blob([byteArray], { type: 'application/pdf' });
+                        window.navigator.msSaveOrOpenBlob(blob, fileName);
+                    }
+                    else { // much easier if not IE
+                        var newWindow = window.open("data:application/pdf;base64, " + data, '_blank', "height=600,width=800");
+                        newWindow.document.title = "Some title";
+                        ////myWindow.document.write('<title>My PDF File Title</title>');
+                        //newWindow.onload = function () {
+                        //    setTimeout(function () {
+                        //        $(newWindow.document).find('html').append('<head><title>your title</title></head>');
+                        //    }, 500);
+                        //}
+
+                        //var file = 'data:application/pdf;base64,' + data;
+                        //var prntWin = window.open();
+                        //prntWin.document.write("<html><head><title>Title Goes Here</title></head><body>"
+                        //    + '<embed width="100%" height="100%" name="plugin" src="' + file + '" '
+                        //    + 'type="application/pdf" internalinstanceid="21"></body></html>');
+                        //prntWin.document.close();
+
+                        //var newWindow = window.open();
+                        //newWindow.document.write('<iframe src="data:application/pdf;base64,' + (data) + '" frameborder="0" allowfullscreen></iframe>');
+                        //newWindow.document.title = "Your Title Here";
+                    }
+                }
+                else
+                {
+
+                }
+            },
+            error: function (res) {
+                alert("no " + res.status);
+            }
+
+        });
+    }
+
+
+    function PopulateSearchRelatedContentDetails(data) {
+
+        var rcDetails = "";
+        var relatedCateogryList = data.relatedCateogryList;
+        rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Team" onClick="GetContentAuthorTeamDetails(' + data.id + ');"><span class="glyphicon glyphicon-user fa-2x" aria-hidden="true"></span></a></div>';
+        for (var i = 0; i < relatedCateogryList.length; i++) {
+            if (relatedCateogryList[i].name == "QnA") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: QnA"  onClick="GetRelatedQNAContentDetails(\'' + data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-list-alt fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Legislation") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Legislation" onClick="GetRelatedLegislationContentDetails(\'' + data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-education fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Contributions") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Contributions"><span class="glyphicon glyphicon-book fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Reference Material") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Reference Material" onClick="GetRelatedReferenceMaterialContentDetails(\'' + data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-book fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Government FAQs") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Government FAQs" onClick="GetRelatedGovFAQsContentDetails(\'' + data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-th-list fa-2x" aria-hidden="true"></span></a></div>';
+            }
+            else if (relatedCateogryList[i].name == "Webcast") {
+                rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Webcast" onClick="GetRelatedWebcastContentDetails(\'' + data.id + '\',\'' + relatedCateogryList[i].id + '\')"><span class="glyphicon glyphicon-globe fa-2x" aria-hidden="true"></span></a></div>';
+            }
+
+        }
+        if (data.documentName) {
+            rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Attachment" onClick="ShowAttachmentDetails(\'' + data.documentName + '\',\'' + data.id + '\');"><span class="glyphicon glyphicon-paperclip fa-2x" aria-hidden="true"></span></a></div>';
+        }
+        rcDetails += '<div class="row" style="margin-bottom:20px;"><a href="#" title="Related: Info" onClick="GetContentInfoDetails(' + data.id + ');"><span class="glyphicon glyphicon-info-sign fa-2x" aria-hidden="true"></span></a></div>';
+        $('#relatedContentDetails').html(rcDetails);
+    }
+
+
+
+    function PopulateContentAuthorTeamDetails(contentDetails) {
+        var authImage;
+        var authDate;
+        var authDetails = '<div class="who clearfix"><h4> Related User</h4></div >';
+        for (var i = 0; i < contentDetails.data.length; i++) {
+            if (contentDetails.data[i].photoUrl) {
+                var imgID = contentDetails.data[i].id + '' + i;
+                GetAuthorPhotographDetails(contentDetails.data[i].id, imgID);
+
+            }
+            //authDetails += '<div class="who clearfix"><img  src="' + authImage + '"  onerror="this.src=' + defImg + '" alt="img" class="busy"><span class="name font-sm"><span class="text-muted">' + contentDetails.data[i].status + ' by</span><b> ' + contentDetails.data[i].firstName + ' ' + contentDetails.data[i].lastName + ' <span class="pull-right font-xs text-muted"><i></i></span> </b><br><a href="javascript:void(0);" class="font-md">' + contentDetails.data[i].industry + '</a></span></div>'
+            if (contentDetails.data[i].statusDate) {
+                authDate = toISODate(contentDetails.data[i].statusDate);
+            }
+            else
+            {
+                authDate = "";
+            }
+            defImg = 'Content/images/persona-placeholder.png';
+            var divID = contentDetails.data[i].id + '_user_details_' + i;
+
+            //authDetails += '<div class="who clearfix"><div class="row " style="margin-bottom:5px;"><div class="col-md-12 pull-right"><span class="text-muted">' + authDate + '</span></div></div><div class="row"><img id="' + imgID + '" src="" onerror="this.src=' + defImg + '" alt="" class="busy"><span class="name font-sm"><span class="text-muted">' + contentDetails.data[i].status + ' by</span"></b><br><b> ' + contentDetails.data[i].firstName + ' ' + contentDetails.data[i].lastName + ' <span class="pull-right font-xs text-muted"><i></i></span> </b><br><a href="javascript:void(0);" onClick="ToggleUserDetails(\'' + divID + '\');" class="text-muted">' + contentDetails.data[i].email + '</a></span></div> \
+            //<div class="row text-muted" id="'+ divID + '"><span><b>Role: </b></span>' + contentDetails.data[i].role + '</br><span><b>Specialization: </b></span>' + contentDetails.data[i].specialization + '</br><span><b>Location: </b></span>' + contentDetails.data[i].location + '</br><span><b>About Me: </b></span>' + contentDetails.data[i].aboutMe + '</div></div > ';
+            authDetails += '<div class="who clearfix"><div class="row " style="margin-bottom:5px;"><a href="javascript:void(0);" onClick="ToggleUserDetails(\'' + divID + '\');"><div class="col-md-12 pull-right"><span class="text-muted">' + authDate + '</span></div></div><div class="row"><img id="' + imgID + '" src="" onerror="this.src=' + defImg + '" alt="" class="busy"><span class="name font-sm"><span class="text-muted">' + contentDetails.data[i].status + ' by</span"></b><br><b> ' + contentDetails.data[i].firstName + ' ' + contentDetails.data[i].lastName + ' <span class="pull-right font-xs text-muted"><i></i></span> </b><br><a href="javascript:void(0);"  class="text-muted">' + contentDetails.data[i].email + '</a></span></div></a> \
+            <div class="row text-muted" id="'+ divID + '"><span><b>Role: </b></span>' + contentDetails.data[i].role + '</br><span><b>Specialization: </b></span>' + contentDetails.data[i].specialization + '</br><span><b>Location: </b></span>' + contentDetails.data[i].location + '</br><span><b>About Me: </b></span>' + contentDetails.data[i].aboutMe + '</div></div > ';
+        }
+        $('#contentAuthorTeamDetails').html(authDetails);
+
+        for (var i = 0; i < contentDetails.data.length; i++) {
+            var divID = contentDetails.data[i].id + '_user_details_' + i;
+            $('#' + divID).hide();
+        }
+    }
+
+    function ToggleUserDetails(divID)
+    {
+        $('#' + divID).toggle();
+    }
+
+    //Convert Milliseconds to Date Format
+    function toISODate(milliseconds) {
+        var date = new Date(parseInt(milliseconds));
+        var y = date.getFullYear()
+        var m = date.getMonth() ;
+        var d = date.getDate();
+        m = (m < 10) ? '0' + m : m;
+        d = (d < 10) ? '0' + d : d;
+        return d + ' ' + getMonthName(parseInt(m)) + ' ' + y;
+    }
+
+    //Get Month Name
+    function getMonthName(monthNum)
+    {
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sept";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+        return month[monthNum];
+    }
+
+
+    function GetAuthorPhotographDetails(authorID , imgID)
+    {
+        var pdata = { AuthorId: authorID };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetAuthorImage", "Dia")',
+            dataType: "json",
+            data: pdata,
+            //async: false,
+            success: function (data) {
+                if (data.status == 1) {
+                    var img = 'data:image/png;base64,' + data.data;
+                    $('#' + imgID).attr('src', img);
+                }
+                else
+                {
+                    $('#' + imgID).attr('src', 'Content/images/persona-placeholder.png');
+                }
+            },
+            error: function (res) {
+                $('#' + imgID).attr('src', 'Content/images/persona-placeholder.png');
+            }
+
+        });
+    }
+
+
+    function PopulateContentInfoDetails(contentInfoDetails) {
+        var authDetails = '<div class="who clearfix"><h4> Related Info</h4></div ><div class="who clearfix"><div class="widget-body no-padding"><div class="panel-group smart-accordion-default" id="accordion-2">';
+            authDetails += '<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-1" aria-expanded="false" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>States</a></h4><div id="collapseOne-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;"><div class="panel-body">';
+            authDetails += GetRelatedInfoStateDetails(contentInfoDetails);
+            authDetails += '</div></div>';
+
+            authDetails += '<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-2" aria-expanded="false" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>Years</a></h4><div id="collapseOne-2" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;"><div class="panel-body">';
+            authDetails += GetRelatedInfoYearDetails(contentInfoDetails);
+            authDetails += '</div></div>';
+
+            authDetails += '</div></div></div>';
+            $('#contentAuthorTeamDetails').html(authDetails);
+    }
+
+    function GetRelatedInfoStateDetails(data)
+    {
+        var infoDetails = '<table class="table table-bordered">';
+        for (var i = 0; i < data.data.states.length; i++)
+        {
+            infoDetails += '<tr><td>' + data.data.states[i] + '</td></tr>';
+        }
+        infoDetails += '</table>';
+        return infoDetails;
+    }
+
+    function GetRelatedInfoYearDetails(data) {
+        var infoDetails = '<table class="table table-bordered">';
+        for (var i = 0; i < data.data.years.length; i++) {
+            infoDetails += '<tr><td>' + data.data.years[i] + '</td></tr>';
+        }
+        infoDetails += '</table>';
+        return infoDetails;
+    }
+
+
+    function SearchBasedOnCategory(categoryID)
+    {
+        GetSearchDetails(categoryID);
+    }
+
+</script>
+
+
+<aside id="left-panel" style="width:350px;margin-left:-220px; padding-bottom:565px;">
+
+    <div align="left" style="margin-top:0px;margin-bottom:-20px">
+        <a href="~/dashboard/summary "> <img src="~/Content/images/home11.png" style="width:25px;height:25px ;margin-top:-80px"> <<P></a>
+    </div>
+
+    <div class="well">
+        <div class="input-group" style="margin-top:-10px;margin-bottom:-10px">
+            <input class="form-control" placeholder="Search..." type="text" id="searchString">
+            <div class="input-group-btn">
+                <button class="btn btn-default btn-primary" type="button" onclick="GetSearchDetails(1);">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:-15px;margin-top:14px;">
+            @*<div class="col-md-12 pull-right">
+                <a href="javascript:void(0);" onclick="location.reload();" title="Dashboard"><span class="glyphicon glyphicon-th-list fa-2x" aria-hidden="true"></span></a>
+            </div>*@
+
+            <div class="col-md-12" id="searchRelatedItemsID">
+                <a href="javascript:void(0);" onclick="SearchBasedOnCategory(1);" title="QNA" style="margin-right:25px;"><span class="glyphicon glyphicon-list-alt fa-2x" aria-hidden="true"></span></a>
+                <a href="javascript:void(0);" onclick="SearchBasedOnCategory(2);" title="Legislation" style="margin-right:25px;"><span class="glyphicon glyphicon-education fa-2x" aria-hidden="true"></span></a>
+                <a href="javascript:void(0);" onclick="SearchBasedOnCategory(32);" title="Reference Material" style="margin-right:25px;"><span class="glyphicon glyphicon-book fa-2x" aria-hidden="true"></span></a>
+                <a href="javascript:void(0);" onclick="SearchBasedOnCategory(150);" title="Webcast" style="margin-right:25px;"><span class="glyphicon glyphicon-globe fa-2x" aria-hidden="true"></span></a>
+                <a href="javascript:void(0);" onclick="SearchBasedOnCategory(152);" title="Government FAQs" style="margin-right:25px;"><span class="glyphicon glyphicon-th-list fa-2x" aria-hidden="true"></span></a>
+                <a href="javascript:void(0);" onclick="location.reload();" title="Dashboard" ><span class="glyphicon glyphicon-home fa-2x" aria-hidden="true"></span></a>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div id="dashboardContents"></div>
+</aside>
+
+
+<div id="main" style="margin-left:150px;">
+    <div id="content" style="opacity: 3;height:100%;">
+
+        <div align="right">
+            <p style="font-family:'Lucida Calligraphy'; font-size:14px;margin-left:-5px">
+                Powered by With Dia
+                <img src="~/Content/images/withdia.png" style="width:30px;height:28px " />
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-7 col-md-7 col-lg-7">
+
+                <div class="">
+                    @*<div id="contentTitle" style="font-weight:bold;font-size:large;"></div>*@
+                    <div id="loadIcon"><span><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></span></div>
+                </div>
+
+                <div class="" id="contentDetails">
+
+                </div>
+            </div>
+            <div class="col-sm-1 col-md-1 col-lg-1">
+                <div id="relatedContentDetails"></div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body status" id="contentAuthorTeamDetails">
+
+                        @*<div class="who clearfix"><h4> Related Info</h4></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

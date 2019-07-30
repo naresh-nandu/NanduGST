@@ -1,0 +1,535 @@
+﻿@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    int rowVal = 0;
+    var result = new List<dynamic>();
+    if (@Model != null)
+    {
+        foreach (var emprow in Model)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(result);
+    }
+}
+
+
+<style type="text/css">
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Inward Register
+                <span>
+                    >&nbsp;
+                    B2BA
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <form action="@Url.Action("Save", "InwardB2BA")" method="post" id="InwardB2BA" novalidate="novalidate">
+
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Inward B2BA</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>Supplier GSTIN/UID</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    <input type="text" name="gstin" id="gstin" value="@Session["gstinb2ba"]" placeholder="Supplier GSTIN/UID">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Supplier Name</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    <i class="icon-prepend fa fa-user"></i>
+                                                    <input type="text" name="name" id="name" value="@Session["nameb2ba"]" placeholder="Supplier Name">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label>Original Invoice No.</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    <input type="text" name="invoice" placeholder="Origional Invoice No." value="@Session["invoiceb2ba"]">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>Original Invoice Date</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="invoicedate" value="@Session["invoicedateb2ba"]" placeholder="Origional Invoice Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Invoice No.</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    <input type="text" name="revinvoice" value="@Session["revinvoiceb2ba"]" placeholder="Revised Invoice No.">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Invoice Date</label>@*<span style="color:red">*</span>*@
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="reviseddate" value="@Session["reviseddateb2ba"]" placeholder="Revised Invoice Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                                </label>
+                                            </section>
+
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>Invoice Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="taxvalue" value="@Session["taxvalueb2ba"]" placeholder="Invoice Value">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <label>Reverse Charges</label>
+                                                    <div>
+                                                        @Html.DropDownList("reversecharge", new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "Y" }, new SelectListItem { Text = "No", Value = "N" } }, "Value", "Text", @Session["reversechargeb2ba"]), "--Select--", new { @Class = "form-control input-sm" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Place of supply</label>
+                                                <label class="input">
+                                                    <input type="text" name="pos" value="@Session["posb2ba"]" placeholder="2 digits of state code">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <label>GSTIN</label>
+                                                    <div>
+                                                        @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "CategoryName", "CategoryName", @Session["cgstinb2ba"]), "--Select--", new { @Class = "form-control input-sm" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    @if (Session["MasterdtlsB2BA"] != null)
+                    {
+                        if (((System.Data.DataTable)Session["MasterdtlsB2BA"]).Rows.Count >= 1)
+                        {
+                            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                    <h2 style="font-weight:bold;">Inward B2BA Item List</h2>
+                                </header>
+
+                                <!-- widget div-->
+                                <div>
+
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+
+                                        <div id="comment-form1" class="smart-form">
+
+                                            <br />
+                                            <div class="table-responsive">
+                                                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover gridtable", columns: grid.Columns(
+                           grid.Column(header: "S.No", format: item => rowVal = rowVal + 1),
+                                                grid.Column("HSN", "HSN"),
+          grid.Column("Category", "Category"),
+          grid.Column("Taxablevalue", "Taxablevalue"),
+           grid.Column("IGST Rate", "IGST Rate"),
+          grid.Column("IGST Amount", "IGST Amount"),
+          grid.Column("CGST Rate", "CGST Rate"),
+          grid.Column("CGST Amount", "CGST Amount"),
+          grid.Column("SGST Rate", "SGST Rate"),
+          grid.Column("SGST Amount", "SGST Amount "),
+          grid.Column("CESS Rate", "CESS Rate"),
+          grid.Column("CESS Amount", "CESS Amount"),
+          grid.Column("Eligibility", "Eligibility"),
+                          grid.Column(format:@<text>@Html.ActionLink("Delete", "Delete", new { Id = item.Srno }, new { @Class = "btn btn-sm btn-danger", @style = "font-weight:bold;Border-radius:10px;width:60px;margin-bottom:3px;padding:3px" }) </text>, header: "Action")
+                              )
+                         )
+
+                                            </div>
+
+
+
+                                            <footer>
+                                                <div class="row">
+                                                    <div class="col-md-6 text-center">
+                                                        <button type="submit" name="command" value="save" style="font-weight:bold;Border-radius:10px;width:60px;padding:3px;text-align:center;" class="btn btn-primary">Save</button>
+                                                    </div>
+
+
+                                                </div>
+                                            </footer>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end widget content -->
+
+                                </div>
+                                <!-- end widget div -->
+
+                            </div>
+                        }
+                    }
+                </article>
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                    <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2 style="font-weight:bold;">Item Details</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+
+                                    @{Html.RenderPartial("_Transaction"); }
+
+
+                                    <footer></footer>
+
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- end widget -->
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+            <!-- end row -->
+
+        </section>
+
+    </form>
+</div>
+
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+                alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+}
+
+  
+
+
+@section pagespecific{
+<script type="text/javascript" src="~/Scripts/rateCalculation.js">
+
+</script>
+  <script type="text/javascript" >
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        $('#btnSubmit').click(function(){
+
+            var $checkoutForm = $('#inwardB2BA').validate({
+                // Rules for form validation
+                rules: {
+                    gstin: {
+                        required: true,
+                        minlength: 15,
+                        maxlength: 15
+                    },
+                    cgstin: {
+                        required: true
+                    },
+                    name: {
+                        required: true
+                    },
+                    invoice: {
+                        required: true
+
+                    },
+                    invoicedate: {
+                        required: true
+                    },
+                    revinvoice: {
+                        required: true
+                    },
+                    reviseddate: {
+                        required: true
+                    },
+
+                    pos: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 2,
+                        digits: true
+                    },
+                    reversecharge: {
+                        required: true
+                    },
+                    taxvalue: {
+                        required: true,
+                        number: true
+                    },
+                    HSN: {
+                        required: true
+
+                    },
+                    category: {
+                        required: true
+
+                    },
+                    taxablevalue: {
+                        required: true,
+                        number: true
+
+                    },
+                    irate: {
+                        required: true
+
+                    },
+                    iamount: {
+                        required: true
+
+                    },
+                    crate: {
+                        required: true
+
+                    },
+                    camount: {
+                        required: true
+
+                    },
+                    srate: {
+                        required: true
+
+                    },
+                    samount: {
+                        required: true
+
+                    },
+                    csrate: {
+                        required: true
+
+                    },
+                    csamount: {
+                        required: true
+
+                    },
+                    eligibility: {
+                        required: true
+
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    gstin: {
+                        required: 'Please enter supplier GSTIN'
+                    },
+                    cgstin: {
+                        required: 'Please select  GSTIN'
+                    },
+                    name: {
+                        required: 'Please enter supplier name'
+                    },
+                    invoice: {
+                        required: 'Please enter original invoice no.'
+                    },
+                    invoicedate: {
+                        required: 'Please select original invoice date'
+                    },
+                    revinvoice: {
+                        required: 'Please enter revised invoice no.'
+                    },
+                    reviseddate: {
+                        required: 'Please select revised invoice date'
+
+                    },
+
+                    pos: {
+                        required: 'Please enter POS',
+                        digits: 'Digits only'
+                    },
+                    reversecharge: {
+                        required: 'Please select reverse charge'
+                    },
+                    taxvalue: {
+                        required: 'Please enter invoice value',
+                        number: 'Characters are not allowed'
+                    },
+                    HSN: {
+                        required: 'Please enter HSN'
+
+                    },
+                    category: {
+                        required: 'Please select category'
+
+                    },
+                    taxablevalue: {
+                        required: 'Please enter tax value',
+                        number: 'Characters are not allowed'
+
+                    },
+                    irate: {
+                        required: 'Please enter IGST rate'
+
+                    },
+                    iamount: {
+                        required: 'Please enter IGST amount'
+
+                    },
+                    crate: {
+                        required: 'Please enter CGST rate'
+
+                    },
+                    camount: {
+                        required: 'Please enter CGST amount'
+
+                    },
+                    srate: {
+                        required: 'Please enter SGST rate'
+
+                    },
+                    samount: {
+                        required: 'Please enter SGST amount'
+
+                    },
+                    csrate: {
+                        required: 'Please enter CESS rate'
+
+                    },
+                    csamount: {
+                        required: 'Please enter CESS amount'
+
+                    },
+                    eligibility: {
+                        required: 'Please select eligibility'
+
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            })  });
+    })
+
+</script>
+
+}
+

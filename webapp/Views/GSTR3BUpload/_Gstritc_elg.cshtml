@@ -1,0 +1,443 @@
+﻿
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+@{
+    WebGrid grid = null;
+    var result = new List<dynamic>();
+    if (ViewBag.inter_sup != null)
+    {
+        //TempData["Data"] = Model;
+        foreach (var emprow in ViewBag.inter_sup)
+        {
+            var row = (IDictionary<string, object>)new ExpandoObject();
+            Dictionary<string, object> eachEmpRow = (Dictionary<string, object>)emprow;
+
+            foreach (KeyValuePair<string, object> keyValuePair in eachEmpRow)
+            {
+                row.Add(keyValuePair);
+            }
+            result.Add(row);
+        }
+        grid = new WebGrid(source: result, canPage: true, canSort: true, rowsPerPage: 50);
+    }
+}
+<style>
+    table td, th {
+        padding: 3px;
+        border: 1px solid #c6c6c6;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    body {
+        background-color: #D3D3D3;
+    }
+</style>
+<div class="container">
+
+    <div class="row">
+        <br />
+    </div>
+
+    <div class="row">
+
+        <div class="panel panel-default" style="padding:8px">
+            <div class="panel-body h4" style="background:#0a9490;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Eligible ITC</div>
+
+            <table cellpadding="0" cellspacing="0" class="table table-bordered">
+                <thead class="blue-grey lighten-4">
+                    <tr class="active">
+                        <th class="text-center">
+                            Details
+                        </th>
+                        <th class="text-center">
+                            Integrated Tax(&#8377;)
+                        </th>
+                        <th class="text-center">
+                            Central Tax(&#8377;)
+                        </th>
+                        <th class="text-center">
+                            State/UT Tax(&#8377;)
+                        </th>
+                        <th class="text-center">
+                            CESS(&#8377;)
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bold">
+                            (A) ITC Available (wether in full or part)
+                        </td>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td>(1) Import of goods</td>
+                        <td><input type="text" id="txtimpgoodsint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td><input type="text" id="txtimpgoodscess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>(2) Import of services</td>
+                        <td><input type="text" id="txtimpservicesint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td class="active"></td>
+                        <td class="active"></td>
+                        <td><input type="text" id="txtimpservicescess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>(3) Inward supplies liable to reverse charge (other than 1 & 2 above)</td>
+                        <td><input type="text" id="txtinwardint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtinwardcent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtinwardstate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtinwardcess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>(4) Inward supplies from ISD</td>
+                        <td><input type="text" id="txtinwarisddint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtinwardisdcent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtinwardisdstate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtinwardisdcess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>(5) All other ITC</td>
+                        <td><input type="text" id="txtITCint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCcent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCstate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCcess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td class="bold">
+                            (B) ITC Reversed
+                        </td>
+                        <td colspan="4" class="active"></td>
+                    </tr>
+                    <tr>
+                        <td>(1) As per Rules 42 & 43 of CGST/SGST rules</td>
+                        <td><input type="text" id="txtITCcgstint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCcgstcent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCcgststate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCcgstcess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>(2) Others</td>
+                        <td><input type="text" id="txtITCOtherint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCOthercent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCOtherstate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCOthercess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td class="bold">
+                            (C) Net ITC Available (A)-(B)
+                        </td>
+                        <td><input type="text" id="txtITCavailint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCavailcent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCavailstate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtITCavailcess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td class="bold">
+                            (D) Ineligible ITC
+                        </td>
+                        <td colspan="4" class="active"></td>
+                    </tr>
+                    <tr>
+                        <td>(1) As per section 17(S)</td>
+                        <td><input type="text" id="txtIneligibleint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtIneligiblecent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtIneligiblestate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtIneligiblecess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>(2) Others</td>
+                        <td><input type="text" id="txtIneligibleOtherint" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtIneligibleOthercent" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtIneligibleOtherstate" placeholder="&#8377;0.00" class="form-control" /></td>
+                        <td><input type="text" id="txtIneligibleOthercess" placeholder="&#8377;0.00" class="form-control" /></td>
+                    </tr>
+                </tbody>
+                <tr>
+
+                    @*<td><a href="javascript:void('0');" id="Cancel">Cancel</a></td>
+                        <td><a href="javascript:void('0');" id="Confirm">Confirm</a></td>*@
+                    <td colspan="5">
+                        <input type="button" class="btn btn-primary" id="Cancel" value="CANCEL" style="float:right;margin-left:10px;" ng-click="clear();" />
+                        <input type="submit" class="btn btn-primary" id="Confirm" value="CONFIRM" style="float:right;" onclick="Calculationelg()" />
+                    </td>
+
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript">
+        $('.form-control').on('keypress', function (e) {
+            //return e.metaKey || // cmd/ctrl
+            //  e.which <= 0 || // arrow keys
+            //  e.which == 8 || // delete key
+            //  /[0-9]/.test(String.fromCharCode(e.which)); // numbers
+
+            return validateFloatKeyPress(this, e);
+
+        });
+        $(document).ready(function () {
+            $("#Confirm").click(function () {
+                var gstinid = 1;
+                var gstr3bid = "1";
+                var data = {
+                    "TBL_GSTR3B_itc_elg": {
+                        "gstinid": gstinid,
+                        "gstr3bid": gstr3bid
+                    },
+                    "TBL_GSTR3B_itc_elg_itc_avl": [
+                      {
+                          "ty": "IMPG",
+                          "iamt": $("#txtimpgoodsint").val() == "" ? 0 : $("#txtimpgoodsint").val(),
+                          "camt": 0,
+                          "samt": 0,
+                          "csamt": $("#txtimpgoodscess").val() == "" ? 0 : $("#txtimpgoodscess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      },
+                      {
+                          "ty": "IMPS",
+                          "iamt": $("#txtimpservicesint").val() == "" ? 0 : $("#txtimpservicesint").val(),
+                          "camt": 0,
+                          "samt": 0,
+                          "csamt": $("#txtimpservicescess").val() == "" ? 0 : $("#txtimpservicescess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      },
+                      {
+                          "ty": "ISRC",
+                          "iamt": $("#txtinwardint").val() == "" ? 0 : $("#txtinwardint").val(),
+                          "camt": $("#txtinwardcent").val() == "" ? 0 : $("#txtinwardcent").val(),
+                          "samt": $("#txtinwardstate").val() == "" ? 0 : $("#txtinwardstate").val(),
+                          "csamt": $("#txtinwardcess").val() == "" ? 0 : $("#txtinwardcess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      },
+                      {
+                          "ty": "ISD",
+                          "iamt": $("#txtinwarisddint").val() == "" ? 0 : $("#txtinwarisddint").val(),
+                          "camt": $("#txtinwardisdcent").val() == "" ? 0 : $("#txtinwardisdcent").val(),
+                          "samt": $("#txtinwardisdstate").val() == "" ? 0 : $("#txtinwardisdstate").val(),
+                          "csamt": $("#txtinwardisdcess").val() == "" ? 0 : $("#txtinwardisdcess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      },
+                      {
+                          "ty": "OTH",
+                          "iamt": $("#txtITCint").val() == "" ? 0 : $("#txtITCint").val(),
+                          "camt": $("#txtITCcent").val() == "" ? 0 : $("#txtITCcent").val(),
+                          "samt": $("#txtITCstate").val() == "" ? 0 : $("#txtITCstate").val(),
+                          "csamt": $("#txtITCcess").val() == "" ? 0 : $("#txtITCcess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      }
+                    ],
+                    "TBL_GSTR3B_itc_elg_itc_rev": [
+                      {
+                          "ty": "RUL",
+                          "iamt": $("#txtITCcgstint").val() == "" ? 0 : $("#txtITCcgstint").val(),
+                          "camt": $("#txtITCcgstcent").val() == "" ? 0 : $("#txtITCcgstcent").val(),
+                          "samt": $("#txtITCcgststate").val() == "" ? 0 : $("#txtITCcgststate").val(),
+                          "csamt": $("#txtITCcgstcess").val() == "" ? 0 : $("#txtITCcgstcess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      },
+                      {
+                          "ty": "OTH",
+                          "iamt": $("#txtITCOtherint").val() == "" ? 0 : $("#txtITCOtherint").val(),
+                          "camt": $("#txtITCOthercent").val() == "" ? 0 : $("#txtITCOthercent").val(),
+                          "samt": $("#txtITCOtherstate").val() == "" ? 0 : $("#txtITCOtherstate").val(),
+                          "csamt": $("#txtITCOthercess").val() == "" ? 0 : $("#txtITCOthercess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      }
+                    ],
+                    "TBL_GSTR3B_itc_elg_itc_net": {
+                        "iamt": $("#txtITCavailint").val() == "" ? 0 : $("#txtITCavailint").val(),
+                        "camt": $("#txtITCavailcent").val() == "" ? 0 : $("#txtITCavailcent").val(),
+                        "samt": $("#txtITCavailstate").val() == "" ? 0 : $("#txtITCavailstate").val(),
+                        "csamt": $("#txtITCavailcess").val() == "" ? 0 : $("#txtITCavailcess").val(),
+                        "gstinid": gstinid,
+                        "gstr3bid": gstr3bid
+                    },
+                    "TBL_GSTR3B_itc_elg_itc_inelg": [
+                      {
+                          "ty": "RUL",
+                          "iamt": $("#txtIneligibleint").val() == "" ? 0 : $("#txtIneligibleint").val(),
+                          "camt": $("#txtIneligiblecent").val() == "" ? 0 : $("#txtIneligiblecent").val(),
+                          "samt": $("#txtIneligiblestate").val() == "" ? 0 : $("#txtIneligiblestate").val(),
+                          "csamt": $("#txtIneligiblecess").val() == "" ? 0 : $("#txtIneligiblecess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      },
+                      {
+                          "ty": "OTH",
+                          "iamt": $("#txtIneligibleOtherint").val() == "" ? 0 : $("#txtIneligibleOtherint").val(),
+                          "camt": $("#txtIneligibleOthercent").val() == "" ? 0 : $("#txtIneligibleOthercent").val(),
+                          "samt": $("#txtIneligibleOtherstate").val() == "" ? 0 : $("#txtIneligibleOtherstate").val(),
+                          "csamt": $("#txtIneligibleOthercess").val() == "" ? 0 : $("#txtIneligibleOthercess").val(),
+                          "gstinid": gstinid,
+                          "gstr3bid": gstr3bid
+                      }
+                    ]
+                };
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: '/GSTR3B/SaveEligibleITC',
+                    data: { "json": JSON.stringify(data) },
+                    success: function (json) {
+                        if (json) {
+                            alert(json);
+                            alert('Update Successfully');
+                        } else {
+                            alert('Failed');
+                        }
+                    },
+                });
+            });
+
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                url: '/GSTR3B/GetEligibleITC',
+                data: {},
+                success: function (json) {
+                    if (json) {
+                        $("#txtITCavailint").val(json.TBL_GSTR3B_itc_elg_itc_net.iamt);
+                        $("#txtITCavailcent").val(json.TBL_GSTR3B_itc_elg_itc_net.camt);
+                        $("#txtITCavailstate").val(json.TBL_GSTR3B_itc_elg_itc_net.samt);
+                        $("#txtITCavailcess").val(json.TBL_GSTR3B_itc_elg_itc_net.csamt);
+                        $.each(json.TBL_GSTR3B_itc_elg_itc_avl, function (index, item) {
+                            //   alert(item.iamt)
+                            if (item.ty == "IMPG") {
+                                $("#txtimpgoodsint").val(item.iamt);
+                                $("#txtimpgoodscess").val(item.csamt);
+                            }
+                            if (item.ty == "IMPS") {
+                                $("#txtimpservicesint").val(item.iamt);
+                                $("#txtimpservicescess").val(item.csamt);
+                            }
+                            if (item.ty == "ISRC") {
+                                $("#txtinwardint").val(item.iamt);
+                                $("#txtinwardcent").val(item.camt);
+                                $("#txtinwardstate").val(item.samt);
+                                $("#txtinwardcess").val(item.csamt);
+                            }
+                            if (item.ty == "ISD") {
+                                $("#txtinwarisddint").val(item.iamt);
+                                $("#txtinwardisdcent").val(item.camt);
+                                $("#txtinwardisdstate").val(item.samt);
+                                $("#txtinwardisdcess").val(item.csamt);
+                            }
+                            if (item.ty == "OTH") {
+                                $("#txtITCint").val(item.iamt);
+                                $("#txtITCcent").val(item.camt);
+                                $("#txtITCstate").val(item.samt);
+                                $("#txtITCcess").val(item.csamt);
+                            }
+                        });
+                        $.each(json.TBL_GSTR3B_itc_elg_itc_rev, function (index, item) {
+                            if (item.ty == "RUL") {
+                                $("#txtITCcgstint").val(item.iamt);
+                                $("#txtITCcgstcent").val(item.camt);
+                                $("#txtITCcgststate").val(item.samt);
+                                $("#txtITCcgstcess").val(item.csamt);
+                            }
+                            if (item.ty == "OTH") {
+                                $("#txtITCOtherint").val(item.iamt);
+                                $("#txtITCOthercent").val(item.camt);
+                                $("#txtITCOtherstate").val(item.samt);
+                                $("#txtITCOthercess").val(item.csamt);
+                            }
+                        });
+                        $.each(json.TBL_GSTR3B_itc_elg_itc_inelg, function (index, item) {
+                            if (item.ty == "RUL") {
+                                $("#txtIneligibleint").val(item.iamt);
+                                $("#txtIneligiblecent").val(item.camt);
+                                $("#txtIneligiblestate").val(item.samt);
+                                $("#txtIneligiblecess").val(item.csamt);
+                            }
+                            if (item.ty == "OTH") {
+                                $("#txtIneligibleOtherint").val(item.iamt);
+                                $("#txtIneligibleOthercent").val(item.camt);
+                                $("#txtIneligibleOtherstate").val(item.samt);
+                                $("#txtIneligibleOthercess").val(item.csamt);
+                            }
+                        });
+                    } else {
+                        alert('failed');
+                    }
+                },
+            });
+
+        });
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function validateFloatKeyPress(el, evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            var number = el.value.split('.');
+            if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            //just one dot (thanks ddlab)
+            if (number.length > 1 && charCode == 46) {
+                return false;
+            }
+            //get the carat position
+            var caratPos = getSelectionStart(el);
+            var dotPos = el.value.indexOf(".");
+            if (caratPos > dotPos && dotPos > -1 && (number[1].length > 1)) {
+                return false;
+            }
+            return true;
+        }
+
+        function getSelectionStart(o) {
+            if (o.createTextRange) {
+                var r = document.selection.createRange().duplicate()
+                r.moveEnd('character', o.value.length)
+                if (r.text == '') return o.value.length
+                return o.value.lastIndexOf(r.text)
+            } else return o.selectionStart
+        }
+</script>
+
+<script>
+    function Calculationelg() {
+        debugger;
+        var one, twp, three, four, five, six, seven;
+        one = ($('#txtimpgoodsint').val());
+        twp = ($('#txtimpservicesint').val());
+        three = ($('#txtinwardint').val());
+        four = ($('#txtinwarisddint').val());
+        five = ($('#txtITCint').val());
+        six = ($('#txtITCcgstint').val());
+        seven = ($('#txtIneligibleOtherint').val());
+        
+       var result = (one + twp + three + four + five) - (six + seven);
+
+       $('#txtITCavailint').val(parseFloat(result.toFixed(5));
+
+
+
+    };
+</script>

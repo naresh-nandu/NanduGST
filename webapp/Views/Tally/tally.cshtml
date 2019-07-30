@@ -1,0 +1,643 @@
+﻿@using SmartAdminMvc.Models;
+@using System.Dynamic
+@model List<System.Collections.IDictionary>
+
+@if (Session["UploadMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@Session["UploadMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    Session["UploadMessage"] = null;
+}
+
+<style type="text/css">
+    .man {
+        color: red;
+        font-weight: bolder;
+    }
+
+    #errmsg {
+        color: red;
+    }
+</style>
+
+<div id="content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa-fw fa fa-home"></i>
+                GSTN/Tally Converter
+                <span>
+                    >&nbsp;
+                    Home
+                </span>
+            </h1>
+        </div>
+
+    </div>
+
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                @using (Html.BeginForm("tally", "Tally", FormMethod.Post, new { enctype = "multipart/form-data", @id = "TallyConverter", @name = "TallyConverter" }))
+                {
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">GSTN/Tally Converter</h2>
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                            </div>
+
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    @Html.ValidationSummary(true)
+
+                                    <fieldset>
+                                        <section class="col col-4">
+                                            <label class="col-form-label" style="font-weight:600">Gross Turn Over<span class="man">*</span></label>
+                                            <label class="input">
+                                                <input type="text" class="grossturnover" name="gtoid" id="gtoid" placeholder="Gross Turn Over" value="@ViewBag.GrossTurnOver">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="col-form-label" style="font-weight:600">Current Gross Turn Over<span class="man">*</span></label>
+                                            <label class="input">
+                                                <input type="text" class="grossturnover" name="cgtoid" id="cgtoid" placeholder="Current Gross Turn Over" value="@ViewBag.CurrentGrossTurnOver">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="col-form-label" style="font-weight:600">Period<span class="man">*</span></label>
+                                            <label class="input">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input class="form-control datepicker" name="periodidr" id="periodidr" type="text" placeholder="Period" data-dateformat='mmyy' value="@ViewBag.Period">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="col-form-label" style="font-weight:600">GSTR<span class="man">*</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("ddlGSTR", ViewBag.GSTRList as SelectList, "Select GSTR", new { @class = "form-control", onchange = "submit();", @id = "ddlGSTR" })
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="col-form-label" style="font-weight:600">GSTIN<span class="man">*</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("gstn", ViewBag.GSTINNoList as SelectList, "Select", new { @class = "form-control", @id = "gstn" })
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="col-form-label" style="font-weight:600">Upload File<span class="man">*</span></label>
+                                            <label class="input">
+                                            <input type="file" id="FileUpload" name="FileUpload" multiple="multiple" />
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="input"></label>
+                                            <div class="form-group">
+                                            <input type="hidden" name="InvIds" id="InvIds" />
+                                            </div>
+                                        </section>
+
+                                        <input type="hidden" id="hdnRefno" name="refno" placeholder="Reference Number" value="@Session["RefNo"]">
+                                        <input type="hidden" id="password" name="password" value="India@123" required>
+                                        <input type="hidden" id="client" name="client" value="500" required>
+                                    </fieldset>
+
+                                    <footer>
+
+                                        <div>
+                                            @if (TempData["TotalRecordsCount"] != null)
+                                            {
+                                                
+                                                <section class="col col-3" style="font-weight:bold">Total Records count: @TempData["TotalRecordsCount"].ToString()</section>
+                                                <section class="col col-3" style="font-weight:bold">Total Processed Records count: @TempData["ProcessedRecordsCount"].ToString()</section>
+                                                <section class="col col-3" style="font-weight:bold">@Html.ActionLink("Total Error Records count: " + @TempData["ErrorRecordsCount"].ToString(), "Download")
+                                            <br />
+                                                    <div>
+                                                @if (TempData["Error"] != null)
+                                                     {
+                                               <div style="font-weight:bold">Unprocessed Sheets:@TempData["Error"].ToString()</div>
+                                                  }
+                                                   </div>
+                                            </section>
+                                                <section class="col col-3" style="overflow-wrap:break-word;font-weight:bold">Error in Action Type: @TempData["ErrorRecords"].ToString()</section>
+                                            }
+                                        </div>
+                                        <br />
+                                        <button type="submit" class="btn btn-primary pull-right" id="convertcsv" name="command" value="Convert" target="_blank" style="background-color:#508180!important;border-radius:10px;font-weight:bold;border:2px solid #508180">
+                                            Import Data
+                                        </button>
+
+                                    </footer>
+                                   <br />
+                                    <section>
+                                        <div>
+                                            <ul style="list-style:none">
+                                                <li style="font-weight:bold;font-size:14px;text-decoration:underline"><a href="~/Documents/GSTR1Tally_Template.xlsx">GSTR1 Template</a></li>
+                                                <li style="font-weight:bold;font-size:14px;text-decoration:underline"><a href="~/Documents/GSTR1Tally_Template_with_Amendments.xlsx">GSTR1 Template with Amendments</a></li>
+                                                <li style="font-weight:bold;font-size:12px;color:red">Note:This document is useful to prepare GSTR1 Data.</li>
+                                                <li style="font-weight:bold;font-size:12px;color:red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Error File will be as per GSTR1 Amendment Template.</li>
+                                                <li style="font-weight:bold;font-size:12px;color:red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unprocessed Sheets are not according to GSTN/above Templates.</li>
+                                            </ul>
+
+                                        </div>
+
+                                        @*<div class="col col-6 text-center">
+
+                                            @if (TempData["Error"] != null)
+                                            {
+                                                <div class="text-primary text-center">Incorrect Format:@TempData["Error"].ToString()</div>
+                                            }
+                                        </div>*@
+
+                                    </section>
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" style="overflow:hidden">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>Processed Tally data</h2>
+                        </header>
+
+                        @if (Session["GUActionID"] != null)
+                        {
+                            if ((int)Session["GUActionID"] == 1)
+                            {
+                                <div id="tabs" class="col-lg-12 col-md-12 gstr1" style="margin-bottom:15px;">
+                                    <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;">
+                                        <li>
+                                            <a href="#tabs-1">B2B</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-2">B2CL</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-3">CDNR</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-4">B2CS</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-5">EXP</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-6">HSN</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-7">NIL</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-8">TXP</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#tabs-9">AT</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-10">DOC-Issue</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-11">CDNUR</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-12">ATA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-13">TXPDA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-14">B2BA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-15">B2CSA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-16">B2CLA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-17">CDNRA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-18">CDNURA</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tabs-19">EXPA</a>
+                                        </li>
+                                    </ul>
+                                    <div id="tabs-1">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2B");}
+                                    </div>
+                                    <div id="tabs-2">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CL");}
+
+                                    </div>
+                                    <div id="tabs-3">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1cdnr");}
+                                    </div>
+                                    <div id="tabs-4">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CS");}
+                                    </div>
+                                    <div id="tabs-5">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Exp");}
+                                    </div>
+                                    <div id="tabs-6">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Hsn");}
+                                    </div>
+                                    <div id="tabs-7">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Nil");}
+                                    </div>
+                                    <div id="tabs-8">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Txpd");}
+                                    </div>
+                                    <div id="tabs-9">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1At");}
+                                    </div>
+                                    <div id="tabs-10">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Doc");}
+                                    </div>
+                                    <div id="tabs-11">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1Cdnur");}
+                                    </div>
+                                    <div id="tabs-12">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1ATA");}
+                                    </div>
+                                    <div id="tabs-13">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1TXPDA");}
+                                    </div>
+                                    <div id="tabs-14">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2BA");}
+                                    </div>
+                                    <div id="tabs-15">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CSA");}
+                                    </div>
+                                    <div id="tabs-16">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1B2CLA");}
+                                    </div>
+                                    <div id="tabs-17">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1CDNRA");}
+                                    </div>
+                                    <div id="tabs-18">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1CDNURA");}
+                                    </div>
+                                    <div id="tabs-19">
+                                        <br /><br />
+                                        @{Html.RenderPartial("_Gstr1EXPA");}
+                                    </div>
+                                </div>
+                                            }
+      
+                                                            else
+                                                            {
+                                                                <div id="tabss" class="col-lg-12 col-md-12 gstr2" style="margin-bottom:15px;width:100%">
+                                                                    <ul class="col-lg-12 col-md-12" style="border-top:2px solid green;width:100%">
+                                                                        <li>
+                                                                            <a href="#tab-1">B2B</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-2">IMPG</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-3">IMPS</a>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a href="#tab-4">CDN</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-5">NIL-SUPPLIES</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-7">TXI</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-8">TXPD</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-9">HSN-SUM</a>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a href="#tab-10">B2BUR</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-11">ITC-RVSL</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#tab-12">CDNUR</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div id="tab-1">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2B2b");}
+                                                                    </div>
+                                                                    <div id="tab-2">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Impg");}
+
+                                                                    </div>
+                                                                    <div id="tab-3">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Imps");}
+                                                                    </div>
+                                                                    <div id="tab-4">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Cdn");}
+                                                                    </div>
+                                                                    <div id="tab-5">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Nil");}
+                                                                    </div>
+                                                                    <div id="tab-7">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Txi");}
+                                                                    </div>
+                                                                    <div id="tab-8">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Txpd");}
+
+                                                                    </div>
+                                                                    <div id="tab-9">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Hsn");}
+                                                                    </div>
+                                                                    <div id="tab-10">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2B2bur");}
+                                                                    </div>
+                                                                    <div id="tab-11">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Itc");}
+                                                                    </div>
+                                                                    <div id="tab-12">
+                                                                        <br /><br />
+                                                                        @{Html.RenderPartial("_Gstr2Cdnur");}
+                                                                    </div>
+                                                                    <br /> <br />
+                                                                </div>
+                                                  }
+                                              }
+                        <div>
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+                            </div>
+                            <div class="widget-body no-padding">
+                                <div id="comment-form1" class="smart-form">
+                                    <fieldset>
+                                    </fieldset>
+                                    <footer>
+                                        <button type="submit" name="command" id="gstrupload" value="GSTRUpload" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                            GSTR Upload
+                                        </button>
+                                    </footer>
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end widget div -->
+                        </div>
+                        <!-- end widget -->
+                    </div>
+               }
+            </article>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            </div>
+        </div>
+    </section>
+</div>
+
+@if (TempData["UploadMessage1"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["UploadMessage1"])));
+        TempData["UploadMessage1"] = null;
+    </script>
+}
+
+@*@if (Session["error"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(Session["error"]+"format is incorrect.")));
+        Session["error"] = null;
+    </script>
+}*@
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        $('.grossturnover').on('keypress', function (e) {
+            return validateFloatKeyPress(this, e);
+        });
+        function validateFloatKeyPress(el, evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            var number = el.value.split('.');
+            if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            //just one dot (thanks ddlab)
+            if (number.length > 1 && charCode == 46) {
+                return false;
+            }
+            //get the carat position
+            var caratPos = getSelectionStart(el);
+            var dotPos = el.value.indexOf(".");
+            if (caratPos > dotPos && dotPos > -1 && (number[1].length > 1)) {
+                return false;
+            }
+            return true;
+        }
+        function getSelectionStart(o) {
+            if (o.createTextRange) {
+                var r = document.selection.createRange().duplicate()
+                r.moveEnd('character', o.value.length)
+                if (r.text == '') return o.value.length
+                return o.value.lastIndexOf(r.text)
+            } else return o.selectionStart
+        }
+
+        $("#convertcsv").click(function (event) {
+
+            $("#TallyConverter").validate({
+                //Rules for form validation
+                rules: {
+                    gstn: {
+                        reuired: true,
+                    },
+                    gtoid: {
+                        required: true,
+
+                    },
+                    cgtoid: {
+                        required: true,
+
+                    },
+                    ddlGSTR: {
+                        required: true,
+                    },
+                    periodidr: {
+                        required: true,
+                    },
+                    gstn: {
+                        required: true,
+                    },
+
+                    FileUpload: {
+                        required: true
+                    },
+                },
+                //Messages for form validation
+                messages: {
+                    gstn: {
+                        required: 'Please select GSTINNo',
+                    },
+                    gtoid: {
+                        required: 'Please enter Gross Turn Over',
+                    },
+                    cgtoid: {
+                        required: 'Please enter Current Gross Turn Over',
+                    },
+
+                    periodidr: {
+                        required: 'Please select date',
+
+                    },
+                    ddlGSTR: {
+                        required: 'Please select GSTR'
+                    },
+                    gstn: {
+                        required: 'Please select GSTINNo',
+                    },
+                    FileUpload: {
+                        required: 'Please select file to upload'
+                    },
+                },
+                //Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                },
+            });
+        });
+
+        $("#gstrupload").click(function (event) {
+            var $checkoutForm = $('#TallyConverter').validate({
+                // Rules for form validation
+                rules: {
+                    gtoid: {
+                        required: true,
+
+                    },
+                    cgtoid: {
+                        required: true,
+
+                    },
+                    periodidr: {
+                        required: true,
+                    },
+                    ddlGSTR: {
+                        required: true
+                    }
+                },
+                // Messages for form validation
+                messages: {
+                    gtoid: {
+                        required: 'Please enter Gross Turn Over',
+                    },
+                    cgtoid: {
+                        required: 'Please enter Current Gross Turn Over',
+                    },
+
+                    periodidr: {
+                        required: 'Please select date',
+
+                    },
+                    ddlGSTR: {
+                        required: 'Please select GSTR'
+                    }
+                },
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        })
+
+        $(document).ready(function () {
+            $('#tabs').tabs();
+            $('#tab').tabs();
+            $('#tabss').tabs();
+        })
+        //$(document).ready(function () {
+        //    $('input[type=file]').change(function () {
+        //        //$("#convertcsv").change(function () {
+        //        var val = $(this).val().toLowerCase();
+        //        var regex = new RegExp("(.*?)\.(xlsx)$");
+        //        if (!(regex.test(val))) {
+        //            $(this).val('');
+        //            alert('Please select xlsx file format');
+        //        }
+        //    });
+        //});
+
+    </script>
+}

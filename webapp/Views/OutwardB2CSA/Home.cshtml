@@ -1,0 +1,463 @@
+﻿
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <i class="fa-fw fa fa-home"></i>
+                Outward Register
+                <span>
+                    >&nbsp;
+                    B2CSA
+                </span>
+            </h1>
+        </div>
+
+
+    </div>
+
+    <section id="widget-grid" class="">
+
+        <div class="row">
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-radius:20px;">
+                <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold;">Outward B2CSA</h2>
+                    </header>
+
+                    <div>
+
+                        <div class="jarviswidget-editbox">
+
+                        </div>
+
+                        <div class="widget-body no-padding">
+
+                            <div id="comment-form" class="smart-form">
+
+
+
+                                <form action="@Url.Action("Save", "OutwardB2CSA")" method="post" id="main-form" novalidate="novalidate">
+
+                                    <fieldset class="smart-form">
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <label>GSTIN</label>
+                                                    <div>
+                                                        @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "CategoryName", "CategoryName"), "Select", new { @Class = "form-control input-sm", @onblur = "copyText()" })
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>State Code</label>
+                                                <label class="input">
+                                                    <input type="text" id="statecode" name="statecode" placeholder="state code" readonly>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <label>Type</label>
+                                                    <div>
+                                                        <select class="form-control input-sm" name="type">
+                                                            <option></option>
+                                                            <option value="G">Goods</option>
+                                                            <option value="S">Services</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>Original Supply State Code</label>
+                                                <label class="input">
+                                                    <input type="text" name="ostatecode" placeholder="Original state code">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Original Month</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="omonth" placeholder="Original Month" class="datepicker" data-dateformat='mmyy'>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <div class="form-group">
+                                                    <label>Original line item Type</label>
+                                                    <div>
+                                                        <select class="form-control input-sm" name="otype">
+                                                            <option></option>
+                                                            <option value="G">Goods</option>
+                                                            <option value="S">Services</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>HSN or SAC</label>
+                                                <label class="input">
+                                                    <input type="text" name="hsn" placeholder="HSN or SAC">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Type</label>
+                                                <label class="input">
+                                                    <input type="text" name="typ" placeholder="">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Order number</label>
+                                                <label class="input">
+                                                    <input type="text" name="onum" placeholder="Order number">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>Order Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="odate" placeholder="Order Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Ecom Operator Gstin</label>
+                                                <label class="input">
+                                                    <input type="text" name="etin" placeholder="etin">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-4">
+                                                <label>Taxable Value</label>
+                                                <label class="input">
+                                                    <input type="text" name="taxvalue" id="taxablevalue" placeholder="Taxable Value" onblur="totalcalculation();">
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>IGST Rate</label>
+                                                <label class="input">
+                                                    <input type="text" name="igstr" placeholder="IGST Rate" id="irate" onblur="igstcalculation();">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>IGST Amount</label>
+                                                <label class="input">
+                                                    <input type="text" name="igsta" placeholder="IGST Amount" id="iamount" readonly>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>CGST Rate</label>
+                                                <label class="input">
+                                                    <input type="text" name="cgstr" placeholder="CGST Rate" id="crate" onblur="cgstcalculation();">
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>CGST Amount</label>
+                                                <label class="input">
+                                                    <input type="text" name="cgsta" placeholder="CGST Amount" id="camount" readonly>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>SGST Rate</label>
+                                                <label class="input">
+                                                    <input type="text" name="sgstr" placeholder="SGST Rate" id="srate" onblur="sgstcalculation();">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>SGST Amount</label>
+                                                <label class="input">
+                                                    <input type="text" name="sgsta" placeholder="SGST Amount" id="samount" readonly>
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>CESS Rate</label>
+                                                <label class="input">
+                                                    <input type="text" name="cessr" placeholder="CESS Rate" id="csrate" onblur="cesscalculation();">
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>CESS Amount</label>
+                                                <label class="input">
+                                                    <input type="text" name="cessa" placeholder="CESS Amount" id="csamount" readonly>
+                                                </label>
+                                            </section>
+                                            <section class="col col-4">
+                                                <label>Provisional Assesment</label>
+                                                <div>
+                                                    <select class="form-control input-sm" name="prs">
+                                                        <option></option>
+                                                        <option value="Y">Yes</option>
+                                                        <option value="N">No</option>
+                                                    </select>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-4">
+                                                <label>Original HSN or SAC value</label>
+                                                <label class="input">
+                                                    <input type="text" name="ohsn" placeholder="Original HSN">
+                                                </label>
+                                            </section>
+
+
+                                        </div>
+                                    </fieldset>
+
+                                    <footer>
+                                        <div class="col-md-12 text-center">
+                                            <input type="submit" value="Save" class="btn btn-success btnstyle" style="font-weight:bold" />
+                                        </div>
+                                    </footer>
+                                </form>
+
+
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </article>
+        </div>
+
+    </section>
+
+
+</div>
+
+
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">
+                alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        </script>
+    }
+
+
+
+@section pagespecific{
+<script>
+    function copyText() {
+        GST = document.getElementById("cgstin");
+        PAN = document.getElementById("pan");
+        SCODE = document.getElementById("statecode");
+        SCODE.value = GST.value.substr(0, 2);
+        PAN.value = GST.value.substr(2, 10);
+
+    }
+</script>
+<script type="text/javascript" src="~/Scripts/rateCalculation.js">
+
+</script>
+    <script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        var $checkoutForm = $('#main-form').validate({
+            // Rules for form validation
+            rules: {
+                omonth: {
+                    required: true
+                },
+                ohsn: {
+                    required: true
+                },
+                ostatecode: {
+                    required: true
+                },
+                otype: {
+                    required: true
+                },
+                taxvalue: {
+                    required: true,
+                    number: true
+                },
+                prs: {
+                    required: true
+                },
+                cgstin: {
+                    required: true
+                },
+                onum: {
+                    required: true
+                },
+                odate: {
+                    required: true
+                },
+                typ: {
+                    required: true
+                },
+                igstr: {
+                    required: true
+                },
+                igsta: {
+                    required: true
+                },
+                cgstr: {
+                    required: true
+                },
+                cgsta: {
+                    required: true
+                },
+                sgstr: {
+                    required: true
+                },
+                sgsta: {
+                    required: true
+                },
+                cessr: {
+                    required: true
+                },
+                cessa: {
+                    required: true
+                },
+                etin: {
+                    required: true,
+                    minlength: 15,
+                    maxlength: 15
+                },
+                type: {
+                    required: true
+                },
+                hsn: {
+                    required: true
+                },
+                statecode: {
+                    required: true
+                }
+
+            },
+
+            // Messages for form validation
+            messages: {
+                omonth: {
+                    required: 'Enter original month'
+                },
+                ohsn: {
+                    required: 'Enter original HSN'
+                },
+                ostatecode: {
+                    required: 'Enter original state code'
+                },
+                otype: {
+                    required: 'Select original line item type'
+                },
+                taxvalue: {
+                    required: 'Please enter tax value',
+                    number: 'Characters are not allowed'
+                },
+                statecode: {
+                    required: 'Please enter statecode'
+                },
+                prs: {
+                    required: 'Please enter PRS'
+                },
+                cgstin: {
+                    required: 'Please enter supplier GSTIN'
+                },
+                type: {
+                    required: 'Please select type'
+                },
+                onum: {
+                    required: 'Please enter invoice'
+                },
+                odate: {
+                    required: 'Please select  invoice date'
+
+                },
+                typ: {
+                    required: 'Please enter typ'
+                },
+                hsn: {
+                    required: 'Please enter hsn'
+                },
+                etin: {
+                    required: 'Please enter etin'
+                },
+                igstr: {
+                    required: 'Please enter IGST rate'
+                },
+                igsta: {
+                    required: 'Please IGST amount'
+
+                },
+                cgstr: {
+                    required: 'Please enter CGST rate'
+                },
+                cgsta: {
+                    required: 'Please enter CGST amount'
+                },
+                sgstr: {
+                    required: 'Please enter  SGST rate'
+                },
+                sgsta: {
+                    required: 'Please enter SGST amount'
+                },
+                cessa: {
+                    required: 'Please cess amount'
+
+                },
+                cessr: {
+                    required: 'Please enter cess rate'
+                },
+
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    })
+
+    </script>
+
+}
+

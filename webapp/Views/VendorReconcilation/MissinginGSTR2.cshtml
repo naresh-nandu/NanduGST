@@ -1,0 +1,831 @@
+﻿@{
+    ViewBag.Title = "WeP GST PANEL";
+}
+
+<!-- MAIN CONTENT -->
+<form name="MissingGSTR2AForm" id="MissingGSTR2AForm" method="post" autocomplete="off">
+    <div id="content">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- col -->
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+                <h1 class="page-title txt-color-blueDark">
+
+                    <!-- PAGE HEADER -->
+                    <i class="fa-fw fa fa-home"></i>
+                    GSTR-2
+                    <span>
+                        >&nbsp;
+                        Reconcilation
+                    </span>
+                </h1>
+            </div>
+            <!-- end col -->
+            <!-- right side of the page with the sparkline graphs -->
+            <!-- col -->
+            <!-- end col -->
+
+        </div>
+        <!-- end row -->
+        <!--
+                    The ID "widget-grid" will start to initialize all widgets below
+                    You do not need to use widgets if you dont want to. Simply remove
+                    the <section></section> and you can use wells or panels instead
+                    -->
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2 style="font-weight:bold;">Settings</h2>
+                        </header>
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+                                    <fieldset>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <div id="accordion">
+                                                <div>
+                                                    <h4>Reconciliation Setting</h4>
+
+
+                                                    <div class="form-group">
+
+                                                        <div class="row">
+                                                            @if (Session["f_year"] == "FinancialYear")
+                                                            {
+
+                                                                <label class="radio radio-inline">
+
+                                                                    <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialYear" checked>
+                                                                    <span style="margin-left:0px">Invoice Date</span>
+
+                                                                </label>
+                                                                <label class="radio radio-inline" style="margin-left:auto">
+                                                                    <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialPeriod">
+                                                                    <span style="margin-left:0px">Period</span>
+                                                                </label>
+                                                            }
+
+                                                            else if (Session["f_year"] == "FinancialPeriod")
+                                                            {
+                                                                <label class="radio radio-inline">
+
+                                                                    <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialYear">
+                                                                    <span style="margin-left:0px">Invoice Date</span>
+
+                                                                </label>
+                                                                <label class="radio radio-inline" style="margin-left:auto">
+                                                                    <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialPeriod" checked>
+                                                                    <span style="margin-left:0px">Period</span>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="radio radio-inline">
+
+                                                                    <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialYear" checked>
+                                                                    <span style="margin-left:0px">Invoice Date</span>
+
+                                                                </label>
+                                                                <label class="radio radio-inline" style="margin-left:auto">
+                                                                    <input type="radio" class="radiobox" name="reconsetting" id="reconsetting" value="FinancialPeriod">
+                                                                    <span style="margin-left:0px">Period</span>
+                                                                </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </article>
+
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Missing Invoices in GSTR-2</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        @*@Html.AntiForgeryToken()*@
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <label class="input">GSTIN</label>
+                                                <div class="col-xs-12 col-md-12 selectContainer">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "ALL", new { @class = "form-control", @id = "ddlGSTINNo" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3" id="frm">
+                                                <label class="input">From</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="period" value="@ViewBag.Period" placeholder="From" class="datepicker" data-dateformat='mmyy' id="period">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3" id="to">
+                                                <label class="input">To</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="toperiod" value="@ViewBag.ToPeriod" placeholder="To" class="datepicker" data-dateformat='mmyy' id="toperiod">
+                                                </label>
+                                            </section>
+                                            <section class="col col-3" id="frmdt">
+                                                <label class="input">From Invoice Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="fromdate" id="fromdate" value="@ViewBag.FromDate" placeholder="From Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3" id="todt">
+                                                <label class="input">To Invoice Date</label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-calendar"></i>
+                                                    <input type="text" name="todate" id="todate" value="@ViewBag.ToDate" placeholder="To Date" class="datepicker" data-dateformat='dd-mm-yy' readonly>
+                                                </label>
+                                            </section>
+
+                                            @*<section class="col col-3" id="year">
+                                                <label class="col-form-label">Financial Year</label>
+                                                <label class="input">
+                                                    @Html.DropDownList("years", ViewBag.yearlist as SelectList, "Select", new { @class = "form-control", id = "years" })
+                                                </label>
+                                            </section>*@
+                                            <section class="col col-3" id="sname">
+                                                <label class="input">Supplier Name</label>
+                                                <div class="col-xs-12 col-md-12 selectContainer">
+                                                    @Html.DropDownList("ddlSupplierName", ViewBag.SupplierName as SelectList, "ALL", new { @class = "form-control", @id = "ddlSupplierName" })
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3" id="sgstin">
+                                                <label class="input">Supplier GSTIN</label>
+                                                <div class="col-xs-12 col-md-12 selectContainer">
+                                                    @Html.DropDownList("ddlSupGSTIN", ViewBag.CTINNoList as SelectList, "ALL", new { @class = "form-control", @id = "ddlSupGSTIN" })
+                                                </div>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="input">Action</label>
+                                                <div class="col-xs-9 col-lg-12 selectContainer">
+                                                    @Html.DropDownList("ddlActionType", ViewBag.ActionList as SelectList, "Select", new { @class = "form-control", @id = "ddlActionType" })
+                                                </div>
+                                            </section>
+                                            <section class="col col-3">
+                                                <label class="input"></label>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="InvIds" id="InvIds" />
+                                                    <input type="hidden" name="RefIds" id="RefIds" />
+                                                </div>
+                                            </section>
+
+                                        </div>
+
+                                    </fieldset>
+                                    <footer>
+                                        <button type="button" id="ViewDetails" name="ViewDetails" value="View Details" class="btn btn-primary pull-left" style="border-radius:13px; font-weight:600">
+                                            View Details
+                                        </button>
+                                    </footer>
+
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                            <h2>Missing Invoices in GSTR-2</h2>
+                        </header>
+
+                        <div class="container-fuild" style="background-color:white; overflow:scroll;">
+                            <table id="TBL_MISSINGINGSTR2" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr id="TD_B2B">
+                                        <td align="center"><input type="checkbox" id="chkSelectAll" /></td>
+                                        <th>#</th>
+                                        <th>GSTIN</th>
+                                        <th>Supplier GSTIN</th>
+                                        <th>Invoice No</th>
+                                        <th>Invoice Date</th>
+                                        <th>Invoice Value</th>
+                                        <th>Taxable Value</th>
+                                        <th>Total Tax Amount</th>
+                                        <th>POS</th>
+                                        <th>Invoice Type</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                    <tr id="TD_CDNR">
+                                        <td align="center"><input type="checkbox" id="chkSelectAll" /></td>
+                                        <th>#</th>
+                                        <th>GSTIN</th>
+                                        <th>Supplier GSTIN</th>
+                                        <th>Note Number</th>
+                                        <th>Note date</th>
+                                        <th>Invoice No</th>
+                                        <th>Invoice Date</th>
+                                        <th>Invoice Value</th>
+                                        <th>Taxable Value</th>
+                                        <th>Total Tax Amount</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+
+
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form1" class="smart-form">
+
+                                    <fieldset>
+                                        @*<div class="row">
+                                                <section class="col col-12">
+                                                    <label class="label"></label>
+
+                                                </section>
+                                            </div>*@
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="button" id="Accept" name="Accept" value="Accept" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                            Accept
+                                        </button>
+                                        <button type="button" id="Reject" name="Reject" value="Reject" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                            Reject
+                                        </button>
+                                        <button type="button" id="Pending" name="Pending" value="Pending" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600">
+                                            Hold
+                                        </button>
+                                        <button type="button" id="Trigger" name="Trigger" value="Trigger" class="btn btn-primary pull-left" style="border-radius:13px; font-weight:600">
+                                            Trigger
+                                        </button>
+                                        <button type="submit" id="Export" name="Export" value="Export" class="btn btn-primary pull-left" style="border-radius:13px; font-weight:600">
+                                            Export
+                                        </button>
+
+                                        <button type="button" id="Back" name="Back" value="Back" class="btn btn-primary pull-right" style="border-radius:13px; font-weight:600">
+                                            Back
+                                        </button>	<br /><br /><br />
+                                        <label class="label"><b>Note: </b></label>
+                                        <label class="label">Accept - Add Invoices in GSTR-2</label>
+                                        <label class="label">Reject - Delete Invoices in GSTR-2A</label>
+                                        <label class="label">Trigger - Send Notification to Supplier</label>
+                                    </footer>
+
+                                    <div class="message">
+                                        <i class="fa fa-check fa-lg"></i>
+                                        <p>
+                                            Your comment was successfully added!
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+                    <!-- end widget -->
+
+                </article>
+            </div>
+
+            <!-- end row -->
+            <!-- row -->
+
+            <div class="row">
+
+                <!-- a blank row to get started -->
+                <div class="col-sm-12">
+                    <!-- your contents here -->
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </section>
+        <!-- end widget grid -->
+
+    </div>
+</form>
+<!-- END MAIN CONTENT -->
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        $("#TBL_MISSINGINGSTR2").hide();
+        $("#TD_B2B").hide();
+        $("#TD_CDNR").hide();
+
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return decodeURI(results[1]) || 0;
+            }
+        }
+        var URLRedirectName = $.urlParam('Page');
+
+        if (URLRedirectName == "ViewDetails") {
+            $("#divLoading").show();
+            ProcessingData();
+        }
+
+        $("#chkSelectAll").click(function () {
+            var table = $("#TBL_MISSINGINGSTR2").DataTable();
+            var filtervalue = table.search();
+
+            if (filtervalue != "") {
+                var cols = $("#TBL_MISSINGINGSTR2").DataTable().rows({ search: 'applied' }).nodes();
+                for (var i = 0; i < cols.length; i += 1) {
+                    cols[i].querySelector("input[type='checkbox']").checked = this.checked;
+                }
+            }
+            else {
+                var cols = $("#TBL_MISSINGINGSTR2").DataTable().column(0).nodes(),
+                    state = this.checked;
+                for (var i = 0; i < cols.length; i += 1) {
+                    cols[i].querySelector("input[type='checkbox']").checked = state;
+                }
+            }
+        });
+
+        $('.chkSelectAll').click(function () {
+            var status = this.checked;
+            if (status == false) {
+                $("#chkSelectAll").prop("checked", false);
+            }
+        });
+
+        $("#TBL_MISSINGINGSTR2").on("click", ".chkSelectAll", function () {
+            var status = this.checked;
+            if (status == false) {
+                $("#chkSelectAll").prop("checked", false);
+            }
+        });
+
+        $("#ViewDetails").click(function () {
+            $("#divLoading").show();
+            ProcessingData();
+        });
+
+        $("#ddlSupplierName").change(function () {
+            LoadingData();
+            window.location.reload(true);
+        });
+
+        $("#Accept").click(function () {
+            $("#divLoading").show();
+            var selectIds = ',';
+            var cols = $("#TBL_MISSINGINGSTR2").DataTable().column(0).nodes();
+            for (var i = 0; i < cols.length; i += 1) {
+                if (cols[i].querySelector("input[type='checkbox']").checked == true) {
+                    var chkVal = cols[i].querySelector("input[type='checkbox']").value;
+                    selectIds = selectIds + chkVal + ','
+                }
+            }
+            $("#InvIds").val();
+            $("#InvIds").val(selectIds);
+
+            ProcessingData("Accept");
+        });
+
+        $("#Reject").click(function () {
+            $("#divLoading").show();
+            var selectIds = ',';
+            var cols = $("#TBL_MISSINGINGSTR2").DataTable().column(0).nodes();
+            for (var i = 0; i < cols.length; i += 1) {
+                if (cols[i].querySelector("input[type='checkbox']").checked == true) {
+                    var chkVal = cols[i].querySelector("input[type='checkbox']").value;
+                    selectIds = selectIds + chkVal + ','
+                }
+            }
+            $("#InvIds").val();
+            $("#InvIds").val(selectIds);
+
+            ProcessingData("Reject");
+        });
+
+        $("#Pending").click(function () {
+            $("#divLoading").show();
+            var selectIds = ',';
+            var cols = $("#TBL_MISSINGINGSTR2").DataTable().column(0).nodes();
+            for (var i = 0; i < cols.length; i += 1) {
+                if (cols[i].querySelector("input[type='checkbox']").checked == true) {
+                    var chkVal = cols[i].querySelector("input[type='checkbox']").value;
+                    selectIds = selectIds + chkVal + ','
+                }
+            }
+            $("#InvIds").val();
+            $("#InvIds").val(selectIds);
+
+            ProcessingData("Pending");
+        });
+
+        $("#Trigger").click(function () {
+            $("#divLoading").show();
+            var selectIds = '|';
+            var cols = $("#TBL_MISSINGINGSTR2").DataTable().column(0).nodes();
+            for (var i = 0; i < cols.length; i += 1) {
+                if (cols[i].querySelector("input[type='checkbox']").checked == true) {
+                    var chkVal = $("#TBL_MISSINGINGSTR2").DataTable().cell(i, 1).nodes().to$().find('input').val();
+                    selectIds = selectIds + chkVal + '|'
+                }
+            }
+            $("#RefIds").val();
+            $("#RefIds").val(selectIds);
+
+            ProcessingData("Trigger");
+        });
+
+        $("#Back").click(function () {
+            $("#divLoading").show();
+            document.location.href = '/VendorReconcilation/Reconcilation?Page=ViewDetails';
+        });
+    });
+
+    function ProcessingData(ButtonType) {
+        var frmdata = new FormData();
+        var radio = $("input[type=radio][name='reconsetting']:checked").val();
+
+        if (radio == "FinancialPeriod") {
+
+            frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+            frmdata.append("period", $("#period").val());
+            frmdata.append("toperiod", $("#toperiod").val());
+            frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+            frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+            frmdata.append("reconsetting", radio);
+            frmdata.append("fromdate", $("#fromdate").val());
+            frmdata.append("todate", $("#todate").val());
+            frmdata.append("ddlActionType", $("#ddlActionType").val());
+        }
+        else if (radio == "FinancialYear") {
+
+            frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+            frmdata.append("fromdate", $("#fromdate").val());
+            frmdata.append("todate", $("#todate").val());
+            //frmdata.append("years", $("#years").val());
+            frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+            frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+            frmdata.append("reconsetting", radio);
+            frmdata.append("period", $("#period").val());
+            frmdata.append("toperiod", $("#toperiod").val());
+            frmdata.append("ddlActionType", $("#ddlActionType").val());
+        }
+
+        else {
+            frmdata.append("ddlGSTINNo", $("#ddlGSTINNo").val());
+            frmdata.append("fromdate", $("#fromdate").val());
+            frmdata.append("todate", $("#todate").val());
+           // frmdata.append("years", $("#years").val());
+            frmdata.append("ddlSupplierName", $("#ddlSupplierName").val());
+            frmdata.append("ddlSupGSTIN", $("#ddlSupGSTIN").val());
+            frmdata.append("reconsetting", $("#reconsetting").val());
+            frmdata.append("period", $("#period").val());
+            frmdata.append("toperiod", $("#toperiod").val());
+        }
+        if (ButtonType != null) {
+            frmdata.append("InvIds", $("#InvIds").val());
+            frmdata.append("RefIds", $("#RefIds").val());
+            if (ButtonType == "Accept") {
+                frmdata.append("Accept", $("#Accept").val());
+            }
+            if (ButtonType == "Reject") {
+                frmdata.append("Reject", $("#Reject").val());
+            }
+            if (ButtonType == "Pending") {
+                frmdata.append("Pending", $("#Pending").val());
+            }
+            if (ButtonType == "Trigger") {
+                frmdata.append("Trigger", $("#Trigger").val());
+            }
+        }
+
+        var action = $("#ddlActionType").val();
+        if (action == "B2B") {
+            $("#TD_B2B").show();
+            $("#TD_CDNR").hide();
+        }
+        if (action == "CDNR") {
+            $("#TD_B2B").hide();
+            $("#TD_CDNR").show();
+        }
+        $.ajax
+            ({
+                url: '/VendorReconcilation/MissinginGSTR2',
+                type: "POST",
+                contentType: false,
+                data: frmdata,
+                //async: true,
+                processData: false,
+                // cache: false,
+                success: function (resp) {
+                    $("#divLoading").hide();
+                    if (resp.success) {
+                        if (ButtonType != null) {
+                            swal({
+                                title: "",
+                                text: resp.SuccessMessage,
+                                type: "success",
+                                confirm: {
+                                    text: "OK",
+                                    value: true,
+                                    visible: true,
+                                    className: "",
+                                    closeModal: true,
+                                },
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: true,
+                            });
+                        }
+                        $("#TBL_MISSINGINGSTR2").show();
+                        LoadGrid(resp.data.MissingInvoicesInGSTR2);
+                    }
+                    else {
+                        swal({
+                            title: "",
+                            text: resp.ErrorMessage,
+                            type: "error",
+                            confirm: {
+                                text: "OK",
+                                value: true,
+                                visible: true,
+                                className: "",
+                                closeModal: true,
+                            },
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                        });
+                    }
+                    //alert(data);
+                },
+                error: function (xhr) {
+                    $("#divLoading").hide();
+                    alert(xhr.statusText);
+                }
+            })
+    }
+
+    function LoadGrid(ResData) {
+        var actiontype = $("#ddlActionType").val();
+        if (actiontype == "B2B") {
+            $('#TBL_MISSINGINGSTR2').DataTable({
+                destroy: true,
+                "aaData": ResData,
+                "aoColumns": [
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "width": '2%',
+                        "className": 'chkSelectAll',
+                        "data": 'invid',
+                        "render": function (data, type, full, meta) {
+                            return '<input type="checkbox" name="ids" id="ids" class="chkSelectAll" value="' + data + '" />';
+                        }
+                    },
+                    {
+                        "targets": 1,
+                        "visible": false,
+                        "searchable": false,
+                        "data": 'ctin_inum',
+                        "render": function (data, type, full, meta) {
+                            return '<input type="hidden" name="RefIds" id="RefIds" value="' + data + '" />';
+                        },
+                    },
+                    { "mData": "gstin" },
+                    { "mData": "ctin" },
+                    { "mData": "inum" },
+                    { "mData": "idt" },
+                    { "mData": "val" },
+                    { "mData": "txval" },
+                    { "mData": "TotaltaxAmount" },
+                    { "mData": "pos" },
+                    { "mData": "inv_typ" }
+                ]
+            });
+        }
+        if (actiontype == "CDNR") {
+            $('#TBL_MISSINGINGSTR2').DataTable({
+                destroy: true,
+                "aaData": ResData,
+                "aoColumns": [
+                    {
+                        "targets": 0,
+                        "searchable": false,
+                        "orderable": false,
+                        "width": '2%',
+                        "className": 'chkSelectAll',
+                        "data": 'invid',
+                        "render": function (data, type, full, meta) {
+                            return '<input type="checkbox" name="ids" id="ids" class="chkSelectAll" value="' + data + '" />';
+                        }
+                    },
+                    {
+                        "targets": 1,
+                        "visible": false,
+                        "searchable": false,
+                        "data": 'ctin_inum',
+                        "render": function (data, type, full, meta) {
+                            return '<input type="hidden" name="RefIds" id="RefIds" value="' + data + '" />';
+                        },
+                    },
+                    { "mData": "gstin" },
+                    { "mData": "ctin" },
+                    { "mData": "nt_num" },
+                    { "mData": "nt_dt" },
+                    { "mData": "inum" },
+                    { "mData": "idt" },
+                    { "mData": "val" },
+                    { "mData": "txval" },
+                    { "mData": "TotaltaxAmount" }
+                ]
+            });
+        }
+    }
+
+</script>
+
+@if (TempData["ReconcilationResponse"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["ReconcilationResponse"])));
+        TempData["ReconcilationResponse"] = null;
+    </script>
+}
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#MissingGSTR2Form').validate({
+                // Rules for form validation
+                rules: {
+                    //ddlGSTINNo: {
+                    //    required: true
+                    //},
+                    ddlActionType: {
+                        required: true
+                    },
+                },
+
+                // Messages for form validation
+                messages: {
+                    //ddlGSTINNo: {
+                    //    required: 'Please select GSTIN No'
+                    //},
+                    ddlActionType: {
+                        required: 'Please select Action'
+                    }
+
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+        })
+
+
+    </script>
+
+    <script>
+        $('input:radio').change(function (e) {
+
+            var radio = $("input[type=radio][name='reconsetting']:checked").val();
+
+            if (radio == "FinancialYear") {
+                $("#frm").hide();
+                $("#to").hide();
+                $("#frmdt").show();
+                $("#todt").show();
+               // $("#year").show();
+                $("#sname").show();
+                $("#sgstin").show();
+            }
+            else if (radio == "FinancialPeriod") {
+                $("#frmdt").hide();
+                $("#todt").hide();
+               // $("#year").hide();
+                $("#frm").show();
+                $("#to").show();
+            }
+            else {
+                $("#frm").hide();
+                $("#to").hide();
+                $("#frmdt").show();
+                $("#todt").show();
+               // $("#year").show();
+            }
+        })
+    </script>
+
+    <script>
+    $(document).ready(function ()  {
+
+        var radio = '@Session["f_year"]';
+
+        if (radio == "FinancialYear") {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+           // $("#year").show();
+            $("#sname").show();
+            $("#sgstin").show();
+        }
+        else if (radio == "FinancialPeriod") {
+            $("#frmdt").hide();
+            $("#todt").hide();
+           // $("#year").hide();
+            $("#frm").show();
+            $("#to").show();
+        }
+        else {
+            $("#frm").hide();
+            $("#to").hide();
+            $("#frmdt").show();
+            $("#todt").show();
+           // $("#year").show();
+        }
+    })
+    </script>
+}

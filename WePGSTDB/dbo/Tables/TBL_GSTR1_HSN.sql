@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR1_HSN] (
+    [hsnid]   INT IDENTITY (1, 1) NOT NULL,
+    [gstr1id] INT NOT NULL,
+    [gstinid] INT NULL,
+    CONSTRAINT [PK_TBL_GSTR1_HSN] PRIMARY KEY CLUSTERED ([hsnid] ASC),
+    CONSTRAINT [FK_TBL_GSTR1_HSN_TBL_GSTR1] FOREIGN KEY ([gstr1id]) REFERENCES [dbo].[TBL_GSTR1] ([gstr1id])
+);
+

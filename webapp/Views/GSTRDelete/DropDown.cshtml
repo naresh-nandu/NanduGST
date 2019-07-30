@@ -1,0 +1,74 @@
+﻿
+
+
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+            <header>
+                <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                <h2>GSTR DELETE</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div id="comment-form" class="smart-form">
+                        <form action="@Url.Action("DropDown", "GSTRDelete")" method="post" name="ewaygeneration" id="ewaygenerationn" autocomplete="off" novalidate="novalidate">
+                            <fieldset>
+
+                                <div class="row">
+
+                                    <section class="col col-3">
+                                        <label class="label">Record Type</label>
+                                        <div class="col-xs-9 col-lg-9 selectContainer">
+                                            @Html.DropDownList("recordType", ViewBag.RecordType as SelectList, "Select ALL", new { @class = "form-control", id = "recordType" })
+                                        </div>
+                                    </section>
+
+
+                                    <section class="col col-3">
+                                        <div class="form-group">
+                                            <label>Customer Name<span style="color:red">*</span></label>
+                                            <div>
+                                                @Html.DropDownList("loadrecordType", new SelectList(ViewBag.LoadRecordType, "Text", "Value", Session["loadrecordType"]), "--Select--", new { @Class = "form-control input-sm", @id = "name" })
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                </div>
+
+                            </fieldset>
+
+                            <footer>
+                                <button type="submit" name="command" value="GSTRSummary" class="btn btn-primary" style="border-radius:13px;font-weight:600">
+                                    View Summary
+                                </button>
+                            </footer>
+                             </form>
+                            
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+        <!-- Widget ID (each widget will need unique ID)-->
+        <!-- end widget -->
+
+    </article>
+

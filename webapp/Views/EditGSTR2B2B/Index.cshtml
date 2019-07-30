@@ -1,0 +1,123 @@
+﻿@model SmartAdminMvc.Models.TBL_GSTR2_B2B_INV
+@{
+    ViewBag.Title = "List";
+    var grid = new WebGrid(source: @ViewBag.lineitems, rowsPerPage: 10);
+}
+<style type="text/css">
+    table.gridtable {
+        font-family: Verdana,Arial;
+        font-size: 11px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+        table.gridtable th {
+            background-color: #dedede;
+            padding: 8px;
+            border-width: 1px;
+            border-color: #666666;
+            border-style: solid;
+        }
+
+        table.gridtable td {
+            background-color: #ffffff;
+            padding: 8px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #666666;
+        }
+</style>
+
+<form action="@Url.Action("Edit","SupplierMgmt")" method="post" id="supplierEdit-form" class="smart-form" novalidate="novalidate">
+    <fieldset>
+        <div class="row">
+            <section class="col col-3">
+                @Html.LabelFor(model => model.inum)
+                <label class="input">
+                    <i class="icon-prepend fa fa-user"></i>
+                    @Html.EditorFor(model => model.inum, new { @style = "disable:true" })
+                </label>
+                @Html.ValidationMessageFor(model => model.inum, "", new { @class = "text-danger" })
+            </section>
+            <section class="col col-3">
+                @Html.LabelFor(model => model.idt)
+                <label class="input">
+                    @Html.EditorFor(model => model.idt)
+                </label>
+                @Html.ValidationMessageFor(model => model.idt, "", new { @class = "text-danger" })
+            </section>
+
+            <section class="col col-3">
+                @Html.LabelFor(model => model.val)
+                <label class="input">
+                    @Html.EditorFor(model => model.val)
+                </label>
+                @Html.ValidationMessageFor(model => model.val, "", new { @class = "text-danger" })
+
+            </section>
+
+            <section class="col col-3">
+                @Html.LabelFor(model => model.pos)
+                <label class="input">
+                    <i class="icon-prepend fa fa-envelope-o"></i>
+                    @Html.EditorFor(model => model.pos)
+                </label>
+                @Html.ValidationMessageFor(model => model.pos, "", new { @class = "text-danger" })
+
+
+
+            </section>
+
+        </div>
+        <div class="row">
+            <section class="col col-3">
+
+                @Html.LabelFor(model => model.rchrg)
+                <label class="input">
+                    @Html.EditorFor(model => model.rchrg)
+                </label>
+                @Html.ValidationMessageFor(model => model.rchrg, "", new { @class = "text-danger" })
+
+
+
+            </section>
+       
+        </div>
+      
+    </fieldset>
+<fieldset>
+        <div class="row">
+            <section class="col col-3">
+
+                @grid.GetHtml(tableStyle: "gridtable", columns: grid.Columns(grid.Column("hsn_sc", "HSN"),
+                 grid.Column( "ty", "Category"),
+                 grid.Column( "txval", "Taxablevalue"),
+                  grid.Column( "irt", "IGST Rate"),
+                 grid.Column("iamt", "IGST Amount"),
+                 grid.Column( "crt", "CGST Rate"),
+                 grid.Column( "camt", "CGST Amount"),
+                 grid.Column( "srt", "SGST Rate"),
+                 grid.Column( "samt", "SGST Amount"),
+                 grid.Column( "csrt", "CESS Rate"),
+                 grid.Column( "csamt", "CESS Amount"),
+                 grid.Column("elg", "Eligibility")
+                    ))
+            </section>
+        </div>
+    </fieldset>
+
+
+
+
+    <footer>
+        <div class="col col-6">
+
+            <input type="submit" Value="Save" class="btn btn-primary" />
+
+
+        </div>
+    </footer>
+</form>

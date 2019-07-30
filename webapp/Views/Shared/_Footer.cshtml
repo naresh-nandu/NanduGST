@@ -1,0 +1,18 @@
+﻿    <!-- PAGE FOOTER -->
+<div style="padding-bottom:0px" class="page-footer">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            @if (Session["Partner_Company"].ToString() == "NA")
+            {
+                <span class="txt-color-white">WeP GST Panel <span class="hidden-xs"> - WeP Solutions Limited</span> © 2017</span>
+            }
+            else
+            {
+                <span class="txt-color-white">GST Services <span class="hidden-xs"> - @Session["Partner_Company"].ToString()</span> © 2017</span>
+            }
+            
+        </div>
+
+    </div>
+</div>
+<!-- END PAGE FOOTER -->

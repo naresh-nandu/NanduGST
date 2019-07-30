@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[TBL_GSTR6_ISD] (
+    [isdid]   INT IDENTITY (1, 1) NOT NULL,
+    [gstr6id] INT NOT NULL,
+    [gstinid] INT NULL,
+    CONSTRAINT [PK_TBL_GSTR6_ISD] PRIMARY KEY CLUSTERED ([isdid] ASC),
+    CONSTRAINT [FK_TBL_GSTR6_ISD_TBL_GSTR6] FOREIGN KEY ([gstr6id]) REFERENCES [dbo].[TBL_GSTR6] ([gstr6id])
+);
+

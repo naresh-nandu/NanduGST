@@ -1,0 +1,301 @@
+﻿@model IEnumerable<SmartAdminMvc.Models.UserList>
+
+@{
+    ViewBag.Title = "WeP ASP PANEL";
+    var grid = new WebGrid(source: ViewBag.userlist, rowsPerPage: 10);
+}
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["Message"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+}
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        oTableStaticFlow = $('#example').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [5]
+            }],
+        });
+
+    });
+
+
+    $($(".sorting_asc").get(5)).removeClass("sorting_asc");
+    $($(".sorting_asc").get(6)).removeClass("sorting_asc");
+
+    function editOrder(UserId) {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to Edit this Record?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Edit",
+            confirmButtonColor: "#ec6c62"
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                var Id = UserId;
+
+                window.location.href = "/User/EditUser/" + Id;
+
+            }
+        });
+    }
+
+    function deleteOrder(UserId) {
+        debugger;
+        swal({
+            title: "",
+            text: "Are you sure that you want to delete this Record?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Delete",
+            confirmButtonColor: "#ec6c62"
+        },
+        //function (isConfirm) {
+        //    if (isConfirm) {
+
+        //        $.ajax({
+        //            url: "/User/DeleteUser/",
+        //            data: { "Id": UserId },
+        //            type: "GET"
+        //        })
+        //            .done(function (data) {
+
+        //                window.location.href = '/User/Registration';
+
+        //                sweetAlert
+        //                    ({
+        //                        title: "",
+        //                        text: "Deleted Successfully",
+        //                        type: "success"
+        //                    },
+        //                        function () {
+        //                            //window.location.href = '/BuyerMgmt/Index';
+        //                        });
+        //            })
+        //            .error(function (data) {
+        //                swal("Oops", "We couldn't connect to the server!", "error");
+        //            });
+
+
+        //    }
+        //});
+
+               function (isConfirm) {
+                   debugger;
+                   if (isConfirm) {
+
+                       $.ajax({
+
+                           url: "/User/DeleteUser/",
+                           data: { "Id": UserId },
+                           type: "GET",
+                           success: function (data) {
+                               if (data == "3") {
+                                   sweetAlert
+                                       ({
+                                           title: "",
+                                           text: "User Deleted Successfully.",
+                                           type: "success"
+                                       },
+                                         function () {
+                                             window.location.href = '/User/registration';
+                                         });
+                               }
+                               else if (data == "2") {
+                                   sweetAlert
+                                       ({
+                                           title: "",
+                                           text: "You donnot have access to delete admin or super admin details",
+                                           type: "error"
+                                       },
+                                 function () {
+                                     window.location.href = '/User/registration';
+                                 });
+                               }
+                               else if (data == "1") {
+                                   sweetAlert
+                                        ({
+                                            title: "",
+                                            text: "You cannot delete your own details.",
+                                            type: "error"
+                                        },
+                                        function () {
+                                            window.location.href = '/User/registration';
+                                        });
+
+                               }
+
+                               else if (data == "0") {
+                                   sweetAlert
+                                        ({
+                                            title: "",
+                                            text: "Something went Wrong,Operation failure.",
+                                            type: "error"
+                                        },
+                                        function () {
+                                            window.location.href = '/User/registration';
+                                        });
+
+                               }
+
+                           },
+                           error: function (error) {
+
+                           }
+                       })
+
+
+                   }
+               });
+    }
+
+</script>
+
+<style type="text/css">
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border: rgb(86, 138, 137);
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #496949;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+@using (Html.BeginForm(new { @Class = "smart-form" }))
+{
+    int i = 1;
+    <div class="table-responsive">
+
+        @if (ViewBag.userlist != null)
+        {
+            if (Enumerable.Count(ViewBag.userlist) > 0)
+            {
+
+
+                <div class="container-fuild" style="background-color:white;">
+                    <table id="example" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>User Name</th>
+                                <th>Designation</th>
+                                <th>Email ID</th>
+                                <th>Mobile Number</th>
+                                <th>Status</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            @foreach (var item in ViewBag.userlist)
+                            {
+                                <tr>
+                                    <td>@Convert.ToInt32(i++)</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Designation</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.MobileNo</td>
+                                    <td>@Html.Raw(@item.Status==true?"Active":"Blocked")</td>
+                                    <td><input id='Edit' onclick='editOrder("@item.UserId")' type='button' value='Edit' class="btn btn-primary" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" /></td>
+                                    <td><input id='Delete' onclick='deleteOrder("@item.UserId")' type='button' value='Delete' class="btn btn-danger" style="font-weight:bold;Border-radius:5px;width:60px;padding:3px;" /></td>
+                                </tr>
+
+                            }
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+            }
+
+            else
+            {
+                <div style="text-align:left">
+                    <br /><br />
+                    <h3 style="text-align:left !important">No Data Found</h3>
+                </div>
+
+            }
+        }
+
+    </div>
+
+}

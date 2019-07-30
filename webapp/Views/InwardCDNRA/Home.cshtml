@@ -1,0 +1,410 @@
+﻿<div>
+    <form action="@Url.Action("Save", "InwardCDNRA")" method="post" id="main-form" novalidate="novalidate">
+        <div>
+            <div class="jarviswidget jarviswidget-color-pink" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+                <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                -->
+                <header>
+                    <div class="">
+                        <span class="widget-icon"> <i class="fa fa-edit "></i> </span>
+                        <h2>GSTR2 CDNA</h2>
+                    </div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div>
+                        <fieldset class="smart-form">
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label>Supplier GSTIN/UID</label>@*<span style="color:red">*</span>*@
+                                    <label class="input">
+                                        <input type="text" name="gstin" placeholder="Supplier GSTIN/UID">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>Supplier Name</label>@*<span style="color:red">*</span>*@
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-user"></i>
+                                        <input type="text" name="name" placeholder="Supplier Name">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <div class="form-group">
+                                        <label>GSTIN</label>
+
+                                        <div>
+                                            @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "CategoryID", "CategoryName"), "Select", new { @Class = "form-control input-sm" })
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label>Reason for issuing C/D note</label>@*<span style="color:red">*</span>*@
+                                    <label class="input">
+                                        <input type="text" name="rns" placeholder="RNS">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>Revised Invoice No.</label>@*<span style="color:red">*</span>*@
+                                    <label class="input">
+                                        <input type="text" name="revinvoice" placeholder="Revised Invoice No.">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>Revised Invoice Date</label>@*<span style="color:red">*</span>*@
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="reviseddate" placeholder="Revised Invoice Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                    </label>
+                                </section>
+
+                            </div>
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label>Total Taxable Value</label>
+                                    <label class="input">
+                                        <input type="text" name="taxvalue" placeholder="Total Taxable Value">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <div class="form-group">
+                                        <label>Eligibility</label>
+                                        <div>
+                                            <select class="form-control input-sm" name="elig">
+                                                <option></option>
+                                                <option value="ip">ip</option>
+                                                <option value="cp">cp</option>
+                                                <option value="no">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col col-4">
+                                    <div class="form-group">
+                                        <label>Reverse Charges</label>
+                                        <div>
+                                            <select class="form-control input-sm" name="reversecharge">
+                                                <option></option>
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+
+                            @*<div class="row">
+                                    <section class="col col-4">
+                                        <div class="form-group">
+                                            <label>POS(only if different from location of recipient)</label>
+                                            <div>
+                                                <select class="form-control input-sm" name="pos">
+                                                    <option></option>
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="col col-4">
+                                        <div class="form-group">
+                                            <label>GSTIN</label>
+
+                                            <div>
+                                                @Html.DropDownList("cgstin", new SelectList(ViewBag.Categories, "CategoryID", "CategoryName"), "Select", new { @Class = "form-control input-sm" })
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>*@
+                            <div class="row">
+                                <section class="col col-4">
+                                    <div class="form-group">
+                                        <label>Note type</label>
+                                        <div>
+                                            <select class="form-control input-sm" name="notetype">
+                                                <option></option>
+                                                <option value="C">Credit</option>
+                                                <option  value="D">Debit</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col col-4">
+                                    <label>Note Number</label>
+                                    <label class="input">
+                                        <input type="text" name="notenum" placeholder="Note Number">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>Note Date</label>@*<span style="color:red">*</span>*@
+                                    <label class="input">
+                                        <i class="icon-append fa fa-calendar"></i>
+                                        <input type="text" name="notedate" placeholder="Note Date" class="datepicker" data-dateformat='mm/dd/yy'>
+                                    </label>
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label>IGST Rate</label>
+                                    <label class="input">
+                                        <input type="text" name="igstr" placeholder="IGST Rate">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>IGST Amount</label>
+                                    <label class="input">
+                                        <input type="text" name="igsta" placeholder="IGST Amount">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>CGST Rate</label>
+                                    <label class="input">
+                                        <input type="text" name="cgstr" placeholder="CGST Rate">
+                                    </label>
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label>CGST Amount</label>
+                                    <label class="input">
+                                        <input type="text" name="cgsta" placeholder="CGST Amount">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>SGST Rate</label>
+                                    <label class="input">
+                                        <input type="text" name="sgstr" placeholder="SGST Rate">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>SGST Amount</label>
+                                    <label class="input">
+                                        <input type="text" name="sgsta" placeholder="SGST Amount">
+                                    </label>
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-4">
+                                    <label>CESS Rate</label>
+                                    <label class="input">
+                                        <input type="text" name="cessr" placeholder="CESS Rate">
+                                    </label>
+                                </section>
+                                <section class="col col-4">
+                                    <label>CESS Amount</label>
+                                    <label class="input">
+                                        <input type="text" name="cessa" placeholder="CESS Amount">
+                                    </label>
+                                </section>
+                                
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </div>
+                <!-- end widget content -->
+
+            </div>
+        </div>
+
+        @*</form>*@
+
+
+
+        <footer>
+            <div class="btn">
+                <div class="col col-4">
+
+                    <input type="submit" Value="Save" class="btn btn-primary" />
+                </div>
+
+            </div>
+        </footer>
+
+    </form>
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">
+                alert(@Html.Raw(Json.Encode(TempData["Message"])));
+        </script>
+    }
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        var $checkoutForm = $('#main-form').validate({
+            // Rules for form validation
+            rules: {
+                taxvalue: {
+                    required: true
+                },
+                reversecharge: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 1
+                },
+                rns: {
+                    required: true
+                },
+                gstin: {
+                    required: true,
+                    minlength: 15,
+                    maxlength: 15
+                },
+                cgstin: {
+                    required: true
+                },
+                name: {
+                    required: true
+                },
+                revinvoice: {
+                    required: true
+                },
+                reviseddate: {
+                    required: true
+                },
+                notetype: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 1
+                },
+                notenum: {
+                    required: true
+                },
+                notedate: {
+                    required: true
+                },
+                igstr: {
+                    required: true
+                },
+                igsta: {
+                    required: true
+                },
+                cgstr: {
+                    required: true
+                },
+                cgsta: {
+                    required: true
+                },
+                sgstr: {
+                    required: true
+                },
+                sgsta: {
+                    required: true
+                },
+                cessr: {
+                    required: true
+                },
+                cessa: {
+                    required: true
+                },
+                elig: {
+                    required: true
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+                taxvalue: {
+                    required:'Please enter tax value'
+                },
+                reversecharge: {
+                    required: 'Please select reverse charge'
+                },
+                rns: {
+                    required: 'Please enter RNS'
+                },
+                gstin: {
+                    required: 'Please enter supplier GSTIN'
+                },
+                cgstin: {
+                    required: 'Please enter supplier GSTIN'
+                },
+                name: {
+                    required: 'Please enter supplier name'
+                },
+                revinvoice: {
+                    required: 'Please enter revised invoice no.'
+                },
+                reviseddate: {
+                    required: 'Please select revised invoice date'
+
+                },
+                notetype: {
+                    required: 'Please select note type'
+                },
+                notenum: {
+                    required: 'Please enter note num'
+                },
+                notedate: {
+                    required: 'Please enter note date'
+                },
+                igstr: {
+                    required: 'Please enter IGST rate'
+                },
+                igsta: {
+                    required: 'Please IGST amount'
+
+                },
+                cgstr: {
+                    required: 'Please enter CGST rate'
+                },
+                cgsta: {
+                    required: 'Please enter CGST amount'
+                },
+                sgstr: {
+                    required: 'Please enter  SGST rate'
+                },
+                sgsta: {
+                    required: 'Please enter SGST amount'
+                },
+                cessa: {
+                    required: 'Please cess amount'
+
+                },
+                cessr: {
+                    required: 'Please enter cess rate'
+                },
+                elig: {
+                    required: 'Please select eligibility'
+
+                }
+
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    })
+
+    </script>
+
+}
+

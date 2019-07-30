@@ -1,0 +1,228 @@
+﻿@model SmartAdminMvc.Models.GSTR3.Gstr3b
+@if (@ViewBag.OTPSession == "OPEN_POPUP")
+{
+    <script>
+        window.onload = function () {
+
+            $(document).ready(function () {
+                $('#myOTPModal').modal();
+
+            });
+
+        }
+    </script>
+}
+@if (TempData["GSTNEmpty"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["GSTNEmpty"])));
+        TempData["GSTNEmpty"] = null;
+    </script>
+}
+else
+{
+    using (Ajax.BeginForm("SaveGSTR3B", "GSTR3BUpload", new AjaxOptions { HttpMethod = "POST" }, new { enctype = "multipart/form-data", @id = "GSTRUploadForm", @name = "GSTRUploadForm" }))
+    {
+
+        <div class="row" style="margin-left:0px" ;>
+            <div class="col-xs-6 col-sm-4">
+                <div class="panel panel-default" style="background-color:white;">
+                    <a href="~/GSTR3BUpload/sup_det?gstinid=@Model.gstinid&fp=@Model.fp">
+                        <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Tax on outward and reverse charge Inward supplies</div>
+                        @*<div style="background-color:#191970;color:white">3.1 Tax on outward and reverse charge Inward supplies</div>*@
+                        <div style="min-height:120px;">
+                            <br />
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:50%"><span style="padding:15px;"> Integrated Tax</span> </td>
+                                    <td style="width:50%"><span>Central Tax</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.sup_details.iamt</span></td>
+                                    <input name="supdetailsiamt" type="hidden" value="@Model.sup_details.iamt" />
+                                    <input name="gstinid" type="hidden" value="@Model.gstinid" />
+                                    <input name="fp" type="hidden" value="@Model.fp" />
+                                    <td>@Model.sup_details.camt</td>
+                                    <input name="supdetailscamt" type="hidden" value="@Model.sup_details.camt" />
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">State/UT Tax</span></td>
+                                    <td>Cess</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.sup_details.samt</span></td>
+                                    <input name="supdetailssamt" type="hidden" value="@Model.sup_details.samt" />
+                                    <td>@Model.sup_details.csamt</td>
+                                    <input name="supdetailscsamt" type="hidden" value="@Model.sup_details.csamt" />
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="panel panel-default" style="background-color:white;">
+                    <a href="~/GSTR3BUpload/inter_sup?gstinid=@Model.gstinid&fp=@Model.fp">
+                        <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Inter-state supplies</div>
+                        @*<div style="background-color:blue;color:white">3.2 Inter-state supplies</div>*@
+                        <div style="min-height:120px;">
+                            <br />
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:50%"><span style="padding:15px;">Taxable Value</span> </td>
+                                    <td style="width:50%">Integrated Tax</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.InterSup.txval</span></td>
+                                    <input name="InterSuptxval" type="hidden" value="@Model.InterSup.txval" />
+                                    <td>@Model.InterSup.iamt</td>
+                                    <input name="InterSupiamt" type="hidden" value="@Model.InterSup.iamt" />
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="panel panel-default" style="background-color:white;">
+                    <a href="~/GSTR3BUpload/itc_elg?gstinid=@Model.gstinid&fp=@Model.fp">
+                        <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Eligible ITC</div>
+                        <div style="min-height:120px;">
+                            <br />
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:50%"><span style="padding:15px;">Integrated Tax</span></td>
+                                    <td style="width:50%">Central Tax</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.ItcElg.iamt</span></td>
+                                    <input name="ItcElgiamt" type="hidden" value="@Model.ItcElg.iamt" />
+                                    <td>@Model.ItcElg.camt</td>
+                                    <input name="ItcElgcamt" type="hidden" value="@Model.ItcElg.camt" />
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">State/UT Tax</span></td>
+                                    <td>Cess</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.ItcElg.samt</span></td>
+                                    <input name="ItcElgsamt" type="hidden" value="@Model.ItcElg.samt" />
+                                    <td>@Model.ItcElg.csamt</td>
+                                    <input name="ItcElgcsamt" type="hidden" value="@Model.ItcElg.csamt" />
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+
+        <br />
+
+        <div class="row" style="margin-left:0px" ;>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="panel panel-default" style="background-color:white;">
+                    <a href="~/GSTR3BUpload/inward_sup?gstinid=@Model.gstinid&fp=@Model.fp">
+                        <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Exempt, nil and Non GST Inward supplies</div>
+                        <div style="min-height:120px;">
+                            <br />
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:50%"><span style="padding:15px;">Inter-state supplies</span></td>
+                                    <td style="width:50%">Intra-state supplies</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.Inward_sup.inter</span></td>
+                                    <input name="Inwardsupinter" type="hidden" value="@Model.Inward_sup.inter" />
+                                    <td>@Model.Inward_sup.intra</td>
+                                    <input name="Inwardsupintra" type="hidden" value="@Model.Inward_sup.intra" />
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="panel panel-default" style="background-color:white;">
+                    <a href="~/GSTR3BUpload/intr_ltfee?gstinid=@Model.gstinid&fp=@Model.fp">
+                        <div class="panel-body h4" style="min-height:60px !important;background:#008080;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Interest and Late fee</div>
+                        <div style="min-height:120px;">
+                            <table style="width:100%">
+                                <br />
+                                <tr>
+                                    <td style="width:50%"><span style="padding:15px;">Integrated Tax</span></td>
+                                    <td style="width:50%">Central Tax</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.IntrLtfee.iamt</span></td>
+                                    <input name="IntrLtfeeiamt" type="hidden" value="@Model.IntrLtfee.iamt" />
+                                    <td>@Model.IntrLtfee.camt</td>
+                                    <input name="IntrLtfeecamt" type="hidden" value="@Model.IntrLtfee.camt" />
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">State/UT Tax</span></td>
+                                    <td>Cess</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="padding:15px;">@Model.IntrLtfee.samt</span></td>
+                                    <input name="IntrLtfeesamt" type="hidden" value="@Model.IntrLtfee.samt" />
+                                    <td>@Model.IntrLtfee.csamt</td>
+                                    <input name="IntrLtfeecsamt" type="hidden" value="@Model.IntrLtfee.csamt" />
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="row" style="margin-right: 40px;">
+            <footer>
+
+                <button type="submit" name="GSTR3bSave" value="GSTR 3b Save" class="btn btn-primary pull-right" style="border-radius:13px;font-weight:600;">
+                    GSTR 3B Save
+                </button>
+                @if (Session["GSTR3BSetting"].ToString() != "True")
+                {
+                <button type="submit" name="GSTR3bDelete" value="GSTR3bDelete" class="btn btn-primary pull-left" style="border-radius:13px;font-weight:600;margin-left:40px">
+                    Delete 3B Data
+                </button>
+                }
+                @*<a href="#" class="btn btn-primary pull-right"><strong><i class="fa fa-arrow-circle-left"></i> Back </strong></a>*@
+            </footer>
+        </div>
+
+    }
+
+}
+
+

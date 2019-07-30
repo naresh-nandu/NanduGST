@@ -1,0 +1,273 @@
+﻿
+
+<div id="content">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+                Customer Setting
+                <span>
+                    >
+                    Setting
+                </span>
+            </h1>
+        </div>
+    </div>
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> </span>
+                        <h2>Customer Setting Updation</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+
+                            <form class="form-horizontal" action="@Url.Action("Setting", "ProfileMgmt")" method="post">
+
+
+
+                                <fieldset class="demo-switcher-1">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>Do You Want Invoice Print Option?</h5></label>
+                                        <div class="col-md-8" style="margin-top:12px;">
+                                            @if (Session["Setting"].ToString() == "False")
+                                            {
+                                                <label class="radio radio-inline">
+
+                                                    <input type="radio" class="radiobox" name="Yes" value="Yes">
+                                                    <span>Yes</span>
+
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" class="radiobox" name="Yes" value="No" checked>
+                                                    <span>No</span>
+                                                </label>
+                                            }
+                                            else if (Session["Setting"].ToString() == "True")
+                                            {
+                                                <label class="radio radio-inline">
+
+                                                    <input type="radio" class="radiobox" name="Yes" value="Yes" checked>
+                                                    <span>Yes</span>
+
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" class="radiobox" name="Yes" value="No">
+                                                    <span>No</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+
+                                <fieldset class="demo-switcher-2">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>Do You Want CTIN Validation Based on Supplier/Customer/HSN Management?</h5></label>
+                                        <div class="col-md-8" style="margin-top:12px;">
+                                            @if (Session["CTINSetting"].ToString() == "False")
+                                            {
+                                                <label class="radio radio-inline">
+
+                                                    <input type="radio" class="radiobox" name="CTINValidation" value="Yes">
+                                                    <span>Yes</span>
+
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" class="radiobox" name="CTINValidation" value="No" checked>
+                                                    <span>No</span>
+                                                </label>
+                                            }
+                                            else if (Session["CTINSetting"].ToString() == "True")
+                                            {
+                                                <label class="radio radio-inline">
+
+                                                    <input type="radio" class="radiobox" name="CTINValidation" value="Yes" checked>
+                                                    <span>Yes</span>
+
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" class="radiobox" name="CTINValidation" value="No">
+                                                    <span>No</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+
+                                <fieldset class="demo-switcher-3">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" style="font-size:medium;font-family:'Times New Roman', Times, serif"><h5>Do You Want Credit Note Validation Based on Original Invoice?</h5></label>
+                                        <div class="col-md-8" style="margin-top:12px;">
+                                            @if (Session["CreditNoteSetting"].ToString() == "False")
+                                            {
+                                                <label class="radio radio-inline">
+
+                                                    <input type="radio" class="radiobox" name="CreditNoteValidation" value="Yes">
+                                                    <span>Yes</span>
+
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" class="radiobox" name="CreditNoteValidation" value="No" checked>
+                                                    <span>No</span>
+                                                </label>
+                                            }
+                                            else if (Session["CreditNoteSetting"].ToString() == "True")
+                                            {
+                                                <label class="radio radio-inline">
+
+                                                    <input type="radio" class="radiobox" name="CreditNoteValidation" value="Yes" checked>
+                                                    <span>Yes</span>
+
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" class="radiobox" name="CreditNoteValidation" value="No">
+                                                    <span>No</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+
+
+
+
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary" type="submit" style="border-radius:4px;">
+                                                Update
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+            <!-- NEW WIDGET START -->
+            <!-- WIDGET END -->
+
+        </div>
+
+        <!-- end row -->
+
+
+    </section>
+    <!-- end widget grid -->
+
+</div>
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["Message"])));
+    </script>
+}
+
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL Common.Functions!
+
+        $(document).ready(function () {
+
+            // PAGE RELATED SCRIPTS
+
+            // class switcher for radio and checkbox
+            $('input[name="demo-switcher-1"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-1 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-1 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-1 input[type="radio"]').removeClass();
+                $('.demo-switcher-1 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-2"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-2 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-2 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-2 input[type="radio"]').removeClass();
+                $('.demo-switcher-2 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+            $('input[name="demo-switcher-3"]').change(function () {
+                //alert($(this).val())
+                $this = $(this);
+
+                myNewClass = $this.attr('id');
+
+                $('.demo-switcher-3 input[type="checkbox"]').removeClass();
+                $('.demo-switcher-3 input[type="checkbox"]').addClass("checkbox " + myNewClass);
+
+                $('.demo-switcher-3 input[type="radio"]').removeClass();
+                $('.demo-switcher-3 input[type="radio"]').addClass("radiobox " + myNewClass);
+
+            })
+
+        })
+
+    </script>
+}

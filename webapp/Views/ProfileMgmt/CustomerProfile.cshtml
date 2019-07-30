@@ -1,0 +1,87 @@
+﻿@model IEnumerable<SmartAdminMvc.Models.TBL_Customer>
+
+
+
+
+
+@foreach (var profile in Model)
+{
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="panel panel-primary">
+                    <div class="panel-heading text-center" style="text-align:center;font-weight:bold;color:white;font-size:18px;">
+                        Customer Profile
+
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="~/Content/images/userprofile.jpg" class="img-responsive img-rounded" />
+                            </div>
+                            <div class="col-md-9">
+                                <table class="table table-responsive ">
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>@profile.Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Designation</td>
+                                        <td>@profile.Designation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Company</td>
+                                        <td>@profile.Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>@profile.Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reference No.</td>
+                                        <td>@Session["CustRefNo"].ToString()</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>@Html.ActionLink(" UPDATE", "Update", new { Id = profile.CustId }, new { @Class = "fa fa-edit btn btn-primary", @Style = "font-weight:bold;Border-radius:15px;", onclick = "javascript:return ShowMessage();" })</td>
+                                    </tr>
+
+                                </table>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+    </div>
+}
+
+
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+<script>
+            function ShowMessage() {
+                var result = confirm("Are You Sure To Update?");
+                if (result) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+</script>
+
+

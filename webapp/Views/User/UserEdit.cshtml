@@ -1,0 +1,350 @@
+﻿
+
+<script src="~/Content/ownjs/own_validations.js"></script>
+
+<!-- MAIN CONTENT -->
+<div id="content">
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+
+        <!-- START ROW -->
+
+        <div class="row">
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 style="font-weight:bold">User Updation</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <form action="@Url.Action("UserEdit", "User")" method="POST" id="checkout-form" class="smart-form" novalidate="novalidate">
+
+                                <fieldset>
+                                    <div class="row">
+
+
+
+
+                                        <section class="col col-4 ">
+
+                                            <label class="input">
+                                                <i class="icon-append fa fa-user" style="color:red;"> *</i>
+                                                <input type="text" id="name" name="name" placeholder="Name of the person" value="@ViewBag.Name" />
+                                            </label>
+                                        </section>
+                                        @*<section class="col col-4 ">
+
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-user" style="color:red;"> *</i>
+                                                    <input type="text" id="username" name="username" placeholder="User Name"  value="@ViewBag.UserName" />
+                                                </label>
+                                            </section>*@
+                                        <section class="col col-4">
+
+                                            <label class="input">
+                                                <i class="icon-append fa fa-briefcase" style="color:red;">*</i>
+                                                <input type="text" id="designation" name="designation" placeholder="Designation" value="@ViewBag.Designation">
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label class="input">
+                                                <i class="icon-append fa fa-envelope" style="color:red;">*</i>
+                                                <input type="email" id="email" name="email" placeholder="Email" value="@ViewBag.Email">
+                                            </label>
+                                        </section>
+
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-4">
+                                            <label class="input">
+                                                <i class="icon-append fa fa-user" style="color:red;">*</i>
+                                                <input type="password" id="Password" name="Password" placeholder="Password" value="@ViewBag.Password">
+                                            </label>
+                                        </section>
+                                        <section class="col col-4">
+                                            <label class="input">
+                                                <i class="icon-append fa fa-phone" style="color:red;">*</i>
+                                                <input type="text" id="phone" maxlength="10" name="phone" placeholder="Mobile Number" value="@ViewBag.Mobile">
+                                            </label>
+                                        </section>
+
+                                        @{Html.RenderPartial("_Usereditrole");}
+
+                                        @if (Session["MakerCheckerApproverSetting"].ToString() == "True")
+                                        {
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    @Html.DropDownList("ddlMakerCheckerApprover", ViewBag.MakerCheckerApproverList as SelectList, "Select", new { @Class = "form-control" })
+                                                </label>
+                                            </section>
+                                        }
+                                        else
+                                        {
+                                            <section class="col col-4" style="display:none;">
+                                                <label class="input">
+                                                    @Html.DropDownList("ddlMakerCheckerApprover", ViewBag.MakerCheckerApproverList as SelectList, "Select", new { @Class = "form-control" })
+                                                </label>
+                                            </section>
+                                        }
+
+                                        @if (Session["AutoGenInvNoSetting"].ToString() == "True")
+                                        {
+                                            <section class="col col-4">
+                                                <label class="input">
+                                                    <input type="text" name="stationcode" id="stationcode" class="form-control" maxlength="6" placeholder="Station Code" value="@ViewBag.StationCode" />
+                                                </label>
+                                            </section>
+                                        }
+                                        else
+                                        {
+                                            <section class="col col-4" style="display:none;">
+                                                <label class="input">
+                                                    <input type="text" name="stationcode" id="stationcode" class="form-control" placeholder="Station Code" maxlength="6" />
+                                                </label>
+                                            </section>
+                                        }
+                                    </div>
+
+                                    <div class="row">
+                                        <section class="col col-6">
+                                            @{Html.RenderPartial("_gstadd");}
+
+                                        </section>
+
+                                        <section class="col col-6">
+                                            @{Html.RenderPartial("_gstdelete");}
+                                        </section>
+                                    </div>
+
+                                </fieldset>
+                                <footer>
+                                    <button type="submit" name="btnSave" id="btnSave" class="btn btn-primary">
+                                        Save
+                                    </button>
+                                </footer>
+                            </form>
+
+
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- END COL -->
+            <!-- NEW COL START -->
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </section>
+    <!-- end widget grid -->
+
+
+</div>
+<!-- END MAIN CONTENT -->
+<br />
+@*@using (Html.BeginForm("UserEdit", "UserMgmt", FormMethod.Post))
+    {
+
+        <div class="container text-center" style="text-align:center">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">GSTIN Number</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var k in @ViewBag.GSTINNumber)
+                    {
+                        <tr>
+                            <td>@k.</td>
+                            <td>Button</td>
+                        </tr>
+
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+
+                                    <br />
+    }*@
+
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+        alert(@Html.Raw(Json.Encode(TempData["msg"])));
+    </script>
+}
+
+<script type="text/javascript">
+
+    $('#name').bind('keypress', textInput);
+
+    $('#phone').bind('keypress', numericInput);
+
+</script>
+
+@section pagespecific {
+    <script type="text/javascript">
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+            var $checkoutForm = $('#checkout-form').validate({
+                // Rules for form validation
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    designation: {
+                        required: true
+                    },
+                    username: {
+                        required: true
+
+                    },
+                    Password: {
+                        required: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    phone: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+                    Role_Name: {
+                        required: true
+
+                    },
+                    //CategoryId: {
+                    //    required: true
+                    //},
+                    name: {
+                        required: true
+                    },
+                    card: {
+                        required: true,
+                        creditcard: true
+                    },
+                    cvv: {
+                        required: true,
+                        digits: true
+                    },
+                    month: {
+                        required: true
+                    },
+                    year: {
+                        required: true,
+                        digits: true
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    name: {
+                        required: 'Please enter user name'
+                    },
+                    designation: {
+                        required: 'Please enter user Designation'
+                    },
+                    username: {
+                        required: 'Please enter Username'
+
+                    },
+                    Password: {
+                        required: 'Please enter Password'
+                    },
+                    email: {
+                        required: 'Please enter user Email',
+                        email: 'Please enter a VALID email address'
+                    },
+
+                    phone: {
+                        required: 'Please enter user phone Number ',
+                        digits: 'Digits only please'
+                    },
+                    Role_Name: {
+                        required: 'Please select Role'
+                    },
+                    //CategoryId: {
+                    //    required: 'Please select GSTIN Number'
+                    //},
+                    card: {
+                        required: 'Please enter your card number'
+                    },
+                    cvv: {
+                        required: 'Enter CVV2',
+                        digits: 'Digits only'
+                    },
+                    month: {
+                        required: 'Select month'
+                    },
+                    year: {
+                        required: 'Enter year',
+                        digits: 'Digits only please'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+
+
+
+
+        })
+
+    </script>
+}
+
+@if (Session["AutoGenInvNoSetting"].ToString() == "True")
+{
+    <script type="text/javascript">
+        $("#btnSave").click(function () {
+            if (document.getElementById('stationcode').value == "") {
+                alert('Please Enter Station Code');
+                return false;
+            }
+        });
+    </script>
+}

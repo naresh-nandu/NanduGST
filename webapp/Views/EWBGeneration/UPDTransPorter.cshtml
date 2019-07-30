@@ -1,0 +1,399 @@
+﻿@model WeP_DAL.EwayBill.ReportViewModel
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow = $('#UpdateVEHNO').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+
+    });
+
+</script>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: auto;
+        overflow-x: hidden;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    input[type=search] {
+        margin: 0px !important;
+    }
+
+    .tblheader {
+        text-align: center;
+        color: white;
+        background-color: #85C1E9;
+    }
+
+    .tblbody {
+        text-align: center;
+    }
+</style>
+<div id="content">
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                EWayBill
+                <span>
+                    >&nbsp;
+                    Update Transporter
+                </span>
+            </h1>
+        </div>
+
+    </div>
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <form action="@Url.Action("UPDTransPorter", "EWBGeneration")" method="post" id="updTransporter" name="updTransporter" autocomplete="off" novalidate="novalidate">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <!-- Widget ID (each widget will need unique ID)-->
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Update Transporter</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div id="comment-form" class="smart-form">
+
+                                    <fieldset>
+
+                                        <div class="row">
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>GSTIN</b><span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    @Html.DropDownList("ddlGSTINNo", ViewBag.GSTINNoList as SelectList, "Select GSTIN", new { @Class = "form-control input-sm", @autopostback = "true", @id = "ddlGSTINNo", @onchange = "submit();" })
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>Eway Bill No</b><span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="ewbNo" maxlength="12" placeholder="Eway Bill No" id="ewbNo" value="@ViewBag.ewbno">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>Transporter ID</b><span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="transId" id="transId" value="" maxlength="15" placeholder="Transporter ID">
+                                                </label>
+                                            </section>
+
+                                            <section class="col col-3">
+                                                <label class="label"><b>Transporter Name</b><span style="color:red">*</span></label>
+                                                <label class="input">
+                                                    <input type="text" name="transName"   placeholder="Transporter Name" id="transName">
+                                                </label>
+                                            </section>
+
+                                        </div>
+
+
+
+                                    </fieldset>
+                                    <footer>
+
+                                        <button type="submit" name="Command" value="updTransporter" id="btnupdTransporter" class="btn btn-primary" style="border-radius:40px;font-weight:600">
+                                            Submit
+                                        </button>
+                                    </footer>
+                                </div>
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+
+
+                </article>
+
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                        <header>
+                            <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                            <h2>Updated Transporter List</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+
+                            <!-- widget edit box -->
+                            <div class="jarviswidget-editbox">
+                                <!-- This area used as dropdown edit box -->
+
+                            </div>
+                            <!-- end widget edit box -->
+                            <!-- widget content -->
+                            <div class="widget-body no-padding">
+
+                                <div class="table table-responsive">
+
+                                    <div class="container-fuild" style="background-color:white;margin:10px;">
+                                        @if (Model != null)
+                                        {
+                                            if (Model.updTransMgmt.Count > 0)
+                                            {
+                                                int i = 1;
+                                                <table id="UpdateVEHNO" class="table table-striped table-responsive table-bordered table-hover gridtable">
+                                                    <thead class="text-center">
+                                                        <tr class="text-center">
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">S.No</th>
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">User GSTIN</th>
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">Eway Bill No</th>
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">TransPorter Id</th>
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">Updated Transport Date</th>
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">Error Code</th>
+                                                            <th class="text-center" style="font-weight:bold;font-size:16px;">Error Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var List in Model.updTransMgmt)
+                                                        {
+                                                            <tr>
+                                                                <td>@Convert.ToInt32(i++)</td>
+                                                                <td>@List.userGstin</td>
+                                                                <td>@List.ewbNo</td>
+                                                                <td>@List.transId</td>
+                                                                <td>@List.updTransDate</td>
+                                                                <td>@List.errorCode</td>
+                                                                <td>@List.errorDesc</td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                                <footer>
+                                                    <div class="col-md-6 text-center" style="margin-left:240px" ;>
+                                                        <button type="submit" name="command" value="print" id="print" class="btn btn-primary" style="border-radius:40px;width:100px;font-weight:600;">
+                                                            Print
+                                                        </button>
+                                                    </div>
+                                                </footer>
+                                            }
+                                        }
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                            <!-- end widget content -->
+
+                        </div>
+                        <!-- end widget div -->
+
+                    </div>
+
+
+
+                </article>
+
+
+
+
+            </form>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+
+
+        </div>
+    </section>
+</div>
+
+@section pagespecific {
+    <script type="text/javascript">
+
+
+
+
+        $('#btnupdTransporter').click(function () {
+
+
+            var $checkoutForm = $('#updTransporter').validate({
+                // Rules for form validation
+                rules: {
+
+
+                    ewbNo: {
+                        required: true
+                    },
+                    ddlGSTINNo: {
+                        required: true
+                    },
+                    transId: {
+                        required: true
+                    },
+                     transName: {
+                        required: true
+                    }
+
+                },
+                messages: {
+
+
+                    ewbNo: {
+                        required: 'Please enter Eway Bill No'
+                    },
+                    ddlGSTINNo: {
+                        required: 'Please select GSTIN'
+                    },
+                    transId: {
+                        required: 'Please enter Transporter ID'
+                    },
+                     transName: {
+                        required: 'Please enter Transporter Name'
+                    }
+
+                }
+            });
+        })
+
+
+
+
+        $('#print').click(function () {
+
+
+            var $checkoutForm = $('#updTransporter').validate({
+                // Rules for form validation
+                rules: {
+
+
+                    ewbNo: {
+                        required: true
+                    }
+                },
+                messages: {
+
+
+                    ewbNo: {
+                        required: 'Please enter Eway Bill No'
+                    }                 
+                }
+            });
+        })
+
+    </script>
+
+
+}
+
+

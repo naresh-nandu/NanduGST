@@ -1,0 +1,379 @@
+﻿@model WeP_DAL.BranchMgmt.BranchViewModel
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        oTableStaticFlow = $('#branchMgmt').DataTable({
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }],
+        });
+
+    });
+
+</script>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["SuccessMessage"]",
+                type: "success",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["SuccessMessage"] = null;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal({
+                title: "",
+                text: "@TempData["ErrorMessage"]",
+                type: "error",
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+
+            }
+     );
+        };
+    </script>
+    TempData["ErrorMessage"] = null;
+}
+<style>
+    .btnstyle {
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+    }
+
+    table.gridtable th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3276b1;
+    }
+
+    table.gridtable td {
+        text-align: center;
+    }
+</style>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: auto;
+        overflow-x: hidden;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    input[type=search] {
+        margin: 0px !important;
+    }
+
+    .tblheader {
+        text-align: center;
+        color: white;
+        background-color: #85C1E9;
+    }
+
+    .tblbody {
+        text-align: center;
+    }
+</style>
+<div id="content">
+    <!-- row -->
+    <div class="row">
+
+        <!-- col -->
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-home"></i>
+                Location Management
+                <span>
+                    >&nbsp;
+                    Update
+                </span>
+            </h1>
+        </div>
+
+    </div>
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <form action="@Url.Action("Edit", "BranchMgmt")" method="post" id="BranchMgmt" name="BranchMgmt" autocomplete="off" novalidate="novalidate">
+
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @if (Model != null)
+                    {
+                        if (Model.BranchList.Count > 0)
+                        {
+                            foreach (var List in Model.BranchList)
+                            {
+
+                                <input type="hidden" name="branchId" value="@List.branchId"
+                    <!-- Widget ID (each widget will need unique ID)-->
+                                <div class="jarviswidget jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+
+                                    <header>
+                                        <span class="widget-icon"><i class="fa fa-edit"></i></span>
+                                        <h2>Update Location</h2>
+                                    </header>
+
+                                    <!-- widget div-->
+                                    <div>
+
+                                        <!-- widget edit box -->
+                                        <div class="jarviswidget-editbox">
+                                            <!-- This area used as dropdown edit box -->
+
+                                        </div>
+                                        <!-- end widget edit box -->
+                                        <!-- widget content -->
+                                        <div class="widget-body no-padding">
+
+                                            <div id="comment-form" class="smart-form">
+
+                                                <fieldset>
+                                                    <div class="row">
+                                                        <section class="col col-3">
+                                                            <label class="label"><b>Comapany Name</b><span style="color:red">*</span></label>
+                                                            <label class="input">
+                                                                @Html.DropDownList("ddlPanNo", ViewBag.Panlist as SelectList, "Select Company", new { @class = "form-control", id = "ddlPanNo", autopostback = "true", onchange = "submit();" })
+                                                            </label>
+                                                        </section>
+
+                                                        <section class="col col-3">
+                                                            <label class="label"><b>GSTIN</b><span style="color:red">*</span></label>
+
+                                                            <div class="col-xs-12 col-lg-12 selectContainer">
+                                                                @Html.DropDownList("ddlGSTIN", ViewBag.GstinList as SelectList, "Select GSTIN", new { @class = "form-control", id = "ddlGSTIN", autopostback = "true" })
+                                                            </div>
+                                                        </section>
+                                                        <section class="col col-3">
+                                                            <label class="label"><b>Location Name</b><span style="color:red">*</span></label>
+                                                            <label class="input">
+                                                                <input type="text" name="branchName" id="branchName" value="@List.branchName" placeholder="enter Branch Name" style="text-transform:uppercase">
+                                                            </label>
+                                                        </section>
+                                                        @if(Session["ewbEmailSetting"].ToString()=="True")
+                                                        { 
+                                                         <section class="col col-3">
+                                                            <label class="label"><b>Email For Sending Eway Bill</b></label>
+                                                            <label class="input">
+                                                                <textarea rows="3" cols="40" name="email" id="email"  placeholder="To send EwayBill to multiple email Id's,write email Id's separated by semicolons.( E.G: test@gmail.com;test1@gmail.com;test3@gmail.com etc.)">@List.email</textarea>
+
+                                                              
+                                                            </label>
+                                                        </section>
+                                                        }
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-5">
+
+                                                            <fieldset>
+                                                                <legend style="font-weight:600;font-size:15px;">Add New User for Location</legend>
+
+                                                                <div class="form-group" style="margin-top:-15px;">
+                                                                    <p style="font-weight:600;font-size:13px;">Select User</p>
+                                                                    <div class="col-md-5">
+
+                                                                        @Html.DropDownList("addUser", ViewBag.AddUserList as SelectList, "Select User", new { @Class = "form-control input-sm", @autopostback = "true", @id = "addUser" })
+                                                                        <br /><br />
+                                                                        <footer>
+                                                                            <button type="submit" class="btn btn-primary pull-left" name="Command" value="Add" id="btnAdd">
+                                                                                Add User
+                                                                            </button>
+                                                                        </footer>
+                                                                    </div>
+                                                                    <br /><br />
+                                                                </div>
+                                                            </fieldset>
+
+
+                                                        </section>
+                                                        <section class="col col-6">
+                                                            <fieldset>
+                                                                <legend style="font-weight:600;font-size:15px;">Remove User for Location</legend>
+
+                                                                <div class="form-group" style="margin-top:-15px;">
+                                                                    <p style="font-weight:600;font-size:13px;">Select User</p>
+                                                                    <div class="col-md-5">
+                                                                        @Html.DropDownList("deleteUser", ViewBag.DeleteUserList as SelectList, "Select User", new { @Class = "form-control input-sm", @autopostback = "true", @id = "deleteUser" })
+                                                                        <br /><br />
+                                                                        <footer>
+                                                                            <button type="submit" class="btn btn-primary pull-left" name="Command" value="Delete" id="btnDelete">
+                                                                                Delete User
+                                                                            </button>
+                                                                        </footer>
+                                                                    </div>
+                                                                    <br /><br />
+                                                                </div>
+                                                            </fieldset>
+                                                        </section>
+                                                    </div>
+
+
+                                                   
+
+                                                </fieldset>
+
+
+                                                <footer>
+                                                    <div class="text-center">
+                                                        <button type="submit" name="Command" value="Update" id="btnUpdate" class="btn btn-primary pull-right" style="border-radius:4px;font-weight:600;margin:10px;">
+                                                            Update
+                                                        </button>
+                                                    </div>
+                                                </footer>
+                                            </div>
+
+                                        </div>
+                                        <!-- end widget content -->
+
+                                    </div>
+                                    <!-- end widget div -->
+
+                                </div>
+                            }
+                        }
+                    }
+
+                </article>
+
+
+
+            </form>
+            <!-- end widget -->
+            <!-- Widget ID (each widget will need unique ID)-->
+
+
+        </div>
+    </section>
+</div>
+
+@section pagespecific {
+    <script type="text/javascript">
+
+
+        $('#btnUpdate').click(function () {
+
+
+            var $checkoutForm = $('#BranchMgmt').validate({
+                // Rules for form validation
+                rules: {
+
+
+                    ddlPanNo: {
+                        required: true
+                    },
+                    ddlGSTIN: {
+                        required: true
+                    },
+                    branchName: {
+                        required: true
+                    }
+                },
+                messages: {
+
+
+                    ddlPanNo: {
+                        required: 'Please select Company'
+                    },
+                    ddlGSTIN: {
+                        required: 'Please select GSTIN'
+                    },
+                    branchName: {
+                        required: 'Please enter Branch Name'
+                    }
+
+                }
+            });
+        })
+
+        $('#btnAdd').click(function () {
+
+
+            var $checkoutForm = $('#BranchMgmt').validate({
+                // Rules for form validation
+                rules: {
+
+
+                    addUser: {
+                        required: true
+                    }
+                },
+                messages: {
+
+
+                    addUser: {
+                        required: 'Please select User'
+                    }
+
+                }
+            });
+        })
+        $('#btnDelete').click(function () {
+
+
+            var $checkoutForm = $('#BranchMgmt').validate({
+                // Rules for form validation
+                rules: {
+
+
+                    deleteUser: {
+                        required: true
+                    }
+                },
+                messages: {
+
+
+                    deleteUser: {
+                        required: 'Please select User'
+                    }
+                }
+            });
+        })
+
+
+    </script>
+
+
+}
+
+

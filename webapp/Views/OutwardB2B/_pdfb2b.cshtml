@@ -1,0 +1,151 @@
+﻿
+
+    <table border="1" style="border-collapse:collapse" class="table table-responsive">
+        <caption style="text-align:center;font-weight:bold;font-size:20px;">TAX INVOICE UNDER GST</caption>
+        <tr align="left">
+            <td colspan="2">Name</td>
+            <td colspan="12">@ViewBag.cusname</td>
+        </tr>
+        <tr align="left">
+            <td colspan="2">Adress</td>
+            <td colspan="5"></td>
+            <td colspan="2">Invoice no</td>
+            <td colspan="5">inv10005</td>
+        </tr>
+        <tr align="left">
+            <td colspan="2">GtIn</td>
+            <td colspan="5">@ViewBag.cusgst</td>
+            <td colspan="2">Date</td>
+            <td colspan="5">14-05-2017</td>
+        </tr>
+        @*<tr>
+            <td colspan="14"></td>
+        </tr>*@
+        <tr align="left">
+            <th colspan="14">Buyer Details</th>
+        </tr>
+        <tr align="left">
+            <td colspan="2">Name</td>
+            <td colspan="5">@ViewBag.supname</td>
+            <td colspan="7">Adress of delivery</td>
+        </tr>
+        <tr align="left">
+            <td colspan="2">Adress</td>
+            <td colspan="5">@ViewBag.supadd</td>
+            <td colspan="7" rowspan="2">@ViewBag.supadd</td>
+        </tr>
+        <tr align="left">
+            <td colspan="2">GSTIn</td>
+            <td colspan="5">@ViewBag.gstin</td>
+        </tr>
+ 
+        <tr align="left">
+            <th colspan="7">For Unregistered Buyer</th>
+            <th colspan="7">For Inter-State Supply</th>
+        </tr>
+        <tr align="left">
+            <td colspan="2">State Code</td>
+            <td colspan="5"></td>
+            <td colspan="2">Place of Supply</td>
+            <td colspan="5">@ViewBag.pos</td>
+        </tr>
+        <tr align="left">
+            <td colspan="2">State</td>
+            <td colspan="5"></td>
+            <td colspan="2">State</td>
+            <td colspan="5"></td>
+        </tr>
+        @*<tr align="left">
+            <td colspan="14"></td>
+        </tr>*@
+
+        <tr align="left">
+            <th colspan="14">Item(S) Details</th>
+        </tr>
+
+        <tr align="left">
+            <th>Sl.No</th>
+            <th>HSN Code/SAC</th>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>UOM</th>
+            <th>Price per unit</th>
+            <th>Value</th>
+            <th>Discount</th>
+            <th>Taxable Value</th>
+            <th>Rate of Tax</th>
+            <th>Central Tax</th>
+            <th>State Tax</th>
+            <th>UT Tax</th>
+            <th>Integrated Tax</th>
+
+        </tr>
+        @foreach (var item in @ViewBag.inv)
+        {
+
+
+            <tr align="left">
+                <td></td>
+                <td>@item.hsncode</td>
+                <td>@item.hsndesc</td>
+                <td>@item.qty</td>
+                <td></td>
+                <td>@item.unitprice</td>
+                <td>@item.val</td>
+                <td>@item.discount</td>
+                <td>@item.txval</td>
+                <td>@item.rt</td>
+                <td>@item.camt</td>
+                <td>@item.samt</td>
+                <td>@item.camt</td>
+                <td>@item.csamt</td>
+            </tr>
+        }
+
+        <tr align="left">
+            <th colspan="3" style="text-align:center">Total</th>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+        </tr>
+        <tr>
+            <td colspan="14"></td>
+        </tr>
+        <tr>
+            <td rowspan="3" colspan="4">Taxpayable under reverse charge</td>
+            <td rowspan="3" colspan="2">Yes/No</td>
+            <td colspan="3">Credit Terms</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Bank Details</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            
+            <td colspan="3">other terms</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <th colspan="14" style="text-align:center;">Certified that the above particulars are true</th>
+        </tr>
+       
+        <tr>
+            <th colspan="7" style="border-right:none;">Signature</th>
+            <th colspan="7" style="border-left:none; text-align:center;">ORIGINAL FOR BUYER</th>
+        </tr>
+        
+
+    </table>
+
+    <br />
+  
+
